@@ -85,3 +85,10 @@ Started: 2026-08-13
   - Editing a byte-pinned paste target (resolve-schema-node-v5.js, writer-prompt-v5.md, writer_gate.js, source-ledger-node-v3.js, claim-gate-v3.js) cascades FOUR places: (1) workflow-contract-v3.json artifact sha256, (2) the embedded jsCode in DMC-Ingestion-Pipeline-v3-review.json, (3) that export's manifest artifact + derived hashes, (4) the envelope builder node's embedded hash. tests in docs/n8n/tests enforce all of them.
   - ST-08 reads title/body-or-intro/faqs (kicker is a content label, not a data key). Match the schema to the reader, not the reverse.
 ---
+## 2026-08-13 - US-010
+- What was implemented: G7 closed. Removed the invisible ST-FAZIT fazit_background generation (option b).
+- **Learnings for future iterations:**
+  - An asset with no consumer is waste. ST-FAZIT grounds on panel_texture (report asset) + founder + CTA - a per-page background had no reader.
+  - Removing a slot from IMAGE_REQUIREMENTS cascades to: generate_assets tests (count + ST-FAZIT len refs), generation_budget tests (fal POST count), and the fixture _SUPPRESS_SLOTS.
+  - The ST-FAZIT dark close renders from panel_texture - verify that stays, not the removed slot.
+---

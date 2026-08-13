@@ -137,8 +137,8 @@
         "Renderer suite stays green"
       ],
       "priority": 10,
-      "passes": false,
-      "notes": "Prefer wiring it - the ST-FAZIT close is a designed dark page and a real ground improves it."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G7 CLOSED. Chose option (b) remove - the ST-FAZIT page already has a designed dark close grounding on the panel_texture report asset + founder avatar + CTA (patterns/st_fazit.py), so a per-page fazit_background generation/download had NO reader (paid invisible asset). Removed from generate_assets.IMAGE_REQUIREMENTS and build_live.SLOT_TO_ST; fixture build_package _SUPPRESS_SLOTS updated. 3 preprocessor tests updated (count 5->4 generations; ST-FAZIT len removed). Preprocessor 733, renderer guards green. The ST-FAZIT page itself renders unchanged (panel_texture ground verified present)."
     },
     {
       "id": "US-011",
