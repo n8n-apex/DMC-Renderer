@@ -176,7 +176,7 @@ const SCHEMAS = {
     fields: [
       { key: "titel", required: true, max: 80, desc: "Section headline for the outlook." },
       { key: "einleitung", required: true, max: 300, desc: "Opening paragraph — why this topic matters to the reader now." },
-      { key: "ausblick_punkte", required: true, type: "array", min_items: 3, max_items: 4, item: { type: "string", max: 120 }, desc: "What the reader will take away. Each a concrete promise, not a teaser." },
+      { key: "ausblick_punkte", required: true, type: "array", min_items: 3, max_items: 4, item: { type: "string", max: 120 }, desc: "What the reader will take away. Each a concrete promise, not a teaser. Rendered under the 'Was Sie mitnehmen' label (the renderer reads this as `takeaways`)." },
       { key: "abschluss", required: false, max: 140, desc: "One closing line that sets up the read." },
       { key: "pullquote", required: false, max: 160, desc: "The report's thesis as one short quotable line, drawn from the section data. The layout lifts it out large. Omit if nothing in DATA earns it." },
       { key: "pullquote_attribution", required: false, max: 60, desc: "Who the pull-quote is attributed to, if the data names them. Omit if unattributed or no pullquote." },

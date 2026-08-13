@@ -173,9 +173,13 @@ def _split_sentences_de(text: str) -> list[str]:
 
 def _fix_umlauts_deep(node, key=None):
     """Apply the umlaut restoration to COPY string values only. Dict keys are
-    schema identifiers and stay byte-exact; URL-bearing values must too."""
+    schema identifiers and stay byte-exact; URL-bearing values must too. G22:
+    IDENTITY fields (author.name/role, kunde.name/company_url) are exempt —
+    a curated name like "Waehrend" must never be rewritten to "Während"."""
     if isinstance(node, str):
         if "://" in node or (isinstance(key, str) and (key == "url" or key.endswith("_url"))):
+            return node
+        if isinstance(key, str) and key in ("name", "role", "funktion", "company"):
             return node
         return _fix_umlauts(node)
     if isinstance(node, dict):
@@ -226,12 +230,14 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
     if st_type == "ST-01" and d.get("kicker") and not d.get("audience"):
         d["audience"] = d["kicker"]
     elif st_type == "ST-02":
-        # ausblick_punkte -> zielgruppe (which the ST-02 adapter maps to
-        # td.list_items) so the fill treatment renders them as a numbered
-        # editorial list, not folded into the running body.
+        # G13: ausblick_punkte are the reader's TAKEAWAYS, not the target
+        # audience. They were renamed to `zielgruppe` and labelled "Zielgruppe
+        # des Reports" (semantically wrong); they now map to `takeaways` and
+        # render under "Was Sie mitnehmen". A real `zielgruppe` (if the writer
+        # ever emits one) stays distinct.
         d["body"] = _join(d.get("body"), d.get("einleitung"), d.get("abschluss"))
-        if d.get("ausblick_punkte") and not d.get("zielgruppe"):
-            d["zielgruppe"] = list(d["ausblick_punkte"])
+        if d.get("ausblick_punkte") and not d.get("takeaways"):
+            d["takeaways"] = list(d["ausblick_punkte"])
     elif st_type == "ST-05":
         d["body"] = _join(d.get("body"), d.get("einleitung"), d.get("angebot_text"))
         if d.get("vertrauenspunkte") and not d.get("credibility_points"):

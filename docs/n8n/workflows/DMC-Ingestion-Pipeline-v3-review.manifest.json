@@ -14,8 +14,8 @@
   },
   "derived_export": {
     "path": "docs/n8n/workflows/DMC-Ingestion-Pipeline-v3-review.json",
-    "sha256": "62cf55a749cae7645a20d9292fc2464f28a1c173873ae6b53b589dd0ae325e70",
-    "byte_count": 220684,
+    "sha256": "7a208008f827fcd0616ce70461efb2a981587b7bd9ecada3c2e89e19aa056342",
+    "byte_count": 220771,
     "node_count": 47,
     "active": false,
     "name": "DMC Ingestion Pipeline v3 REVIEW"
@@ -34,7 +34,7 @@
         "artifact_id": "schema_resolver",
         "expected_node_name": "Resolve Schema and Build Prompts v5",
         "semantic_version": "5.2.1",
-        "sha256": "200c72381eb9a924e1da369b4c2ee1dfd5509ad0cb5a6dc06a263d9a563a339a",
+        "sha256": "3d082f6914eff0e276c1c2d7aac46ad6c728d90ccb778b423ca43461a87f5063",
         "repository_path": "docs/resolve-schema-node-v5.js"
       },
       {

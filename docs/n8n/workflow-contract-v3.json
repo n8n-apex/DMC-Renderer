@@ -16,7 +16,7 @@
       "artifact_id": "schema_resolver",
       "semantic_version": "5.2.1",
       "repository_path": "docs/resolve-schema-node-v5.js",
-      "sha256": "200c72381eb9a924e1da369b4c2ee1dfd5509ad0cb5a6dc06a263d9a563a339a",
+      "sha256": "3d082f6914eff0e276c1c2d7aac46ad6c728d90ccb778b423ca43461a87f5063",
       "expected_node_name": "Resolve Schema and Build Prompts v5",
       "input_schema_version": "chapter-item-v5",
       "output_schema_version": "writer-prompt-item-v5",

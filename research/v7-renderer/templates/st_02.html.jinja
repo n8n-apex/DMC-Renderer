@@ -1,0 +1,62 @@
+{# ST-02 — outlook / "what this report is about" page (Plan B rebuild, grammar
+   P-2). DATA comes pre-shaped from patterns/st_02.py; this template only
+   COMPOSES the macro library on the token-themed .st-02 layout (styles/st_02.css).
+   Fragment only — no <html>/<head>/<style>/@page/@font-face/:root (those live in
+   the head).
+
+   Structure: a small uppercase eyebrow, a large serif question-headline
+   (var(--font-display) — the §18 serif/sans contrast against the sans body), a
+   two-column body of intro prose, and a tint check-list panel for the audience
+   (callout_panel carrying a check_list — accent check glyphs + qualifier items
+   under the German "Zielgruppe des Reports" label). The panel is emitted only
+   when zielgruppe items are present (graceful). #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'callout_panel.jinja' import callout_panel %}
+{% from 'check_list.jinja' import check_list %}
+{% from 'pull_quote.jinja' import pull_quote %}
+{% from 'diagram.jinja' import diagram as render_diagram %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{# Full-height flex column so the page DISTRIBUTES to fill the content box: the
+   header + intro sit at the top, the audience panel is anchored to the BOTTOM
+   (margin-top:auto), and the space between reads as deliberate editorial breathing
+   rather than a trailing void. #}
+<div class="ol-root">
+  <div class="ol-header">
+    {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+    {% if title %}<h1 class="ol-headline">{{ title }}</h1>{% endif %}
+  </div>
+
+  {% if body_html %}
+  <div class="ol-body">{% if diagram %}{{ render_diagram(diagram) }}{% endif %}{{ body_html }}</div>
+  {% endif %}
+
+  {% if viz %}
+  {# data-viz PRESET band (verbatim grounded figures from the curation step) — a
+     proof strip that reinforces the outlook's magnitudes. Absent → nothing. #}
+  <div class="ol-viz c-viz-island"{% if panel_texture_uri %} style="background-image: linear-gradient(150deg, color-mix(in srgb, var(--color-ink) 14%, transparent), color-mix(in srgb, var(--color-ink) 40%, transparent)), url('{{ panel_texture_uri }}');"{% endif %}>
+    <span class="c-viz-island__seam" aria-hidden="true"></span>
+    {{ render_viz(viz) }}
+  </div>
+  {% endif %}
+
+  {% if pullquote %}
+  {# the report's thesis as a flat CREAM accent-ruled quote (on_panel=false): the
+     dark depth on this page belongs to the data-viz island above, so the deck
+     keeps ONE dark island per page (cream-ground DNA) and the page stays on one
+     sheet. #}
+  <div class="ol-quote">{{ pull_quote(pullquote, on_panel=false) }}</div>
+  {% endif %}
+
+  {% if zielgruppe %}
+  <div class="ol-zg">
+    {{ callout_panel(check_list(zielgruppe), label=zielgruppe_label) }}
+  </div>
+  {% endif %}
+
+  {% if takeaways %}
+  <div class="ol-tk">
+    {{ callout_panel(check_list(takeaways), label=takeaways_label) }}
+  </div>
+  {% endif %}
+</div>
