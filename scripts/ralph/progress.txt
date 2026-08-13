@@ -100,3 +100,11 @@ Started: 2026-08-13
   - Direct handler-function tests bypass middleware by design; the auth gate is only exercised via TestClient.
   - Deployment note: the n8n caller must send the bearer header once RENDERER_SHARED_SECRET is set in the container env.
 ---
+## 2026-08-13 - US-012
+- What was implemented: G9+G21 closed. Thread-join deadline on both render endpoints; 504 on expiry.
+- **Learnings for future iterations:**
+  - Converting sync FastAPI endpoints to async def breaks every direct-call test (they call the function and expect a sync return). The thread-join watchdog (sync def + daemon thread + join(timeout)) enforces the deadline WITHOUT changing the endpoint signature.
+  - The timeout value must be read per-request (env), not at import, or tests cannot override it.
+  - The build's own httpx timeouts (fal 240s, LLM 40s) still bound individual calls; the end-to-end cap bounds the whole request. A timed-out thread keeps running but no longer holds the HTTP worker.
+  - ARCHITECTURE.md:29 claimed a 120s cap that never existed - now real via DMC_RENDER_TIMEOUT_S.
+---

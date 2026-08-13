@@ -164,8 +164,8 @@
         "ARCHITECTURE.md and CACHE_STRATEGY.md state the REAL timeout policy"
       ],
       "priority": 12,
-      "passes": false,
-      "notes": "Also bound the fal/LLM stages so N parallel calls cannot exceed the cap."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G9+G21 CLOSED. _build_with_deadline() runs the blocking build in a daemon worker thread with a hard deadline (DMC_RENDER_TIMEOUT_S, default 120); on expiry the endpoint returns 504 instead of hanging the threadpool slot. Applied to /render and /render-v3. Kept the endpoints SYNC def (the thread-join watchdog) so all direct-call tests work unchanged - the async/to_thread approach broke 24 direct-call tests across 3 files and was reverted. Timeout value read dynamically per request so tests can override. New test: slow_build + 0.05s cap -> 504. ARCHITECTURE.md:29 timeout claim updated (was fiction, now real). dmc 113/4xfail. Note: the build's own httpx timeouts (fal 240s, LLM 40s) remain; the end-to-end cap bounds the whole request."
     },
     {
       "id": "US-013",
