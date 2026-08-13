@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "contract_version": "3.2.1",
+  "artifacts": [
+    {
+      "artifact_id": "writer_prompt",
+      "semantic_version": "5.1.1",
+      "repository_path": "docs/writer-prompt-v5.md",
+      "sha256": "2c13d8e1c0978c62d4b4ff68f62d3a6888a1bb89d462e41c2d2a21a96ef63fb4",
+      "expected_node_name": "Section Writer v5",
+      "input_schema_version": "section-data-v3",
+      "output_schema_version": "writer-section-v5",
+      "envelope_version_field": "writer_prompt_version"
+    },
+    {
+      "artifact_id": "schema_resolver",
+      "semantic_version": "5.2.1",
+      "repository_path": "docs/resolve-schema-node-v5.js",
+      "sha256": "d77dc6b082079ce712797fc405d96c18cacde362c888b0adf33573eee855bedf",
+      "expected_node_name": "Resolve Schema and Build Prompts v5",
+      "input_schema_version": "chapter-item-v5",
+      "output_schema_version": "writer-prompt-item-v5",
+      "envelope_version_field": "schema_resolver_version"
+    },
+    {
+      "artifact_id": "writer_gate",
+      "semantic_version": "3.1.1",
+      "repository_path": "docs/n8n/writer_gate.js",
+      "sha256": "cff8b26e96bb7e7754b07615e8fe333a4c8edb792ac90210129da881e103068a",
+      "expected_node_name": "Writer Gate v3",
+      "input_schema_version": "writer-section-v5",
+      "output_schema_version": "gated-section-v3",
+      "envelope_version_field": "writer_gate_version"
+    },
+    {
+      "artifact_id": "source_ledger",
+      "semantic_version": "3.2.1",
+      "repository_path": "docs/n8n/source-ledger-node-v3.js",
+      "sha256": "95b27737adf7421eb4603881fee78cdc8401fdf93619a71608f7c0ea916463dc",
+      "expected_node_name": "Source Ledger v3",
+      "input_schema_version": "raw-client-evidence-v3",
+      "output_schema_version": "source-ledger-v3",
+      "envelope_version_field": "source_ledger_version"
+    },
+    {
+      "artifact_id": "claim_gate",
+      "semantic_version": "3.2.1",
+      "repository_path": "docs/n8n/claim-gate-v3.js",
+      "sha256": "19e2158cea55010105d078e9f9b93d362173dca76a4d34796c1907a8d9e115fe",
+      "expected_node_name": "Claim Gate v3",
+      "input_schema_version": "writer-section-v5+source-ledger-v3",
+      "output_schema_version": "claim-gated-section-v3",
+      "envelope_version_field": "claim_gate_version"
+    }
+  ]
+}

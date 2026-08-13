@@ -62,6 +62,13 @@ envelope = {
                 "titel": "Das Prinzip", "kernaussage": "x", "erklaerung": "y",
                 "compare": {"ohne": ["chaos"], "mit": ["struktur"]},  # pass-through
             }},
+            {"type": "ST-07A", "slot": 12, "data": {
+                "titel": "Fallstudie", "ausgangsproblem": "x", "loesung": "y",
+                "kunde": {  # schema-node emits name/company_url (G5)
+                    "name": "GoldmanTax", "company_url": "goldmantax.example",
+                    "funktion": "Steuerberatung",
+                },
+            }},
             {"type": "ST-FAZIT", "slot": 20, "data": {
                 "titel": "Fazit", "zusammenfassung": "x",
                 "kernbotschaft": "Struktur schlägt Talent",
@@ -94,6 +101,10 @@ check("ST-14 belief carries quelle", bel.get("quelle") == "(Destatis, 2018)")
 
 d07b = by["ST-07B"]
 check("ST-07B compare passthrough", (d07b.get("compare") or {}).get("ohne") == ["chaos"])
+
+d07a = by["ST-07A"]
+check("ST-07A kunde.name passthrough", (d07a.get("kunde") or {}).get("name") == "GoldmanTax")
+check("ST-07A kunde.company_url passthrough", (d07a.get("kunde") or {}).get("company_url") == "goldmantax.example")
 
 dfz = by["ST-FAZIT"]
 check("ST-FAZIT author.name filled (founder)", (dfz.get("author") or {}).get("name") == "Max Muster")
