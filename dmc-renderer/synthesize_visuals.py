@@ -36,15 +36,33 @@ from typing import Any, Optional
 _DIGITS = re.compile(r"\d[\d.,]*")
 
 
+def _normalize_figure_token(token: str) -> str:
+    """Canonical form of one captured digit token for grounding.
+
+    German separators: a comma is ALWAYS the decimal mark ('12,5' = 12.5),
+    and dot-groups-of-3 are thousands separators ('1.200' = 1200). Stripping
+    every comma and dot (the old behaviour) collapsed '12,5' onto '125',
+    which let a fabricated '125' ground against copy that said 12.5.
+    Keep the decimal comma significant; only thousands-dots are removed.
+    """
+    t = str(token or "").strip(".,")
+    if _THOUSANDS_DE.fullmatch(t):
+        t = t.replace(".", "")
+    return t
+
+
 def _digit_tokens(text: str) -> set[str]:
     out: set[str] = set()
     for m in _DIGITS.finditer(text or ""):
-        out.add(re.sub(r"[.,\s]", "", m.group(0)))
+        out.add(_normalize_figure_token(m.group(0)))
     return out
 
 
 def _numbers_in(value: str) -> list[str]:
-    return [re.sub(r"[.,\s]", "", m.group(0)) for m in _DIGITS.finditer(str(value or ""))]
+    return [
+        _normalize_figure_token(m.group(0))
+        for m in _DIGITS.finditer(str(value or ""))
+    ]
 
 
 # thousands-separated shape: groups of 3 after dots, optional decimal comma.
@@ -76,47 +94,103 @@ def digit_key(value: Any) -> str:
     toks: list[str] = []
     last_end = 0
     for m in _DIGITS.finditer(s):
-        tok = m.group(0).strip(".,")
-        if _THOUSANDS_DE.fullmatch(tok):
-            tok = tok.replace(".", "")
-        toks.append(tok.replace(",", "."))
+        tok = _normalize_figure_token(m.group(0))
+        toks.append(tok)
         last_end = m.end()
     if not toks:
         return ""
+    # unit class after a '|': '%' for a percent figure; a currency symbol (€,
+    # EUR/Euro) as its own class; else the first alphabetic word after the
+    # number, stem-normalised ('Std.'/'Stunden' -> 'std'). G17: an empty class
+    # made '40 €' collide with a bare '40', and spelling variants evaded dedup.
+    tail = s[last_end:]
     if "%" in s or re.search(r"\bprozent\b", s, re.IGNORECASE):
         unit = "%"
+    elif any(cur in s for cur in ("€", "eur", "euro")):
+        unit = "waehrung"
     else:
-        w = re.search(r"[^\W\d_]+", s[last_end:])
-        unit = w.group(0).lower().rstrip(".") if w else ""
+        w = re.search(r"[^\W\d_]+", tail)
+        if w:
+            raw = w.group(0).lower().rstrip(".")
+            # stem-equivalence so 'Std.' and 'Stunden' collide (same unit)
+            unit = raw.rstrip("en").rstrip("e") or raw
+        else:
+            unit = ""
     return " ".join(toks) + "|" + unit
 
 
-def _ground_device(device: dict, source_tokens: set[str]) -> bool:
+def _shown_unit(value: str) -> str:
+    """The unit/word attached to a shown figure, lowercased, or ''.
+
+    '2 Stunden' -> 'stunden'; '40 %' -> '%'; '2' -> ''. Used by the grounding
+    gate to stop a correct digit being attached to a WRONG label/unit (G17):
+    a device that shows '2 h' against copy that says '2 Stunden' fails.
+    """
+    s = str(value or "")
+    m = re.search(r"[^\W\d_.]+", s)
+    if not m:
+        if "%" in s or re.search(r"\bprozent\b", s, re.IGNORECASE):
+            return "%"
+        return ""
+    unit = m.group(0).lower().rstrip(".")
+    # a decimal-comma number carries no alphabetic unit (the word is separate)
+    return unit
+
+
+def _ground_device(device: dict, source_tokens: set[str], source_text: str = "") -> bool:
     """True iff EVERY numeric token shown by the device is present in the source.
 
     A device with no numbers at all (e.g. a pure label) is NOT grounded here (we
     only synthesize NUMERIC devices; a text-only 'device' is just copy). This is
     the gate that makes fabrication impossible. Non-dict entries (a malformed
-    LLM item) are skipped, never crashed on."""
-    shown: list[str] = []
+    LLM item) are skipped, never crashed on.
+
+    When ``source_text`` is supplied (G17), a shown figure's UNIT must also
+    appear in the source: a correct digit attached to a wrong unit is as
+    fabricated as a wrong digit. Spelling-normalised: 'Std.' and 'Stunden'
+    both derive the stem 'std' via a small equivalence map.
+    """
+    def _unit_in_source(unit: str) -> bool:
+        if not unit or not source_text:
+            return True
+        hay = source_text.lower()
+        if unit == "%":
+            return "%" in hay or "prozent" in hay
+        # stem-equivalence: strip a trailing '.'/'e'/'en' so 'Std.' ~ 'Stunden'
+        stems = {unit.rstrip("."), unit.rstrip(".").rstrip("e"), unit.rstrip(".").rstrip("en")}
+        return any(stem in hay for stem in stems if stem)
+
+    shown: list[tuple[str, str]] = []  # (normalized digit, unit)
     for stat in device.get("stats", []) or []:
         if not isinstance(stat, dict):
             continue
-        shown += _numbers_in(stat.get("value", ""))
+        value = stat.get("value", "")
+        shown.append((_numbers_in(value)[0], _shown_unit(value)) if _numbers_in(value) else ("", ""))
     for pair in device.get("pairs", []) or []:
         if not isinstance(pair, dict):
             continue
-        shown += _numbers_in(pair.get("before", ""))
-        shown += _numbers_in(pair.get("after", ""))
+        for field in ("before", "after"):
+            value = pair.get(field, "")
+            nums = _numbers_in(value)
+            if nums:
+                shown.append((nums[0], _shown_unit(value)))
     for ring in device.get("donuts", []) or []:
         if not isinstance(ring, dict):
             continue
         # the ring's DISPLAYED figure must ground; `percent` (the arc angle) is a
         # drawing parameter derived from that same figure, never shown as text.
-        shown += _numbers_in(ring.get("figure", ""))
+        value = ring.get("figure", "")
+        nums = _numbers_in(value)
+        if nums:
+            shown.append((nums[0], _shown_unit(value)))
     if not shown:
         return False
-    return all(tok in source_tokens for tok in shown)
+    for token, unit in shown:
+        if token not in source_tokens:
+            return False
+        if not _unit_in_source(unit):
+            return False
+    return True
 
 
 # --- source text of a page ---------------------------------------------------
@@ -428,8 +502,12 @@ def _synthesize(d: dict, api_key: Optional[str]) -> dict:
     if not proposed:
         proposed = _deterministic_devices(text)
 
-    # THE GATE: keep only devices whose every number is grounded in this page.
-    grounded = [dev for dev in proposed if _ground_device(dev, source_tokens)]
+    # THE GATE: keep only devices whose every number is grounded in this page,
+    # and (G17) whose figure units/labels also appear in the copy.
+    grounded = [
+        dev for dev in proposed
+        if _ground_device(dev, source_tokens, source_text=text)
+    ]
     if not grounded:
         return d
 
