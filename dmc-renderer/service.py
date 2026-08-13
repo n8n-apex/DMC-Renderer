@@ -440,10 +440,57 @@ def _validate_workflow_verification_v3(body: dict) -> str:
 
 # --- HTTP layer (optional import so the core is testable without fastapi) ------
 try:
-    from fastapi import FastAPI, HTTPException
+    from fastapi import FastAPI, HTTPException, Request
     from fastapi.responses import JSONResponse, Response
 
     app = FastAPI(title="dmc-renderer", version="0.2.0")
+
+    # G8: every render route is a paid-fal + LLM trigger. Anyone who can reach
+    # the port could spend credits / do unbounded work, so all three render
+    # routes require `Authorization: Bearer ${RENDERER_SHARED_SECRET}` (read
+    # via the _env_or_dotenv fallback, never logged). Health is exempt (it is
+    # the liveness probe).
+    _RENDER_ROUTES = {"/render", "/render-v3", "/render-legacy-v2"}
+
+    def _shared_secret() -> str | None:
+        """RENDERER_SHARED_SECRET from env, then the preprocessor .env."""
+        value = os.environ.get("RENDERER_SHARED_SECRET")
+        if value:
+            return value
+        try:
+            env_path = (
+                Path(__file__).resolve().parent.parent
+                / "research" / "preprocessor" / ".env"
+            )
+            for line in env_path.read_text().splitlines():
+                line = line.strip()
+                if line.startswith("RENDERER_SHARED_SECRET="):
+                    return line.split("=", 1)[1].strip().strip('"').strip("'") or None
+        except OSError:
+            pass
+        return None
+
+    @app.middleware("http")
+    async def require_auth(request: Request, call_next):
+        if request.url.path not in _RENDER_ROUTES:
+            return await call_next(request)
+        expected = _shared_secret()
+        if not expected:
+            # Fail closed: a missing secret must never open the door.
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "error": "server_misconfigured",
+                    "detail": "RENDERER_SHARED_SECRET is not set; refusing to serve render routes",
+                },
+            )
+        auth = request.headers.get("Authorization", "")
+        if auth != f"Bearer {expected}":
+            return JSONResponse(
+                status_code=401,
+                content={"error": "unauthorized", "detail": "missing or invalid bearer token"},
+            )
+        return await call_next(request)
 
     @app.get("/health")
     def health():
