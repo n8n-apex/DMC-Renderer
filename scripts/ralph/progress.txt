@@ -115,3 +115,11 @@ Started: 2026-08-13
   - datetime.now() in any package/manifest writer breaks byte-identical determinism. Derive from the record id hash for a stable build identity.
   - The known font-subset delta (ARCHITECTURE.md:305) is the only accepted non-determinism; everything else is now pinned.
 ---
+## 2026-08-13 - US-014
+- What was implemented: G17 closed. Decimal commas significant in grounding; unit/label check added; digit_key unit class fixed.
+- **Learnings for future iterations:**
+  - In German the comma is ALWAYS the decimal mark ('12,5' = 12.5); dot-groups-of-3 are thousands separators. Stripping both collapsed decimals - keep the comma, remove only thousands-dots.
+  - _ground_device's new source_text param is OPTIONAL for backward compat, but the caller (synthesize_page_visuals) passes it so the unit check is live. Tests that call the gate directly must pass source_text to exercise the unit check.
+  - digit_key dedup: currency must be its own unit class ('40 EUR' != '40'), and units must stem-normalise ('Std.'/'Stunden' -> collide) or dedup is evaded by spelling.
+  - The no-fabrication gate is now strictly stronger: fabricated figures fail on decimal or unit, not just the digit.
+---

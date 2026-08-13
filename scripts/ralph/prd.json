@@ -192,8 +192,8 @@
         "Existing synthesize_visuals tests stay green"
       ],
       "priority": 14,
-      "passes": false,
-      "notes": "Never weaken the no-fabrication rule; this CLOSES a hole that let a wrong figure pass."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G17 CLOSED. _normalize_figure_token() replaces the comma/dot-strip: a decimal comma is SIGNIFICANT ('12,5' no longer grounds '125'), thousands-dots are removed ('1.200'->'1200'). _ground_device() now also takes source_text and rejects a figure whose UNIT is not in the copy ('2 h' vs '2 Stunden' fails; stem-equivalence maps Std./Stunden; % checks Prozent). digit_key() unit class fixed: currency is its own class ('40 EUR' != bare '40'), and units are stem-normalised so '2 Std.' and '2 Stunden' collide (dedup). New tests test_grounding_decimal_and_units.py 4 pass. The no-fabrication gate is STRONGER - a fabricated figure now fails on the decimal or the unit, not just the digit. dmc 117/4xfail."
     },
     {
       "id": "US-015",
