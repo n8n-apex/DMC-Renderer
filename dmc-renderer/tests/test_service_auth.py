@@ -9,6 +9,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "dmc-renderer"))
+sys.path.insert(0, str(ROOT / "dmc-renderer" / "tests"))
 
 from fastapi.testclient import TestClient  # noqa: E402
 
@@ -72,3 +73,26 @@ def test_missing_secret_fails_closed(client: TestClient, monkeypatch: pytest.Mon
     )
     assert response.status_code == 500
     assert "RENDERER_SHARED_SECRET" in response.text
+
+
+def test_render_v3_enforces_end_to_end_timeout(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """G9: a build that exceeds the cap returns 504, not a hung request."""
+    import time
+
+    from test_service_v3 import envelope
+
+    def slow_build(body, **_kwargs):
+        time.sleep(5)
+        return {"release_state": "rejected", "failures": []}
+
+    monkeypatch.setattr(service, "build_and_render_v3", slow_build)
+    monkeypatch.setenv("DMC_RENDER_TIMEOUT_S", "0.05")
+
+    response = client.post(
+        "/render-v3",
+        headers={"Authorization": "Bearer test-secret-value"},
+        json=envelope(),
+    )
+    assert response.status_code == 504

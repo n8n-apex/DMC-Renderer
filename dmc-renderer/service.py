@@ -443,6 +443,53 @@ try:
     from fastapi import FastAPI, HTTPException, Request
     from fastapi.responses import JSONResponse, Response
 
+    # G9: the "120s end-to-end hard cap" was a fiction — no timeout was ever
+    # enforced, so a multi-fal render could run indefinitely and n8n would kill
+    # it mid-render with no artifact. Enforce it here: the build runs in a
+    # worker thread and the response is bounded by wait_for; on expiry the
+    # caller gets 504 instead of a hung request. The thread keeps running but
+    # can no longer hold the HTTP worker (the await is cancelled).
+    _RENDER_TIMEOUT_DEFAULT_S = 120
+
+    def _render_timeout_s() -> float:
+        return float(os.environ.get("DMC_RENDER_TIMEOUT_S", str(_RENDER_TIMEOUT_DEFAULT_S)))
+
+    def _http_timeout_error() -> HTTPException:
+        return HTTPException(
+            status_code=504,
+            detail=f"render exceeded the {int(_render_timeout_s())}s end-to-end cap",
+        )
+
+    def _build_with_deadline(fn, *args, **kwargs):
+        """Run a blocking build with a hard end-to-end deadline.
+
+        G9: the render runs in a worker thread; if it has not returned within
+        the cap, the caller gets 504 instead of a hung request. The thread
+        keeps running (the build has its own internal httpx timeouts for
+        fal/LLM) but can no longer hold the HTTP worker thread pool slot
+        forever. Returns the build result, or raises TimeoutError.
+        """
+        import threading
+
+        deadline = _render_timeout_s()
+        result: list = []
+        error: list = []
+
+        def _target():
+            try:
+                result.append(fn(*args, **kwargs))
+            except BaseException as exc:  # noqa: BLE001 - re-raised on the caller thread
+                error.append(exc)
+
+        worker = threading.Thread(target=_target, daemon=True)
+        worker.start()
+        worker.join(timeout=deadline)
+        if worker.is_alive():
+            raise TimeoutError(f"render exceeded {int(deadline)}s")
+        if error:
+            raise error[0]
+        return result[0]
+
     app = FastAPI(title="dmc-renderer", version="0.2.0")
 
     # G8: every render route is a paid-fal + LLM trigger. Anyone who can reach
@@ -515,8 +562,12 @@ try:
                 status_code=400,
                 detail=f"unknown _engine {engine!r} (supported: chromium, weasyprint)")
         try:
-            r = build_and_render(body, engine=engine,
-                                 grade=body.get("_grade", True), cleanup=True)
+            r = _build_with_deadline(
+                build_and_render, body, engine=engine,
+                grade=body.get("_grade", True), cleanup=True,
+            )
+        except TimeoutError as e:  # noqa: BLE001 - bounded, expected
+            raise _http_timeout_error() from e
         except Exception as e:  # noqa: BLE001
             raise HTTPException(status_code=500, detail=f"render failed: {type(e).__name__}: {e}")
 
@@ -589,11 +640,14 @@ try:
             or Path(__file__).resolve().parent.parent / "research" / "artifacts" / "runs"
         )
         try:
-            result = build_and_render_v3(
+            result = _build_with_deadline(
+                build_and_render_v3,
                 verified_body,
                 cleanup=True,
                 artifact_store_root=artifact_store_root,
             )
+        except TimeoutError as e:  # noqa: BLE001 - bounded, expected
+            raise _http_timeout_error() from e
         except Exception as error:  # noqa: BLE001 - converted to a stable API failure
             owner_stage = getattr(error, "owner_stage", None)
             code = getattr(error, "code", None)

@@ -26,7 +26,7 @@ are upstream concerns handled by n8n.
 | Request body | `{ payload, images, brand_tokens }` — see [API_CONTRACT.md](API_CONTRACT.md) |
 | Response media type (success) | `application/pdf` |
 | Response media type (failure) | `application/json` with `{ error, details, fixture_path? }` |
-| Timeout | 120 s end-to-end (hard cap, enforced by the renderer) |
+| Timeout | 120 s end-to-end (hard cap, enforced by the renderer via `DMC_RENDER_TIMEOUT_S`, default 120; a build that exceeds it returns HTTP 504). |
 | Statelessness | No DB, no in-memory cache, no on-disk persistence across requests |
 | Determinism | Same input → byte-identical PDF (modulo a fixed PDF creation timestamp seeded from `payload.meta.report_id`) |
 | Concurrency | Single-threaded per request. Multiple gunicorn workers OK. |
