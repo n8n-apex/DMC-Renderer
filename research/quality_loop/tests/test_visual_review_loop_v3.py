@@ -160,3 +160,116 @@ def test_all_pages_pass_reaches_review_candidate() -> None:
     assert result["release_state"] == "review_candidate"
     assert result["delivery_pdf_bytes"] is None
     assert result["whole_deck_passes"] == 0
+
+
+class RepairableBuilder:
+    """Builds change their rendered page when overrides arrive; the reviewer
+    passes only once the rebuild (variant swap) happened."""
+
+    def __init__(self, page_key: str, pass_after_rebuilds: int = 1):
+        self.page_key = page_key
+        self.calls = 0
+        self.rebuilds = 0
+        self.received_overrides: list[tuple] = []
+        self.pass_after_rebuilds = pass_after_rebuilds
+
+    def build(self, plan_override=None, facts_override=None):
+        self.calls += 1
+        if plan_override is not None or facts_override is not None:
+            self.rebuilds += 1
+        self.received_overrides.append((plan_override, facts_override))
+        return {
+            "failures": [],
+            "contract_sha256": "f" * 64,
+            "page_pngs": {self.page_key: f"render-{self.calls}.png"},
+        }
+
+
+class RepairAwareReviewer:
+    def __init__(self, threshold: int = 3, pass_on_png: str = "render-2.png"):
+        self.threshold = threshold
+        self.pass_on_png = pass_on_png
+        self.scored_pngs: list[str] = []
+
+    def score_page(self, page_png, reference_pngs, row_ids):
+        self.scored_pngs.append(page_png)
+        score = self.threshold if page_png == self.pass_on_png else 1
+        return {row_ids[0]: {"score": score, "rationale": "ok"}}
+
+
+class OneShotConductor:
+    """Proposes one variant swap (changed=True once), then stalls."""
+
+    def __init__(self):
+        self.calls = 0
+
+    def __call__(self, build):
+        self.calls += 1
+        if self.calls == 1:
+            return {
+                "changed": True,
+                "plan_override": {"face.01": {"variant_id": "v2"}},
+                "facts_override": {"face.01": {"font_size_pt": 9.5}},
+            }
+        return {"changed": False}
+
+
+class StalledConductor:
+    def __call__(self, build):
+        return {"changed": False}
+
+
+def test_conductor_repair_rebuilds_and_scores_the_fresh_render() -> None:
+    """A rejected page is repaired: the conductor proposes a plan change, the
+    builder rebuilds WITH the overrides, and the review scores the NEW render."""
+    from visual_review_loop_v3 import review_page
+
+    builder = RepairableBuilder(page_key="r")
+    reviewer = RepairAwareReviewer(pass_on_png="render-2.png")
+    result = review_page(
+        builder.build, reviewer,
+        page_png="render-1.png", refs=[], row_ids=["r"],
+        max_attempts=3, threshold=3,
+        conductor=OneShotConductor(),
+    )
+    assert result["passed"] is True
+    assert builder.rebuilds == 1
+    assert builder.received_overrides[1] == (
+        {"face.01": {"variant_id": "v2"}},
+        {"face.01": {"font_size_pt": 9.5}},
+    )
+    assert reviewer.scored_pngs == ["render-1.png", "render-2.png"]
+
+
+def test_stalled_repair_stops_the_ladder_early_and_rejects() -> None:
+    """A conductor that cannot propose a change must not burn the remaining
+    attempts re-scoring an identical render."""
+    from visual_review_loop_v3 import review_page
+
+    builder = RepairableBuilder(page_key="r")
+    result = review_page(
+        builder.build, RepairAwareReviewer(), page_png="render-1.png",
+        refs=[], row_ids=["r"], max_attempts=3, threshold=3,
+        conductor=StalledConductor(),
+    )
+    assert result["passed"] is False
+    assert result["verdict"] == "rejected"
+    assert builder.calls == 1  # no pointless rebuilds after a stall
+
+
+def test_run_loop_forwards_conductor_and_records_rebuild_evidence() -> None:
+    """The deck-level loop accepts a conductor, repairs a failing page, and
+    lands on review_candidate with the rebuild trail recorded."""
+    from visual_review_loop_v3 import run_visual_review_loop
+
+    builder = RepairableBuilder(page_key="r")
+    result = run_visual_review_loop(
+        builder.build, RepairAwareReviewer(),
+        page_pngs=["render-1.png"], refs=[], row_ids=["r"],
+        max_page_attempts=3, threshold=3,
+        conductor=OneShotConductor(),
+    )
+    assert result["release_state"] == "review_candidate"
+    assert builder.rebuilds == 1
+    assert any("repair" in rec or "rebuilds" in rec for rec in result["attempt_records"])
+    assert result["page_outcomes"][0]["passed"] is True

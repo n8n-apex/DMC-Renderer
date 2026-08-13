@@ -43,6 +43,17 @@ def retry_transient(
     return None
 
 
+def _current_png(build: dict, page_png: str, row_ids: list[str]) -> str:
+    """The FRESH render for this page when the build provides per-row PNGs;
+    the caller's static path is the fallback (legacy builders)."""
+    by_row = build.get("page_pngs")
+    if isinstance(by_row, dict) and row_ids:
+        fresh = by_row.get(row_ids[0])
+        if fresh:
+            return fresh
+    return page_png
+
+
 def review_page(
     build_fn: Callable[..., dict],
     reviewer: Any,
@@ -54,20 +65,30 @@ def review_page(
     threshold: int,
     conductor: Callable[..., Any] | None = None,
 ) -> dict:
-    """Review one page: build -> score -> conductor repair -> rebuild.
+    """Review one page: build -> score -> conductor repair -> REBUILD -> re-score.
 
-    Each attempt is a fresh build via build_fn (a rebuild after a conductor
-    fix). A transient reviewer failure is retried; a page the reviewer cannot
-    score at all is "unreviewable" (honest, never a silent pass). A page that
-    never reaches the threshold after max_attempts is "rejected".
+    Each attempt consumes the builder's LATEST render (build["page_pngs"][row]
+    when the build provides one). On a below-threshold score the conductor is
+    asked for a plan change; a changed plan (with overrides) is fed back into
+    build_fn(plan_override=..., facts_override=...) so the next attempt scores
+    a genuinely rebuilt page. A stalled conductor (no change) stops the ladder
+    early — re-scoring an identical render is pointless. A transient reviewer
+    failure is retried; a page the reviewer cannot score at all is
+    "unreviewable" (honest, never a silent pass).
 
-    Returns {"passed": bool, "verdict": str, "attempts": int, "scores": [...]}.
+    Returns {"passed": bool, "verdict": str, "attempts": int, "scores": [...],
+             "rebuilds": int}.
     """
     best_scores: list[dict] = []
+    rebuilds = 0
+    pending_plan: Any = None
+    pending_facts: Any = None
     for attempt in range(1, max_attempts + 1):
-        build = build_fn()
+        build = build_fn(plan_override=pending_plan, facts_override=pending_facts)
+        pending_plan = pending_facts = None
+        png = _current_png(build, page_png, row_ids)
         scores = retry_transient(
-            lambda: reviewer.score_page(page_png, refs, row_ids),
+            lambda: reviewer.score_page(png, refs, row_ids),
             attempts=3,
             base_delay_s=0.0,
         )
@@ -77,6 +98,7 @@ def review_page(
                 "verdict": "unreviewable",
                 "attempts": attempt,
                 "scores": best_scores,
+                "rebuilds": rebuilds,
             }
         best_scores.append(scores)
         face_scores = [s.get("score", 0) for s in scores.values()]
@@ -86,16 +108,23 @@ def review_page(
                 "verdict": "passed",
                 "attempts": attempt,
                 "scores": best_scores,
+                "rebuilds": rebuilds,
             }
+        if attempt == max_attempts:
+            break
         if conductor is not None:
             plan = conductor(build)
-            if not plan.get("changed"):
+            pending_plan = plan.get("plan_override") if isinstance(plan, dict) else None
+            pending_facts = plan.get("facts_override") if isinstance(plan, dict) else None
+            if not (plan or {}).get("changed") or (pending_plan is None and pending_facts is None):
                 break
+            rebuilds += 1
     return {
         "passed": False,
         "verdict": "rejected",
         "attempts": max_attempts,
         "scores": best_scores,
+        "rebuilds": rebuilds,
     }
 
 
@@ -109,14 +138,16 @@ def run_visual_review_loop(
     max_page_attempts: int,
     threshold: int,
     whole_deck_pass: bool = True,
+    conductor: Callable[..., Any] | None = None,
 ) -> dict:
     """Build -> review every page -> one whole-deck retry -> decide.
 
     Per-page attempts first; a failing page is re-reviewed once more in the
-    whole-deck pass (which re-reviews ONLY the failed pages). The result is
-    either review_candidate (all pages pass) or review_required (some page
-    is rejected or unreviewable). NEVER produces a delivery PDF here;
-    ship_ready stays owned by the calibrated human gate.
+    whole-deck pass (which re-reviews ONLY the failed pages). A conductor may
+    be supplied so a rejected page is repaired via rebuild between attempts.
+    The result is either review_candidate (all pages pass) or
+    review_required (some page is rejected or unreviewable). NEVER produces a
+    delivery PDF here; ship_ready stays owned by the calibrated human gate.
 
     Returns {"release_state": str, "delivery_pdf_bytes": None,
              "attempt_records": list[dict], "whole_deck_passes": int,
@@ -131,6 +162,7 @@ def run_visual_review_loop(
             build_fn, reviewer,
             page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
             max_attempts=max_page_attempts, threshold=threshold,
+            conductor=conductor,
         )
         page_outcomes[idx] = outcome
         attempt_records.append({"page": idx, **outcome})
@@ -144,6 +176,7 @@ def run_visual_review_loop(
                 build_fn, reviewer,
                 page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
                 max_attempts=max_page_attempts, threshold=threshold,
+                conductor=conductor,
             )
             page_outcomes[idx] = retried
             attempt_records.append({"page": idx, "whole_deck": True, **retried})
