@@ -280,8 +280,8 @@
         "The baseline ledger documents the one command"
       ],
       "priority": 20,
-      "passes": false,
-      "notes": "This is the anti-recurrence mechanism for the owner's #1 pain: MDs created but never assessed."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: P6 core CLOSED. research/quality_loop/closed_gaps_registry.json lists all 37 gaps (G1-G24, L1-L7, D1-D6) with check_type + predicate; assess_closed_gaps.py runs them, prints a PASS/FAIL table, exits non-zero on any reopened code-closed gap. Check types: suite_zero/test/harness/node_test/guard/grep_present/grep_absent/file/manual. manual = human-gated (G19 design_brief, G24 photographs) reported OPEN not failing. --fast skips the 2 full-suite checks (their record is the baseline ledger). VERIFIED: 35/37 closed (fast) exit 0. Wired into scripts/smoke_v3_container.sh. New test test_assess_closed_gaps.py 4 pass (registry complete, no unknown types, manual not failing, failing check reopened). Ledger documents the command."
     },
     {
       "id": "US-021",

@@ -162,3 +162,12 @@ Started: 2026-08-13
   - verify_contract_fixes checks must match what the schema ACTUALLY emits (the teaser_items check was a dead assertion).
   - Exception messages returned to HTTP callers must strip absolute paths.
 ---
+## 2026-08-13 - US-020
+- What was implemented: P6 core closed. Standing assessment harness + registry.
+- **Learnings for future iterations:**
+  - The harness must run pytest with cwd = the target's directory (renderer tests assume research/v7-renderer on sys.path) and support file::test notation.
+  - Full-suite checks (G2/D2) take ~11 min each; a --fast mode skips them (their record is the baseline ledger) so the standing loop is quick.
+  - Human-gated gaps (G19/G24) use check_type manual and must NOT fail the exit code - they are reported OPEN, not regressions.
+  - grep_absent checks must target the slot DEFINITION, not a mention in a comment (the legit explanatory comment still contains 'fazit_background').
+  - The harness is the anti-recurrence mechanism for the owner's #1 pain: every future session runs it first; a reopened gap fails before any other work.
+---
