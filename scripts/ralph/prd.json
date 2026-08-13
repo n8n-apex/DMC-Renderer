@@ -265,8 +265,8 @@
         "Full suites stay green"
       ],
       "priority": 19,
-      "passes": false,
-      "notes": "synthesize_visuals.py:383-392, treatment_engine.py:692-698, build_live.py:82-97."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: L1-L7 CLOSED. L1: verify_contract_fixes teaser_items check removed (schema no longer emits it). L2: st_06.py dead 'if False else None' expression removed. L3: _adapt_cta_hard flagged as inert (ST-03 is a bypass type) and documented; the LLM-donuts parse branch kept (harmless, prompt could gain donuts). L4: render_christoph/render_cover_check are the explicit fixture carve-out in the extended guard (US-017). L5: service.py render-failed exception strips absolute paths (regex). L6: confirmed both .env parsers already use split('=', 1) - correct, no change. L7: perception._non_numeral_stat_values renamed to public non_numeral_stat_values + back-compat alias; service.py uses the public name. Harness 11/11, renderer 398/0, preprocessor 734, dmc 128/4xfail. The 6 quality_loop failures are the documented pre-existing real-render OSError class (fonts/PDFs not in checkout), NOT from this change - the direct-function non_numeral tests pass."
     },
     {
       "id": "US-020",

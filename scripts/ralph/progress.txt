@@ -154,3 +154,11 @@ Started: 2026-08-13
   - plan_layout._resolve_layout_variant is the single authority for the fill default (FILL_DEFAULT_TYPES); build_live must carry only EXPLICIT writer variants, never re-default.
   - page-count snapping (off-grid targets like 21) must be logged, not silent.
 ---
+## 2026-08-13 - US-019
+- What was implemented: L1-L7 closed.
+- **Learnings for future iterations:**
+  - The quality_loop suite has 6 PRE-EXISTING real-render failures (fonts/PDFs not in this checkout - documented). Verify a rename against the DIRECT-function tests, not the render-dependent ones.
+  - Renaming a private function: keep a back-compat alias (_name = public_name) so existing importers don't break.
+  - verify_contract_fixes checks must match what the schema ACTUALLY emits (the teaser_items check was a dead assertion).
+  - Exception messages returned to HTTP callers must strip absolute paths.
+---
