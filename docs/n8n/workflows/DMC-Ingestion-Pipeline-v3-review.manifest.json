@@ -1,0 +1,257 @@
+{
+  "manifest_version": "1.0",
+  "task": "DMC v3 integration hardening \u2014 Task 9: review-safe v3 n8n workflow export",
+  "generated_at": "2026-08-06T00:20:26+05:30",
+  "source_export": {
+    "path": "/Users/utkarsh/Downloads/DMC Ingestion Pipeline.json",
+    "sha256": "533b4724b643588a00382d7eb7c4995697c71771f832c0622c1b8a5f1506aa11",
+    "byte_count": 356584,
+    "mtime_iso": "2026-08-03T22:02:50+05:30",
+    "preserved_read_only": true,
+    "backup_copy": "tmp/backups/2026-08-06-task9/DMC Ingestion Pipeline.json.orig",
+    "workflow_name": "DMC Ingestion Pipeline",
+    "node_count": 89
+  },
+  "derived_export": {
+    "path": "docs/n8n/workflows/DMC-Ingestion-Pipeline-v3-review.json",
+    "sha256": "62cf55a749cae7645a20d9292fc2464f28a1c173873ae6b53b589dd0ae325e70",
+    "byte_count": 220684,
+    "node_count": 47,
+    "active": false,
+    "name": "DMC Ingestion Pipeline v3 REVIEW"
+  },
+  "workflow_contract": {
+    "contract_version": "3.2.1",
+    "artifacts": [
+      {
+        "artifact_id": "writer_prompt",
+        "expected_node_name": "Section Writer v5",
+        "semantic_version": "5.1.1",
+        "sha256": "2c13d8e1c0978c62d4b4ff68f62d3a6888a1bb89d462e41c2d2a21a96ef63fb4",
+        "repository_path": "docs/writer-prompt-v5.md"
+      },
+      {
+        "artifact_id": "schema_resolver",
+        "expected_node_name": "Resolve Schema and Build Prompts v5",
+        "semantic_version": "5.2.1",
+        "sha256": "200c72381eb9a924e1da369b4c2ee1dfd5509ad0cb5a6dc06a263d9a563a339a",
+        "repository_path": "docs/resolve-schema-node-v5.js"
+      },
+      {
+        "artifact_id": "writer_gate",
+        "expected_node_name": "Writer Gate v3",
+        "semantic_version": "3.1.1",
+        "sha256": "cff8b26e96bb7e7754b07615e8fe333a4c8edb792ac90210129da881e103068a",
+        "repository_path": "docs/n8n/writer_gate.js"
+      },
+      {
+        "artifact_id": "source_ledger",
+        "expected_node_name": "Source Ledger v3",
+        "semantic_version": "3.2.1",
+        "sha256": "95b27737adf7421eb4603881fee78cdc8401fdf93619a71608f7c0ea916463dc",
+        "repository_path": "docs/n8n/source-ledger-node-v3.js"
+      },
+      {
+        "artifact_id": "claim_gate",
+        "expected_node_name": "Claim Gate v3",
+        "semantic_version": "3.2.1",
+        "sha256": "19e2158cea55010105d078e9f9b93d362173dca76a4d34796c1907a8d9e115fe",
+        "repository_path": "docs/n8n/claim-gate-v3.js"
+      }
+    ]
+  },
+  "embedded_artifact_verification": {
+    "Source Ledger v3": {
+      "repository_path": "docs/n8n/source-ledger-node-v3.js",
+      "sha256": "95b27737adf7421eb4603881fee78cdc8401fdf93619a71608f7c0ea916463dc",
+      "embed_location": "parameters.jsCode"
+    },
+    "Claim Gate v3": {
+      "repository_path": "docs/n8n/claim-gate-v3.js",
+      "sha256": "19e2158cea55010105d078e9f9b93d362173dca76a4d34796c1907a8d9e115fe",
+      "embed_location": "parameters.jsCode"
+    },
+    "Writer Gate v3": {
+      "repository_path": "docs/n8n/writer_gate.js",
+      "sha256": "cff8b26e96bb7e7754b07615e8fe333a4c8edb792ac90210129da881e103068a",
+      "embed_location": "parameters.jsCode"
+    },
+    "Resolve Schema and Build Prompts v5": {
+      "repository_path": "docs/resolve-schema-node-v5.js",
+      "sha256": "a097803094feb556859277c1ba35ec7f4222479a8ae28e7dbf97983ddf1ca792",
+      "embed_location": "parameters.jsCode"
+    },
+    "Section Writer v5": {
+      "repository_path": "docs/writer-prompt-v5.md",
+      "sha256": "2c13d8e1c0978c62d4b4ff68f62d3a6888a1bb89d462e41c2d2a21a96ef63fb4",
+      "embed_location": "parameters.messages.messageValues[0].message"
+    }
+  },
+  "generation_rules": [
+    "The original export was parsed READ-ONLY and never modified; a byte-identical backup sits at tmp/backups/2026-08-06-task9/ (sha256 recorded above).",
+    "Node shapes, type versions, Airtable base/table references, the Slack channel, and every credential REFERENCE (id+name only, no values) were carried from the original export so the file imports plausibly on the owner's instance.",
+    "The five contract artifacts are embedded byte-for-byte: source-ledger-node-v3.js, claim-gate-v3.js and writer_gate.js as parameters.jsCode of the three v3 Code nodes (Run Once for All Items \u2014 each file's $input adapter is its entry point); resolve-schema-node-v5.js as jsCode of 'Resolve Schema and Build Prompts v5'; docs/writer-prompt-v5.md as the literal system message of 'Section Writer v5'.",
+    "Execution order enforced per WRITER-GATE-WIRING.md: raw evidence -> Source Ledger v3 -> Section Writer v5 -> Parse Writer Response -> Claim Gate v3 -> Writer Gate v3 -> IF both gates pass; the fail branch appends the gate retry instruction to the writer, retries at most 2 times, then stops loudly via stop-and-error after Airtable+Slack reporting.",
+    "The legacy /render call was replaced with the canonical /render-v3 envelope: payload/images/brand_tokens + the six workflow version fields + workflow_verification_v3, whose verification_bundle_sha256 is computed over canonical sorted compact JSON exactly as dmc-renderer/service.py verifies it.",
+    "The render call carries a run+record-scoped Idempotency-Key and X-DMC-Correlation-ID; the key is reused verbatim across retryOnFail attempts and review upload file names derive from it, so retries never duplicate uploads.",
+    "Response handling routes rejected (422), draft (202), review_candidate (200), ship_ready (200) and \u2014 via the HTTP error output \u2014 timeout vs dependency failure to SEPARATE branches; the switch fallback output also lands in the dependency-failure branch.",
+    "Every enabled Drive upload targets the REPLACE_WITH_REVIEW_FOLDER_ID placeholder; the ship-path delivery upload and ship announcement are DISABLED with notes requiring validated release evidence. No real-looking ids were invented anywhere.",
+    "The X-DMC-Artifact-Manifest-SHA256 response header is captured and written to the Airtable record together with the workflow-verification hash and the Drive links.",
+    "Large run inputs (source ledger, claim records, asset manifest, editorial analysis, composition payload) persist as a Drive binary JSON artifact; no Airtable field ever receives the source-ledger JSON or any JSON.stringify blob \u2014 Airtable stores only status labels, hashes, and links.",
+    "The export is INACTIVE, review-labeled in its name, and its webhook path is report-generator-v3-review so it cannot collide with the deployed workflow. pinData was dropped (it can contain real client data)."
+  ],
+  "carried_over_nodes": [
+    {
+      "original_name": "Webhook",
+      "derived_name": "Webhook (v3 review)",
+      "changes": "path changed to report-generator-v3-review; webhookId dropped so import assigns a fresh one"
+    },
+    {
+      "original_name": "Get a record2",
+      "derived_name": "Airtable: Get Content Record (review)",
+      "changes": "rename only; base/table/credential reference carried"
+    },
+    {
+      "original_name": "Chapter Plan Generator",
+      "derived_name": "Chapter Plan Generator",
+      "changes": "carried verbatim"
+    },
+    {
+      "original_name": "Loop: Write Each Chapter",
+      "derived_name": "Loop: Write Each Chapter",
+      "changes": "carried verbatim"
+    },
+    {
+      "original_name": "Resolve Schema & Build Prompts",
+      "derived_name": "Resolve Schema and Build Prompts v5",
+      "changes": "renamed to the contract node name; jsCode replaced with docs/resolve-schema-node-v5.js (byte-exact)"
+    },
+    {
+      "original_name": "writer agent",
+      "derived_name": "Section Writer v5",
+      "changes": "renamed to the contract node name; system message replaced with docs/writer-prompt-v5.md (byte-exact literal); gate retry instruction appended to the user text expression"
+    },
+    {
+      "original_name": "OpenRouter Chat Model2",
+      "derived_name": "OpenRouter Chat Model2",
+      "changes": "carried verbatim (credential reference only)"
+    },
+    {
+      "original_name": "Merge",
+      "derived_name": "Merge",
+      "changes": "carried verbatim (combine by position)"
+    },
+    {
+      "original_name": "Parse Writer Response",
+      "derived_name": "Parse Writer Response",
+      "changes": "carried verbatim"
+    },
+    {
+      "original_name": "Edit Fields",
+      "derived_name": "Edit Fields",
+      "changes": "carried verbatim"
+    },
+    {
+      "original_name": "POST: Render PDF",
+      "derived_name": "POST: Render v3 (review)",
+      "changes": "rebuilt: URL now /render-v3; canonical v3 envelope body; Idempotency-Key + X-DMC-Correlation-ID headers; fullResponse+neverError so all release states can be routed; retryOnFail kept"
+    },
+    {
+      "original_name": "Drive: Upload PDF",
+      "derived_name": "Drive: Upload Review PDF (REVIEW folder)",
+      "changes": "rebuilt from its shape: REVIEW folder placeholder, idempotency-keyed file name, credential reference carried"
+    },
+    {
+      "original_name": "Airtable: Mark Rendered",
+      "derived_name": "Airtable: Mark Review Candidate (review-only)",
+      "changes": "rebuilt from its shape: review-only status label, retains artifact manifest + verification hashes and Drive links"
+    },
+    {
+      "original_name": "Handle Render Error",
+      "derived_name": "Handle Render Dependency Failure (review) / Handle Render Timeout (review)",
+      "changes": "split into two separate failure branches"
+    },
+    {
+      "original_name": "Airtable: Mark Failed",
+      "derived_name": "Airtable: Mark Render Failed (review) and other review status writes",
+      "changes": "shape reused (base/table/credential reference); statuses are review-labeled; id matching added"
+    },
+    {
+      "original_name": "Slack: Render Failed",
+      "derived_name": "all review Slack alerts",
+      "changes": "shape/channel/credential reference reused; every enabled message is [REVIEW-ONLY]-labeled"
+    },
+    {
+      "original_name": "Sticky Note1",
+      "derived_name": "Sticky Note: REVIEW ONLY / Sticky Note: Gate Lane",
+      "changes": "style reused; content replaced with the review-only warnings"
+    }
+  ],
+  "new_nodes": [
+    "Airtable: Mark Draft (review)",
+    "Airtable: Mark Gate Failed (review)",
+    "Airtable: Mark Rejected (review)",
+    "Airtable: Mark Render Failed (review)",
+    "Airtable: Mark Render Timeout (review)",
+    "Airtable: Record Ship-Ready Hold (review-only)",
+    "Both Gates Pass? (v3)",
+    "Build Gate Failure Report (review)",
+    "Build Renderer Envelope v3 (review)",
+    "Capture Review Artifacts (review)",
+    "Claim Gate v3",
+    "Drive: Upload Delivery PDF (DISABLED until release evidence)",
+    "Drive: Upload Run Inputs (REVIEW folder)",
+    "Handle Draft (review)",
+    "Handle Rejected (review)",
+    "Handle Render Dependency Failure (review)",
+    "Handle Render Timeout (review)",
+    "Hold Ship Evidence (review)",
+    "Persist Run Inputs To Drive (review)",
+    "Prepare Gate Retry (review)",
+    "Prepare Raw Evidence (review)",
+    "Retry Budget Left? (max 2)",
+    "Route Render v3 Response",
+    "Slack: Gate Failure (review)",
+    "Slack: Render Failed (review)",
+    "Slack: Render Timeout (review)",
+    "Slack: Review Candidate Ready (review-only)",
+    "Slack: Ship Ready (DISABLED until release evidence)",
+    "Source Ledger v3",
+    "Stop: Gate Failure (loud)",
+    "Timeout? (render v3)",
+    "Writer Gate v3"
+  ],
+  "placeholders_to_fill": [
+    {
+      "placeholder": "REPLACE_WITH_REVIEW_FOLDER_ID",
+      "where": "Drive: Upload Run Inputs (REVIEW folder); Drive: Upload Review PDF (REVIEW folder)",
+      "purpose": "Owner must point both enabled uploads at a dedicated REVIEW-only Drive folder (never a delivery folder)."
+    },
+    {
+      "placeholder": "REPLACE_WITH_DELIVERY_FOLDER_ID_AFTER_RELEASE_EVIDENCE",
+      "where": "Drive: Upload Delivery PDF (DISABLED until release evidence)",
+      "purpose": "Stays disabled. Only after validated release evidence may the owner set the delivery folder and enable the node."
+    }
+  ],
+  "airtable_fields_required": {
+    "existing": [
+      "render_status",
+      "start renderer?"
+    ],
+    "owner_must_create_in_content_table": [
+      "artifact_manifest_sha256",
+      "workflow_verification_sha256",
+      "review_pdf_url",
+      "run_inputs_url"
+    ]
+  },
+  "guarantees": {
+    "workflow_inactive": true,
+    "review_only_labeling": true,
+    "ship_path_disabled_pending_release_evidence": true,
+    "credentials_by_reference_only": true,
+    "no_credential_values_embedded": true,
+    "no_approval_or_production_promotion": true,
+    "source_ledger_json_never_written_to_airtable": true
+  }
+}

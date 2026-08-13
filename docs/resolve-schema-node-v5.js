@@ -288,13 +288,25 @@ const SCHEMAS = {
       F_bildwunsch,
     ],
   },
-  "ST-FAZIT": {
+   "ST-FAZIT": {
     intent: "Tie the thread together: remind the reader what they now understand that they didn't before, and leave them with the single message to remember. Short and clean.",
     fields: [
       { key: "titel", required: true, max: 80, desc: "Section headline for the conclusion." },
       { key: "zusammenfassung", required: true, max: 360, desc: "Pull the thread together — what the reader now knows." },
       { key: "kernbotschaft", required: true, max: 160, desc: "The one thing to remember. (The renderer maps this to the thesis pull-statement.)" },
       { key: "kosten_des_nichtstuns", required: false, max: 160, desc: "The cost of one more year of the status quo, in the reader's own unit, taken from the data. Feeds the summary's cost-of-inaction block (an otherwise-empty slot the renderer reads). If a cost was named on the cover, use the same words here. Omit if the data states no such cost." },
+      F_kennzahlen,
+    ],
+  },
+  "ST-08": {
+    intent: "Answer the reader's objections as short, honest Q&A: state each real objection fairly, then answer it in one or two plain sentences from DATA. No invented stats; a question with no real answer is omitted.",
+    fields: [
+      { key: "titel", required: true, max: 80, desc: "Section headline (e.g. 'Häufige Fragen')." },
+      { key: "einleitung", required: true, max: 160, desc: "One line framing the objections as reasonable. (The renderer reads body OR intro for the lead-in.)" },
+      { key: "faqs", required: true, type: "array", min_items: 3, max_items: 6, item: { type: "object", fields: [
+        { key: "frage", max: 120, desc: "The real objection, stated fairly as a question." },
+        { key: "antwort", max: 240, desc: "The plain, honest answer from DATA. No invented numbers." },
+      ] }, desc: "The objection Q&A pairs, from DATA only." },
       F_kennzahlen,
     ],
   },
