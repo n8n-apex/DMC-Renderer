@@ -907,10 +907,13 @@ def envelope_to_render_request(envelope: dict) -> RenderRequest:
             _case_no += 1
             pd.setdefault("fallstudie_number", _case_no)
         if st == "ST-07B":
-            # the "fill" theory composition: a dark authority panel with the
-            # thesis (key_insight) filling the lower band, so the page is not flat
-            # text with a dead bottom. ReportPage allows extra fields.
-            page_extra["layout_variant"] = p.get("layout_variant") or "fill"
+            # G23: single source of truth for the ST-07B variant. Carry ONLY an
+            # explicit writer hint here; the "fill" DEFAULT lives in plan_layout
+            # FILL_DEFAULT_TYPES. The old `or "fill"` made build_live a second
+            # authority that always injected fill, so an explicit different
+            # variant could never win.
+            if p.get("layout_variant"):
+                page_extra["layout_variant"] = p["layout_variant"]
         norm = _normalize_page_data(st, pd)
         # Synthesize the visual layer: grounded stat callouts / before-after
         # devices from the page's own copy, so prose-only pages get the big-number
@@ -953,7 +956,15 @@ def envelope_to_render_request(envelope: dict) -> RenderRequest:
     if _pct in (16, 20, 24, 28):
         meta["page_count_target"] = _pct
     else:
-        meta["page_count_target"] = min((16, 20, 24, 28), key=lambda v: abs(v - (_pct or 20)))
+        snapped = min((16, 20, 24, 28), key=lambda v: abs(v - (_pct or 20)))
+        # G20: the snap is surfaced, not silent - a writer asking for 21 pages
+        # is told it was snapped to 20.
+        if _pct is not None and _pct != snapped:
+            log.warning(
+                "page_count_target %s snapped to %s (supported: 16, 20, 24, 28)",
+                _pct, snapped,
+            )
+        meta["page_count_target"] = snapped
 
     report_json = ReportJson(meta=ReportMeta(**meta), pages=pages)
 

@@ -359,13 +359,18 @@ def _component_svgs(page: dict, ctx: RenderContext) -> list[str]:
 
 
 def _scene_uri(page: dict, ctx: RenderContext) -> Optional[str]:
-    """file:// URI of the page's GENERATED scene/background asset, or None.
+    """file:// URI of the page's scene/background asset, or None.
 
-    Reads page["assets"] entries with status "generated" and a scene/background
-    image_type (the fal art). Graceful: unresolved path or no such asset -> None
-    (never raises; a page without generated art simply has no scene band)."""
+    Reads page["assets"] entries with a scene/background image_type. G18: it
+    accepts BOTH status "generated" (the fal art) AND status "downloaded" (a
+    client-supplied scene from the image manifest) - previously a manifest
+    scene never painted on the treated ST-09 because only "generated" passed
+    the filter. Graceful: unresolved path or no such asset -> None (never
+    raises; a page without a scene simply has no scene band)."""
     for a in page.get("assets") or []:
-        if not isinstance(a, dict) or a.get("status") != "generated":
+        if not isinstance(a, dict):
+            continue
+        if a.get("status") not in ("generated", "downloaded"):
             continue
         if (a.get("image_type") or "") in ("scene", "background"):
             p = ctx.resolve_asset(a.get("path"))
