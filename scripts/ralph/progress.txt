@@ -92,3 +92,11 @@ Started: 2026-08-13
   - Removing a slot from IMAGE_REQUIREMENTS cascades to: generate_assets tests (count + ST-FAZIT len refs), generation_budget tests (fal POST count), and the fixture _SUPPRESS_SLOTS.
   - The ST-FAZIT dark close renders from panel_texture - verify that stays, not the removed slot.
 ---
+## 2026-08-13 - US-011
+- What was implemented: G8 closed. Auth middleware on all render routes; smoke script authenticated.
+- **Learnings for future iterations:**
+  - FastAPI middleware runs BEFORE route validation: a legacy-preflight curl that expected 400 (missing fields) now gets 401 first. The smoke script must send the auth header on every render curl.
+  - The container gets RENDERER_SHARED_SECRET via -e; the smoke resolves it from env or the preprocessor .env. A missing secret fails CLOSED (500) - never opens the door.
+  - Direct handler-function tests bypass middleware by design; the auth gate is only exercised via TestClient.
+  - Deployment note: the n8n caller must send the bearer header once RENDERER_SHARED_SECRET is set in the container env.
+---

@@ -151,8 +151,8 @@
         "scripts/smoke_v3_container.sh sets the env var"
       ],
       "priority": 11,
-      "passes": false,
-      "notes": "Never write or echo the key value."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G8 CLOSED. FastAPI middleware require_auth on /render, /render-v3, /render-legacy-v2 requiring Authorization: Bearer ${RENDERER_SHARED_SECRET} (env + preprocessor/.env fallback, fail-closed 500 when the secret is missing, 401 on wrong/missing token). /health + /health/v3 exempt. New test_service_auth.py (5 tests: health exempt, 401 unauthenticated, 401 wrong token, valid token passes, missing-secret fails closed). Direct-function handler tests still work (they bypass middleware by design). scripts/smoke_v3_container.sh now resolves the secret (env or .env), passes it to the container via -e, and sends the bearer header on all 3 render curls. dmc 112/4xfail. NOTE: the n8n caller + container deployment must set RENDERER_SHARED_SECRET or renders 401/500."
     },
     {
       "id": "US-012",
