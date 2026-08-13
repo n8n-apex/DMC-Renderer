@@ -506,8 +506,11 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
                 kz_stats.append(s)
         if kz_donuts:
             # each ACCEPTED ring claims its digit-key immediately, so two
-            # kennzahlen carrying the same figure never double-ring.
-            existing = _viz_keys()
+            # kennzahlen carrying the same figure never double-ring. G12: the
+            # dedup must ALSO exclude figures already on the stats rail (a
+            # writer-provided stat and a kennzahlen with the same figure must
+            # not render as BOTH a ring and a stat).
+            existing = _viz_keys() | _stat_keys()
             fresh = []
             for r in kz_donuts:
                 if len(fresh) >= 3:
@@ -699,10 +702,16 @@ def _role_devices(d: dict, claimed: set) -> list:
         out.append({"preset": "icon_stat_row", "items": facts})
 
     # ROLE: a development over time -> column chart (values above the bars).
+    # G11: figures already drawn elsewhere are filtered out so one-figure-
+    # one-device binds across EVERY role, not just `fakten`.
     vl = d.get("verlauf")
     if isinstance(vl, dict):
         pts = [{"label": _txt(p.get("label")), "wert": _txt(p.get("wert"))}
                for p in _rows(vl.get("punkte"), ("wert",))]
+        pts = [
+            p for p in pts
+            if not (p.get("wert") and synthesize_visuals.digit_key(p["wert"]) in claimed)
+        ]
         if len(pts) >= 2:
             out.append({
                 "preset": "column_chart", "titel": _txt(vl.get("titel")),
@@ -716,12 +725,20 @@ def _role_devices(d: dict, claimed: set) -> list:
         steps = [{"wert": _txt(s.get("wert")), "einheit": _txt(s.get("einheit")),
                   "label": _txt(s.get("label"))}
                  for s in _rows(rc.get("schritte"), ("wert",))]
+        steps = [
+            s for s in steps
+            if not (s.get("wert") and synthesize_visuals.digit_key(s["wert"]) in claimed)
+        ]
         erg = rc.get("ergebnis") if isinstance(rc.get("ergebnis"), dict) else {}
-        if steps and _txt(erg.get("wert")):
+        result_value = _txt(erg.get("wert"))
+        result_claimed = bool(
+            result_value and synthesize_visuals.digit_key(result_value) in claimed
+        )
+        if steps and result_value and not result_claimed:
             out.append({
                 "preset": "formula_ladder", "titel": _txt(rc.get("titel")),
                 "schritte": steps,
-                "ergebnis": {"wert": _txt(erg.get("wert")), "label": _txt(erg.get("label"))},
+                "ergebnis": {"wert": result_value, "label": _txt(erg.get("label"))},
             })
 
     # ROLE: before/after per category -> grouped bars + legend.
@@ -730,6 +747,13 @@ def _role_devices(d: dict, claimed: set) -> list:
         rows = [{"label": _txt(r.get("label")), "vorher": _txt(r.get("vorher")),
                  "nachher": _txt(r.get("nachher"))}
                 for r in _rows(kt.get("zeilen"), ("vorher", "nachher"))]
+        rows = [
+            r for r in rows
+            if not (
+                (r.get("vorher") and synthesize_visuals.digit_key(r["vorher"]) in claimed)
+                or (r.get("nachher") and synthesize_visuals.digit_key(r["nachher"]) in claimed)
+            )
+        ]
         if rows:
             out.append({
                 "preset": "grouped_bars", "titel": _txt(kt.get("titel")),
@@ -743,8 +767,16 @@ def _role_devices(d: dict, claimed: set) -> list:
     if isinstance(zs, dict):
         parts = [{"prozent": _txt(p.get("prozent")), "label": _txt(p.get("label"))}
                  for p in _rows(zs.get("teile"), ("prozent",))]
+        parts = [
+            p for p in parts
+            if not (p.get("prozent") and synthesize_visuals.digit_key(p["prozent"]) in claimed)
+        ]
         cmp_parts = [{"prozent": _txt(p.get("prozent")), "label": _txt(p.get("label"))}
                      for p in _rows(zs.get("vergleich_teile"), ("prozent",))]
+        cmp_parts = [
+            p for p in cmp_parts
+            if not (p.get("prozent") and synthesize_visuals.digit_key(p["prozent"]) in claimed)
+        ]
         if parts:
             out.append({
                 "preset": "stacked_bar_100", "titel": _txt(zs.get("titel")),
@@ -760,6 +792,10 @@ def _role_devices(d: dict, claimed: set) -> list:
         items = [{"name": _txt(e.get("name")), "wert": _txt(e.get("wert")),
                   "marke": _txt(e.get("marke"))}
                  for e in _rows(en.get("eintraege"), ("name", "wert"))]
+        items = [
+            i for i in items
+            if not (i.get("wert") and synthesize_visuals.digit_key(i["wert"]) in claimed)
+        ]
         if items:
             out.append({
                 "preset": "entity_bars", "titel": _txt(en.get("titel")),
