@@ -1,0 +1,915 @@
+"""Stage 5 — AI asset pipeline.
+
+Three jobs:
+
+  1. INVENTORY — Walk `report_json.pages` and the image manifest;
+     decide for each page slot which assets are required, which are
+     already present in the manifest, and which need generation.
+  2. DOWNLOAD — For assets that exist in the manifest (Google Drive
+     URL, etc.), fetch them to a local output directory at print
+     resolution. This is REAL HTTP (no stub) using httpx.
+  3. GENERATE — For assets that need AI generation, call STUBBED
+     functions that return `status="stub_not_generated"`. The real
+     fal.ai integration goes here later — the docstring of each
+     stub explains the production endpoint + payload to plug in.
+
+The stage NEVER blocks: a missing asset becomes a warning + a
+`client_upload_needed` or `stub_not_generated` AssetResult, never an
+exception. Stage 8 surfaces these gaps to QA via the warnings list and
+the `asset_summary` totals.
+
+Network etiquette:
+  - 30-second timeout per download
+  - 2 attempts on transient failures (then mark `failed`)
+  - User-Agent header so Google Drive doesn't HTML-redirect us
+"""
+
+from __future__ import annotations
+
+import asyncio
+import re
+import shutil
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any, Optional
+
+import httpx
+
+from stages.assets_cache import cache_lookup, cache_salt, cache_store, fal_cache_key
+from stages.build_image_prompts import build_image_prompts
+
+# Bumping this busts the fal image cache for ALL slots (prompt-builder logic
+# changed). Folded into the per-report salt so a builder change forces re-gen.
+_PROMPT_BUILDER_VERSION = "2026-06-20.1"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Per-ST image requirements
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Each entry is a list of asset specs that the page TYPE needs.
+# `source_default`: "generate" (Stage 5 calls the generator stub).
+#
+# Human/drive photos (founder portrait on ST-01, the About logo on ST-05,
+# the case-study portrait on ST-07A) are NO LONGER owned here — Phase 4a
+# moved them to resolve_slots(), which resolves them from the client's
+# local Drive-substitute folder and emits them as per-page `slots[]` in the
+# package. generate_assets owns ONLY the fal generate/composite + manifest
+# downloads (per-page `assets[]` + top-level `report_assets`); no slot is
+# owned by both systems.
+IMAGE_REQUIREMENTS: dict[str, list[dict[str, Any]]] = {
+    "ST-01": [
+        {"slot_id": "cover_hero", "image_type": "background",
+         "aspect_ratio": "3:4", "source_default": "generate",
+         "required": False},
+    ],
+    "ST-09": [
+        {"slot_id": "status_quo_scene", "image_type": "scene",
+         "aspect_ratio": "16:9", "source_default": "generate",
+         "required": False},
+    ],
+    # ST-FAZIT has NO per-page raster slot: its dark closing page grounds on the
+    # package-level panel_texture report asset + founder avatar + CTA (see
+    # patterns/st_fazit.py). The old fazit_background generation/download was
+    # invisible — nothing read it — so it is removed (G7: an asset with no
+    # consumer is waste).
+    # ST-05 (About) founder/logo + ST-07A (Case study) portrait are
+    # drive-sourced now → resolve_slots, not here.
+    # ST-06 (Mechanism): no raster image; SVG components from Stage 6
+    # ST-03 (Hard CTA): QR code rendered by the chassis at render time
+    # ST-08 / ST-14 / ST-22 / ST-31 / ST-32: no per-page image needs
+}
+
+# Report-level texture / atmospheric assets — generated once per
+# render, not per page.
+REPORT_LEVEL_GENERATED: tuple[dict[str, Any], ...] = (
+    {"slot_id": "background_texture", "image_type": "texture",
+     "description": (
+         "Paper/marble/crumpled texture for page backgrounds — driven "
+         "by brand_profile axis X (texture)"
+     )},
+    {"slot_id": "atmospheric_gradient", "image_type": "gradient",
+     "description": (
+         "Brand-tinted atmospheric wash overlay — driven by "
+         "brand_profile axis G (ground mode)"
+     )},
+)
+
+# A4 at 300 DPI = 8.27in × 11.69in × 300 = 2480 × 3508 px (portrait).
+# We use 3508 × 4961 because that matches the chassis's preferred print
+# bleed area (1.5× A4 long edge for some bleed). The exact size isn't
+# important here — the stubs just need to record what the production
+# generator should ask for.
+PRINT_W_PX = 3508
+PRINT_H_PX = 4961
+
+DOWNLOAD_TIMEOUT_S = 30.0
+DOWNLOAD_RETRIES = 2
+USER_AGENT = "dmc-preprocessor/0.4 (+layer-1)"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dataclasses (internal — the JSON-serialisable view lives in models.py)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@dataclass
+class AssetResult:
+    slot_id: str
+    status: str
+    path: Optional[Path] = None
+    message: str = ""
+    page_slot: Optional[int] = None
+    image_type: str = ""
+    prompt: Optional[str] = None
+    negative_prompt: Optional[str] = None
+    from_cache: bool = False
+
+
+@dataclass
+class AssetPlan:
+    assets: list[AssetResult] = field(default_factory=list)
+    output_dir: Path = field(default_factory=lambda: Path("."))
+    total_required: int = 0
+    total_downloaded: int = 0
+    total_stubbed: int = 0
+    total_client_upload_needed: int = 0
+    total_failed: int = 0
+    total_generated: int = 0
+    warnings: list[str] = field(default_factory=list)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Google Drive URL handling
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+_GDRIVE_FILE_ID_RE = re.compile(
+    r"drive\.google\.com/(?:file/d/|open\?id=|uc\?(?:[^&]*&)*id=)([A-Za-z0-9_-]{10,})"
+)
+
+
+def normalise_gdrive_url(url: str) -> str:
+    """Convert a Drive 'view' URL to a direct-download URL.
+
+    Examples:
+      https://drive.google.com/file/d/ABC123/view
+        → https://drive.google.com/uc?export=download&id=ABC123
+      https://drive.google.com/open?id=XYZ789
+        → https://drive.google.com/uc?export=download&id=XYZ789
+
+    Non-Drive URLs are returned unchanged.
+    """
+    if "drive.google.com" not in url:
+        return url
+    m = _GDRIVE_FILE_ID_RE.search(url)
+    if not m:
+        return url
+    file_id = m.group(1)
+    return f"https://drive.google.com/uc?export=download&id={file_id}"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Download
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+async def download_image(
+    url: str, target_path: Path,
+    *, timeout: float = DOWNLOAD_TIMEOUT_S, retries: int = DOWNLOAD_RETRIES,
+    client: Optional[httpx.AsyncClient] = None,
+) -> bool:
+    """Download `url` to `target_path`. Returns True on success.
+
+    Retries on transient failures (network, 5xx, 429). 4xx other than
+    429 are not retried.
+    """
+    download_url = normalise_gdrive_url(url)
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+
+    owns_client = client is None
+    if owns_client:
+        client = httpx.AsyncClient(
+            timeout=timeout, follow_redirects=True,
+            headers={"User-Agent": USER_AGENT},
+        )
+    try:
+        for attempt in range(1, retries + 1):
+            try:
+                resp = await client.get(download_url)
+            except httpx.HTTPError:
+                if attempt >= retries:
+                    return False
+                await asyncio.sleep(0.5 * attempt)
+                continue
+
+            if resp.status_code == 200:
+                target_path.write_bytes(resp.content)
+                return True
+            if resp.status_code in (429, 500, 502, 503, 504) \
+                    and attempt < retries:
+                await asyncio.sleep(0.5 * attempt)
+                continue
+            # Non-retriable failure
+            return False
+        return False
+    finally:
+        if owns_client:
+            await client.aclose()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Brief-driven prompt helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _brief_field(brief: Any, name: str) -> Optional[str]:
+    """Read a field from a BrandDesignBrief (model or dict), tolerant of None."""
+    if brief is None:
+        return None
+    if isinstance(brief, dict):
+        val = brief.get(name)
+    else:
+        val = getattr(brief, name, None)
+    return val if isinstance(val, str) and val.strip() else None
+
+
+def _compose_prompt(style_prompt: Optional[str], subject: str, aspect: str,
+                    *, fallback: str) -> str:
+    """Brief-driven prompt when a style prompt exists, else the fallback."""
+    if style_prompt:
+        return f"{style_prompt.strip()} Subject: {subject}. Aspect ratio {aspect}."
+    return fallback
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Real fal.ai generation (Nano Banana Pro)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# fal accepts these aspect-ratio enums. Anything else falls back to the
+# closest portrait default ("3:4").
+_FAL_ASPECT_RATIOS = frozenset({
+    "auto", "21:9", "16:9", "3:2", "4:3", "5:4", "1:1",
+    "4:5", "3:4", "2:3", "9:16",
+})
+FAL_GENERATE_TIMEOUT_S = 180.0
+
+
+def _fal_aspect(aspect: Optional[str]) -> str:
+    """Map a spec aspect ratio to a valid fal enum; default portrait 3:4.
+
+    Tolerates the legacy "square" alias used by some client-class slots.
+    """
+    if aspect == "square":
+        return "1:1"
+    if aspect in _FAL_ASPECT_RATIOS:
+        return aspect
+    return "3:4"
+
+
+async def fal_generate_image(
+    *,
+    prompt: str,
+    negative_prompt: Optional[str],
+    aspect_ratio: str,
+    api_key: str,
+    model: str,
+    resolution: str,
+    output_dir: Path,
+    slot_id: str,
+    page_slot: Optional[int] = None,
+    image_type: str = "",
+    http_client: Optional[httpx.AsyncClient] = None,
+    timeout: float = FAL_GENERATE_TIMEOUT_S,
+    cache_dir: Optional[Path] = None,
+    salt: str = "",
+    allow_generation: bool = True,
+) -> AssetResult:
+    """Generate one image via fal.ai Nano Banana Pro and download it.
+
+    fal has NO negative_prompt field, so the negative is folded into the
+    prompt text: ``f"{prompt}\\n\\nAvoid: {negative_prompt}"``.
+
+    POSTs to ``https://fal.run/{model}`` with header
+    ``Authorization: Key {api_key}``, then downloads ``images[0].url`` to
+    ``output_dir/assets/{page_slot or 'report'}_{slot_id}.png``.
+
+    On 200 + successful download → ``AssetResult(status="generated", …)``.
+    On any non-200 / exception / download failure →
+    ``AssetResult(status="failed", path=None, …)``; the prompt + negative
+    are always recorded so QA can see what was attempted. NEVER raises —
+    the caller adds a warning on failure.
+    """
+    full = prompt if not negative_prompt else f"{prompt}\n\nAvoid: {negative_prompt}"
+    aspect = _fal_aspect(aspect_ratio)
+
+    assets_dir = Path(output_dir) / "assets"
+    assets_dir.mkdir(parents=True, exist_ok=True)
+    target_path = assets_dir / f"{page_slot if page_slot is not None else 'report'}_{slot_id}.png"
+
+    cache_key = fal_cache_key(
+        model=model, prompt=prompt, negative_prompt=negative_prompt,
+        aspect=aspect, resolution=resolution, salt=salt,
+    )
+    cached = cache_lookup(cache_dir, cache_key)
+    if cached is not None:
+        try:
+            shutil.copyfile(cached, target_path)
+        except OSError:
+            cached = None  # cache unreadable -> fall through to a real generation
+        else:
+            return AssetResult(
+                slot_id=slot_id, status="generated", path=target_path,
+                message=f"fal cache hit ({cache_key[:12]})",
+                page_slot=page_slot, image_type=image_type,
+                prompt=prompt, negative_prompt=negative_prompt,
+                from_cache=True,
+            )
+
+    # Cache miss + generation not allowed (budget reached): do NOT POST. A free
+    # cache hit was already served above; only NEW paid generations are gated.
+    if not allow_generation:
+        return AssetResult(
+            slot_id=slot_id,
+            status="stub_not_generated",
+            path=None,
+            message=f"Generation skipped (budget reached) for {slot_id}; prompt recorded.",
+            page_slot=page_slot,
+            image_type=image_type,
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+        )
+
+    request_body = {
+        "prompt": full,
+        "aspect_ratio": aspect,
+        "num_images": 1,
+        "resolution": resolution,
+        "output_format": "png",
+    }
+    headers = {"Authorization": f"Key {api_key}",
+               "Content-Type": "application/json"}
+
+    owns = http_client is None
+    # follow_redirects: fal.media serves the generated image via a
+    # redirecting CDN — without this the result-download gets the 3xx and
+    # fails (observed: a paid generation lost because the download 3xx'd).
+    client = http_client or httpx.AsyncClient(timeout=timeout, follow_redirects=True)
+    try:
+        resp = await client.post(
+            f"https://fal.run/{model}", json=request_body, headers=headers,
+        )
+        if resp.status_code != 200:
+            return AssetResult(
+                slot_id=slot_id,
+                status="failed",
+                path=None,
+                message=(
+                    f"fal generation failed (HTTP {resp.status_code}) for "
+                    f"{slot_id}"
+                ),
+                page_slot=page_slot,
+                image_type=image_type,
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+            )
+        data = resp.json()
+        url = data["images"][0]["url"]
+        # The generated image is large (~4-5MB) and the generation already
+        # cost money — give the download extra retries so a transient blip
+        # doesn't waste a paid asset.
+        ok = await download_image(url, target_path, client=client, retries=3)
+        if not ok:
+            return AssetResult(
+                slot_id=slot_id,
+                status="failed",
+                path=None,
+                message=f"fal image download failed for {slot_id} from {url}",
+                page_slot=page_slot,
+                image_type=image_type,
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+            )
+        cache_store(cache_dir, cache_key, target_path)
+        return AssetResult(
+            slot_id=slot_id,
+            status="generated",
+            path=target_path,
+            message=f"Generated via fal {model} ({aspect}, {resolution})",
+            page_slot=page_slot,
+            image_type=image_type,
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+        )
+    except (httpx.HTTPError, KeyError, IndexError, ValueError, TypeError) as exc:
+        return AssetResult(
+            slot_id=slot_id,
+            status="failed",
+            path=None,
+            message=f"fal generation error for {slot_id}: {exc!r}",
+            page_slot=page_slot,
+            image_type=image_type,
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+        )
+    finally:
+        if owns:
+            await client.aclose()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stubbed generators — kept as the no-fal-key fallback
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+async def generate_texture(
+    *,
+    texture_class: str,
+    primary_hex: str,
+    accent_hex: str,
+    width: int = PRINT_W_PX,
+    height: int = PRINT_H_PX,
+    style_prompt: Optional[str] = None,
+    negative_prompt: Optional[str] = None,
+) -> AssetResult:
+    """STUB — production: POST https://fal.run/fal-ai/nano-banana-pro
+    with prompt derived from `texture_class` + brand colours.
+    """
+    message = (
+        f"Texture generation stubbed. Class={texture_class!r}, "
+        f"primary={primary_hex}, accent={accent_hex}, "
+        f"size={width}×{height}. Replace with fal.ai call."
+    )
+    return AssetResult(
+        slot_id="background_texture",
+        status="stub_not_generated",
+        path=None,
+        message=message,
+        image_type="texture",
+        prompt=_compose_prompt(
+            style_prompt,
+            "a seamless full-bleed abstract background surface/texture",
+            "A4 portrait",
+            fallback=message,
+        ),
+        negative_prompt=negative_prompt,
+    )
+
+
+async def generate_atmospheric_gradient(
+    *,
+    ground_mode: str,
+    accent_hex: str,
+    width: int = PRINT_W_PX,
+    height: int = PRINT_H_PX,
+    style_prompt: Optional[str] = None,
+    negative_prompt: Optional[str] = None,
+) -> AssetResult:
+    """STUB — production: POST https://fal.run/fal-ai/flux-2 with prompt
+    derived from `ground_mode` (dark/light/mixed) + accent.
+    """
+    message = (
+        f"Atmospheric gradient stubbed. Mode={ground_mode!r}, "
+        f"accent={accent_hex}, size={width}×{height}. "
+        f"Replace with fal.ai call."
+    )
+    return AssetResult(
+        slot_id="atmospheric_gradient",
+        status="stub_not_generated",
+        path=None,
+        message=message,
+        image_type="gradient",
+        prompt=_compose_prompt(
+            style_prompt,
+            "a soft atmospheric background gradient wash",
+            "A4 portrait",
+            fallback=message,
+        ),
+        negative_prompt=negative_prompt,
+    )
+
+
+async def generate_hero_image(
+    *,
+    page_content_preview: str,
+    primary_hex: str,
+    accent_hex: str,
+    aspect_ratio: str,
+    slot_id: str = "hero_image",
+    page_slot: Optional[int] = None,
+    width: int = PRINT_W_PX,
+    height: int = PRINT_H_PX,
+    style_prompt: Optional[str] = None,
+    negative_prompt: Optional[str] = None,
+) -> AssetResult:
+    """STUB — production: POST fal-ai/nano-banana-pro. Prompt built
+    from `page_content_preview` (≤200 chars) + brand colours + aspect.
+    """
+    preview = (page_content_preview or "")[:200]
+    message = (
+        f"Hero generation stubbed. Aspect={aspect_ratio}, "
+        f"primary={primary_hex}, accent={accent_hex}, "
+        f"size={width}×{height}, preview={preview!r}. "
+        f"Replace with fal.ai call."
+    )
+    subject = preview or "an abstract on-brand background"
+    return AssetResult(
+        slot_id=slot_id,
+        status="stub_not_generated",
+        path=None,
+        message=message,
+        page_slot=page_slot,
+        image_type="background" if aspect_ratio in ("3:4", "16:9") else "scene",
+        prompt=_compose_prompt(
+            style_prompt, subject, aspect_ratio, fallback=message,
+        ),
+        negative_prompt=negative_prompt,
+    )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Inventory + main entry point
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _index_manifest(
+    image_manifest: dict | Any,
+) -> dict[tuple[int, str], dict]:
+    """Index manifest items by (page_slot, image_type) for fast lookup.
+
+    Manifest format mirrors `models.ImageManifest`:
+      {"images": [{"id", "page_slot", "page_st_type", "image_type",
+                   "url", "status"}, ...]}
+    """
+    items = (image_manifest or {}).get("images") if isinstance(image_manifest, dict) \
+        else getattr(image_manifest, "images", [])
+    out: dict[tuple[int, str], dict] = {}
+    for item in (items or []):
+        if isinstance(item, dict):
+            slot = item.get("page_slot")
+            itype = item.get("image_type")
+        else:
+            slot = getattr(item, "page_slot", None)
+            itype = getattr(item, "image_type", None)
+            item = {
+                "id": getattr(item, "id", None),
+                "page_slot": slot,
+                "page_st_type": getattr(item, "page_st_type", None),
+                "image_type": itype,
+                "url": getattr(item, "url", None),
+                "status": getattr(item, "status", None),
+            }
+        if slot is None or itype is None:
+            continue
+        out[(int(slot), str(itype))] = item
+    return out
+
+
+def _unpack_page(page: Any) -> tuple[int, str, dict]:
+    """Normalise a page (dict or Pydantic ReportPage) → (slot, type, data)."""
+    if isinstance(page, dict):
+        return int(page["slot"]), str(page["type"]), page.get("data") or {}
+    return int(page.slot), str(page.type), getattr(page, "data", {}) or {}
+
+
+def _page_text_preview(data: dict) -> str:
+    """Concatenate the first ~200 chars of textual fields from a page's
+    `data` block — used as prompt context for hero generation.
+    """
+    if not isinstance(data, dict):
+        return ""
+    chunks: list[str] = []
+    for k in ("title", "subtitle", "intro", "intro_body", "body", "eyebrow"):
+        v = data.get(k)
+        if isinstance(v, str):
+            chunks.append(v)
+        if sum(len(c) for c in chunks) >= 200:
+            break
+    return " ".join(chunks)[:200]
+
+
+async def generate_assets(
+    pages: list[Any],
+    image_manifest: dict | Any,
+    *,
+    brand_primary: str,
+    brand_accent: str,
+    brand_profile: Any = None,
+    design_brief: Any = None,
+    client_slug: str = "",
+    output_dir: Optional[Path] = None,
+    http_client: Optional[httpx.AsyncClient] = None,
+    openrouter_key: Optional[str] = None,
+    prompt_model: str = "anthropic/claude-sonnet-4.6",
+    fal_key: Optional[str] = None,
+    fal_model: str = "fal-ai/nano-banana-pro",
+    fal_resolution: str = "2K",
+    cache_dir: Optional[Path] = None,
+    max_generations_per_report: Optional[int] = None,
+    skip_slots: frozenset = frozenset(),
+) -> AssetPlan:
+    """Walk pages + manifest, download what's already generated/uploaded,
+    and run the two-call image pipeline for the rest. Returns an AssetPlan.
+
+    `pages` may contain dicts or Pydantic ReportPage instances.
+    `image_manifest` may be a dict or an ImageManifest model.
+    `brand_profile` is optional — used to pull `texture_class` and
+    `ground_mode` for the report-level generators. Looked up via
+    attribute or dict access; missing axes default to "smooth" /
+    "mixed".
+
+    Two-pass generation:
+      1. Walk pages + report-level: handle manifest-download + client-upload
+         as before; COLLECT the generate-class specs into a list.
+      2. One batched Sonnet `build_image_prompts` call (when an
+         `openrouter_key` + specs exist) turns the brief + specs into
+         per-slot prompts; then each spec → real fal `fal_generate_image`
+         when `fal_key` is set, otherwise a recorded `stub_not_generated`.
+
+    Fully backward-compatible: with `openrouter_key`/`fal_key` both unset
+    (and default models), behavior is today's stubs — every generate-class
+    asset becomes `stub_not_generated` carrying its built prompt.
+    """
+    if output_dir is None:
+        output_dir = Path(".")
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    assets_dir = output_dir / "assets"
+    assets_dir.mkdir(exist_ok=True)
+
+    manifest_idx = _index_manifest(image_manifest)
+    plan = AssetPlan(output_dir=output_dir)
+
+    # Read brand_profile axes (texture_class, ground_mode)
+    texture_class = _profile_axis(brand_profile, "texture_class", "smooth")
+    ground_mode = _profile_axis(brand_profile, "ground_mode", "mixed")
+
+    # Read brief-driven prompts (tolerant of model, dict, or None)
+    style_prompt = _brief_field(design_brief, "image_style_prompt")
+    brief_negative = _brief_field(design_brief, "negative_prompt")
+
+    # Per-report salt for the fal image cache: busts the cache across clients,
+    # brands, brief, and prompt-builder version, so decayed imagery can never be
+    # served to a different client. The brief's image-affecting fields are
+    # captured via style_prompt + brief_negative (stable strings).
+    _fal_salt = cache_salt(
+        client_slug=client_slug,
+        brand_primary=brand_primary,
+        brand_accent=brand_accent,
+        design_brief={"style": style_prompt, "negative": brief_negative},
+        builder_version=_PROMPT_BUILDER_VERSION,
+    )
+
+    # ── Pass 1: download + client-upload now; collect generate-specs ──
+    generate_specs: list[dict] = []
+
+    for page in pages:
+        slot, st_type, data = _unpack_page(page)
+        reqs = IMAGE_REQUIREMENTS.get(st_type, [])
+        for req in reqs:
+            slot_id = req["slot_id"]
+            image_type = req["image_type"]
+            mkey = (slot, image_type)
+            manifest_item = manifest_idx.get(mkey)
+
+            # Case A: manifest has a URL → download. Checked BEFORE the
+            # skip_slots gate: a client-provided URL is always honored; the
+            # skip only exists to save paid generations, never to drop an
+            # asset the client actually supplied.
+            if manifest_item and manifest_item.get("url"):
+                plan.total_required += 1
+                url = manifest_item["url"]
+                target_name = f"{slot}_{slot_id}.png"
+                target_path = assets_dir / target_name
+                ok = await download_image(
+                    url, target_path, client=http_client,
+                )
+                if ok:
+                    plan.assets.append(AssetResult(
+                        slot_id=slot_id,
+                        status="downloaded",
+                        path=target_path,
+                        message=f"Downloaded from {url}",
+                        page_slot=slot,
+                        image_type=image_type,
+                    ))
+                    plan.total_downloaded += 1
+                else:
+                    plan.assets.append(AssetResult(
+                        slot_id=slot_id,
+                        status="failed",
+                        path=None,
+                        message=f"Download failed for {url}",
+                        page_slot=slot,
+                        image_type=image_type,
+                    ))
+                    plan.total_failed += 1
+                    plan.warnings.append(
+                        f"slot {slot}: failed to download {slot_id} from {url}"
+                    )
+                continue
+
+            # skip_slots: slots the CALLER knows can never paint for this
+            # client (e.g. the cover scene when a founder photo exists, the
+            # founder-first cover never falls back to it). Skipping at the
+            # gate saves a paid generation per render; downstream resolvers
+            # are graceful about the absent asset. Applied only past Case A,
+            # so it gates what WE would produce, never a manifest download.
+            if slot_id in skip_slots:
+                continue
+            plan.total_required += 1
+
+            # Case B: no manifest entry, source_default = "generate"
+            if req["source_default"] == "generate":
+                preview = _page_text_preview(data)
+                generate_specs.append({
+                    "slot_id": slot_id,
+                    "role": image_type,
+                    "image_type": image_type,
+                    "aspect_ratio": req["aspect_ratio"],
+                    "page_slot": slot,
+                    "context": preview,
+                    "subject": preview or "an abstract on-brand background",
+                })
+                continue
+
+            # Case C: no manifest entry, source_default = "client"
+            plan.assets.append(AssetResult(
+                slot_id=slot_id,
+                status="client_upload_needed",
+                path=None,
+                message=(
+                    f"No upload found for {slot_id} on slot {slot} "
+                    f"({st_type}); customer must supply"
+                ),
+                page_slot=slot,
+                image_type=image_type,
+            ))
+            plan.total_client_upload_needed += 1
+            if req.get("required"):
+                plan.warnings.append(
+                    f"slot {slot}: REQUIRED asset {slot_id} ({image_type}) "
+                    f"missing — customer must upload"
+                )
+
+    # Report-level generated assets (texture, gradient) — collected too.
+    for spec in REPORT_LEVEL_GENERATED:
+        if spec["slot_id"] in skip_slots:
+            continue
+        plan.total_required += 1
+        if spec["slot_id"] == "background_texture":
+            generate_specs.append({
+                "slot_id": "background_texture",
+                "role": "section background texture",
+                "image_type": "texture",
+                "aspect_ratio": "3:4",
+                "page_slot": None,
+                "context": (
+                    f"Seamless full-bleed page-background texture "
+                    f"(class={texture_class})"
+                ),
+                "subject": "a seamless full-bleed abstract background surface/texture",
+            })
+        else:
+            generate_specs.append({
+                "slot_id": "atmospheric_gradient",
+                "role": "atmospheric gradient",
+                "image_type": "gradient",
+                "aspect_ratio": "3:4",
+                "page_slot": None,
+                "context": (
+                    f"Brand-tinted atmospheric wash overlay "
+                    f"(ground_mode={ground_mode})"
+                ),
+                "subject": "a soft atmospheric background gradient wash",
+            })
+
+    # ── Pass 2: batched prompt-builder, then per-spec fal / stub ──
+    built: dict[str, dict] = {}
+    if openrouter_key and generate_specs:
+        built = await build_image_prompts(
+            design_brief=design_brief,
+            asset_specs=[
+                {
+                    "slot_id": s["slot_id"],
+                    "role": s["role"],
+                    "aspect_ratio": s["aspect_ratio"],
+                    "context": s["context"],
+                }
+                for s in generate_specs
+            ],
+            api_key=openrouter_key,
+            model=prompt_model,
+            http_client=http_client,
+        )
+
+    generated_count = 0
+    for spec in generate_specs:
+        slot_id = spec["slot_id"]
+        image_type = spec["image_type"]
+        aspect = spec["aspect_ratio"]
+        page_slot = spec["page_slot"]
+
+        pb = built.get(slot_id)
+        if pb:
+            prompt = pb["prompt"]
+            negative = pb.get("negative_prompt") or brief_negative
+        else:
+            # Fall back to the existing concatenation (brief style prompt +
+            # subject + aspect), or a descriptive stubbed default when no
+            # brief (keeps the prior stub-message semantics for QA).
+            fallback = (
+                f"Image generation stubbed for {slot_id} "
+                f"({image_type}, aspect {aspect}); no brief style prompt "
+                f"available. Subject: {spec['subject']}."
+            )
+            prompt = _compose_prompt(
+                style_prompt, spec["subject"], aspect, fallback=fallback,
+            )
+            negative = brief_negative
+
+        if fal_key:
+            # ALWAYS call fal_generate_image so the content-addressed cache is
+            # consulted even when the budget is exhausted — a cache hit is free
+            # ($0) and must be served, never stubbed (PRD §9.3). Only NEW paid
+            # generations are gated, via allow_generation.
+            allow_generation = (
+                max_generations_per_report is None
+                or generated_count < max_generations_per_report
+            )
+            try:
+                result = await fal_generate_image(
+                    prompt=prompt,
+                    negative_prompt=negative,
+                    aspect_ratio=aspect,
+                    api_key=fal_key,
+                    model=fal_model,
+                    resolution=fal_resolution,
+                    output_dir=output_dir,
+                    slot_id=slot_id,
+                    page_slot=page_slot,
+                    image_type=image_type,
+                    http_client=http_client,
+                    cache_dir=cache_dir,
+                    salt=_fal_salt,
+                    allow_generation=allow_generation,
+                )
+            except Exception as exc:  # noqa: BLE001 — never abort the others
+                result = AssetResult(
+                    slot_id=slot_id,
+                    status="failed",
+                    path=None,
+                    message=f"fal generation error for {slot_id}: {exc!r}",
+                    page_slot=page_slot,
+                    image_type=image_type,
+                    prompt=prompt,
+                    negative_prompt=negative,
+                )
+            plan.assets.append(result)
+            if result.status == "generated":
+                plan.total_generated += 1
+                # Only real POSTs consume the budget; cache hits are free.
+                if not result.from_cache:
+                    generated_count += 1
+            elif result.status == "stub_not_generated":
+                # Over-budget cache-MISS: not generated, recorded for replay.
+                plan.total_stubbed += 1
+                plan.warnings.append(
+                    f"slot {page_slot if page_slot is not None else 'report'}: "
+                    f"generation budget ({max_generations_per_report}) reached for "
+                    f"{slot_id}; stubbed"
+                )
+            else:
+                plan.total_failed += 1
+                plan.warnings.append(
+                    f"slot {page_slot if page_slot is not None else 'report'}: "
+                    f"fal generation failed for {slot_id}"
+                )
+        else:
+            plan.assets.append(AssetResult(
+                slot_id=slot_id,
+                status="stub_not_generated",
+                path=None,
+                message=(
+                    f"Generation stubbed (no fal key). Slot={slot_id}, "
+                    f"aspect={aspect}. Prompt recorded for QA/replay."
+                ),
+                page_slot=page_slot,
+                image_type=image_type,
+                prompt=prompt,
+                negative_prompt=negative,
+            ))
+            plan.total_stubbed += 1
+
+    return plan
+
+
+def _profile_axis(profile: Any, axis_name: str, default: str) -> str:
+    """Pull a single axis from a brand_profile (dict or Pydantic) with
+    fallback to `default`. Tolerant of None / missing attribute.
+    """
+    if profile is None:
+        return default
+    if isinstance(profile, dict):
+        return str(profile.get(axis_name, default))
+    return str(getattr(profile, axis_name, default))

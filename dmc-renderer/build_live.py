@@ -60,7 +60,8 @@ SLOT_TO_ST = {
     "cover_author": ("ST-01", "portrait"),
     "about_logo": ("ST-05", "logo"),
     "status_quo_scene": ("ST-09", "scene"),
-    "fazit_background": ("ST-FAZIT", "background"),
+    # fazit_background removed (G7): ST-FAZIT grounds on the panel_texture
+    # report asset + founder avatar + CTA; a per-page background had no reader.
 }
 
 WORKFLOW_BUILD_VERSION_FIELDS_V3 = {
