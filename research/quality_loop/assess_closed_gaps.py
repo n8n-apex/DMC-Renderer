@@ -35,20 +35,27 @@ NODE = "node"
 REGISTRY = QL / "closed_gaps_registry.json"
 
 
+def _pytest_cwd(file_path: Path) -> Path:
+    """The nearest ancestor holding a conftest.py, so pytest's rootdir and
+    sys.path setup match how the suite is run manually (quality_loop tests
+    import modules one level up). Falls back to the file's parent."""
+    for ancestor in [file_path.parent, *file_path.parents]:
+        if (ancestor / "conftest.py").exists():
+            return ancestor
+    return file_path.parent
+
+
 def _run_pytest(target: str) -> tuple[bool, str]:
     # Support "<file>::<test>" notation: split so pytest gets file::test while
-    # cwd points at the file's directory.
+    # cwd points at the directory that carries the suite's conftest.py.
     file_part, sep, test_part = target.partition("::")
     full = ROOT / file_part
     if not full.exists():
         return False, f"missing: {file_part}"
     pytest_target = str(full) + (f"::{test_part}" if sep else "")
-    # Run from the target's containing suite root so the tests' sys.path
-    # assumptions (e.g. renderer tests expect to run from research/v7-renderer)
-    # hold exactly as they do in the manual command.
     proc = subprocess.run(
         [str(PY), "-m", "pytest", pytest_target, "-q"],
-        cwd=full.parent,
+        cwd=_pytest_cwd(full),
         capture_output=True,
         text=True,
     )
@@ -68,7 +75,7 @@ def _run_suite_zero(target: str) -> tuple[bool, str]:
         return False, f"missing dir: {target}"
     proc = subprocess.run(
         [str(PY), "-m", "pytest", str(full), "-q"],
-        cwd=full.parent,
+        cwd=_pytest_cwd(full),
         capture_output=True,
         text=True,
     )

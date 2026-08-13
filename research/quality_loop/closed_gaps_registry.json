@@ -4,6 +4,48 @@
   "closed_date": "2026-08-13",
   "gaps": [
     {
+      "id": "D1",
+      "description": "stale test-count claims superseded by the baseline ledger",
+      "check_type": "file",
+      "check": "docs/phase-zero/BASELINE-LEDGER-2026-08-13.md",
+      "owner": "docs"
+    },
+    {
+      "id": "D2",
+      "description": "dmc-renderer suite 0 failures",
+      "check_type": "suite_zero",
+      "check": "dmc-renderer/tests/",
+      "owner": "renderer"
+    },
+    {
+      "id": "D3",
+      "description": "axes wiring memory note superseded",
+      "check_type": "grep_present",
+      "check": "brand_profile_id in dmc-renderer/calibration_fixtures_v3.py",
+      "owner": "docs"
+    },
+    {
+      "id": "D4",
+      "description": "no-hex guard scans dmc-renderer logic",
+      "check_type": "guard",
+      "check": "research/v7-renderer/tests/test_no_literals_in_architecture.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "D5",
+      "description": "determinism claim now true (ARCHITECTURE.md updated)",
+      "check_type": "grep_present",
+      "check": "_stable_generated_at in research/preprocessor/stages/assemble_package.py",
+      "owner": "docs"
+    },
+    {
+      "id": "D6",
+      "description": "timeout claim now true (ARCHITECTURE.md updated)",
+      "check_type": "grep_present",
+      "check": "DMC_RENDER_TIMEOUT_S in dmc-renderer/service.py",
+      "owner": "docs"
+    },
+    {
       "id": "G1",
       "description": "brand_profile_id wired so client variation fires",
       "check_type": "test",
@@ -172,6 +214,13 @@
       "owner": "assets"
     },
     {
+      "id": "G25",
+      "description": "visual review never ships an ungraded deck (retry loop + review_required)",
+      "check_type": "test",
+      "check": "research/quality_loop/tests/test_visual_review_loop_v3.py",
+      "owner": "quality_loop"
+    },
+    {
       "id": "L1",
       "description": "dead teaser_items harness check removed",
       "check_type": "grep_absent",
@@ -219,48 +268,6 @@
       "check_type": "grep_present",
       "check": "non_numeral_stat_values in dmc-renderer/service.py",
       "owner": "quality_loop"
-    },
-    {
-      "id": "D1",
-      "description": "stale test-count claims superseded by the baseline ledger",
-      "check_type": "file",
-      "check": "docs/phase-zero/BASELINE-LEDGER-2026-08-13.md",
-      "owner": "docs"
-    },
-    {
-      "id": "D2",
-      "description": "dmc-renderer suite 0 failures",
-      "check_type": "suite_zero",
-      "check": "dmc-renderer/tests/",
-      "owner": "renderer"
-    },
-    {
-      "id": "D3",
-      "description": "axes wiring memory note superseded",
-      "check_type": "grep_present",
-      "check": "brand_profile_id in dmc-renderer/calibration_fixtures_v3.py",
-      "owner": "docs"
-    },
-    {
-      "id": "D4",
-      "description": "no-hex guard scans dmc-renderer logic",
-      "check_type": "guard",
-      "check": "research/v7-renderer/tests/test_no_literals_in_architecture.py",
-      "owner": "renderer"
-    },
-    {
-      "id": "D5",
-      "description": "determinism claim now true (ARCHITECTURE.md updated)",
-      "check_type": "grep_present",
-      "check": "_stable_generated_at in research/preprocessor/stages/assemble_package.py",
-      "owner": "docs"
-    },
-    {
-      "id": "D6",
-      "description": "timeout claim now true (ARCHITECTURE.md updated)",
-      "check_type": "grep_present",
-      "check": "DMC_RENDER_TIMEOUT_S in dmc-renderer/service.py",
-      "owner": "docs"
     }
   ]
 }
