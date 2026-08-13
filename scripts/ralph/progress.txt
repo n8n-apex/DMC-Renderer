@@ -20,3 +20,14 @@ Started: 2026-08-13
   - formula_ladder is an _SVG_PREFERRED_KIND (families/base.py) - it renders via chart_bridge SVG, NOT the c-viz-ladder CSS macro. Test against the SVG contract (verbatim values in <text>), not the macro classes.
   - Full renderer suite takes ~8.5 min. The 15 pre-existing failures (test_st07a_fill_variant x11, test_render_r2 x4) are the NEXT story's target.
 ---
+## 2026-08-13 - US-002
+- What was implemented: realigned the 15 pre-existing fixture-drift tests to the current apex fixture. Renderer suite now 398 passed / 0 failed (was 15 failed / 383 passed).
+- Files changed: research/v7-renderer/tests/test_st07a_fill_variant.py, test_render_r2.py.
+- **Learnings for future iterations:**
+  - ctx.slot_uri() reads page['slots'] (page-level, status==resolved), NOT page['data']['slots']. To strip a portrait in a test, filter page['slots'] and page['assets'].
+  - ALL 5 apex case-study pages now resolve cs_*.png portraits; the pattern rule is: a REAL portrait wins the rail and suppresses the social_post phone (has_social_post = bool(photo) and not portrait).
+  - The hero casestudy_hero variant has NO cs-socialpost host (fill/standard do). Social-post tests must pin layout_variant.
+  - No fixture metric contains an arrow (->) anymore; the cs-statstack-ba transform device must be tested by injecting the metric.
+  - The standalone overflow tests use WeasyPrint count_pages, which mis-measures A3 hero spreads on an A4 box. Stamp page_format='a3' in _section for hero pages. The real ship engine is Chromium (deck-level physical==logical).
+  - test_render_r2 ground test: the 2026-07-13 contract is light .page transparent + ground on @page a4-portrait via --color-surface. Don't re-assert --color-ground in the light block.
+---

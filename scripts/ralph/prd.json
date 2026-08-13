@@ -26,8 +26,8 @@
         "Full research/v7-renderer/tests/ suite has 0 failures"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": "For test_light_page_ground_is_color_ground_not_wash: the 2026-07-13 contract moved light grounds to the full sheet via @page with .page transparent; assert THAT contract."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: renderer suite now 398 passed / 0 failed. st07a_fill_variant (11): the shared helper asserted portrait ABSENT but the fixture now resolves cs_*.png portraits on ALL 5 case studies -> added _apex_case_study_page_without_portrait() + _social_post_page() strips the page-level slots entry (slot_uri reads page['slots'], not data.slots); social-post tests pin the fill variant (pages[11] is now casestudy_hero which has no cs-socialpost host); transform-bars test injects an arrow metric (no fixture metric has an arrow anymore); the two overflow tests stamp page_format='a3' (the hero's real sheet) because the standalone WeasyPrint harness mis-measures A3 on an A4 box. test_render_r2 (4): GoldmanTax content, 1_founder.jpg rename, chart-region test pins standard variant, ground test re-asserts the 2026-07-13 @page full-sheet contract."
     },
     {
       "id": "US-003",
