@@ -45,3 +45,77 @@ def test_non_transient_exception_propagates() -> None:
     except DesignDefect:
         return
     raise AssertionError("a non-transient exception must propagate, not retry")
+
+
+class FakeBuilder:
+    """Returns a deterministic build; call count tracks rebuilds.
+
+    The build itself carries NO failures - the review loop judges by the
+    REVIEWER's score, not the build's failure list. The repair signal is the
+    conductor swapping a variant, which changes the rendered page; the fake
+    reviewer below simulates that by improving its score after rebuilds.
+    """
+
+    def __init__(self, pass_after: int):
+        self.calls = 0
+        self.pass_after = pass_after
+
+    def build(self, *args, **kwargs):
+        self.calls += 1
+        return {"failures": [], "contract_sha256": ("c" if self.calls >= self.pass_after else "d") * 64}
+
+
+class FakeReviewer:
+    """Scores below threshold until the builder has rebuilt `pass_at_calls`
+    times (simulating a conductor fix improving the rendered page)."""
+
+    def __init__(self, pass_at_calls: int, threshold: int = 3):
+        self.pass_at_calls = pass_at_calls
+        self.threshold = threshold
+        self.calls = 0
+
+    def score_page(self, page_png, reference_pngs, row_ids):
+        self.calls += 1
+        score = self.threshold if self.calls >= self.pass_at_calls else 1
+        return {row_ids[0]: {"score": score, "rationale": "ok"}}
+
+
+class FailingReviewer:
+    def score_page(self, page_png, reference_pngs, row_ids):
+        raise RuntimeError("reviewer API down")
+
+
+def test_page_repairs_up_to_three_attempts_then_passes() -> None:
+    from visual_review_loop_v3 import review_page
+
+    builder = FakeBuilder(pass_after=2)
+    result = review_page(
+        builder.build, FakeReviewer(pass_at_calls=2), page_png="x.png",
+        refs=[], row_ids=["r"], max_attempts=3, threshold=3,
+    )
+    assert result["passed"] is True
+    assert builder.calls == 2
+
+
+def test_page_that_never_passes_is_rejected() -> None:
+    from visual_review_loop_v3 import review_page
+
+    builder = FakeBuilder(pass_after=99)
+    result = review_page(
+        builder.build, FakeReviewer(pass_at_calls=99), page_png="x.png",
+        refs=[], row_ids=["r"], max_attempts=3, threshold=3,
+    )
+    assert result["passed"] is False
+    assert result["verdict"] == "rejected"
+    assert result["attempts"] == 3
+
+
+def test_unreviewable_page_is_honest() -> None:
+    from visual_review_loop_v3 import review_page
+
+    result = review_page(
+        FakeBuilder(pass_after=1).build, FailingReviewer(), page_png="x.png",
+        refs=[], row_ids=["r"], max_attempts=3, threshold=3,
+    )
+    assert result["passed"] is False
+    assert result["verdict"] == "unreviewable"

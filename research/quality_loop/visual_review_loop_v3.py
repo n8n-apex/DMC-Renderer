@@ -41,3 +41,59 @@ def retry_transient(
                 return None
             time.sleep(base_delay_s * (2**attempt))
     return None
+
+
+def review_page(
+    build_fn: Callable[..., dict],
+    reviewer: Any,
+    *,
+    page_png: str,
+    refs: list[str],
+    row_ids: list[str],
+    max_attempts: int,
+    threshold: int,
+    conductor: Callable[..., Any] | None = None,
+) -> dict:
+    """Review one page: build -> score -> conductor repair -> rebuild.
+
+    Each attempt is a fresh build via build_fn (a rebuild after a conductor
+    fix). A transient reviewer failure is retried; a page the reviewer cannot
+    score at all is "unreviewable" (honest, never a silent pass). A page that
+    never reaches the threshold after max_attempts is "rejected".
+
+    Returns {"passed": bool, "verdict": str, "attempts": int, "scores": [...]}.
+    """
+    best_scores: list[dict] = []
+    for attempt in range(1, max_attempts + 1):
+        build = build_fn()
+        scores = retry_transient(
+            lambda: reviewer.score_page(page_png, refs, row_ids),
+            attempts=3,
+            base_delay_s=0.0,
+        )
+        if scores is None:
+            return {
+                "passed": False,
+                "verdict": "unreviewable",
+                "attempts": attempt,
+                "scores": best_scores,
+            }
+        best_scores.append(scores)
+        face_scores = [s.get("score", 0) for s in scores.values()]
+        if face_scores and min(face_scores) >= threshold:
+            return {
+                "passed": True,
+                "verdict": "passed",
+                "attempts": attempt,
+                "scores": best_scores,
+            }
+        if conductor is not None:
+            plan = conductor(build)
+            if not plan.get("changed"):
+                break
+    return {
+        "passed": False,
+        "verdict": "rejected",
+        "attempts": max_attempts,
+        "scores": best_scores,
+    }
