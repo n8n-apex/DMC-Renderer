@@ -68,8 +68,8 @@
         "dmc-renderer and preprocessor suites stay green"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": "Real entry point: envelope_for_profile(profile, asset_dir) at calibration_fixtures_v3.py:351. Render proof: build_and_render_v3(env, output_dir=...) then grep report.rendered.html."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G1 CLOSED with rendered proof. Each calibration fixture JSON gained a profile_id (craft-trade->geva, service/medical->aerz, product/christoph->alex, apex/apex-dense->nikl, sparse->geva); envelope_for_profile() and apex_dense_envelope() now set envelope['brand_profile_id']. New test test_brand_profile_fires.py (2 pass). RENDERED PROOF: craft-trade renders ground-mode=role_split/headline-type=sans/belief-treatment=ghost_numeral vs medical-practice cool_light/serif/dark_box - the per-client axes now genuinely fire. Manifest SHA-256 hashes regenerated after fixture edits. dmc 105 pass/4 xfail, preprocessor 731."
     },
     {
       "id": "US-006",

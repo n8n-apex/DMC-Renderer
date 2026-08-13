@@ -48,3 +48,10 @@ Started: 2026-08-13
   - Every older count claim (15/342, 15/352, all-green) is run-date-specific. Never inherit a count; re-run the five standing commands and record new tails.
   - The ledger is the anti-drift record: any future count differing from it is progress (record) or regression (investigate first).
 ---
+## 2026-08-13 - US-005
+- What was implemented: G1 closed. brand_profile_id now flows from every calibration fixture through envelope_for_profile/apex_dense_envelope into the render bundle; rendered data-attributes differ per client.
+- **Learnings for future iterations:**
+  - Any edit to dmc-renderer/fixtures/calibration/*.json requires regenerating manifest.json sha256 hashes (test_manifest_pins_eight_diverse_redacted_fixture_profiles enforces them).
+  - The 5 real brand profiles: geva(role_split/sans/ghost_numeral), aerz(cool_light/serif/dark_box), nikl(tri/sans/connector_spine), alex(saturated_dark_light/sans_allcaps/dark_box), buch(saturated_dark_light/serif/plain_numbered). Map fixture character -> profile deliberately.
+  - Rendered proof: grep report.rendered.html <body> for data-belief-treatment/data-ground-mode/data-headline-type/data-image-modes; two materially different fixtures must differ.
+---
