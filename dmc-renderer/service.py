@@ -683,7 +683,9 @@ try:
                 status_code=500,
                 detail={"code": "release_state_missing"},
             )
-        if release_state not in {"rejected", "draft", "review_candidate", "ship_ready"}:
+        if release_state not in {
+            "rejected", "draft", "review_candidate", "review_required", "ship_ready",
+        }:
             raise HTTPException(
                 status_code=500,
                 detail={"code": "release_state_unknown", "release_state": release_state},
@@ -711,6 +713,27 @@ try:
                     "release_state": release_state,
                     "delivery_pdf_available": False,
                     "failures": result.get("failures", []),
+                    "hashes": hashes,
+                    "gate_report_sha256": gate_report_hash,
+                    "artifact_manifest": artifact_manifest,
+                },
+                headers=provenance_headers,
+            )
+
+        if release_state == "review_required":
+            # The visual review did not pass after all retries. A human must
+            # look at the deck; NO delivery PDF is emitted.
+            return JSONResponse(
+                status_code=202,
+                content={
+                    "release_state": "review_required",
+                    "delivery_pdf_available": False,
+                    "detail": (
+                        "visual review did not pass after all retries; "
+                        "a human must review"
+                    ),
+                    "failures": result.get("failures", []),
+                    "attempt_records": result.get("attempt_records", []),
                     "hashes": hashes,
                     "gate_report_sha256": gate_report_hash,
                     "artifact_manifest": artifact_manifest,

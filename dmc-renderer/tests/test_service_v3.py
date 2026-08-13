@@ -112,3 +112,36 @@ def test_render_v3_rejects_missing_envelope_fields_before_build() -> None:
 
     assert caught.value.status_code == 400
     assert "brand_tokens" in str(caught.value.detail)
+
+
+def test_render_v3_review_required_returns_202_json_no_pdf(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import service as service_module
+
+    monkeypatch.setattr(
+        service_module, "build_and_render_v3",
+        lambda body, **_kwargs: {
+            "release_state": "review_required",
+            "delivery_pdf_bytes": None,
+            "failures": [{"code": "visual_review_rejected"}],
+            "hashes": {
+                "contract": "a" * 64,
+                "composition_policy": "b" * 64,
+                "family_registry": "c" * 64,
+                "build": "d" * 64,
+                "raw_pdf_sha256": "e" * 64,
+            },
+            "face_count": 20,
+            "fragment_count": 19,
+            "physical_pages": 19,
+            "attempt_records": [{"page": 0, "verdict": "rejected"}],
+        },
+    )
+    response = service_module.render_v3_endpoint(envelope())
+    payload = json.loads(response.body)
+    assert response.status_code == 202
+    assert response.headers["content-type"].startswith("application/json")
+    assert b"%PDF" not in response.body
+    assert payload["release_state"] == "review_required"
+    assert payload["attempt_records"][0]["verdict"] == "rejected"
