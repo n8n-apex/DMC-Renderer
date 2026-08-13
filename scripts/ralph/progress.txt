@@ -31,3 +31,14 @@ Started: 2026-08-13
   - The standalone overflow tests use WeasyPrint count_pages, which mis-measures A3 hero spreads on an A4 box. Stamp page_format='a3' in _section for hero pages. The real ship engine is Chromium (deck-level physical==logical).
   - test_render_r2 ground test: the 2026-07-13 contract is light .page transparent + ground on @page a4-portrait via --color-surface. Don't re-assert --color-ground in the light block.
 ---
+## 2026-08-13 - US-003
+- What was implemented: fixed the 9 dmc-renderer v3 failures. Suite now 103 passed / 4 xfailed / 0 failed.
+- Files changed: dmc-renderer/build_v3.py (ReleaseContextV3.allow_synthetic_assets), research/quality_loop/gates/assets_v3.py, research/calibration/render_fixtures.py, dmc-renderer/calibration_fixtures_v3.py (copy), tests, fixtures/calibration/manifest.json, fixtures/v3/valid-20-face.json.
+- **Learnings for future iterations:**
+  - The pixel policy (2.1.0) is CORRECTLY calibrated to Richard's corpus (ink floor 0.1029, ws max 0.7687). Synthetic calibration fixtures genuinely FAIL it because they have no real photos (G24) - this is documented since 08-08, NOT a gate bug. Never 'fix' this by weakening the gate.
+  - The synthetic_placeholder_asset gate fires on any locator containing 'synthetic'/'placeholder'. Calibration builds must pass ReleaseContextV3(allow_synthetic_assets=True); production stays False.
+  - render_fixtures.run_calibration_fixtures now passes release_context to the builder - any fake_builder in tests must accept that kwarg.
+  - ctx.slot_uri reads page['slots'] (not data.slots). Face word counts via PyMuPDF get_text('words') MISS SVG text - the collaboration process steps render as device-svg so their words don't count (face.18 is a documented below-band outlier).
+  - The Aug-11 family-CSS typography rework (stat numerals 40pt/34pt->26pt) measurably lowered ink while staying in corpus bands; anti-regression ink floors pinned to old values go stale and must be re-pinned with a dated note.
+  - The house format model is a4 + a3*9 + a4 = always EVEN faces; a 17-face 'known-failures' fixture is intentionally misallocated (manifest: rejected + face_count_mismatch). Face-allocation tests must skip manifest-declared misallocated fixtures.
+---
