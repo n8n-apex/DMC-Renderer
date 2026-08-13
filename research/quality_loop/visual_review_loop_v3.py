@@ -97,3 +97,66 @@ def review_page(
         "attempts": max_attempts,
         "scores": best_scores,
     }
+
+
+def run_visual_review_loop(
+    build_fn: Callable[..., dict],
+    reviewer: Any,
+    *,
+    page_pngs: list[str],
+    refs: list[str],
+    row_ids: list[str],
+    max_page_attempts: int,
+    threshold: int,
+    whole_deck_pass: bool = True,
+) -> dict:
+    """Build -> review every page -> one whole-deck retry -> decide.
+
+    Per-page attempts first; a failing page is re-reviewed once more in the
+    whole-deck pass (which re-reviews ONLY the failed pages). The result is
+    either review_candidate (all pages pass) or review_required (some page
+    is rejected or unreviewable). NEVER produces a delivery PDF here;
+    ship_ready stays owned by the calibrated human gate.
+
+    Returns {"release_state": str, "delivery_pdf_bytes": None,
+             "attempt_records": list[dict], "whole_deck_passes": int,
+             "page_outcomes": dict[int, dict]}.
+    """
+    attempt_records: list[dict] = []
+    whole_deck_passes = 0
+    page_outcomes: dict[int, dict] = {}
+
+    for idx in range(len(page_pngs)):
+        outcome = review_page(
+            build_fn, reviewer,
+            page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
+            max_attempts=max_page_attempts, threshold=threshold,
+        )
+        page_outcomes[idx] = outcome
+        attempt_records.append({"page": idx, **outcome})
+
+    if whole_deck_pass and any(not o["passed"] for o in page_outcomes.values()):
+        whole_deck_passes += 1
+        for idx, outcome in list(page_outcomes.items()):
+            if outcome["passed"]:
+                continue
+            retried = review_page(
+                build_fn, reviewer,
+                page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
+                max_attempts=max_page_attempts, threshold=threshold,
+            )
+            page_outcomes[idx] = retried
+            attempt_records.append({"page": idx, "whole_deck": True, **retried})
+
+    if all(o["passed"] for o in page_outcomes.values()):
+        release_state = "review_candidate"
+    else:
+        release_state = "review_required"
+
+    return {
+        "release_state": release_state,
+        "delivery_pdf_bytes": None,
+        "attempt_records": attempt_records,
+        "whole_deck_passes": whole_deck_passes,
+        "page_outcomes": page_outcomes,
+    }

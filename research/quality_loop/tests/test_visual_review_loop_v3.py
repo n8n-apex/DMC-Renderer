@@ -119,3 +119,44 @@ def test_unreviewable_page_is_honest() -> None:
     )
     assert result["passed"] is False
     assert result["verdict"] == "unreviewable"
+
+
+class DeckBuilder:
+    def __init__(self, page_outcome: dict):
+        self.page_outcome = page_outcome
+        self.calls = 0
+
+    def build(self, *args, **kwargs):
+        self.calls += 1
+        return {"failures": [], "contract_sha256": "e" * 64}
+
+
+class DeckReviewer:
+    def score_page(self, page_png, refs, row_ids):
+        return {row_ids[0]: {"score": 5, "rationale": "ok"}}
+
+
+def test_whole_deck_pass_runs_once_then_decides() -> None:
+    from visual_review_loop_v3 import run_visual_review_loop
+
+    result = run_visual_review_loop(
+        DeckBuilder({}).build, DeckReviewer(),
+        page_pngs=["p.png"], refs=[], row_ids=["r"],
+        max_page_attempts=1, threshold=6, whole_deck_pass=True,
+    )
+    assert result["release_state"] == "review_required"
+    assert result["delivery_pdf_bytes"] is None
+    assert result["whole_deck_passes"] == 1
+
+
+def test_all_pages_pass_reaches_review_candidate() -> None:
+    from visual_review_loop_v3 import run_visual_review_loop
+
+    result = run_visual_review_loop(
+        DeckBuilder({}).build, DeckReviewer(),
+        page_pngs=["p.png"], refs=[], row_ids=["r"],
+        max_page_attempts=1, threshold=3, whole_deck_pass=True,
+    )
+    assert result["release_state"] == "review_candidate"
+    assert result["delivery_pdf_bytes"] is None
+    assert result["whole_deck_passes"] == 0
