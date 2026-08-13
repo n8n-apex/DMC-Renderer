@@ -233,8 +233,8 @@
         "Renderer guard battery + full renderer suite stay green"
       ],
       "priority": 17,
-      "passes": false,
-      "notes": "Never put a raw hex or client name in a scanned file, including multi-line comments (per regression class from 2026-06-23)."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G15+G16+D4 CLOSED. (1) D4/G16: raw hex fallbacks in dmc-renderer LOGIC (build_live.py brand_hex_* and build_v3.py accent) moved to a named-constant module dmc-renderer/brand_fallbacks.py; the no-literal guard now scans build_live/build_v3/adapter_v3/synthesize_visuals/service.py (render_christoph/render_cover_check are the explicit fixture-by-intent carve-out). Guard 45 pass. (2) G15: _normalize_page_data logs every alias applied (WARNING) and logs unmapped keys at the end, so silent schema drift surfaces in the render log. dmc 124/4xfail, preprocessor 734."
     },
     {
       "id": "US-018",

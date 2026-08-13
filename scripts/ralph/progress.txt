@@ -139,3 +139,10 @@ Started: 2026-08-13
   - Any edit to resolve-schema-node-v5.js re-triggers the 4-place n8n re-hash (contract + export jsCode + export manifest + envelope builder hash). I hit this 3 times now.
   - The em-dash guard scans treatment files; my own new comments must use hyphens (I got caught by my own change).
 ---
+## 2026-08-17 - US-017
+- What was implemented: G15+G16+D4 closed. Fallback hexes -> named constants; guard extended to dmc-renderer; alias logging added.
+- **Learnings for future iterations:**
+  - The no-literal guard scans FULL lines (comments included) for hexes. Moving fallbacks to a named-constant module (brand_fallbacks.py) keeps the guard green - but brand_fallbacks.py itself must NOT be in the scanned set (it holds the hexes by design).
+  - render_christoph.py / render_cover_check.py are the explicit fixture-by-intent carve-out (they hardcode one client for a reproducible render).
+  - Alias logging (WARNING per alias + unmapped-key summary at function end) makes silent schema drift visible in the render log; the known-canonical set must be kept in sync with the renderer's real reads.
+---
