@@ -706,8 +706,12 @@ def _adapt_status_quo(td: TreatmentData, page: dict, data: dict, ctx: RenderCont
 
 
 def _adapt_cta_hard(td: TreatmentData, page: dict, data: dict, ctx: RenderContext) -> TreatmentData:
-    """ST-03 hard CTA (bypass type, handled gracefully): cta from cta_url +
-    cta_text."""
+    """ST-03 hard CTA: cta from cta_url + cta_text.
+
+    NOTE: ST-03 is a BYPASS type (treatment_stylist.BYPASS_ST_TYPES), so the
+    stylist never assigns a treatment to it and this adapter is currently
+    inert in the live path (the legacy st_03 pattern renders the CTA). It is
+    kept as the documented adapter shape for when ST-03 gains a treatment."""
     url = _str(data.get("cta_url"))
     if url:
         td.cta = {"text": _str(data.get("cta_text")), "url": url}

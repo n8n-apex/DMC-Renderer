@@ -89,7 +89,9 @@ check("ST-01 proof_stats filled (from stats)", bool(d01.get("proof_stats")))
 check("ST-01 author.name filled (founder)", (d01.get("author") or {}).get("name") == "Max Muster")
 check("ST-01 title_accent passthrough", d01.get("title_accent") == "zum Risiko")
 check("ST-01 kicker_pills passthrough", d01.get("kicker_pills") == ["Report", "2026"])
-check("ST-01 teaser_items passthrough", bool(d01.get("teaser_items")))
+# teaser_items check removed (L1): the cover teaser rail was removed from the
+# schema (2026-07-16) because it silently clipped; a passthrough check for a
+# key the schema no longer emits is a dead harness assertion.
 
 d05 = by["ST-05"]
 check("ST-05 partners passthrough", d05.get("partners") == ["Cordes Consulting", "Frese Recruiting"])

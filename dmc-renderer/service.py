@@ -255,7 +255,7 @@ def _grade_deck_data(package_dir: Path) -> dict:
         ql = RENDERER_ROOT.parent / "quality_loop"
         if str(ql) not in sys.path:
             sys.path.insert(0, str(ql))
-        from perception import required_slots_missing, _non_numeral_stat_values  # noqa: E402
+        from perception import non_numeral_stat_values, required_slots_missing  # noqa: E402
 
         pkg = json.loads((package_dir / "resolved_package.json").read_text(encoding="utf-8"))
         pages = pkg.get("pages", []) or []
@@ -270,7 +270,7 @@ def _grade_deck_data(package_dir: Path) -> dict:
                 flags_by_owner.setdefault("asset_gen", []).append(msg)
                 needs_photo.append(msg)
                 page_had_flag = True
-            for val in _non_numeral_stat_values(page):
+            for val in non_numeral_stat_values(page):
                 msg = f"p{i} ({page.get('st_type')}) stat value is prose, not a numeral: {val!r}"
                 flags_by_owner.setdefault("writer", []).append(msg)
                 prose_stats.append(msg)
@@ -569,7 +569,10 @@ try:
         except TimeoutError as e:  # noqa: BLE001 - bounded, expected
             raise _http_timeout_error() from e
         except Exception as e:  # noqa: BLE001
-            raise HTTPException(status_code=500, detail=f"render failed: {type(e).__name__}: {e}")
+            # L5: never leak absolute filesystem paths in the response; strip
+            # the message's /path/to tokens before returning.
+            _safe = re.sub(r"(?:/[A-Za-z0-9_.\-]+)+", "…", str(e))
+            raise HTTPException(status_code=500, detail=f"render failed: {type(e).__name__}: {_safe}")
 
         # STRICT ship gate: overflow + content defects are STRUCTURAL corruption,
         # always computed on the shipped render. The reference-QC hard-fails
