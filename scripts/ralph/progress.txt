@@ -130,3 +130,12 @@ Started: 2026-08-13
   - Dropping a claimed point below a series' minimum (2 for a trend) must drop the WHOLE device - a half-empty chart is worse than none.
   - kz_donuts must dedup against _stat_keys() as well as _viz_keys(), or a writer stat + kennzahlen with the same figure render twice.
 ---
+## 2026-08-13 - US-016
+- What was implemented: G13+G14+G22 closed.
+- **Learnings for future iterations:**
+  - ST-02 ausblick_punkte are TAKEAWAYS, not the target audience. They now map to `takeaways` / 'Was Sie mitnehmen'; a real zielgruppe stays distinct.
+  - The cost-of-inaction (kosten_des_nichtstuns) was legacy-pattern-only but ST-FAZIT is ALWAYS treated - map it onto a stat in _adapt_fazit to make it render.
+  - _fix_umlauts_deep exempts identity fields (name/role/funktion/company) - a curated name like 'Waehrend' must never be rewritten.
+  - Any edit to resolve-schema-node-v5.js re-triggers the 4-place n8n re-hash (contract + export jsCode + export manifest + envelope builder hash). I hit this 3 times now.
+  - The em-dash guard scans treatment files; my own new comments must use hyphens (I got caught by my own change).
+---

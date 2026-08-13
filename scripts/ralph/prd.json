@@ -219,8 +219,8 @@
         "New tests for each pass; schema node ST-02 gains the takeaways key"
       ],
       "priority": 16,
-      "passes": false,
-      "notes": "build_live.py:232-233, 173-184, 639; patterns/st_02.py:54."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G13+G14+G22 CLOSED. G13: ST-02 ausblick_punkte now maps to `takeaways` (rendered under 'Was Sie mitnehmen'), no longer renamed to zielgruppe/'Zielgruppe des Reports'; a real zielgruppe stays distinct. G14: _adapt_fazit maps kosten_des_nichtstuns onto a stat so the cost-of-inaction renders on the TREATED summary (was legacy-pattern-only, never rendered live). G22: _fix_umlauts_deep exempts identity fields (name/role/funktion/company) - a curated 'Waehrend' survives. Schema node ST-02 desc updated; n8n contract + export re-hashed (editing the paste target cascades 4 places). New tests test_semantic_mislabels.py 4 pass. Renderer 398/0 (fixed an em dash in my own comment), preprocessor 734, dmc 124/4xfail, docs/n8n 63."
     },
     {
       "id": "US-017",
