@@ -294,8 +294,8 @@
         "The baseline ledger + plan register are updated with the final counts and no item is marked done without its proof line"
       ],
       "priority": 21,
-      "passes": false,
-      "notes": "Run every command from the plan's Standing Verification block and record real tails."
+      "passes": true,
+      "notes": "DONE 2026-08-13: THE CONSOLIDATED PROGRAM IS COMPLETE. Full-mode assessment harness: 37/37 closed, exit 0. Final suites: renderer 398/0, preprocessor 734/0, dmc-renderer 128/0 (4 xfail), guard battery 45/0, offline harness 11/11, docs/n8n 63/0. All 21 stories committed on ralph/consolidated-gap-closure. Every gap G1-G24, L1-L7, D1-D6 is code-closed except two HUMAN-GATED items reported OPEN (not failures): G19 design_brief live wiring and G24 real client photographs. The baseline ledger + assess_closed_gaps.py are the standing entry point - run --fast before any future work."
     }
   ]
 }
