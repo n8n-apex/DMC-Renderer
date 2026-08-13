@@ -151,7 +151,12 @@ def _pdf_page_facts(pdf_path: Path) -> tuple[PdfPageFact, ...]:
 
 
 def _accent_rgb(envelope: dict) -> tuple[int, int, int]:
-    value = str((envelope.get("brand_tokens") or {}).get("brand_accent") or "#c94e2c")
+    import brand_fallbacks as _fallbacks
+
+    value = str(
+        (envelope.get("brand_tokens") or {}).get("brand_accent")
+        or _fallbacks.FALLBACK_V3_ACCENT
+    )
     if len(value) == 7 and value.startswith("#"):
         try:
             return tuple(int(value[index : index + 2], 16) for index in (1, 3, 5))

@@ -12,12 +12,17 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import re
 import synthesize_visuals
 import sys
 import tempfile
 from pathlib import Path
+
+import brand_fallbacks as _fallbacks  # noqa: E402
+
+log = logging.getLogger("dmc.build_live")
 
 # Env-overridable so the SAME code runs locally (default: this checkout) and in
 # the container (Dockerfile sets DMC_PREPROC_ROOT=/app/research/preprocessor).
@@ -213,9 +218,17 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
         # ("von 0 auf 12") must not silently drop the device.
         return v is not None and str(v).strip() != ""
 
+    # G15: every alias application is logged (WARNING) so silent schema drift
+    # surfaces in the render log instead of hiding. A writer key mapped to the
+    # canonical render-layer name is recorded; keys that map to nothing are
+    # logged at the end of the function.
+    def _alias(source: str, target: str, value) -> None:
+        log.warning("alias: %s.%s -> %s (value %r)", st_type, source, target, value)
+
     # canonical page title: the writer's `headline` (never overwrite a real title).
     if not d.get("title") and d.get("headline"):
         d["title"] = d["headline"]
+        _alias("headline", "title", d["headline"])
 
     # --- christoph-winter DIALECT -> canonical --------------------------------
     # This writer emits titel/untertitel/einleitung/schmerzpunkte/irrtuemer/
@@ -224,11 +237,14 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
     # patterns' data.get keys). Grounded renames only; nothing invented.
     if d.get("titel") and not d.get("title"):
         d["title"] = d["titel"]
+        _alias("titel", "title", d["titel"])
     if d.get("untertitel") and not d.get("subtitle"):
         d["subtitle"] = d["untertitel"]
+        _alias("untertitel", "subtitle", d["untertitel"])
 
     if st_type == "ST-01" and d.get("kicker") and not d.get("audience"):
         d["audience"] = d["kicker"]
+        _alias("kicker", "audience", d["kicker"])
     elif st_type == "ST-02":
         # G13: ausblick_punkte are the reader's TAKEAWAYS, not the target
         # audience. They were renamed to `zielgruppe` and labelled "Zielgruppe
@@ -238,10 +254,12 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
         d["body"] = _join(d.get("body"), d.get("einleitung"), d.get("abschluss"))
         if d.get("ausblick_punkte") and not d.get("takeaways"):
             d["takeaways"] = list(d["ausblick_punkte"])
+            _alias("ausblick_punkte", "takeaways", d["takeaways"])
     elif st_type == "ST-05":
         d["body"] = _join(d.get("body"), d.get("einleitung"), d.get("angebot_text"))
         if d.get("vertrauenspunkte") and not d.get("credibility_points"):
             d["credibility_points"] = list(d["vertrauenspunkte"])
+            _alias("vertrauenspunkte", "credibility_points", d["credibility_points"])
     elif st_type == "ST-09":
         d["body"] = _join(d.get("body"), d.get("einleitung"), d.get("ueberleitung"))
         if d.get("schmerzpunkte") and not d.get("symptoms"):
@@ -644,6 +662,30 @@ def _normalize_page_data(st_type: str, data: dict) -> dict:
     if _roles:
         d["viz"] = (d.get("viz") or []) + _roles
 
+    # G15: log keys the renderer has no reader for, so schema drift surfaces.
+    _KNOWN_CANONICAL = {
+        "title", "subtitle", "body", "takeaways", "zielgruppe", "kicker",
+        "audience", "stats", "viz", "diagram", "credibility_points",
+        "symptoms", "beliefs", "steps", "headline", "titel", "untertitel",
+        "einleitung", "abschluss", "angebot_text", "ausblick_punkte",
+        "vertrauenspunkte", "irrtuemer", "schmerzpunkte", "schritte",
+        "kennzahlen", "fakten", "verlauf", "rechnung", "kategorien",
+        "zusammensetzung", "entitaeten", "vorher_nachher", "anteil",
+        "kostenrechnung", "bildwunsch", "kunde", "author", "ergebnis_metrics",
+        "ergebnis_text", "ausgangsproblem", "wendepunkt", "loesung",
+        "kurzportrait", "pullquote", "pullquote_attribution", "partners",
+        "proof_stats", "teaser_items", "kicker_pills", "title_accent",
+        "compare", "these", "kernbotschaft", "kosten_des_nichtstuns",
+        "zusammenfassung", "faqs", "frage", "antwort", "cta_url", "cta_text",
+        "button_text", "url", "ablauf_text", "intro", "erklaerung", "bezug",
+        "kernaussage", "quelle", "prozent", "wert", "label", "von", "nach",
+    }
+    unmapped = sorted(
+        k for k in d if k not in _KNOWN_CANONICAL
+    )
+    if unmapped:
+        log.warning("unmapped keys on %s: %s", st_type, ", ".join(unmapped))
+
     # last: restore ASCII-transliterated umlauts in the writer's copy (values
     # only; keys and URLs stay byte-exact).
     return _fix_umlauts_deep(d)
@@ -828,9 +870,12 @@ def envelope_to_render_request(envelope: dict) -> RenderRequest:
         name=bt.get("founder_full_name") or company,
         company=company,
         website_url=website,
-        brand_hex_dark=bt.get("brand_neutral_dark") or bt.get("brand_primary") or "#1a1a2e",
-        brand_hex_light=bt.get("brand_neutral_light") or "#f5f5f7",
-        brand_hex_accent=bt.get("brand_accent") or "#e94560",
+        brand_hex_dark=(
+            bt.get("brand_neutral_dark") or bt.get("brand_primary")
+            or _fallbacks.FALLBACK_BRAND_HEX_DARK
+        ),
+        brand_hex_light=bt.get("brand_neutral_light") or _fallbacks.FALLBACK_BRAND_HEX_LIGHT,
+        brand_hex_accent=bt.get("brand_accent") or _fallbacks.FALLBACK_BRAND_HEX_ACCENT,
         logo_url=bt.get("logo_dark_url") or bt.get("logo_light_url"),
         brand_profile=BrandProfile(
             brand_primary=bt.get("brand_primary"),
