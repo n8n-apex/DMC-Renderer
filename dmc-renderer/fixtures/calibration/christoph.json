@@ -10,5 +10,6 @@
   "visual_brand": "christoph-red-dark",
   "redaction_note": "Names and commercial details are replaced by structural descriptors.",
   "expected_face_count": 17,
-  "expected_case_count": 5
+  "expected_case_count": 5,
+  "profile_id": "alex"
 }

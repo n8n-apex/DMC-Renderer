@@ -5,7 +5,7 @@
     {
       "fixture_id": "calibration.christoph-redacted",
       "path": "christoph.json",
-      "sha256": "dde462cac4d6f07d7071fe764d04606a8eabc8750e97139f6ce41582b56e9c7d",
+      "sha256": "c95b79e03eef22e0e77ce152b7fc1f1eda73ac84875d4ce0f4a2d9eee3905f6f",
       "consent_status": "internal_redacted_evaluation",
       "redaction_status": "redacted",
       "expected_product_profile": "dmc_house_20_face",
@@ -20,7 +20,7 @@
     {
       "fixture_id": "calibration.apex-synthetic",
       "path": "apex.json",
-      "sha256": "2aafaa5d92e735c0af6084ea39a2207c980bab5e05459a2fad75a1b82e517598",
+      "sha256": "f049066fd0ba897453d014953d496d69bdcb9f5ed25f1ff4247f44bb90118fd9",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -36,7 +36,7 @@
     {
       "fixture_id": "calibration.apex-dense",
       "path": "apex-dense.json",
-      "sha256": "9be7485a7b2c011698f6a106d5641d966e9058fbdada1473eb1cf1861eae80a9",
+      "sha256": "c398017c2b59fe21da714a9b006927ddeccdd843b6f9e3b937db417a24590038",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -52,7 +52,7 @@
     {
       "fixture_id": "calibration.service-business",
       "path": "service-business.json",
-      "sha256": "4de81f7226073b75010527aca749a7f671c1e23e944092a491cf455259ade1ed",
+      "sha256": "2c24e8d899d42b7a9eb0e505fc2d159fca4aaedd95653b83c89a163d130dbe11",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -68,7 +68,7 @@
     {
       "fixture_id": "calibration.product-business",
       "path": "product-business.json",
-      "sha256": "70ee848b19fc588ed7c577162f709c0309bd752b7d8b4c5e06a081c6e61093b2",
+      "sha256": "9fc1d9c4d022e24e45c45ff826789185ce64bfb013e9739af548014439f117ca",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -84,7 +84,7 @@
     {
       "fixture_id": "calibration.sparse-evidence",
       "path": "sparse-evidence.json",
-      "sha256": "ca98efd0da8c912e1bf85fc8edca6281c2ff7cd89a38945da2bd069fdd14e6c0",
+      "sha256": "4977daf30b5cf081c2aef1d76327b336d508b9dee2cd5a8e2603ae5fc265edfb",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -96,7 +96,7 @@
     {
       "fixture_id": "calibration.craft-trade",
       "path": "craft-trade.json",
-      "sha256": "2107409b2f47cc176d730bcadb80f33d0216a34caabf5291670eaa4ae0f445b5",
+      "sha256": "69f8f51595c1cf55538c457583a206c88820bba49b4218e9f4cf8d6d37167c2d",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",
@@ -112,7 +112,7 @@
     {
       "fixture_id": "calibration.medical-practice",
       "path": "medical-practice.json",
-      "sha256": "6ffd1e14e060de26905efd137f6f9178c501af36c488a0d08d38d813fdc367c3",
+      "sha256": "38d2acfe7fd43748e7c099e78fdc9303a92f4429f7d39661e098dadb8cf136c0",
       "consent_status": "synthetic",
       "redaction_status": "not_applicable",
       "expected_product_profile": "dmc_house_20_face",

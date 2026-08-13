@@ -8,5 +8,9 @@
   "asset_availability": "context-only-no-proof",
   "evidence_density": "sparse-unverified",
   "visual_brand": "sparse-forest-cream",
-  "expected_missing_semantic_classes": ["identity", "proof"]
+  "expected_missing_semantic_classes": [
+    "identity",
+    "proof"
+  ],
+  "profile_id": "geva"
 }

@@ -369,6 +369,11 @@ def envelope_for_profile(profile: dict, asset_dir: Path) -> dict:
             "calibration_tone": profile["tone"],
         }
     )
+    # The client profile id reaches the render bundle (G1): without it every
+    # client renders on default axes and the per-client treatment rows in
+    # richard-grammar-v2 never fire. Each calibration profile declares a real
+    # brand-profile id in its fixture JSON.
+    envelope["brand_profile_id"] = profile.get("profile_id")
     envelope["editorial_brief_v3"]["design_features"] = _design_features_for_profile(
         profile
     )
@@ -1868,6 +1873,8 @@ def apex_dense_envelope(profile: dict, asset_dir: Path) -> dict:
             "calibration_visual_brand": profile["visual_brand"],
             "calibration_tone": profile["tone"],
         },
+        # The client profile id reaches the render bundle (G1).
+        "brand_profile_id": profile.get("profile_id"),
         "sources": [source],
         "claims": claims,
         "source_appendix_v3": {

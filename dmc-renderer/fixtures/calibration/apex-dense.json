@@ -8,5 +8,6 @@
   "asset_availability": "complete-identity-proof-context",
   "evidence_density": "dense-grounded",
   "visual_brand": "apex-blau-tinte",
-  "reference_family": "apex"
+  "reference_family": "apex",
+  "profile_id": "nikl"
 }
