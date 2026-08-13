@@ -123,3 +123,10 @@ Started: 2026-08-13
   - digit_key dedup: currency must be its own unit class ('40 EUR' != '40'), and units must stem-normalise ('Std.'/'Stunden' -> collide) or dedup is evaded by spelling.
   - The no-fabrication gate is now strictly stronger: fabricated figures fail on decimal or unit, not just the digit.
 ---
+## 2026-08-13 - US-015
+- What was implemented: G11+G12 closed. One-figure-one-device binds across all role branches; kz_donuts checks stats too.
+- **Learnings for future iterations:**
+  - _role_devices had claimed-check ONLY on fakten; every other role branch re-emitted claimed figures. Filter each branch's figures against `claimed` (the digit-key set).
+  - Dropping a claimed point below a series' minimum (2 for a trend) must drop the WHOLE device - a half-empty chart is worse than none.
+  - kz_donuts must dedup against _stat_keys() as well as _viz_keys(), or a writer stat + kennzahlen with the same figure render twice.
+---

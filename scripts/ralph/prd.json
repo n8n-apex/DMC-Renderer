@@ -205,8 +205,8 @@
         "Preprocessor suite stays green"
       ],
       "priority": 15,
-      "passes": false,
-      "notes": "build_live.py _role_devices :672-769, kz_donuts :506-522."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G11+G12 CLOSED. _role_devices now filters EVERY role branch (verlauf, rechnung, kategorien, zusammensetzung, entitaeten) against the claimed digit-key set - not just fakten. A claimed figure is never re-emitted; a series reduced below 2 points drops the chart entirely (never a half-empty device). kz_donuts dedups against _viz_keys() | _stat_keys() (was _viz_keys() only) so a writer stat and a kennzahlen with the same figure never render as BOTH ring and stat. New tests test_one_figure_one_device.py 3 pass. dmc 120/4xfail."
     },
     {
       "id": "US-016",
