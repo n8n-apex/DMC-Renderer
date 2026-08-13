@@ -91,3 +91,21 @@ Verified 2026-08-13: **35/37 closed (fast), exit 0**; only G19 + G24 OPEN
 (human-gated). The harness is also wired into `scripts/smoke_v3_container.sh`.
 The full mode (`assess_closed_gaps.py` without `--fast`) additionally runs the
 G2 renderer suite and D2 dmc-renderer suite to 0 failures (~11 min).
+
+## Final state (US-021, 2026-08-13 — the consolidated program is complete)
+
+Full-mode assessment harness: **37/37 closed, exit 0** (G19/G24 reported OPEN,
+human-gated, not failures). Final suite counts:
+
+| Suite | Result |
+|---|---|
+| Renderer | **398 passed / 0 failed** / 1 skipped / 5 xfailed |
+| Preprocessor | **734 passed / 0 failed** |
+| dmc-renderer | **128 passed / 0 failed** / 4 xfailed |
+| Guard battery | **45 passed / 0 failed** |
+| Offline contract harness | **11/11 passed** |
+| docs/n8n | **63 passed / 0 failed** |
+
+Every gap in the register (G1–G24, L1–L7, D1–D6) is code-closed except the two
+human-gated items: **G19** (wire design_brief into the live fal path) and
+**G24** (real client photographs). Both are owner inputs, not code.
