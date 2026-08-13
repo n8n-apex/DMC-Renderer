@@ -1,0 +1,13 @@
+# Ralph Progress Log
+Started: 2026-08-13
+
+## Codebase Patterns
+- Three separate venvs: renderer + preprocessor + dmc-renderer (uses renderer venv). Never mix.
+- `DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib` required for Chromium/WeasyPrint on macOS.
+- No-fabrication rule: a device figure must appear verbatim in that page's own copy; `viz` is excluded from evidence.
+- No client literals/hex/em-dashes in templates/styles/patterns/components/dmc-renderer LOGIC; fixtures only.
+- The registry `research/composition_registry/families/dmc-v1.json` is at version 1.7.0; tests that hardcode family versions drift (G2).
+- `calibration_fixtures_v3.py::envelope_for_profile(profile, asset_dir)` at :351 is the real envelope entry point; profile table lives in `dmc-renderer/fixtures/calibration/*.json`.
+- The deck is ONE flowing HTML document: a layout change that grows one page can cascade to +6 spill pages. Verify physical==logical on report_print.pdf.
+- This repo is now a git repo (initialized 2026-08-13 for ralph). Older docs saying "NOT a git repo" are stale.
+---

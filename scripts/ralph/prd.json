@@ -1,0 +1,301 @@
+{
+  "project": "DMC-Report-Generator",
+  "branchName": "ralph/consolidated-gap-closure",
+  "description": "Close every verified gap in the 2026-08-13 audit (G1-G24, L1-L7, D1-D6) in dependency order: P0 suites truth, P1 client variation fires, P2 live-path rewiring, P3 service hardening, P4 grounding, P5 dead code, P6 assessment harness.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Rebase v3 renderer tests off the drifted family versions (G2)",
+      "description": "The registry is now 1.7.0 with family versions 1.3.0-1.6.0, but test_render_v3_contract.py, test_semantic_data_viz.py, test_family_slices_distinctness.py, and test_family_visual_distinctness.py hardcode family version 1.1.0, causing 28 'unknown_family' ContractLoadFailure errors.",
+      "acceptanceCriteria": [
+        "All stale '1.1.0' family_version literals in research/v7-renderer/tests/test_render_v3_contract.py, test_semantic_data_viz.py, test_family_slices_distinctness.py, test_family_visual_distinctness.py updated to the real version from research/composition_registry/families/dmc-v1.json",
+        "pytest research/v7-renderer/tests/test_render_v3_contract.py tests/test_semantic_data_viz.py tests/test_family_slices_distinctness.py tests/test_family_visual_distinctness.py passes (0 failures)",
+        "No test was weakened to pass; only stale version literals were corrected"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Verify each family's real version via: python3 -c \"import json;d=json.load(open('research/composition_registry/families/dmc-v1.json'));print({f['family_id']:f['version'] for f in d['families']})\""
+    },
+    {
+      "id": "US-002",
+      "title": "Realign the 15 pre-existing fixture-drift tests to the current apex fixture (G2)",
+      "description": "test_st07a_fill_variant.py (11 failures) and test_render_r2.py (4 failures) assert old fixture reality (Martina Ammon, 1_founder.png, cs-chart-svg, pre-2026-07-13 light-ground contract) after the apex case studies were replaced with GoldmanTax.",
+      "acceptanceCriteria": [
+        "test_st07a_fill_variant.py and test_render_r2.py pass with assertions updated to current fixture reality (GoldmanTax, renamed assets, the 2026-07-13 full-sheet @page ground contract)",
+        "No guard or production code was weakened to pass; the stale side (test or fixture expectation) was corrected",
+        "Full research/v7-renderer/tests/ suite has 0 failures"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "For test_light_page_ground_is_color_ground_not_wash: the 2026-07-13 contract moved light grounds to the full sheet via @page with .page transparent; assert THAT contract."
+    },
+    {
+      "id": "US-003",
+      "title": "Fix the 9 dmc-renderer v3 test failures (G2, D2)",
+      "description": "dmc-renderer suite is 98 passed / 9 FAILED: fixture-recipe drift (christoph-known-failures allocates 17 faces but the test expects 20; apex.json reaches rejected not review_candidate) plus assumptions about the pre-spread format model.",
+      "acceptanceCriteria": [
+        "dmc-renderer/tests/ passes 0 failures (pytest dmc-renderer/tests/ -q)",
+        "christoph-known-failures test asserts the recipe's real 17-face allocation and that it is BLOCKED (its purpose is a wrong count)",
+        "apex.json rejection reason determined: either a real hard failure fixed in code, or a stale expectation fixed in the test - never a weakened gate",
+        "V3-MIGRATION-READINESS-v2.md and HARDENING-PROGRESS-2026-08-05.md get a dated supersede banner pointing to the baseline ledger"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Run from dmc-renderer/ with DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib and the v7-renderer venv python."
+    },
+    {
+      "id": "US-004",
+      "title": "Write the honest baseline ledger (D1)",
+      "description": "Every doc claims a different test count (15/342, 15/352, all-green). Create a single authoritative ledger with the real post-fix numbers and banner the stale docs.",
+      "acceptanceCriteria": [
+        "docs/phase-zero/BASELINE-LEDGER-2026-08-13.md exists with the real tail lines of the 5 standing verification commands",
+        "CODEX-HANDOFF.md gets a dated supersede note: its 15-failed/342-passed claim is stale",
+        "The ledger explicitly states all prior count claims are superseded by this file"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "Commands: renderer suite, preprocessor suite (own venv), dmc-renderer suite, guard battery, verify_contract_fixes.py."
+    },
+    {
+      "id": "US-005",
+      "title": "Wire brand_profile_id through calibration fixtures so client variation fires (G1, D3)",
+      "description": "build_v3.py:546 reads envelope.brand_profile_id but no calibration fixture sets it, so every client renders on default axes (the owner's #1 complaint). The 5 profiles (geva, aerz, nikl, alex, buch) in tokens/brand-profiles.json are unreachable.",
+      "acceptanceCriteria": [
+        "Each fixture JSON in dmc-renderer/fixtures/calibration/*.json gains a profile_id key mapping to one of the 5 real profiles",
+        "envelope_for_profile() and apex_dense_envelope() in calibration_fixtures_v3.py set envelope['brand_profile_id'] = profile['profile_id']",
+        "New test dmc-renderer/tests/test_brand_profile_fires.py passes: at least 2 distinct profile_ids across fixtures; declared profile resolves and emits data_attributes()",
+        "RENDERED PROOF: rendering two materially different fixtures produces DIFFERENT data-belief-treatment/data-image-modes attributes in report.rendered.html",
+        "dmc-renderer and preprocessor suites stay green"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": "Real entry point: envelope_for_profile(profile, asset_dir) at calibration_fixtures_v3.py:351. Render proof: build_and_render_v3(env, output_dir=...) then grep report.rendered.html."
+    },
+    {
+      "id": "US-006",
+      "title": "Make plan_social run on every live render (G3, G19)",
+      "description": "build_live.py:1138 calls route_package(pkg, manifest=None) so plan_social NEVER runs live; the except at :1146 swallows all errors as 'skipped offline' and also drops dark-divider cadence + plan_diagrams. design_brief is never populated so fal prompts default.",
+      "acceptanceCriteria": [
+        "build_live.py gains _build_social_manifest() that derives a manifest from <client_dir>/ig/ and passes it to route_package(manifest=...)",
+        "The route_package except block only logs 'skipped offline' when no assets exist; any OTHER exception propagates or is logged at ERROR and surfaced",
+        "design_brief is set on ClientInput from the envelope when present",
+        "New test dmc-renderer/tests/test_plan_social_live.py passes",
+        "A christoph render shows a social binding (testimonial/breather/phone) on page pixels"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": "The IG asset pool + asset_manifest.json pattern proven in fixtures/apex/."
+    },
+    {
+      "id": "US-007",
+      "title": "Restore the copy-to-device mapping in v3 (G4)",
+      "description": "The v3 pipeline reads ZERO of the writer's 11 visual keys (kennzahlen, fakten, vorher_nachher, anteil, kostenrechnung, rechnung, kategorien, zusammensetzung, verlauf, entitaeten, bildwunsch). v2 maps them; v3 dropped the layer.",
+      "acceptanceCriteria": [
+        "New module research/preprocessor/stages/visual_key_mapping_v3.py with pure map_visual_keys_to_elements(key, data) mapping all 11 keys to render_contract element kinds",
+        "New test research/preprocessor/tests/test_visual_key_mapping_v3.py passes: every key maps to a typed element; figures remain verbatim (no invented numbers)",
+        "Wired into materialize_render_contract_v3 or plan_compositions_v3 so real envelopes flow",
+        "Rendered proof: a fixture with a fakten row renders an icon-stat row in the PDF",
+        "preprocessor and v7-renderer suites stay green"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": "Port the v2 _role_devices logic + the ROLE-DEVICE-CONTRACT table (docs/ROLE-DEVICE-CONTRACT.md). Never fabricate: printed value = the key's figure verbatim."
+    },
+    {
+      "id": "US-008",
+      "title": "Emit kunde.name and kunde.company_url (G5)",
+      "description": "resolve-schema-node-v5.js defines kunde with only initials+funktion (unresolved VERIFY comments), but st_07a.py:278 and treatment_engine.py:569 read name/company_url. Every v5-written case study renders an empty person block.",
+      "acceptanceCriteria": [
+        "resolve-schema-node-v5.js kunde fields gain name (max 60) and company_url (max 120); the two VERIFY hedges are resolved",
+        "build_live.py carries kunde intact through _normalize_page_data for ST-07A",
+        "verify_contract_fixes.py extended with a kunde.name/company_url passthrough check and runs 10/10 + new checks green",
+        "christoph render shows customer name + URL in the case-study person block"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": "The adapter does not strip unknown keys; verify kunde survives the ST-07A branch at build_live.py:333-350."
+    },
+    {
+      "id": "US-009",
+      "title": "Add ST-08 to the n8n schema so it cannot fatal the workflow (G6)",
+      "description": "patterns/st_08.py exists in the renderer but resolve-schema-node-v5.js has no ST-08 entry, and resolveSchemaItems throws on unknown ST types.",
+      "acceptanceCriteria": [
+        "resolve-schema-node-v5.js gains an ST-08 entry (headline, intro, qa_pairs[{frage,antwort}]) matching what st_08.py reads",
+        "The docs/n8n schema-node JS test harness resolves ST-08 without throwing"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": "Read research/v7-renderer/patterns/st_08.py first to match exact key names."
+    },
+    {
+      "id": "US-010",
+      "title": "Kill the invisible fazit_background spend (G7)",
+      "description": "generate_assets.py:71-75 downloads/generates the ST-FAZIT background but no pattern or treatment reads it - a paid invisible asset per render.",
+      "acceptanceCriteria": [
+        "Either st_fazit.py resolves the page's fazit_background asset as its ground (mirroring st_31.py's _PHOTO_GROUND_TYPES) OR the slot is removed from generate_assets",
+        "ST-FAZIT page renders with the ground OR no fal call fires for it",
+        "Renderer suite stays green"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": "Prefer wiring it - the ST-FAZIT close is a designed dark page and a real ground improves it."
+    },
+    {
+      "id": "US-011",
+      "title": "Authenticate all render endpoints (G8)",
+      "description": "service.py has no auth on /render, /render-v3, /render-legacy-v2 - anyone reaching the port can spend fal/OpenRouter credits.",
+      "acceptanceCriteria": [
+        "A middleware requires Authorization: Bearer ${RENDERER_SHARED_SECRET} on the 3 render routes (401 otherwise), exempting /health and /health/v3",
+        "The secret is read from os.environ with the _env_or_dotenv fallback pattern (build_live.py:82-97)",
+        "test_service_v3.py gains an unauthenticated-401 case and an authenticated-200 case",
+        "scripts/smoke_v3_container.sh sets the env var"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": "Never write or echo the key value."
+    },
+    {
+      "id": "US-012",
+      "title": "Enforce a real end-to-end timeout (G9, G21)",
+      "description": "The '120s end-to-end hard cap' is fiction; service.py:461 is a sync def with no deadline. n8n kills mid-render with no artifact.",
+      "acceptanceCriteria": [
+        "The render endpoint enforces a hard timeout (asyncio.wait_for default 120s, or a watchdog returning 504/422 on expiry)",
+        "A test with a monkeypatched slow build verifies the timeout fires instead of a hung worker",
+        "ARCHITECTURE.md and CACHE_STRATEGY.md state the REAL timeout policy"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": "Also bound the fal/LLM stages so N parallel calls cannot exceed the cap."
+    },
+    {
+      "id": "US-013",
+      "title": "Restore deterministic output (G10, D5)",
+      "description": "assemble_package.py:333 embeds datetime.now() in every package; the Chromium path dropped the PDF timestamp seed, so same-input-renders-twice no longer gives byte-identical output.",
+      "acceptanceCriteria": [
+        "assemble_package.py derives generated_at deterministically from the report id (or takes it as an explicit parameter)",
+        "The PDF creation timestamp is re-seeded deterministically from report_id in the Chromium path",
+        "A test renders the same fixture twice and compares package + PDF bytes (only the documented font-subset delta may differ)",
+        "ARCHITECTURE.md:13,31 gets a dated supersede banner"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": "Use fitz/pikepdf to stamp the trailer deterministically if Chromium cannot be controlled."
+    },
+    {
+      "id": "US-014",
+      "title": "Fix the grounding digit-collapse and label/unit gaps (G17)",
+      "description": "synthesize_visuals _digit_tokens strips commas/dots so '12,5' grounds '125'; _ground_device checks digits only, never label/unit; digit_key currency unit is empty so '40 EUR' == '40' collide and '2 Std.' vs '2 Stunden' evade dedup.",
+      "acceptanceCriteria": [
+        "New test dmc-renderer/tests/test_grounding_decimal_and_units.py passes: '12,5' does not ground '125'; a device swapping unit is rejected",
+        "_digit_tokens keeps the decimal separator significant; _ground_device requires label/unit tokens in the copy",
+        "digit_key normalizes unit spellings (currency unit not empty; Std/Stunden unified)",
+        "Existing synthesize_visuals tests stay green"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": "Never weaken the no-fabrication rule; this CLOSES a hole that let a wrong figure pass."
+    },
+    {
+      "id": "US-015",
+      "title": "Bind one-figure-one-device across ALL role devices (G11, G12)",
+      "description": "_role_devices binds the claimed set only for fakten; verlauf/rechnung/kategorien/zusammensetzung/entitaeten never check it, and kz_donuts dedups against _viz_keys not _stat_keys, so a figure renders twice.",
+      "acceptanceCriteria": [
+        "New tests: a figure already claimed by a donut does not re-appear in a verlauf/rechnung device; a figure in a stats rail does not also become a kz_donuts donut",
+        "The claimed set binds across all role branches; kz_donuts checks _stat_keys() too",
+        "Preprocessor suite stays green"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": "build_live.py _role_devices :672-769, kz_donuts :506-522."
+    },
+    {
+      "id": "US-016",
+      "title": "Fix semantic mislabels: takeaways, cost-of-inaction, umlaut rewrite (G13, G14, G22)",
+      "description": "ausblick_punkte is renamed to zielgruppe (takeaways labeled 'Zielgruppe des Reports'); ST-FAZIT kosten_des_nichtstuns never renders because ST-FAZIT is always treated; _fix_umlauts_deep rewrites author.name/kunde.name corrupting legit 'ue' patterns.",
+      "acceptanceCriteria": [
+        "ST-02 takeaways render under a correct label (e.g. 'Was Sie mitnehmen'), distinct from the real zielgruppe field",
+        "ST-FAZIT with kosten_des_nichtstuns renders the cost block in the treated path",
+        "_fix_umlauts_deep is applied only to prose fields, never author.name/kunde.name",
+        "New tests for each pass; schema node ST-02 gains the takeaways key"
+      ],
+      "priority": 16,
+      "passes": false,
+      "notes": "build_live.py:232-233, 173-184, 639; patterns/st_02.py:54."
+    },
+    {
+      "id": "US-017",
+      "title": "Extend the no-hex guard to dmc-renderer and log silent aliases (G15, G16, D4)",
+      "description": "The no-literals guard only scans research/v7-renderer, so dmc-renderer/build_live.py:788-790 and build_v3.py:148 hardcoded hex fallbacks are unguarded; _normalize_page_data maps ~30 aliases with zero logging so unmapped keys pass silently.",
+      "acceptanceCriteria": [
+        "test_no_literals_in_architecture.py extended to scan dmc-renderer/*.py (excluding the harness scripts render_christoph.py/render_cover_check.py which are moved to a fixtures-style allowlist or fixtures dir)",
+        "The hex fallbacks are replaced with named constants and the guard passes",
+        "_normalize_page_data logs (WARNING) every alias applied and every unmapped key",
+        "Renderer guard battery + full renderer suite stay green"
+      ],
+      "priority": 17,
+      "passes": false,
+      "notes": "Never put a raw hex or client name in a scanned file, including multi-line comments (per regression class from 2026-06-23)."
+    },
+    {
+      "id": "US-018",
+      "title": "Scene filter, page-count snap, layout-variant single source (G18, G20, G23)",
+      "description": "treatment_engine._scene_uri filters status=='generated' so downloaded client scenes never paint; page_count_target snapping is silent; ST-07B layout_variant=fill has three sources of truth.",
+      "acceptanceCriteria": [
+        "_scene_uri accepts status in {'generated','downloaded'} so client-supplied scenes paint on ST-09",
+        "Page-count snap (17->16, 21->20) is surfaced in the response/headers",
+        "ST-07B layout_variant + page_mode come from ONE source of truth",
+        "New tests pass; ST-09 scene and ST-07B variant render on pixels"
+      ],
+      "priority": 18,
+      "passes": false,
+      "notes": "treatment_engine.py:367-373; build_live.py:859-868, 821; plan_layout.py:75-77,176-177; route_package.py:91-93."
+    },
+    {
+      "id": "US-019",
+      "title": "Low-severity cleanup (L1-L7)",
+      "description": "Dead checks and leaks: verify_contract_fixes.py teaser_items check; st_06.py:73 dead expression; unreachable LLM-donut branch and dead _adapt_cta_hard; harness scripts with client literals; exception path leak; .env split bug; private import.",
+      "acceptanceCriteria": [
+        "L1: verify_contract_fixes.py teaser_items check removed or repointed",
+        "L2: st_06.py:73 dead expression removed",
+        "L3: unreachable LLM-donut branch and _adapt_cta_hard removed or explicitly flagged",
+        "L4: render_christoph.py/render_cover_check.py client literals moved under a fixtures-style allowlist",
+        "L5: service.py:474 sanitizes exception text (no absolute paths)",
+        "L6: _env_or_dotenv parses values containing '=' correctly",
+        "L7: service.py:258 private import replaced with the public API",
+        "Full suites stay green"
+      ],
+      "priority": 19,
+      "passes": false,
+      "notes": "synthesize_visuals.py:383-392, treatment_engine.py:692-698, build_live.py:82-97."
+    },
+    {
+      "id": "US-020",
+      "title": "Build the standing closed-gap assessment harness (P6 core)",
+      "description": "Every gap closed in this repo has historically reopened silently. Build assess_closed_gaps.py + closed_gaps_registry.json that re-check every closed gap on demand and in the container smoke.",
+      "acceptanceCriteria": [
+        "research/quality_loop/closed_gaps_registry.json lists every gap G1-G24/L1-L7/D1-D6 with a check type (suite/grep/test/render) and exact predicate",
+        "research/quality_loop/assess_closed_gaps.py runs all checks, prints a PASS/FAIL table, exits non-zero on any reopened gap, no network/API keys required",
+        "test_assess_closed_gaps.py passes (a gap marked closed whose check fails is reported REOPENED)",
+        "Wired into scripts/smoke_v3_container.sh after the render",
+        "The baseline ledger documents the one command"
+      ],
+      "priority": 20,
+      "passes": false,
+      "notes": "This is the anti-recurrence mechanism for the owner's #1 pain: MDs created but never assessed."
+    },
+    {
+      "id": "US-021",
+      "title": "Final verification: all suites green + harness exits 0",
+      "description": "End state of the whole program: every suite tells the truth, the assessment harness confirms every gap is closed, and the ledger + plan register are the standing entry point.",
+      "acceptanceCriteria": [
+        "Renderer suite: 0 failed; preprocessor: 731+ passed; dmc-renderer: 0 failed; guard battery: 45+ passed; verify_contract_fixes.py green",
+        "Two materially different fixtures produce different rendered axes and accents (G1 proof retained)",
+        "assess_closed_gaps.py exits 0 with every gap CLOSED",
+        "The baseline ledger + plan register are updated with the final counts and no item is marked done without its proof line"
+      ],
+      "priority": 21,
+      "passes": false,
+      "notes": "Run every command from the plan's Standing Verification block and record real tails."
+    }
+  ]
+}
