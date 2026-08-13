@@ -404,3 +404,33 @@ def test_rationale_to_defects_maps_deterministically() -> None:
     assert _rationale_to_defects("colour palette is fine") == []
     assert "element_clipped" in _rationale_to_defects("abgeschnitten am Rand")
     assert "dead_space_region" in _rationale_to_defects("unten leer, weissraum")
+
+
+def test_reference_pngs_resolve_per_face_st_type() -> None:
+    """The taste wiring: each face's legacy_st_type pulls Richard's same-type
+    pages from the reference library, resolved to real PNG files keyed by
+    row id. A face without an st_type (or a library miss) is skipped, never
+    fabricated."""
+    from build_v3 import _reference_pngs_by_row
+
+    class Face:
+        def __init__(self, st_type):
+            self.legacy_st_type = st_type
+
+    class Plan:
+        faces = (Face("ST-07A"), Face(None), Face("ST-99-NOT-A-TYPE"))
+
+    result = _reference_pngs_by_row(Plan(), ["face.01", "face.02", "face.03"])
+    assert "face.01" in result
+    assert all(Path(p).is_file() for p in result["face.01"])
+    assert "face.02" not in result  # no st_type -> no anchor, honest
+    assert "face.03" not in result  # unknown type -> library miss, honest
+
+
+def test_reference_pngs_degrade_to_empty_on_missing_plan() -> None:
+    from build_v3 import _reference_pngs_by_row
+
+    class EmptyPlan:
+        faces = ()
+
+    assert _reference_pngs_by_row(EmptyPlan(), ["face.01"]) == {}

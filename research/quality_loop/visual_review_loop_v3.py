@@ -54,6 +54,23 @@ def _current_png(build: dict, page_png: str, row_ids: list[str]) -> str:
     return page_png
 
 
+def _current_refs(build: dict, refs: list[str], row_ids: list[str]) -> list[str]:
+    """Per-page references: the build may carry its own per-row anchors (each
+    face compared against its own st_type-matched Richard page); a dict refs
+    arg is the same idea without a rebuild; a plain list is the shared legacy
+    anchor set."""
+    if isinstance(refs, dict) and row_ids:
+        per_row = refs.get(row_ids[0])
+        if per_row:
+            return list(per_row)
+    by_row = build.get("page_refs")
+    if isinstance(by_row, dict) and row_ids:
+        per_row = by_row.get(row_ids[0])
+        if per_row:
+            return list(per_row)
+    return refs
+
+
 def review_page(
     build_fn: Callable[..., dict],
     reviewer: Any,
@@ -87,8 +104,9 @@ def review_page(
         build = build_fn(plan_override=pending_plan, facts_override=pending_facts)
         pending_plan = pending_facts = None
         png = _current_png(build, page_png, row_ids)
+        page_refs = _current_refs(build, refs, row_ids)
         scores = retry_transient(
-            lambda: reviewer.score_page(png, refs, row_ids),
+            lambda: reviewer.score_page(png, page_refs, row_ids),
             attempts=3,
             base_delay_s=0.0,
         )

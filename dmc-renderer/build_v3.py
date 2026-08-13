@@ -196,16 +196,48 @@ def _vision_reviewer(context):
     return _VisionReviewerAdapter(context)
 
 
-def _reference_pngs_for(_review_png_paths: list[str]) -> list[str]:
-    """Reference PNGs for visual comparison, or [] when none are resolved.
+_REFERENCE_QUALITY_LOOP_DIR = (
+    Path(__file__).resolve().parent.parent / "research" / "quality_loop"
+)
 
-    The reference library (quality_loop/references) is keyed by st_type and
-    page role; the loop degrades gracefully when a face has no reference
-    (the page is scored on its own, never silently passed). Resolving the
-    exact per-face reference is the reference-retrieval stage's job; this
-    stays empty until that wiring lands so the loop can still run.
+
+def _reference_pngs_by_row(report_plan: Any, row_ids: list[str]) -> dict[str, list[str]]:
+    """Per-face reference PNGs keyed by row id, in plan order.
+
+    The reference library (quality_loop/references) is keyed by st_type; each
+    face's legacy_st_type resolves the same-type pages Richard actually drew,
+    so the VIS reviewer compares our page against the right anchor. A face
+    with no st_type (or a library miss) degrades gracefully: that page is
+    scored on its own, never silently passed.
     """
-    return []
+    faces = list(getattr(report_plan, "faces", ()) or [])
+    if not faces:
+        return {}
+    try:
+        from quality_loop.references import retrieve_references
+
+        by_row: dict[str, list[str]] = {}
+        for index, face in enumerate(faces):
+            row_id = row_ids[index] if index < len(row_ids) else f"face.{index + 1:02d}"
+            st_type = str(getattr(face, "legacy_st_type", "") or "").strip()
+            if not st_type:
+                continue
+            rows = retrieve_references(st_type, {}, k=2)
+            candidates = [r["png_path"] for r in rows if r.get("png_path")]
+            resolved = [
+                str(
+                    (_REFERENCE_QUALITY_LOOP_DIR / path)
+                    if path and not Path(path).is_absolute()
+                    else path
+                )
+                for path in candidates
+            ]
+            pngs = [p for p in resolved if Path(p).is_file()]
+            if pngs:
+                by_row[row_id] = pngs
+        return by_row
+    except Exception:  # noqa: BLE001 -- a reference miss must never fail the build
+        return {}
 
 
 _RATIONALE_DEFECT_MAP: tuple[tuple[tuple[str, ...], str], ...] = (
@@ -859,6 +891,7 @@ def build_and_render_v3(
                         "page_pngs": dict(
                             zip(row_ids, [str(p) for p in review_png_paths], strict=True)
                         ),
+                        "page_refs": refs_by_row,
                         "composition_plan": composition_plan,
                         "registry": registry,
                         "facts_by_face": facts_by_face,
@@ -875,16 +908,18 @@ def build_and_render_v3(
                     "failures": list(inner.get("failures", [])),
                     "contract_sha256": inner.get("raw_pdf_sha256", ""),
                     "page_pngs": _inner_page_pngs(inner, row_ids),
+                    "page_refs": refs_by_row,
                     "composition_plan": inner.get("composition_plan"),
                     "registry": inner.get("registry"),
                     "facts_by_face": inner.get("facts_by_face"),
                 }
 
+            refs_by_row = _reference_pngs_by_row(bundle.report_plan, row_ids)
             visual_loop_result = run_visual_review_loop(
                 _rebuild,
                 reviewer=_vision_reviewer(context),
                 page_pngs=[str(p) for p in review_png_paths],
-                refs=_reference_pngs_for([str(p) for p in review_png_paths]),
+                refs=refs_by_row,
                 row_ids=row_ids,
                 max_page_attempts=_VISUAL_REVIEW_MAX_ATTEMPTS,
                 threshold=_VISUAL_REVIEW_THRESHOLD,
