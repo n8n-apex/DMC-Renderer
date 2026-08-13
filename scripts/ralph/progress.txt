@@ -73,3 +73,9 @@ Started: 2026-08-13
   - A verlauf with <2 points is not a trend - the mapper returns nothing (graceful).
   - I attempted a materialize-level wrap with fake claim_ids then REVERTED it - never invent claim bindings.
 ---
+## 2026-08-13 - US-008
+- What was implemented: G5 closed. Schema node emits kunde.name/company_url; harness 12/12.
+- **Learnings for future iterations:**
+  - docs/n8n/workflow-contract-v3.json pins BYTE hashes of the five paste targets. ANY edit to docs/resolve-schema-node-v5.js (or the other paste targets) requires re-hashing the artifact or test_v3_runtime_closure::test_v3_readiness_verifies_imports_and_immutable_file_hashes fails.
+  - The adapter passes unknown keys through; a schema-node key named exactly what the renderer reads needs NO adapter change (the G5 insight from the 2026-07-16 audit).
+---

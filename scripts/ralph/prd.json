@@ -112,8 +112,8 @@
         "christoph render shows customer name + URL in the case-study person block"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": "The adapter does not strip unknown keys; verify kunde survives the ST-07A branch at build_live.py:333-350."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G5 CLOSED. resolve-schema-node-v5.js kunde fields now emit name (max 60) and company_url (max 120) plus the existing initials/funktion; the two VERIFY hedges resolved. The adapter passes kunde through intact (verified). verify_contract_fixes.py extended with kunde.name/company_url passthrough checks -> 12/12 passed. The renderer already read name/company_url (st_07a.py:279,342-348; treatment_engine.py:571-583). Also re-hashed docs/n8n/workflow-contract-v3.json schema_resolver artifact after the schema edit (runtime-closure readiness test enforces byte hashes). dmc 107/4xfail. Rendered proof: a v5-written case study now renders the customer name + URL in the person block (the schema can express it and the renderer reads it; the fixture already carried the richer kunde dialect)."
     },
     {
       "id": "US-009",
