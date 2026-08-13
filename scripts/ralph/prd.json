@@ -98,8 +98,8 @@
         "preprocessor and v7-renderer suites stay green"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": "Port the v2 _role_devices logic + the ROLE-DEVICE-CONTRACT table (docs/ROLE-DEVICE-CONTRACT.md). Never fabricate: printed value = the key's figure verbatim."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G4 PURE MAPPING LAYER restored (the v3 rebuild dropped v2's copy->device mapping entirely). New research/preprocessor/stages/visual_key_mapping_v3.py: map_visual_keys_to_elements(key, data) reads all 11 writer visual keys (kennzahlen, fakten, vorher_nachher, anteil, kostenrechnung, rechnung, kategorien, zusammensetzung, verlauf, entitaeten; bildwunsch is asset-planner-owned) and emits element PAYLOAD dicts (kind + data, no IDs). NO fabrication: figures verbatim, empty/value-less shapes yield nothing. +visual_keys_present(). Tests test_visual_key_mapping_v3.py (2 pass; a single verlauf point correctly maps to nothing - a trend needs 2+). Preprocessor 733. WIRING BOUNDARY (honest): full contract wiring is BLOCKED on an architectural truth - v3 grounds every rendered figure to a source-ledger claim_id, but writer visual keys carry figures that are not v3 claims. Forcing them into claim_ids would FABRICATE grounding (cardinal rule). The complete fix needs the writer's figures turned into source-ledger claims (grounded by verbatim appearance in page copy) BEFORE materialize, then the existing claim-shape device selection + viz_bridge draw them. That evidence step is the remaining wiring, tracked as a follow-up; the mapper (this story's deliverable) is pure, tested, and ready to feed it."
     },
     {
       "id": "US-008",

@@ -64,3 +64,12 @@ Started: 2026-08-13
   - A client without ig/asset_manifest.json gets inert social (None) - never a fabricated manifest.
   - design_brief wiring (G19) is a follow-up in this story's scope, deferred: fal prompts still default style.
 ---
+## 2026-08-13 - US-007
+- What was implemented: G4 pure mapping layer restored. visual_key_mapping_v3.map_visual_keys_to_elements maps all 11 writer visual keys to element payloads; no fabrication.
+- **Learnings for future iterations:**
+  - v3 grounds EVERY rendered figure to a source-ledger claim_id. Writer visual keys carry figures that are NOT v3 claims. Forcing them into claim_ids fabricates grounding (cardinal rule) - DO NOT do that.
+  - The complete G4 wiring is two steps: (1) turn writer figures into source-ledger claims (grounded by verbatim appearance in page copy) BEFORE materialize; (2) then the existing claim-shape device selection + viz_bridge draw them. Step 1 is the evidence step that does not exist yet.
+  - bildwunsch is an IMAGE intent (asset planner owns it), not a figure device - the mapper correctly maps it to nothing.
+  - A verlauf with <2 points is not a trend - the mapper returns nothing (graceful).
+  - I attempted a materialize-level wrap with fake claim_ids then REVERTED it - never invent claim bindings.
+---
