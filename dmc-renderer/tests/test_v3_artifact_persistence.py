@@ -416,3 +416,40 @@ class TestEvidenceGatedShipReady:
                 artifact_store_root=tmp_path / "artifact-store",
             )
         assert "visual_review_evidence_invalid" in str(caught.value)
+
+
+def test_review_required_retains_attempt_records_and_no_delivery(
+    tmp_path: Path,
+) -> None:
+    """REVIEW_REQUIRED retains the review attempt trail, never a delivery PDF."""
+    import json
+
+    from artifacts.store import FilesystemArtifactStore
+    from artifacts.schema import BuildRecordV3, retention_class_for_state
+
+    assert retention_class_for_state("review_required") == "review_required"
+
+    kwargs = record_kwargs()
+    kwargs["release_state"] = "review_required"
+    kwargs["retention_class"] = "review_required"
+    record = BuildRecordV3(**kwargs)
+
+    store = FilesystemArtifactStore(tmp_path / "store")
+    manifest = store.persist(
+        record,
+        files={
+            "raw_pdf": ("report.raw.pdf", b"%PDF-raw"),
+            "attempt_records": (
+                "attempt-records.json",
+                json.dumps([{"page": 0, "verdict": "rejected"}]).encode(),
+            ),
+        },
+    )
+
+    build_dir = tmp_path / "store" / record.build_id
+    stored = json.loads((build_dir / "manifest.json").read_text())
+    assert stored["record"]["release_state"] == "review_required"
+    assert stored["record"]["retention_class"] == "review_required"
+    assert stored["files"]["raw_pdf"]["name"] == "report.raw.pdf"
+    assert stored["files"]["attempt_records"]["name"] == "attempt-records.json"
+    assert manifest["manifest_sha256"]
