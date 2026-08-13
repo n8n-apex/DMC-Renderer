@@ -13,8 +13,8 @@
         "No test was weakened to pass; only stale version literals were corrected"
       ],
       "priority": 1,
-      "passes": false,
-      "notes": "Verify each family's real version via: python3 -c \"import json;d=json.load(open('research/composition_registry/families/dmc-v1.json'));print({f['family_id']:f['version'] for f in d['families']})\""
+      "passes": true,
+      "notes": "Fixed 2026-08-13: updated stale 1.1.0 literals to real registry versions (editorial_lead/case_narrative 1.4.0; dynamic lookup in parameterized family tests). Found+fixed a REAL loader bug: fallback family was looked up at the primary's version (theory_interpretation@1.4.0 but it is 1.5.0) in both contract_loader_v3.py and render_v3.py; both now resolve the fallback by family id across versions. Formula-ladder test reasserted to the real SVG contract (it is an _SVG_PREFERRED_KIND, not the CSS macro). Full renderer suite back to the documented 15 pre-existing failures (383 passed), preprocessor 731 passed."
     },
     {
       "id": "US-002",

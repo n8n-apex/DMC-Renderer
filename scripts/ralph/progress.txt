@@ -11,3 +11,12 @@ Started: 2026-08-13
 - The deck is ONE flowing HTML document: a layout change that grows one page can cascade to +6 spill pages. Verify physical==logical on report_print.pdf.
 - This repo is now a git repo (initialized 2026-08-13 for ralph). Older docs saying "NOT a git repo" are stale.
 ---
+## 2026-08-13 - US-001
+- What was implemented: rebased v3 renderer tests off drifted family versions (registry now 1.7.0, families 1.3.0-1.6.0; tests hardcoded 1.1.0).
+- Files changed: research/v7-renderer/tests/{test_render_v3_contract,test_semantic_data_viz,test_family_slices_distinctness,test_family_visual_distinctness}.py, contract_loader_v3.py, render_v3.py.
+- **Learnings for future iterations:**
+  - The registry dmc-v1.json is at version 1.7.0; family versions differ per family. Never hardcode a family version in a test - look it up from the registry (load_registry + next by family_id).
+  - REAL BUG found: the fallback-family lookup used the PRIMARY fragment's version (theory_interpretation@1.4.0) but families version independently (theory_interpretation is 1.5.0). Fixed in contract_loader_v3.py + render_v3.py to resolve fallback by family_id across all registered versions. If you touch fallback logic, remember this.
+  - formula_ladder is an _SVG_PREFERRED_KIND (families/base.py) - it renders via chart_bridge SVG, NOT the c-viz-ladder CSS macro. Test against the SVG contract (verbatim values in <text>), not the macro classes.
+  - Full renderer suite takes ~8.5 min. The 15 pre-existing failures (test_st07a_fill_variant x11, test_render_r2 x4) are the NEXT story's target.
+---
