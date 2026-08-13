@@ -55,3 +55,12 @@ Started: 2026-08-13
   - The 5 real brand profiles: geva(role_split/sans/ghost_numeral), aerz(cool_light/serif/dark_box), nikl(tri/sans/connector_spine), alex(saturated_dark_light/sans_allcaps/dark_box), buch(saturated_dark_light/serif/plain_numbered). Map fixture character -> profile deliberately.
   - Rendered proof: grep report.rendered.html <body> for data-belief-treatment/data-ground-mode/data-headline-type/data-image-modes; two materially different fixtures must differ.
 ---
+## 2026-08-13 - US-006
+- What was implemented: G3 closed. plan_social now runs on the live build_live path via _build_social_manifest() reading <client>/ig/asset_manifest.json; the route_package except is honest (re-raises non-manifest errors).
+- **Learnings for future iterations:**
+  - The live apex client pool (research/preprocessor/client_assets/apex/ig/) is the SAME 13 classified files as the fixture manifest - the manifest is the interceptor's durable output and belongs next to the files.
+  - SocialBinding fields: target_kind (ST type), element (vocabulary slot: testimonials/scene_breather/case_study_post/profile_grid/fazit_author), page_slot, assets. No .kind attribute.
+  - route_package's except MUST distinguish 'no manifest' (benign) from real errors (re-raise) - the old blanket swallow dropped dark-divider cadence + diagrams silently.
+  - A client without ig/asset_manifest.json gets inert social (None) - never a fabricated manifest.
+  - design_brief wiring (G19) is a follow-up in this story's scope, deferred: fal prompts still default style.
+---

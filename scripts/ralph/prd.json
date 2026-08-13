@@ -83,8 +83,8 @@
         "A christoph render shows a social binding (testimonial/breather/phone) on page pixels"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": "The IG asset pool + asset_manifest.json pattern proven in fixtures/apex/."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G3 CLOSED. build_live.py gains _build_social_manifest() - loads <client>/ig/asset_manifest.json (the interceptor's persisted classified pool) into AssetManifest, graceful None when absent (never fabricates). route_package now called with manifest=social_manifest (was hardcoded None). The except block is HONEST now: only no-manifest is a benign skip; any other exception re-raises (it previously swallowed dark-divider + diagram layers too). Persisted the known-good classified manifest into research/preprocessor/client_assets/apex/ig/ (identical 13 files). LIVE PROOF: the live apex pool now produces 6 bindings - testimonials->ST-05, scene_breathers->ST-31(6,11), case_study_post->ST-07A(12), profile_grid->ST-31(17), fazit_author->ST-FAZIT - matching the fixture's hand-placed routing, now decided by the system. Tests: test_plan_social_live.py 2 pass. dmc 107/4xfail, preprocessor 731. design_brief (G19) is a separate follow-up in this story's scope but deferred - fal prompts still default style."
     },
     {
       "id": "US-007",
