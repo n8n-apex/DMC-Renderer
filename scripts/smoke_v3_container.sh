@@ -235,6 +235,12 @@ fi
 "${PYTHON_BIN}" -m pytest -q \
   "${PROJECT_ROOT}/dmc-renderer/tests/test_v2_v3_route_isolation.py"
 
+# US-020: the standing closed-gap assessment harness gates the smoke. Fast
+# mode skips the two full-suite checks (their record is the baseline ledger)
+# but still proves every code-closed gap stays closed. A reopened gap fails
+# the container smoke.
+"${PYTHON_BIN}" "${PROJECT_ROOT}/research/quality_loop/assess_closed_gaps.py" --fast
+
 RELEASE_STATE_VALUE="${RELEASE_STATE}" \
 CONTRACT_HASH_VALUE="${CONTRACT_HASH}" \
 GATE_HASH_VALUE="${GATE_HASH}" \

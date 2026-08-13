@@ -68,6 +68,26 @@
 ## How to use this file
 
 Every future session STARTS by re-running the five commands above (or the
-standing assessment harness from Phase 6 / US-020 once built) and recording the
-new tails. A count that differs from this ledger is either progress (record it)
-or a regression (investigate before any other work).
+standing assessment harness from US-020) and recording the new tails. A count
+that differs from this ledger is either progress (record it) or a regression
+(investigate before any other work).
+
+## The standing assessment harness (US-020, 2026-08-13)
+
+`research/quality_loop/assess_closed_gaps.py` re-checks every gap closed by
+the consolidated program (closed_gaps_registry.json) and prints a PASS/FAIL
+table. It exits non-zero if any code-closed gap has reopened. Human-gated
+gaps (G19 design_brief wiring, G24 real photographs) are reported as OPEN, not
+failures. Fast mode skips the two full-suite checks (their record is THIS
+ledger):
+
+```bash
+cd /Users/utkarsh/Projects/richard
+DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib \
+  research/v7-renderer/.venv/bin/python research/quality_loop/assess_closed_gaps.py --fast
+```
+
+Verified 2026-08-13: **35/37 closed (fast), exit 0**; only G19 + G24 OPEN
+(human-gated). The harness is also wired into `scripts/smoke_v3_container.sh`.
+The full mode (`assess_closed_gaps.py` without `--fast`) additionally runs the
+G2 renderer suite and D2 dmc-renderer suite to 0 failures (~11 min).

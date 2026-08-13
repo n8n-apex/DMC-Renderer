@@ -1,0 +1,266 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Closed-gap registry for the standing assessment harness (US-020). Every gap closed by the 2026-08-13 consolidated program is listed with a check that must keep passing. A gap whose check fails is REOPENED and the harness exits non-zero. No network, no API keys required.",
+  "closed_date": "2026-08-13",
+  "gaps": [
+    {
+      "id": "G1",
+      "description": "brand_profile_id wired so client variation fires",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_brand_profile_fires.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "G2",
+      "description": "renderer test suites truthful (0 failures)",
+      "check_type": "suite_zero",
+      "check": "research/v7-renderer/tests/",
+      "owner": "renderer"
+    },
+    {
+      "id": "G3",
+      "description": "plan_social runs on every live render",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_plan_social_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G4",
+      "description": "copy-to-device mapper restored in v3 (pure layer)",
+      "check_type": "test",
+      "check": "research/preprocessor/tests/test_visual_key_mapping_v3.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G5",
+      "description": "kunde.name/company_url emitted by schema node",
+      "check_type": "harness",
+      "check": "dmc-renderer/verify_contract_fixes.py",
+      "owner": "n8n"
+    },
+    {
+      "id": "G6",
+      "description": "ST-08 resolves in the n8n schema",
+      "check_type": "node_test",
+      "check": "docs/n8n/tests/resolve-schema-node-v5.test.js",
+      "owner": "n8n"
+    },
+    {
+      "id": "G7",
+      "description": "invisible fazit_background generation removed",
+      "check_type": "grep_absent",
+      "check": "\"fazit_background\": (\"ST-FAZIT\" in dmc-renderer/build_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G8",
+      "description": "all render routes require auth",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_service_auth.py",
+      "owner": "service"
+    },
+    {
+      "id": "G9",
+      "description": "end-to-end render timeout enforced",
+      "check_type": "grep_present",
+      "check": "_build_with_deadline in dmc-renderer/service.py",
+      "owner": "service"
+    },
+    {
+      "id": "G10",
+      "description": "deterministic package + PDF output",
+      "check_type": "test",
+      "check": "research/preprocessor/tests/test_assemble_package.py::test_generated_at_is_deterministic_per_record_id",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G11",
+      "description": "one-figure-one-device binds across all role devices",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_one_figure_one_device.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G12",
+      "description": "kz_donuts dedups against stats too",
+      "check_type": "grep_present",
+      "check": "_stat_keys() in dmc-renderer/build_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G13",
+      "description": "ST-02 takeaways not labelled Zielgruppe",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_semantic_mislabels.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "G14",
+      "description": "cost-of-inaction renders on treated summary",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_semantic_mislabels.py::test_treated_fazit_carries_cost_of_inaction",
+      "owner": "renderer"
+    },
+    {
+      "id": "G15",
+      "description": "alias + unmapped-key logging in normalize",
+      "check_type": "grep_present",
+      "check": "unmapped keys on in dmc-renderer/build_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G16",
+      "description": "no raw hex in dmc-renderer logic (guard extended)",
+      "check_type": "guard",
+      "check": "research/v7-renderer/tests/test_no_literals_in_architecture.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "G17",
+      "description": "grounding gate keeps decimals + checks units",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_grounding_decimal_and_units.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G18",
+      "description": "downloaded scenes paint on treated pages",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_scene_and_variant_sources.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "G19",
+      "description": "design_brief wiring (follow-up, not yet closed)",
+      "check_type": "manual",
+      "check": "design_brief still not populated live; fal prompts default style",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G20",
+      "description": "page-count snap surfaced (not silent)",
+      "check_type": "grep_present",
+      "check": "page_count_target %s snapped to in dmc-renderer/build_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G21",
+      "description": "render endpoint no longer blocks forever (timeout)",
+      "check_type": "grep_present",
+      "check": "_build_with_deadline in dmc-renderer/service.py",
+      "owner": "service"
+    },
+    {
+      "id": "G22",
+      "description": "umlaut rewrite exempts identity fields",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_semantic_mislabels.py::test_umlaut_rewrite_preserves_identity_names",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G23",
+      "description": "single layout-variant source for ST-07B",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_scene_and_variant_sources.py::test_st07b_fill_default_lives_in_plan_layout",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "G24",
+      "description": "no photographs (open: real client assets needed)",
+      "check_type": "manual",
+      "check": "real photography still absent; synthetic gradient blobs in fixtures",
+      "owner": "assets"
+    },
+    {
+      "id": "L1",
+      "description": "dead teaser_items harness check removed",
+      "check_type": "grep_absent",
+      "check": "teaser_items passthrough in dmc-renderer/verify_contract_fixes.py",
+      "owner": "n8n"
+    },
+    {
+      "id": "L2",
+      "description": "dead st_06 expression removed",
+      "check_type": "grep_absent",
+      "check": "_FLOW_SPLIT_RE in research/v7-renderer/patterns/st_06.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "L3",
+      "description": "inert adapter documented",
+      "check_type": "grep_present",
+      "check": "inert in the live path in research/v7-renderer/treatment_engine.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "L4",
+      "description": "harness scripts are explicit carve-out",
+      "check_type": "grep_present",
+      "check": "render_christoph.py in research/v7-renderer/tests/test_no_literals_in_architecture.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "L5",
+      "description": "render-failed exceptions strip absolute paths",
+      "check_type": "grep_present",
+      "check": "re.sub(r\"(?:/[A-Za-z0-9_.\\-]+)+\" in dmc-renderer/service.py",
+      "owner": "service"
+    },
+    {
+      "id": "L6",
+      "description": ".env parser splits on first =",
+      "check_type": "grep_present",
+      "check": "split(\"=\", 1) in dmc-renderer/build_live.py",
+      "owner": "preprocessor"
+    },
+    {
+      "id": "L7",
+      "description": "public non_numeral_stat_values used",
+      "check_type": "grep_present",
+      "check": "non_numeral_stat_values in dmc-renderer/service.py",
+      "owner": "quality_loop"
+    },
+    {
+      "id": "D1",
+      "description": "stale test-count claims superseded by the baseline ledger",
+      "check_type": "file",
+      "check": "docs/phase-zero/BASELINE-LEDGER-2026-08-13.md",
+      "owner": "docs"
+    },
+    {
+      "id": "D2",
+      "description": "dmc-renderer suite 0 failures",
+      "check_type": "suite_zero",
+      "check": "dmc-renderer/tests/",
+      "owner": "renderer"
+    },
+    {
+      "id": "D3",
+      "description": "axes wiring memory note superseded",
+      "check_type": "grep_present",
+      "check": "brand_profile_id in dmc-renderer/calibration_fixtures_v3.py",
+      "owner": "docs"
+    },
+    {
+      "id": "D4",
+      "description": "no-hex guard scans dmc-renderer logic",
+      "check_type": "guard",
+      "check": "research/v7-renderer/tests/test_no_literals_in_architecture.py",
+      "owner": "renderer"
+    },
+    {
+      "id": "D5",
+      "description": "determinism claim now true (ARCHITECTURE.md updated)",
+      "check_type": "grep_present",
+      "check": "_stable_generated_at in research/preprocessor/stages/assemble_package.py",
+      "owner": "docs"
+    },
+    {
+      "id": "D6",
+      "description": "timeout claim now true (ARCHITECTURE.md updated)",
+      "check_type": "grep_present",
+      "check": "DMC_RENDER_TIMEOUT_S in dmc-renderer/service.py",
+      "owner": "docs"
+    }
+  ]
+}
