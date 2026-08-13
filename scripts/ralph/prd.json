@@ -247,8 +247,8 @@
         "New tests pass; ST-09 scene and ST-07B variant render on pixels"
       ],
       "priority": 18,
-      "passes": false,
-      "notes": "treatment_engine.py:367-373; build_live.py:859-868, 821; plan_layout.py:75-77,176-177; route_package.py:91-93."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G18+G20+G23 CLOSED. G18: _scene_uri now accepts status 'downloaded' as well as 'generated', so a client-supplied scene from the image manifest paints on the treated ST-09 (was fal-art-only). G20: page-count target snapping (e.g. 21->20) is now logged (WARNING), not silent. G23: removed the build_live.py ST-07B 'or fill' hardcode - build_live now carries only an explicit writer variant, and plan_layout FILL_DEFAULT_TYPES is the SINGLE source of the fill default. New tests test_scene_and_variant_sources.py 4 pass. Renderer 398/0, preprocessor 734, dmc 128/4xfail."
     },
     {
       "id": "US-019",

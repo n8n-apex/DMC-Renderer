@@ -146,3 +146,11 @@ Started: 2026-08-13
   - render_christoph.py / render_cover_check.py are the explicit fixture-by-intent carve-out (they hardcode one client for a reproducible render).
   - Alias logging (WARNING per alias + unmapped-key summary at function end) makes silent schema drift visible in the render log; the known-canonical set must be kept in sync with the renderer's real reads.
 ---
+## 2026-08-13 - US-018
+- What was implemented: G18+G20+G23 closed.
+- **Learnings for future iterations:**
+  - _scene_uri must accept BOTH status values ('generated' fal art AND 'downloaded' client-manifest scenes) - the old generated-only filter silently dropped client-supplied scenes on treated pages.
+  - ctx.resolve_asset returns a Path (has .as_uri()), not a str - test fakes must return Path objects.
+  - plan_layout._resolve_layout_variant is the single authority for the fill default (FILL_DEFAULT_TYPES); build_live must carry only EXPLICIT writer variants, never re-default.
+  - page-count snapping (off-grid targets like 21) must be logged, not silent.
+---
