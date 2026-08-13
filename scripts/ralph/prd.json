@@ -53,8 +53,8 @@
         "The ledger explicitly states all prior count claims are superseded by this file"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": "Commands: renderer suite, preprocessor suite (own venv), dmc-renderer suite, guard battery, verify_contract_fixes.py."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: docs/phase-zero/BASELINE-LEDGER-2026-08-13.md created with the real post-US-003 counts (renderer 398/0, preprocessor 731, dmc 103+4xfail, guard 45, harness 10/10). CODEX-HANDOFF.md:353 annotated as stale. The ledger states all prior count claims (15/342, 15/352, all-green) are superseded and gives the standing re-run commands."
     },
     {
       "id": "US-005",

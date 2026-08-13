@@ -42,3 +42,9 @@ Started: 2026-08-13
   - The Aug-11 family-CSS typography rework (stat numerals 40pt/34pt->26pt) measurably lowered ink while staying in corpus bands; anti-regression ink floors pinned to old values go stale and must be re-pinned with a dated note.
   - The house format model is a4 + a3*9 + a4 = always EVEN faces; a 17-face 'known-failures' fixture is intentionally misallocated (manifest: rejected + face_count_mismatch). Face-allocation tests must skip manifest-declared misallocated fixtures.
 ---
+## 2026-08-13 - US-004
+- What was implemented: wrote the authoritative baseline ledger (docs/phase-zero/BASELINE-LEDGER-2026-08-13.md) with real verified counts; annotated CODEX-HANDOFF.md:353 as stale.
+- **Learnings for future iterations:**
+  - Every older count claim (15/342, 15/352, all-green) is run-date-specific. Never inherit a count; re-run the five standing commands and record new tails.
+  - The ledger is the anti-drift record: any future count differing from it is progress (record) or regression (investigate first).
+---
