@@ -1,0 +1,52 @@
+# Ralph / DMC repo — added 2026-08-13 so ralph can run (git is now initialized).
+# Keep out: venvs, huge outputs, reference PDFs, caches, env, temp.
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Virtualenvs
+.venv/
+venv/
+research/v7-renderer/.venv/
+research/preprocessor/.venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Enormous generated outputs / renders (multi-GB, regenerated)
+output/
+_renders/
+research/v7-renderer/output/
+research/quality_loop/output/
+research/preprocessor/var/
+dmc-renderer/_local_out*/
+tmp/
+.tmp/
+
+# Reference PDFs are huge binaries; keep the .md/.txt extracts instead
+*.pdf
+
+# Scratch / backups / spikes
+.backups/
+.phase-zero-backups/
+.review_backups/
+scratchpad/
+/sandbox/
+research/idml-spike/
+research/pattern-spike/
+research/v7-test/
+research/decoration-samples/
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/
