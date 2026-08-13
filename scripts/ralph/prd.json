@@ -178,8 +178,8 @@
         "ARCHITECTURE.md:13,31 gets a dated supersede banner"
       ],
       "priority": 13,
-      "passes": false,
-      "notes": "Use fitz/pikepdf to stamp the trailer deterministically if Chromium cannot be controlled."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G10 CLOSED. (1) assemble_package.py: datetime.now() replaced with _stable_generated_at(record_id) - a deterministic ISO instant hashed from the record id (same input -> same package bytes). (2) assembler.py render_package: PDF creation/mod metadata post-processed to a fixed instant (D:20000101000000Z) via fitz before rasterizing/shipping (both chromium and weasyprint paths). GOTCHA: fitz refuses to save over the open source path - must write a temp file then replace (the in-place save caused 6 test errors; fixed). render_v3 already normalized metadata. New test test_generated_at_is_deterministic_per_record_id. ARCHITECTURE.md:31 determinism claim updated (was broken by datetime.now). Renderer 398/0, preprocessor 734, dmc 113/4xfail. Known residual: the font-subset delta documented in ARCHITECTURE.md:305."
     },
     {
       "id": "US-014",

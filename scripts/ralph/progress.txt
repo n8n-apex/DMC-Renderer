@@ -108,3 +108,10 @@ Started: 2026-08-13
   - The build's own httpx timeouts (fal 240s, LLM 40s) still bound individual calls; the end-to-end cap bounds the whole request. A timed-out thread keeps running but no longer holds the HTTP worker.
   - ARCHITECTURE.md:29 claimed a 120s cap that never existed - now real via DMC_RENDER_TIMEOUT_S.
 ---
+## 2026-08-13 - US-013
+- What was implemented: G10 closed. Deterministic package generated_at + fixed PDF creation metadata.
+- **Learnings for future iterations:**
+  - fitz/pymupdf REFUSES to save over the currently-open source path (ValueError: save to the same path). Always write a temp file then .replace(). render_v3 already had this pattern (_normalize_pdf_metadata); assembler.py now mirrors it.
+  - datetime.now() in any package/manifest writer breaks byte-identical determinism. Derive from the record id hash for a stable build identity.
+  - The known font-subset delta (ARCHITECTURE.md:305) is the only accepted non-determinism; everything else is now pinned.
+---
