@@ -79,3 +79,9 @@ Started: 2026-08-13
   - docs/n8n/workflow-contract-v3.json pins BYTE hashes of the five paste targets. ANY edit to docs/resolve-schema-node-v5.js (or the other paste targets) requires re-hashing the artifact or test_v3_runtime_closure::test_v3_readiness_verifies_imports_and_immutable_file_hashes fails.
   - The adapter passes unknown keys through; a schema-node key named exactly what the renderer reads needs NO adapter change (the G5 insight from the 2026-07-16 audit).
 ---
+## 2026-08-13 - US-009
+- What was implemented: G6 closed. ST-08 resolves in the schema node; the review workflow export + manifest + envelope builder re-embedded with the new bytes.
+- **Learnings for future iterations:**
+  - Editing a byte-pinned paste target (resolve-schema-node-v5.js, writer-prompt-v5.md, writer_gate.js, source-ledger-node-v3.js, claim-gate-v3.js) cascades FOUR places: (1) workflow-contract-v3.json artifact sha256, (2) the embedded jsCode in DMC-Ingestion-Pipeline-v3-review.json, (3) that export's manifest artifact + derived hashes, (4) the envelope builder node's embedded hash. tests in docs/n8n/tests enforce all of them.
+  - ST-08 reads title/body-or-intro/faqs (kicker is a content label, not a data key). Match the schema to the reader, not the reverse.
+---

@@ -124,8 +124,8 @@
         "The docs/n8n schema-node JS test harness resolves ST-08 without throwing"
       ],
       "priority": 9,
-      "passes": false,
-      "notes": "Read research/v7-renderer/patterns/st_08.py first to match exact key names."
+      "passes": true,
+      "notes": "Fixed 2026-08-13: G6 CLOSED. resolve-schema-node-v5.js gains an ST-08 entry (titel/einleitung/faqs[{frage,antwort}] + F_kennzahlen) matching what patterns/st_08.py reads (title, body-or-intro, faqs). New JS test resolves ST-08 without throwing (5/5 node tests). Because resolve-schema-node-v5.js is a byte-pinned paste target: re-hashed workflow-contract-v3.json schema_resolver artifact, updated the embedded jsCode in DMC-Ingestion-Pipeline-v3-review.json + its manifest hashes + the envelope-builder embedded hash. docs/n8n 63 pass, verify_workflow_contract exit 0, dmc runtime-closure 8 pass."
     },
     {
       "id": "US-010",
