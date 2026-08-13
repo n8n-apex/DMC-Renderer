@@ -901,6 +901,36 @@ def envelope_to_render_request(envelope: dict) -> RenderRequest:
     )
 
 
+def _build_social_manifest(ig_dir):
+    """Load the classified social asset manifest for a client's IG pool.
+
+    G3: the social vocabulary (testimonials, breathers, case-study phones,
+    profile grid) must run on the LIVE path, not only the fixture. The
+    classified manifest is the Phase-2 interceptor's output, persisted as
+    ``asset_manifest.json`` inside ``<client>/ig/`` (the fixture builder reads
+    the identical shape from ``fixtures/apex/asset_manifest.json``). When no
+    manifest is present the client simply has no classified pool yet — return
+    None (the social planner stays inert), never a fabricated manifest.
+    """
+    from models_social import AssetManifest
+
+    manifest_path = Path(ig_dir) / "asset_manifest.json"
+    if not manifest_path.is_file():
+        return None
+    try:
+        return AssetManifest(**_load_json(manifest_path))
+    except Exception as error:  # noqa: BLE001 - a malformed manifest is a
+        # loud warning, not a reason to fabricate social placements.
+        print(f"[build_live] social manifest unreadable: {type(error).__name__}: {error}")
+        return None
+
+
+def _load_json(path: Path) -> dict:
+    import json as _json
+
+    return _json.loads(Path(path).read_text(encoding="utf-8"))
+
+
 async def _build(request: RenderRequest, output_dir: Path) -> dict:
     # Lightweight config shim (avoids the preprocessor's pydantic_settings dep,
     # which is not in the renderer venv). Keys unset -> offline.
@@ -1130,20 +1160,31 @@ async def _build(request: RenderRequest, output_dir: Path) -> dict:
         client_dir=client_dir,
     )
 
-    # Stage 8.5 - ST-31 cadence + diagram proof (restructure is cached/optional; None key)
+    # Stage 8.5 - ST-31 cadence + social routing + diagram proof
+    # (restructure is cached/optional; None key). G3: the social manifest now
+    # comes from the client's persisted classified IG pool, so testimonials /
+    # breathers / case-study phones run on every live render — not just the
+    # fixture. A client without a manifest degrades to inert (None).
     pkg_path = Path(resolved.package_path)
     pkg = json.loads(pkg_path.read_text(encoding="utf-8"))
+    social_manifest = _build_social_manifest(client_dir / "ig")
     try:
         await route_package(
-            pkg, manifest=None, social_root=client_dir / "ig",
+            pkg, manifest=social_manifest, social_root=client_dir / "ig",
             assets_dir=output_dir / "assets",
             openrouter_key=openrouter_key,
             restructure_model=cfg.openrouter_restructure_model,
             restructure_cache_dir=Path(cfg.restructure_cache_dir),
         )
         pkg_path.write_text(json.dumps(pkg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    except Exception as e:  # noqa: BLE001 - cadence is best-effort offline
-        print(f"[build_live] route_package (Stage 8.5) skipped offline: {type(e).__name__}: {e}")
+    except Exception as e:  # noqa: BLE001
+        # Only "no classified pool" is a benign skip. ANY other exception is a
+        # real bug and must surface, not be swallowed as "offline" (it would
+        # silently drop the dark-divider cadence + diagram layer too).
+        if social_manifest is None:
+            print("[build_live] route_package (Stage 8.5): no social manifest; social skipped")
+        else:
+            raise
 
     return {
         "package_dir": str(output_dir),
