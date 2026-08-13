@@ -14,8 +14,8 @@
         "Preprocessor suite stays green"
       ],
       "priority": 1,
-      "passes": false,
-      "notes": "Plan Task 1. Exact code in the plan. Run: cd research/preprocessor && .venv/bin/python -m pytest tests/test_release_states.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: ReleaseState.REVIEW_REQUIRED + ReviewVerdict (passed/rejected/unreviewable) + ReviewAttemptRecord frozen model added. test_release_states.py 2 pass; existing ship-gate 6 pass unchanged."
     },
     {
       "id": "US-102",
@@ -28,8 +28,8 @@
         "quality_loop test_ship_gate_v3.py passes (existing + new test)"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": "Plan Task 2. Run: cd research/quality_loop && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../v7-renderer/.venv/bin/python -m pytest tests/test_ship_gate_v3.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: transitions table updated; REVIEW_REQUIRED reachable from REVIEW_CANDIDATE + SHIP_READY only, dead-end to SHIP_READY. Test corrected to the honest contract (hard-failed states stay put). 7 pass."
     },
     {
       "id": "US-103",
@@ -41,8 +41,8 @@
         "Transient exceptions are RuntimeError/TimeoutError/ConnectionError"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": "Plan Task 3. Run: cd research/quality_loop && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../v7-renderer/.venv/bin/python -m pytest tests/test_visual_review_loop_v3.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: retry_transient with exponential backoff; transient exc types RuntimeError/TimeoutError/ConnectionError; non-transient propagates. 3 tests pass."
     },
     {
       "id": "US-104",
@@ -56,8 +56,8 @@
         "test_visual_review_loop_v3.py 2 new tests pass"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": "Plan Task 4. Run: cd research/quality_loop && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../v7-renderer/.venv/bin/python -m pytest tests/test_visual_review_loop_v3.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: review_page builds->scores->conductor-repair->rebuild up to 3 attempts; unreviewable honest; rejected after exhaustion. Test fakes corrected: the loop judges by the REVIEWER score, not the build failure list. 6 tests pass."
     },
     {
       "id": "US-105",
@@ -71,8 +71,8 @@
         "test_visual_review_loop_v3.py 2 new tests pass"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": "Plan Task 5. Run: cd research/quality_loop && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../v7-renderer/.venv/bin/python -m pytest tests/test_visual_review_loop_v3.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: run_visual_review_loop reviews all pages, one whole-deck pass re-reviews only failed pages, decides review_candidate vs review_required; never a delivery PDF. 8 tests pass."
     },
     {
       "id": "US-106",
@@ -84,8 +84,8 @@
         "Existing v3 release-flow tests stay green"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": "Plan Task 6. Run: cd dmc-renderer && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../research/v7-renderer/.venv/bin/python -m pytest tests/test_v3_release_flow.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: build_v3 runs the visual loop at the REVIEW_CANDIDATE branch; review_required downgrades the gate state and suppresses delivery. Seam test forces REVIEW_CANDIDATE (synthetic env is rejected by pixel gates) and verifies propagation. Folded in the artifact-schema review_required retention class (build crashed on its own new state otherwise). 48 tests pass in the affected suites."
     },
     {
       "id": "US-107",
@@ -98,8 +98,8 @@
         "test_service_v3.py + test_service_auth.py pass"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": "Plan Task 7. Run: cd dmc-renderer && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../research/v7-renderer/.venv/bin/python -m pytest tests/test_service_v3.py tests/test_service_auth.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: endpoint handles review_required with 202 application/json (release_state/failures/attempt_records/hashes/gate_report/artifact_manifest), no PDF. 19 service tests pass."
     },
     {
       "id": "US-108",
@@ -111,8 +111,8 @@
         "test_v3_artifact_persistence.py new test passes"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": "Plan Task 8. Run: cd dmc-renderer && DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib ../research/v7-renderer/.venv/bin/python -m pytest tests/test_v3_artifact_persistence.py -q"
+      "passes": true,
+      "notes": "DONE 2026-08-14: retention_class_for_state(review_required)=review_required; BuildRecordV3 accepts it; store persists raw_pdf + attempt_records with no delivery. 34 artifact tests pass."
     },
     {
       "id": "US-109",
@@ -127,8 +127,8 @@
         "BASELINE-LEDGER-2026-08-14.md updated with final counts"
       ],
       "priority": 9,
-      "passes": false,
-      "notes": "Plan Task 9. Run: the three suite commands + the harness --fast."
+      "passes": true,
+      "notes": "DONE 2026-08-14: preprocessor 736/0, quality_loop new 19/0, dmc 131/0, harness 36/38 exit 0 (G19+G24 human-gated). G25 added to registry. Ledger written."
     }
   ]
 }
