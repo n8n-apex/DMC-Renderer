@@ -184,3 +184,50 @@ def test_draft_release_returns_json_and_no_delivery_pdf(
     assert response.status_code == 202
     assert payload["release_state"] == "draft"
     assert payload["delivery_pdf_available"] is False
+
+
+def test_visual_review_exhausted_returns_review_required_without_pdf(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A deck whose visual review can never pass must NOT ship a PDF; the
+    build returns review_required.
+
+    The synthetic envelope is rejected by deterministic pixel gates before it
+    ever reaches the review branch, so this seam test forces the gate to
+    REVIEW_CANDIDATE (deterministic gates pass) and verifies the visual loop's
+    review_required verdict propagates and suppresses any delivery."""
+    from build_v3 import ReleaseContextV3, build_and_render_v3
+    from contracts_v3.release import ReleaseState
+    from test_build_v3 import valid_envelope
+    import tempfile
+
+    import quality_loop.visual_review_loop_v3 as loop_module
+
+    real_evaluate = __import__("build_v3")._evaluate_release
+
+    def review_candidate_gate(failures, context):
+        return real_evaluate(failures, context).model_copy(
+            update={"state": ReleaseState.REVIEW_CANDIDATE}
+        )
+
+    monkeypatch.setattr(__import__("build_v3"), "_evaluate_release", review_candidate_gate)
+    monkeypatch.setattr(
+        loop_module, "run_visual_review_loop",
+        lambda *args, **kwargs: {
+            "release_state": "review_required",
+            "delivery_pdf_bytes": None,
+            "attempt_records": [{"page": 0, "verdict": "rejected"}],
+            "whole_deck_passes": 1,
+            "page_outcomes": {0: {"passed": False, "verdict": "rejected"}},
+        },
+    )
+
+    envelope = valid_envelope(Path(tempfile.mkdtemp()) / "assets")
+    result = build_and_render_v3(
+        envelope,
+        output_dir=Path(tempfile.mkdtemp()) / "build",
+        cleanup=False,
+        release_context=ReleaseContextV3(allow_synthetic_assets=True),
+    )
+    assert result["release_state"] == "review_required"
+    assert result["delivery_pdf_bytes"] is None

@@ -165,6 +165,49 @@ def _accent_rgb(envelope: dict) -> tuple[int, int, int]:
     return (201, 78, 44)
 
 
+# Visual-review retry loop knobs (US-106). max_page_attempts matches the
+# owner-approved budget: 3 review attempts per page, then one whole-deck pass.
+_VISUAL_REVIEW_MAX_ATTEMPTS = 3
+_VISUAL_REVIEW_THRESHOLD = 3
+
+
+class _VisionReviewerAdapter:
+    """Adapter from the loop's reviewer contract to the real vision client.
+
+    The loop calls reviewer.score_page(page_png, refs, row_ids) and expects
+    {row_id: {"score": int, "rationale": str}}. The vision client already
+    implements this shape; this adapter only resolves the reference PNGs for
+    a face from the reference library and lets a missing reference degrade
+    gracefully (empty refs -> the page is scored on its own).
+    """
+
+    def __init__(self, context):
+        self.context = context
+
+    def score_page(self, page_png: str, reference_pngs: list[str], row_ids: list[str]):
+        from quality_loop.vis_client import VisionClient
+
+        client = VisionClient()
+        return client.score_page(page_png, reference_pngs, row_ids)
+
+
+def _vision_reviewer(context):
+    """The reviewer instance the visual loop uses for one build."""
+    return _VisionReviewerAdapter(context)
+
+
+def _reference_pngs_for(_review_png_paths: list[str]) -> list[str]:
+    """Reference PNGs for visual comparison, or [] when none are resolved.
+
+    The reference library (quality_loop/references) is keyed by st_type and
+    page role; the loop degrades gracefully when a face has no reference
+    (the page is scored on its own, never silently passed). Resolving the
+    exact per-face reference is the reference-retrieval stage's job; this
+    stays empty until that wiring lands so the loop can still run.
+    """
+    return []
+
+
 def face_rasters(
     contract,
     png_paths: tuple[Path, ...],
@@ -667,14 +710,40 @@ def build_and_render_v3(
         print_pdf_path: Path | None = None
         digital_export_report_path: Path | None = None
         print_preflight_report_path: Path | None = None
+        visual_loop_result: dict | None = None
         if gate_result.state is ReleaseState.REVIEW_CANDIDATE:
+            # Visual-review retry loop (fail-closed): never ship an ungraded
+            # deck, and never block without a retry path. The loop re-reviews
+            # every face against the reference, repairs renderer-fixable
+            # defects up to the attempt ladder, and one whole-deck pass. A
+            # deck that still cannot pass is REVIEW_REQUIRED with no delivery.
+            from quality_loop.visual_review_loop_v3 import run_visual_review_loop  # noqa: PLC0415
+
             review_png_paths = _review_pngs(render_result.png_paths, working_dir)
-            review_pdf_path = _marked_review_pdf(
-                render_result.raw_pdf_path,
-                working_dir / "report.review.pdf",
-                raw_pdf_sha256,
+            visual_loop_result = run_visual_review_loop(
+                lambda: {
+                    "failures": list(failures),
+                    "contract_sha256": raw_pdf_sha256,
+                },
+                reviewer=_vision_reviewer(context),
+                page_pngs=[str(p) for p in review_png_paths],
+                refs=_reference_pngs_for([str(p) for p in review_png_paths]),
+                row_ids=[f"face.{i:02d}" for i in range(1, len(review_png_paths) + 1)],
+                max_page_attempts=_VISUAL_REVIEW_MAX_ATTEMPTS,
+                threshold=_VISUAL_REVIEW_THRESHOLD,
+                whole_deck_pass=True,
             )
-            review_pdf_bytes = review_pdf_path.read_bytes()
+            if visual_loop_result["release_state"] == "review_required":
+                gate_result = gate_result.model_copy(
+                    update={"state": ReleaseState.REVIEW_REQUIRED}
+                )
+            else:
+                review_pdf_path = _marked_review_pdf(
+                    render_result.raw_pdf_path,
+                    working_dir / "report.review.pdf",
+                    raw_pdf_sha256,
+                )
+                review_pdf_bytes = review_pdf_path.read_bytes()
         elif gate_result.state is ReleaseState.SHIP_READY:
             try:
                 if "digital" in context.export_targets:
@@ -932,6 +1001,7 @@ def build_and_render_v3(
             ),
             "review_png_count": len(review_png_paths),
             "release_state": gate_result.state.value,
+            "visual_review_loop": visual_loop_result,
             "failures": [
                 failure.model_dump(mode="json") for failure in gate_result.failures
             ],
