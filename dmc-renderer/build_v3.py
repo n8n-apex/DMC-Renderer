@@ -208,6 +208,126 @@ def _reference_pngs_for(_review_png_paths: list[str]) -> list[str]:
     return []
 
 
+_RATIONALE_DEFECT_MAP: tuple[tuple[tuple[str, ...], str], ...] = (
+    (
+        ("empty", "hollow", "whitespace", "dead space", "blank", "leer", "hohl",
+         "weißraum", "zu viel luft", "luft", "unten leer", "bottom empty",
+         "bottom half", "unten", "untere hälfte"),
+        "dead_space_region",
+    ),
+    (
+        ("clipp", "cut off", "overflow", "abgeschnitten", "beschnitten",
+         "überlauf", "überläuft", "geht über", "zu lang", "collaps", "overlap",
+         "zusammenstößt", "überlappt", "läuft über"),
+        "element_clipped",
+    ),
+    (
+        ("cramp", "dicht", "gedrängt", "zu eng", "tight", "crowd", "gequetscht",
+         "gedrungen"),
+        "element_overflow",
+    ),
+)
+
+
+def _rationale_to_defects(rationale: str) -> list[str]:
+    """Deterministic bridge from a VIS reviewer's rationale to conductor codes.
+
+    The reviewer scores pages but does not emit structured defect codes; the
+    conductor's knobs are code-driven. This keyword map turns the rationale's
+    words into the codes the conductor already understands, so a taste
+    rejection becomes a concrete plan change. No LLM in the loop, no
+    fabrication: an unmatched rationale yields no codes and the page stays
+    honestly unfixable by the renderer.
+    """
+    if not rationale:
+        return []
+    lowered = rationale.lower()
+    return [code for keywords, code in _RATIONALE_DEFECT_MAP if any(k in lowered for k in keywords)]
+
+
+def _v3_conductor():
+    """The loop's conductor: DET failures + VIS rationale -> plan patch.
+
+    Mirrors converge_v3's propose/apply/apply_type chain, but reads the build
+    dict the loop passes in (failures, composition_plan, registry,
+    facts_by_face) plus the row_id and its latest score so a VIS rejection's
+    rationale can be translated into conductor codes. Returns
+    {"changed": bool, "plan_override": ..., "facts_override": ...} so
+    review_page can rebuild. A build without plan/registry (or a face with no
+    fixable defect) yields changed=False — honest, never a fabricated fix.
+    """
+    from quality_loop.conductor_v3 import apply, apply_type, propose
+
+    def _conductor(build: dict, row_id: str | None = None, scores: dict | None = None) -> dict:
+        failures = build.get("failures") or []
+        plan = build.get("composition_plan")
+        registry = build.get("registry")
+        facts_by_face = build.get("facts_by_face") or {}
+        if plan is None or registry is None:
+            return {"changed": False}
+
+        collected: list[dict] = []
+        for failure in failures:
+            code = failure.get("code") if isinstance(failure, dict) else getattr(failure, "code", "")
+            face_ids = (
+                failure.get("face_ids", ())
+                if isinstance(failure, dict)
+                else getattr(failure, "face_ids", ())
+            )
+            detail = (
+                failure.get("detail", "")
+                if isinstance(failure, dict)
+                else getattr(failure, "detail", "")
+            )
+            if not code or not face_ids:
+                continue
+            for face_id in face_ids:
+                collected.append(
+                    {"code": code, "face_ids": (face_id,), "detail": detail}
+                )
+
+        if row_id:
+            row_scores = (scores or {}).get(row_id) or {}
+            rationale = str(row_scores.get("rationale") or "")
+            collected.extend(
+                {"code": code, "face_ids": (row_id,), "detail": rationale}
+                for code in _rationale_to_defects(rationale)
+            )
+
+        if not collected:
+            return {"changed": False}
+
+        report = propose(
+            tuple(collected),
+            plan,
+            registry,
+            facts_by_face=facts_by_face,
+        )
+        if not report.changed:
+            return {"changed": False}
+        return {
+            "changed": True,
+            "plan_override": apply(plan, report),
+            "facts_override": apply_type(facts_by_face, report),
+        }
+
+    return _conductor
+
+
+def _inner_page_pngs(inner: dict, row_ids: list[str]) -> dict[str, str]:
+    """Map an inner (repair) build's raw PNGs onto the loop's row ids.
+
+    A repair pass renders the same face count as the original build, so the
+    paths pair up index-for-index. An empty/mismatched inner result degrades
+    to {} — the loop then re-scores the previous render (honest, never a
+    fabricated page).
+    """
+    raw_paths = inner.get("raw_png_paths") or []
+    if len(raw_paths) != len(row_ids):
+        return {}
+    return dict(zip(row_ids, [str(p) for p in raw_paths], strict=True))
+
+
 def face_rasters(
     contract,
     png_paths: tuple[Path, ...],
@@ -492,6 +612,7 @@ def build_and_render_v3(
     artifact_store_root: Path | None = None,
     composition_plan_override: object | None = None,
     facts_override: dict | None = None,
+    _skip_visual_review: bool = False,
 ) -> dict:
     """Run all frozen v3 stages with no ambient generation or network calls.
 
@@ -499,6 +620,10 @@ def build_and_render_v3(
     a conductor-patched plan. It is the ONLY way a plan enters from outside,
     and the conductor is the only thing that produces one, so a caller cannot
     quietly hand-tune a plan past the planner.
+
+    `_skip_visual_review` is the recursion guard: the visual-review loop's
+    per-attempt rebuilds must not re-enter the review loop themselves (that
+    would nest loops forever). Only the loop's own build_fn sets it.
     """
     context = release_context or ReleaseContextV3()
     working_dir = output_dir or Path(tempfile.mkdtemp(prefix="dmc_v3_"))
@@ -711,7 +836,7 @@ def build_and_render_v3(
         digital_export_report_path: Path | None = None
         print_preflight_report_path: Path | None = None
         visual_loop_result: dict | None = None
-        if gate_result.state is ReleaseState.REVIEW_CANDIDATE:
+        if gate_result.state is ReleaseState.REVIEW_CANDIDATE and not _skip_visual_review:
             # Visual-review retry loop (fail-closed): never ship an ungraded
             # deck, and never block without a retry path. The loop re-reviews
             # every face against the reference, repairs renderer-fixable
@@ -720,18 +845,51 @@ def build_and_render_v3(
             from quality_loop.visual_review_loop_v3 import run_visual_review_loop  # noqa: PLC0415
 
             review_png_paths = _review_pngs(render_result.png_paths, working_dir)
+            row_ids = [
+                f"face.{i:02d}" for i in range(1, len(review_png_paths) + 1)
+            ]
+
+            def _rebuild(plan_override=None, facts_override=None):
+                """Per-attempt rebuild: re-run the FULL frozen pipeline with the
+                conductor's patched plan. Never re-enters the visual loop."""
+                if plan_override is None and facts_override is None:
+                    return {
+                        "failures": [f.model_dump(mode="json") for f in failures],
+                        "contract_sha256": raw_pdf_sha256,
+                        "page_pngs": dict(
+                            zip(row_ids, [str(p) for p in review_png_paths], strict=True)
+                        ),
+                        "composition_plan": composition_plan,
+                        "registry": registry,
+                        "facts_by_face": facts_by_face,
+                    }
+                inner = build_and_render_v3(
+                    envelope,
+                    output_dir=working_dir / "repair-pass",
+                    cleanup=False,
+                    composition_plan_override=plan_override,
+                    facts_override=facts_override,
+                    _skip_visual_review=True,
+                )
+                return {
+                    "failures": list(inner.get("failures", [])),
+                    "contract_sha256": inner.get("raw_pdf_sha256", ""),
+                    "page_pngs": _inner_page_pngs(inner, row_ids),
+                    "composition_plan": inner.get("composition_plan"),
+                    "registry": inner.get("registry"),
+                    "facts_by_face": inner.get("facts_by_face"),
+                }
+
             visual_loop_result = run_visual_review_loop(
-                lambda: {
-                    "failures": list(failures),
-                    "contract_sha256": raw_pdf_sha256,
-                },
+                _rebuild,
                 reviewer=_vision_reviewer(context),
                 page_pngs=[str(p) for p in review_png_paths],
                 refs=_reference_pngs_for([str(p) for p in review_png_paths]),
-                row_ids=[f"face.{i:02d}" for i in range(1, len(review_png_paths) + 1)],
+                row_ids=row_ids,
                 max_page_attempts=_VISUAL_REVIEW_MAX_ATTEMPTS,
                 threshold=_VISUAL_REVIEW_THRESHOLD,
                 whole_deck_pass=True,
+                conductor=_v3_conductor(),
             )
             if visual_loop_result["release_state"] == "review_required":
                 gate_result = gate_result.model_copy(
@@ -1000,6 +1158,9 @@ def build_and_render_v3(
                 [] if cleanup else [str(path) for path in review_png_paths]
             ),
             "review_png_count": len(review_png_paths),
+            "raw_png_paths": (
+                [] if cleanup else [str(path) for path in render_result.png_paths]
+            ),
             "release_state": gate_result.state.value,
             "visual_review_loop": visual_loop_result,
             "failures": [

@@ -389,3 +389,18 @@ def test_calibrated_ship_context_emits_validated_delivery_pdf(tmp_path: Path) ->
     assert result["delivery_pdf_bytes"].startswith(b"%PDF")
     assert Path(result["delivery_pdf_path"]).is_file()
     assert result["delivery_pdf_hash"] == file_hash(result["delivery_pdf_path"])
+
+
+def test_rationale_to_defects_maps_deterministically() -> None:
+    """The VIS-rationale bridge turns reviewer words into conductor codes:
+    deterministic keyword map, no LLM, unmatched text yields no codes."""
+    from build_v3 import _rationale_to_defects
+
+    assert "dead_space_region" in _rationale_to_defects(
+        "bottom half empty; lots of dead space"
+    )
+    assert "element_clipped" in _rationale_to_defects("text is cut off at the edge")
+    assert _rationale_to_defects("") == []
+    assert _rationale_to_defects("colour palette is fine") == []
+    assert "element_clipped" in _rationale_to_defects("abgeschnitten am Rand")
+    assert "dead_space_region" in _rationale_to_defects("unten leer, weissraum")

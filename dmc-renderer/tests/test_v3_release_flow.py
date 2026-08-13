@@ -231,3 +231,83 @@ def test_visual_review_exhausted_returns_review_required_without_pdf(
     )
     assert result["release_state"] == "review_required"
     assert result["delivery_pdf_bytes"] is None
+
+
+def test_visual_loop_rebuilds_with_conductor_override_and_passes(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """The full reflex arc: VIS rejects a page (rationale "bottom half empty"),
+    the conductor patches the plan, the build_fn REBUILDS with the override,
+    and the fresh render passes review.
+
+    The conductor and the inner recursive build are scripted (their logic has
+    its own unit tests); this test proves the WIRING: the loop rebuilds with
+    the override and scores the fresh render, not the stale one."""
+    import tempfile
+
+    from build_v3 import ReleaseContextV3, build_and_render_v3
+    from contracts_v3.release import ReleaseState
+    from test_build_v3 import valid_envelope
+
+    import quality_loop.visual_review_loop_v3 as loop_module
+
+    real_evaluate = __import__("build_v3")._evaluate_release
+
+    def review_candidate_gate(failures, context):
+        return real_evaluate(failures, context).model_copy(
+            update={"state": ReleaseState.REVIEW_CANDIDATE}
+        )
+
+    captured = {"rebuilt": False, "override_seen": None}
+
+    def fake_recursive(envelope, *, composition_plan_override=None, facts_override=None, **kwargs):
+        assert composition_plan_override is not None, "loop must rebuild WITH the plan override"
+        captured["rebuilt"] = True
+        captured["override_seen"] = composition_plan_override
+        return {
+            "raw_pdf_sha256": "9" * 64,
+            "failures": [],
+            "raw_png_paths": [str(_solid_png(tmp_path, "fixed.png", rgb=(40, 40, 40)))],
+        }
+
+    class ScriptedReviewer:
+        """First score rejects the page with a fixable rationale; any later
+        score (the fresh render) passes."""
+
+        def __init__(self):
+            self.calls = 0
+
+        def score_page(self, page_png, reference_pngs, row_ids):
+            self.calls += 1
+            if self.calls == 1:
+                return {row_ids[0]: {"score": 1, "rationale": "bottom half empty; dead space"}}
+            return {row_ids[0]: {"score": 5, "rationale": "ok"}}
+
+    def scripted_conductor():
+        def _c(build, row_id=None, scores=None):
+            return {"changed": True, "plan_override": {"patched": True}, "facts_override": {}}
+        return _c
+
+    monkeypatch.setattr(__import__("build_v3"), "_evaluate_release", review_candidate_gate)
+    monkeypatch.setattr(__import__("build_v3"), "_vision_reviewer", lambda context: ScriptedReviewer())
+    monkeypatch.setattr(__import__("build_v3"), "_v3_conductor", scripted_conductor)
+    monkeypatch.setattr(__import__("build_v3"), "build_and_render_v3", fake_recursive)
+
+    envelope = valid_envelope(Path(tempfile.mkdtemp()) / "assets")
+    result = build_and_render_v3(
+        envelope,
+        output_dir=tmp_path / "build",
+        cleanup=False,
+        release_context=ReleaseContextV3(allow_synthetic_assets=True),
+    )
+    assert captured["rebuilt"] is True
+    assert result["release_state"] == "review_candidate"
+
+
+def _solid_png(tmp_path: Path, name: str, rgb: tuple[int, int, int]) -> Path:
+    from PIL import Image
+
+    path = tmp_path / name
+    Image.new("RGB", (64, 64), rgb).save(path)
+    return path

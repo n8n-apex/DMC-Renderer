@@ -113,7 +113,7 @@ def review_page(
         if attempt == max_attempts:
             break
         if conductor is not None:
-            plan = conductor(build)
+            plan = conductor(build, row_id=row_ids[0], scores=scores)
             pending_plan = plan.get("plan_override") if isinstance(plan, dict) else None
             pending_facts = plan.get("facts_override") if isinstance(plan, dict) else None
             if not (plan or {}).get("changed") or (pending_plan is None and pending_facts is None):

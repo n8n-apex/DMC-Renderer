@@ -203,7 +203,7 @@ class OneShotConductor:
     def __init__(self):
         self.calls = 0
 
-    def __call__(self, build):
+    def __call__(self, build, row_id=None, scores=None):
         self.calls += 1
         if self.calls == 1:
             return {
@@ -215,7 +215,7 @@ class OneShotConductor:
 
 
 class StalledConductor:
-    def __call__(self, build):
+    def __call__(self, build, row_id=None, scores=None):
         return {"changed": False}
 
 
