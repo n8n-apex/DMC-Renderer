@@ -28,7 +28,7 @@ are upstream concerns handled by n8n.
 | Response media type (failure) | `application/json` with `{ error, details, fixture_path? }` |
 | Timeout | 120 s end-to-end (hard cap, enforced by the renderer via `DMC_RENDER_TIMEOUT_S`, default 120; a build that exceeds it returns HTTP 504). |
 | Statelessness | No DB, no in-memory cache, no on-disk persistence across requests |
-| Determinism | Same input → byte-identical PDF (modulo a fixed PDF creation timestamp seeded from `payload.meta.report_id`) |
+| Determinism | Same input → byte-identical PDF. The package `generated_at` is derived from `report_id` (assemble_package `_stable_generated_at`, G10) and the PDF creation/mod metadata is post-processed to a fixed instant (assembler + render_v3), so identical inputs produce identical bytes modulo the known font-subset delta. |
 | Concurrency | Single-threaded per request. Multiple gunicorn workers OK. |
 | Health check | `GET /healthz` → `200 OK {"ok": true, "version": "..."}` |
 
