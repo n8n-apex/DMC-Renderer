@@ -1,0 +1,15 @@
+{
+  "fixture_schema": "dmc-v3-adversarial-recipe/1.0",
+  "scenario": "valid-20-face",
+  "base": "synthetic-house-20-face-v1",
+  "mutation": "none",
+  "expected_release_states": [
+    "rejected",
+    "review_candidate"
+  ],
+  "expected_blockers": [
+    "visual_density_below_reference",
+    "dead_space_region",
+    "ink_occupancy_out_of_bounds"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.service-business",
+  "origin": "synthetic",
+  "recipe": "valid-house-report",
+  "industry": "professional tax services",
+  "tone": "measured advisory German",
+  "asset_availability": "identity-and-documentary-proof",
+  "evidence_density": "moderate-grounded",
+  "visual_brand": "service-navy-sand"
+}

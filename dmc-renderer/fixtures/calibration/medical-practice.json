@@ -1,0 +1,11 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.medical-practice",
+  "origin": "synthetic",
+  "recipe": "valid-house-report",
+  "industry": "specialist medical practice group",
+  "tone": "assured warm German",
+  "asset_availability": "complete-identity-proof-context",
+  "evidence_density": "moderate-grounded",
+  "visual_brand": "praxis-teal-porcelain"
+}

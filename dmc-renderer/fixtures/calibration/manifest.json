@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "manifest_version": "1.0.0",
+  "fixtures": [
+    {
+      "fixture_id": "calibration.christoph-redacted",
+      "path": "christoph.json",
+      "sha256": "dde462cac4d6f07d7071fe764d04606a8eabc8750e97139f6ce41582b56e9c7d",
+      "consent_status": "internal_redacted_evaluation",
+      "redaction_status": "redacted",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "face_count_mismatch",
+        "case_count_mismatch",
+        "ungrounded_numeric_candidate",
+        "missing_required"
+      ]
+    },
+    {
+      "fixture_id": "calibration.apex-synthetic",
+      "path": "apex.json",
+      "sha256": "2aafaa5d92e735c0af6084ea39a2207c980bab5e05459a2fad75a1b82e517598",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    },
+    {
+      "fixture_id": "calibration.apex-dense",
+      "path": "apex-dense.json",
+      "sha256": "9be7485a7b2c011698f6a106d5641d966e9058fbdada1473eb1cf1861eae80a9",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    },
+    {
+      "fixture_id": "calibration.service-business",
+      "path": "service-business.json",
+      "sha256": "4de81f7226073b75010527aca749a7f671c1e23e944092a491cf455259ade1ed",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    },
+    {
+      "fixture_id": "calibration.product-business",
+      "path": "product-business.json",
+      "sha256": "70ee848b19fc588ed7c577162f709c0309bd752b7d8b4c5e06a081c6e61093b2",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    },
+    {
+      "fixture_id": "calibration.sparse-evidence",
+      "path": "sparse-evidence.json",
+      "sha256": "ca98efd0da8c912e1bf85fc8edca6281c2ff7cd89a38945da2bd069fdd14e6c0",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "missing_required"
+      ]
+    },
+    {
+      "fixture_id": "calibration.craft-trade",
+      "path": "craft-trade.json",
+      "sha256": "2107409b2f47cc176d730bcadb80f33d0216a34caabf5291670eaa4ae0f445b5",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    },
+    {
+      "fixture_id": "calibration.medical-practice",
+      "path": "medical-practice.json",
+      "sha256": "6ffd1e14e060de26905efd137f6f9178c501af36c488a0d08d38d813fdc367c3",
+      "consent_status": "synthetic",
+      "redaction_status": "not_applicable",
+      "expected_product_profile": "dmc_house_20_face",
+      "expected_gate_state": "rejected",
+      "expected_blockers": [
+        "visual_density_below_reference",
+        "dead_space_region",
+        "ink_occupancy_out_of_bounds",
+        "whitespace_fraction_out_of_bounds",
+        "asset_reused_across_faces"
+      ]
+    }
+  ]
+}

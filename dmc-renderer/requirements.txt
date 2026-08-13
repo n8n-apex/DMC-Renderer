@@ -1,0 +1,19 @@
+# dmc-renderer service: runtime dependency set, pinned to the versions verified
+# in the local renderer venv (research/v7-renderer/.venv, the dependency superset
+# that imports both the preprocessor stages and the v7 engine). Transitive deps
+# (pydyf/pyphen/cssselect2/tinycss2/cffi/...) resolve from these pins.
+fastapi==0.138.1
+uvicorn==0.49.0
+jinja2==3.1.6
+weasyprint==68.1
+playwright==1.60.0
+pymupdf==1.27.2.3
+pillow==12.2.0
+qrcode==8.2
+httpx==0.28.1
+pydantic==2.13.4
+numpy==2.4.6
+opencv-python-headless==4.13.0.92
+fonttools==4.63.0
+pyyaml==6.0.3
+python-dotenv==1.2.2

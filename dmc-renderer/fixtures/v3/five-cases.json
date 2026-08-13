@@ -1,0 +1,8 @@
+{
+  "fixture_schema": "dmc-v3-adversarial-recipe/1.0",
+  "scenario": "five-cases",
+  "base": "synthetic-house-20-face-v1",
+  "mutation": "promote-two-theory-faces-to-cases",
+  "expected_owner": "editorial_planning",
+  "expected_code": "case_count_mismatch"
+}

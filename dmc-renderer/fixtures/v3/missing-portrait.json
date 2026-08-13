@@ -1,0 +1,8 @@
+{
+  "fixture_schema": "dmc-v3-adversarial-recipe/1.0",
+  "scenario": "missing-portrait",
+  "base": "synthetic-house-20-face-v1",
+  "mutation": "remove-first-case-identity-asset",
+  "expected_owner": "asset_resolution",
+  "expected_code": "missing_required"
+}

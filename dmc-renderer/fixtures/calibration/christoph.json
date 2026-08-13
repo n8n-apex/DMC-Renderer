@@ -1,0 +1,14 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.christoph-redacted",
+  "origin": "real-derived",
+  "recipe": "christoph-known-failures",
+  "industry": "industrial tool management",
+  "tone": "direct practical German",
+  "asset_availability": "product-images-without-case-identities",
+  "evidence_density": "medium-with-ungrounded-number",
+  "visual_brand": "christoph-red-dark",
+  "redaction_note": "Names and commercial details are replaced by structural descriptors.",
+  "expected_face_count": 17,
+  "expected_case_count": 5
+}

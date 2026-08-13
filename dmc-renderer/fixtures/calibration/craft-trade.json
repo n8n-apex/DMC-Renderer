@@ -1,0 +1,11 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.craft-trade",
+  "origin": "synthetic",
+  "recipe": "valid-house-report",
+  "industry": "regional craft manufacturing",
+  "tone": "quiet grounded German",
+  "asset_availability": "identity-and-process",
+  "evidence_density": "light-grounded",
+  "visual_brand": "handwerk-umbra-linen"
+}

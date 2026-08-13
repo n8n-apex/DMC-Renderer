@@ -1,0 +1,807 @@
+{
+  "schema_version": "3.0",
+  "client_id": "christopher",
+  "original_artifact": {
+    "repository_path": "dmc-renderer/fixtures/christoph_v5_payload.json",
+    "sha256": "329bfa7681eb7ee490ff36ab9a63ba174f50c9f0c4647cc4f96936e3f3af95a4",
+    "byte_count": 20547,
+    "report_pointer": "$"
+  },
+  "source_references": [
+    {
+      "reference_kind": "explicit_source_field",
+      "content_path": "$.pages[4].data.fakten[0].quelle",
+      "raw_value": "(transcript)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "explicit_source_field",
+      "content_path": "$.pages[4].data.fakten[1].quelle",
+      "raw_value": "(Deloitte 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "explicit_source_field",
+      "content_path": "$.pages[4].data.fakten[2].quelle",
+      "raw_value": "(Deloitte 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.pages[16].data.url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    }
+  ],
+  "case_selection": {
+    "schema_version": "3.0",
+    "required_case_count": 3,
+    "candidates": [
+      {
+        "case_id": "case.candidate.slot06",
+        "source_slot": 6,
+        "source_content_path": "$.pages[5].data",
+        "source_label": "Geschäftsführer mittelständischer Software-Hersteller"
+      },
+      {
+        "case_id": "case.candidate.slot08",
+        "source_slot": 8,
+        "source_content_path": "$.pages[7].data",
+        "source_label": "CTO Softwarehaus Schienen- und Trassenbau"
+      },
+      {
+        "case_id": "case.candidate.slot10",
+        "source_slot": 10,
+        "source_content_path": "$.pages[9].data",
+        "source_label": "Geschäftsführer Dienstleistungsunternehmen 45 MA"
+      },
+      {
+        "case_id": "case.candidate.slot12",
+        "source_slot": 12,
+        "source_content_path": "$.pages[11].data",
+        "source_label": "Geschäftsführer Bauunternehmen 6 Poliere"
+      },
+      {
+        "case_id": "case.candidate.slot13",
+        "source_slot": 13,
+        "source_content_path": "$.pages[12].data",
+        "source_label": "Geschäftsführer Eventgastronomie Hamburg"
+      }
+    ],
+    "chosen_cases": [],
+    "excluded_cases": [],
+    "pending_cases": [
+      {
+        "case_id": "case.candidate.slot06",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot08",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot10",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot12",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot13",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      }
+    ],
+    "human_review_status": "pending",
+    "approved_by": null,
+    "approved_at": null
+  },
+  "editorial_map": {
+    "schema_version": "3.0",
+    "product_profile_id": "dmc_house_20_face",
+    "faces": [
+      {
+        "face_id": "face.01",
+        "face_index": 1,
+        "role": "cover",
+        "narrative_act": "Hook and compression of the report promise",
+        "argument": "Warum die Migration Ihrer Desktop-Software ins Web stagniert",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[0].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.02",
+        "face_index": 2,
+        "role": "outlook",
+        "narrative_act": "Frames the stakes after the cover",
+        "argument": "Der Code stimmt, aber das Projekt scheitert am Nutzer",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[1].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.03",
+        "face_index": 3,
+        "role": "about",
+        "narrative_act": "Earns credibility before the diagnosis",
+        "argument": "Warum wir erst gestalten, bevor Ihre Entwickler die erste Zeile Code schreiben",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[2].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.04",
+        "face_index": 4,
+        "role": "status_quo",
+        "narrative_act": "Builds pain and self-recognition",
+        "argument": "Technisch perfekt, aber am Anwender vorbei programmiert",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[3].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.05",
+        "face_index": 5,
+        "role": "false_beliefs",
+        "narrative_act": "Reframes the prospect's false beliefs",
+        "argument": "Drei Denkfehler, die Ihr Web-Projekt Millionen kosten können",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[4].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.06",
+        "face_index": 6,
+        "role": "case_study",
+        "narrative_act": "First proof peak after the diagnosis",
+        "argument": "Case study slot 1; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 1,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.07",
+        "face_index": 7,
+        "role": "theory",
+        "narrative_act": "Generalizes the first proof into a mechanism",
+        "argument": "Der validierte Entwurf verkürzt die Entwicklungszeit",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[6].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.08",
+        "face_index": 8,
+        "role": "theory",
+        "narrative_act": "Sustains the argument between proof peaks",
+        "argument": "Echte Vereinfachung verkürzt die Einarbeitung von Monaten auf Wochen",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[8].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.09",
+        "face_index": 9,
+        "role": "theory",
+        "narrative_act": "Completes the theory arc before the second proof",
+        "argument": "Präzision entsteht vor dem ersten Tastendruck",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[10].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.10",
+        "face_index": 10,
+        "role": "case_study",
+        "narrative_act": "Second proof peak",
+        "argument": "Case study slot 2; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 2,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.11",
+        "face_index": 11,
+        "role": "mechanism",
+        "narrative_act": "Turns proof into a repeatable model",
+        "argument": "Erst die Validierung, dann der erste Klick im Code",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[13].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.12",
+        "face_index": 12,
+        "role": "case_study",
+        "narrative_act": "Third and strongest proof peak",
+        "argument": "Case study slot 3; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 3,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.13",
+        "face_index": 13,
+        "role": "summary",
+        "narrative_act": "Begins the conversion act",
+        "argument": "Die Migration scheitert nicht am Code, sondern am Verstehen",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[14].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.14",
+        "face_index": 14,
+        "role": "objections",
+        "narrative_act": "Removes hesitation before the process explanation",
+        "argument": "Objections face required by the house structure",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": null,
+        "source_gap": "house structure face without legacy source content"
+      },
+      {
+        "face_id": "face.15",
+        "face_index": 15,
+        "role": "trust_proof",
+        "narrative_act": "Stacks verifiable trust evidence",
+        "argument": "Trust evidence carried by the legacy about section (unverified)",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[2].data.vertrauenspunkte"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.16",
+        "face_index": 16,
+        "role": "collaboration",
+        "narrative_act": "Makes the collaboration concrete, part one",
+        "argument": "Der Weg zum funktionierenden Web-Produkt beginnt ohne Entwickler-Risiko",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[15].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.17",
+        "face_index": 17,
+        "role": "collaboration",
+        "narrative_act": "Makes the collaboration concrete, part two",
+        "argument": "Der Weg zum funktionierenden Web-Produkt beginnt ohne Entwickler-Risiko",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[15].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.18",
+        "face_index": 18,
+        "role": "cta",
+        "narrative_act": "Primary conversion pause",
+        "argument": "Sichern Sie Ihr Web-Projekt ab",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[16].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.19",
+        "face_index": 19,
+        "role": "brand_breather",
+        "narrative_act": "Deliberate visual breath before the close",
+        "argument": "Brand breather face required by the house structure",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": null,
+        "source_gap": "house structure face without legacy source content"
+      },
+      {
+        "face_id": "face.20",
+        "face_index": 20,
+        "role": "cta",
+        "narrative_act": "Final back page close",
+        "argument": "Sichern Sie Ihr Web-Projekt ab",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.pages[16].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "code": "human_case_selection_pending",
+      "detail": "5 legacy case candidates await a human owner choosing exactly 3",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot06 (Geschäftsführer mittelständischer Software-Hersteller) has no rights-cleared portrait or identity asset",
+      "content_path": "$.pages[5].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot08 (CTO Softwarehaus Schienen- und Trassenbau) has no rights-cleared portrait or identity asset",
+      "content_path": "$.pages[7].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot10 (Geschäftsführer Dienstleistungsunternehmen 45 MA) has no rights-cleared portrait or identity asset",
+      "content_path": "$.pages[9].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot12 (Geschäftsführer Bauunternehmen 6 Poliere) has no rights-cleared portrait or identity asset",
+      "content_path": "$.pages[11].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot13 (Geschäftsführer Eventgastronomie Hamburg) has no rights-cleared portrait or identity asset",
+      "content_path": "$.pages[12].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "source_spans_missing",
+      "detail": "the legacy payload is rendered copy without underlying transcripts or documents, so no claim can be grounded with verbatim source spans",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.pages[4].data.fakten[0].quelle are unknown until a human resolves them",
+      "content_path": "$.pages[4].data.fakten[0].quelle",
+      "claim_kind": null,
+      "raw_value": "(transcript)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.pages[4].data.fakten[1].quelle are unknown until a human resolves them",
+      "content_path": "$.pages[4].data.fakten[1].quelle",
+      "claim_kind": null,
+      "raw_value": "(Deloitte 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.pages[4].data.fakten[2].quelle are unknown until a human resolves them",
+      "content_path": "$.pages[4].data.fakten[2].quelle",
+      "claim_kind": null,
+      "raw_value": "(Deloitte 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.pages[16].data.url are unknown until a human resolves them",
+      "content_path": "$.pages[16].data.url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90' at $.pages[1].data.einleitung has no grounded source span or computation",
+      "content_path": "$.pages[1].data.einleitung",
+      "claim_kind": "number",
+      "raw_value": "90"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '20' at $.pages[2].data.einleitung has no grounded source span or computation",
+      "content_path": "$.pages[2].data.einleitung",
+      "claim_kind": "number",
+      "raw_value": "20"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '20' at $.pages[2].data.vertrauenspunkte[0] has no grounded source span or computation",
+      "content_path": "$.pages[2].data.vertrauenspunkte[0]",
+      "claim_kind": "number",
+      "raw_value": "20"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '8' at $.pages[2].data.vertrauenspunkte[2] has no grounded source span or computation",
+      "content_path": "$.pages[2].data.vertrauenspunkte[2]",
+      "claim_kind": "number",
+      "raw_value": "8"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '20' at $.pages[2].data.kennzahlen[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[2].data.kennzahlen[0].wert",
+      "claim_kind": "number",
+      "raw_value": "20"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '8' at $.pages[2].data.kennzahlen[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[2].data.kennzahlen[1].wert",
+      "claim_kind": "number",
+      "raw_value": "8"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '347' at $.pages[3].data.einleitung has no grounded source span or computation",
+      "content_path": "$.pages[3].data.einleitung",
+      "claim_kind": "number",
+      "raw_value": "347"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '300.000' at $.pages[3].data.schmerzpunkte[0].titel has no grounded source span or computation",
+      "content_path": "$.pages[3].data.schmerzpunkte[0].titel",
+      "claim_kind": "number",
+      "raw_value": "300.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '347' at $.pages[3].data.rechnung.schritte[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[3].data.rechnung.schritte[0].wert",
+      "claim_kind": "number",
+      "raw_value": "347"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[3].data.rechnung.schritte[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[3].data.rechnung.schritte[1].wert",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '300.000' at $.pages[3].data.rechnung.ergebnis.wert has no grounded source span or computation",
+      "content_path": "$.pages[3].data.rechnung.ergebnis.wert",
+      "claim_kind": "number",
+      "raw_value": "300.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90' at $.pages[4].data.irrtuemer[0].erklaerung has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[0].erklaerung",
+      "claim_kind": "number",
+      "raw_value": "90"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90' at $.pages[4].data.irrtuemer[1].realitaet has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[1].realitaet",
+      "claim_kind": "number",
+      "raw_value": "90"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[4].data.irrtuemer[1].erklaerung has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[1].erklaerung",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '70' at $.pages[4].data.irrtuemer[2].erklaerung has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[2].erklaerung",
+      "claim_kind": "number",
+      "raw_value": "70"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '75' at $.pages[4].data.irrtuemer[2].erklaerung has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[2].erklaerung",
+      "claim_kind": "number",
+      "raw_value": "75"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '80' at $.pages[4].data.irrtuemer[2].erklaerung has no grounded source span or computation",
+      "content_path": "$.pages[4].data.irrtuemer[2].erklaerung",
+      "claim_kind": "number",
+      "raw_value": "80"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90%' at $.pages[4].data.fakten[0].figur has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[0].figur",
+      "claim_kind": "number",
+      "raw_value": "90%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '70%' at $.pages[4].data.fakten[1].figur has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[1].figur",
+      "claim_kind": "number",
+      "raw_value": "70%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '75%' at $.pages[4].data.fakten[1].figur has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[1].figur",
+      "claim_kind": "number",
+      "raw_value": "75%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.pages[4].data.fakten[1].quelle has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[1].quelle",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '80%' at $.pages[4].data.fakten[2].figur has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[2].figur",
+      "claim_kind": "number",
+      "raw_value": "80%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.pages[4].data.fakten[2].quelle has no grounded source span or computation",
+      "content_path": "$.pages[4].data.fakten[2].quelle",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '1,5' at $.pages[5].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.pages[5].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "1,5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '1,5' at $.pages[5].data.ergebnis_metrics[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[5].data.ergebnis_metrics[0].wert",
+      "claim_kind": "number",
+      "raw_value": "1,5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.pages[5].data.ergebnis_metrics[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[5].data.ergebnis_metrics[1].wert",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[5].data.ergebnis_metrics[2].wert has no grounded source span or computation",
+      "content_path": "$.pages[5].data.ergebnis_metrics[2].wert",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '1,5' at $.pages[5].data.vorher_nachher.von has no grounded source span or computation",
+      "content_path": "$.pages[5].data.vorher_nachher.von",
+      "claim_kind": "number",
+      "raw_value": "1,5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[5].data.vorher_nachher.nach has no grounded source span or computation",
+      "content_path": "$.pages[5].data.vorher_nachher.nach",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.pages[6].data.vorher_nachher.von has no grounded source span or computation",
+      "content_path": "$.pages[6].data.vorher_nachher.von",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[6].data.vorher_nachher.nach has no grounded source span or computation",
+      "content_path": "$.pages[6].data.vorher_nachher.nach",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[7].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.pages[7].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[7].data.ergebnis_metrics[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[7].data.ergebnis_metrics[0].wert",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[8].data.vorher_nachher.von has no grounded source span or computation",
+      "content_path": "$.pages[8].data.vorher_nachher.von",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '45' at $.pages[9].data.kurzportrait has no grounded source span or computation",
+      "content_path": "$.pages[9].data.kurzportrait",
+      "claim_kind": "number",
+      "raw_value": "45"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '600' at $.pages[9].data.kurzportrait has no grounded source span or computation",
+      "content_path": "$.pages[9].data.kurzportrait",
+      "claim_kind": "number",
+      "raw_value": "600"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30 %' at $.pages[9].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.pages[9].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "30 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '4' at $.pages[9].data.ergebnis_metrics[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[9].data.ergebnis_metrics[0].wert",
+      "claim_kind": "number",
+      "raw_value": "4"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100 %' at $.pages[9].data.ergebnis_metrics[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[9].data.ergebnis_metrics[1].wert",
+      "claim_kind": "number",
+      "raw_value": "100 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '70 %' at $.pages[9].data.ergebnis_metrics[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[9].data.ergebnis_metrics[1].wert",
+      "claim_kind": "number",
+      "raw_value": "70 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '45' at $.pages[9].data.kunde.funktion has no grounded source span or computation",
+      "content_path": "$.pages[9].data.kunde.funktion",
+      "claim_kind": "number",
+      "raw_value": "45"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100 %' at $.pages[11].data.ergebnis_metrics[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[11].data.ergebnis_metrics[1].wert",
+      "claim_kind": "number",
+      "raw_value": "100 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.pages[11].data.kunde.funktion has no grounded source span or computation",
+      "content_path": "$.pages[11].data.kunde.funktion",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.pages[12].data.ergebnis_metrics[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[12].data.ergebnis_metrics[0].wert",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '20' at $.pages[12].data.ergebnis_metrics[0].wert has no grounded source span or computation",
+      "content_path": "$.pages[12].data.ergebnis_metrics[0].wert",
+      "claim_kind": "number",
+      "raw_value": "20"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '83 %' at $.pages[12].data.ergebnis_metrics[1].wert has no grounded source span or computation",
+      "content_path": "$.pages[12].data.ergebnis_metrics[1].wert",
+      "claim_kind": "number",
+      "raw_value": "83 %"
+    },
+    {
+      "code": "objections_evidence_missing",
+      "detail": "the house structure requires an objections face, but the legacy report carries no objections content or supporting evidence",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "trust_proof_unverified",
+      "detail": "the legacy report asserts trust points that have never been verified against sources",
+      "content_path": "$.pages[2].data.vertrauenspunkte",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "founder_portrait_rights_unresolved",
+      "detail": "the legacy payload carries no founder portrait; sourcing one and clearing its rights is a human task",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "cta_url_missing",
+      "detail": "the legacy CTA page declares an empty CTA URL; a human must supply it",
+      "content_path": "$.pages[16].data.url",
+      "claim_kind": null,
+      "raw_value": ""
+    }
+  ],
+  "sources": [],
+  "claims": [],
+  "assets": []
+}

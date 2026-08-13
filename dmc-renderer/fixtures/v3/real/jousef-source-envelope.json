@@ -1,0 +1,1838 @@
+{
+  "schema_version": "3.0",
+  "client_id": "jousef",
+  "original_artifact": {
+    "repository_path": "dmc-renderer/fixtures/apex_consulting_payload.json",
+    "sha256": "242c70ce4ffd002ef819b651cb8f2563d3dfb2c5f339a2579da0331a39950e0f",
+    "byte_count": 42379,
+    "report_pointer": "$.payload"
+  },
+  "source_references": [
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[0]",
+      "raw_value": "(BCG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[1].data.body",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[1].data.body",
+      "raw_value": "(BCG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[2].data.body",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[3].data.asymmetrie_opener",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[3].data.body",
+      "raw_value": "(BCG, 2024)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "raw_value": "(Hiring Lab, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "raw_value": "(PwC, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "raw_value": "(PwC, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "raw_value": "(KPMG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "raw_value": "(KPMG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[5].data.kunde.company_url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[6].data.body",
+      "raw_value": "(BCG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[7].data.kunde.company_url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[8].data.body",
+      "raw_value": "(2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[9].data.kunde.company_url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[10].data.body",
+      "raw_value": "(KPMG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[11].data.kunde.company_url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[12].data.kunde.company_url",
+      "raw_value": "",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[13].data.mechanism_description",
+      "raw_value": "(PwC, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[13].data.steps[2].description",
+      "raw_value": "(KPMG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[14].data.body",
+      "raw_value": "(BCG, 2025)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[14].data.body",
+      "raw_value": "(BCG, 2024)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[14].data.body",
+      "raw_value": "(Hiring Lab, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[14].data.body",
+      "raw_value": "(KPMG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "citation",
+      "content_path": "$.payload.pages[14].data.body",
+      "raw_value": "(BCG, 2026)",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.payload.pages[16].data.cta_url",
+      "raw_value": "https://apex-consulting.ai/",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "inline_url",
+      "content_path": "$.images.cover_hero",
+      "raw_value": "https://drive.google.com/uc?id=1AhpgWjMu98VdUWI_pm-5kkejh_1Qqtfx",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "inline_url",
+      "content_path": "$.images.cover_author",
+      "raw_value": "https://drive.google.com/uc?id=17SdW9iQBpKIXXAboer7y8aR8DQP2onfa",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "inline_url",
+      "content_path": "$.images.about_logo",
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "inline_url",
+      "content_path": "$.images.status_quo_scene",
+      "raw_value": "https://drive.google.com/uc?id=1GCnbZGfouIdelNMNL6BR_s1SdDkUzaV1",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "inline_url",
+      "content_path": "$.images.fazit_background",
+      "raw_value": "https://drive.google.com/uc?id=1MLH_DokFJXMRrkcBiMLG5JE0pEPxqanl",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.brand_tokens.logo_dark_url",
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.brand_tokens.logo_light_url",
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh",
+      "rights_status": "unknown"
+    },
+    {
+      "reference_kind": "url_field",
+      "content_path": "$.brand_tokens.qr_target_url",
+      "raw_value": "https://apex-consulting.ai/",
+      "rights_status": "unknown"
+    }
+  ],
+  "case_selection": {
+    "schema_version": "3.0",
+    "required_case_count": 3,
+    "candidates": [
+      {
+        "case_id": "case.candidate.slot06",
+        "source_slot": 6,
+        "source_content_path": "$.payload.pages[5].data",
+        "source_label": "Martina Ammon"
+      },
+      {
+        "case_id": "case.candidate.slot08",
+        "source_slot": 8,
+        "source_content_path": "$.payload.pages[7].data",
+        "source_label": "Cordes Consulting"
+      },
+      {
+        "case_id": "case.candidate.slot10",
+        "source_slot": 10,
+        "source_content_path": "$.payload.pages[9].data",
+        "source_label": "Frese Recruiting"
+      },
+      {
+        "case_id": "case.candidate.slot12",
+        "source_slot": 12,
+        "source_content_path": "$.payload.pages[11].data",
+        "source_label": "Conesso GmbH"
+      },
+      {
+        "case_id": "case.candidate.slot13",
+        "source_slot": 13,
+        "source_content_path": "$.payload.pages[12].data",
+        "source_label": "Hanisch & Klein"
+      }
+    ],
+    "chosen_cases": [],
+    "excluded_cases": [],
+    "pending_cases": [
+      {
+        "case_id": "case.candidate.slot06",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot08",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot10",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot12",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      },
+      {
+        "case_id": "case.candidate.slot13",
+        "reason": "The legacy report carries more case studies than the three the v3 house structure allows. Choosing which three survive is an editorial decision reserved for a human owner; no automated selection is permitted."
+      }
+    ],
+    "human_review_status": "pending",
+    "approved_by": null,
+    "approved_at": null
+  },
+  "editorial_map": {
+    "schema_version": "3.0",
+    "product_profile_id": "dmc_house_20_face",
+    "faces": [
+      {
+        "face_id": "face.01",
+        "face_index": 1,
+        "role": "cover",
+        "narrative_act": "Hook and compression of the report promise",
+        "argument": "Dein Wachstum frisst dich selbst auf",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[0].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.02",
+        "face_index": 2,
+        "role": "outlook",
+        "narrative_act": "Frames the stakes after the cover",
+        "argument": "Dein Wachstum scheitert nicht am Markt",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[1].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.03",
+        "face_index": 3,
+        "role": "about",
+        "narrative_act": "Earns credibility before the diagnosis",
+        "argument": "Über 100 AI-Projekte. Ein Ergebnis: Betrieb ohne Flaschenhals.",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[2].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.04",
+        "face_index": 4,
+        "role": "status_quo",
+        "narrative_act": "Builds pain and self-recognition",
+        "argument": "Dein Unternehmen wächst. Deine Prozesse nicht.",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[3].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.05",
+        "face_index": 5,
+        "role": "false_beliefs",
+        "narrative_act": "Reframes the prospect's false beliefs",
+        "argument": "Drei Lügen, die dein Wachstum blockieren",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[4].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.06",
+        "face_index": 6,
+        "role": "case_study",
+        "narrative_act": "First proof peak after the diagnosis",
+        "argument": "Case study slot 1; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 1,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.07",
+        "face_index": 7,
+        "role": "theory",
+        "narrative_act": "Generalizes the first proof into a mechanism",
+        "argument": "Wachstum entsteht nicht durch mehr Köpfe",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[6].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.08",
+        "face_index": 8,
+        "role": "theory",
+        "narrative_act": "Sustains the argument between proof peaks",
+        "argument": "Kapazität entsteht nicht durch Köpfe, sondern durch Systeme",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[8].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.09",
+        "face_index": 9,
+        "role": "theory",
+        "narrative_act": "Completes the theory arc before the second proof",
+        "argument": "Kommunikation skaliert nicht durch Köpfe",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[10].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.10",
+        "face_index": 10,
+        "role": "case_study",
+        "narrative_act": "Second proof peak",
+        "argument": "Case study slot 2; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 2,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.11",
+        "face_index": 11,
+        "role": "mechanism",
+        "narrative_act": "Turns proof into a repeatable model",
+        "argument": "Das Done-For-You AI Automation Framework",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[13].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.12",
+        "face_index": 12,
+        "role": "case_study",
+        "narrative_act": "Third and strongest proof peak",
+        "argument": "Case study slot 3; awaiting human selection from the legacy case candidates",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": 3,
+        "source_gap": "case selection pending human review"
+      },
+      {
+        "face_id": "face.13",
+        "face_index": 13,
+        "role": "summary",
+        "narrative_act": "Begins the conversion act",
+        "argument": "Dein Wachstum wartet nicht auf deine Entscheidung",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[14].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.14",
+        "face_index": 14,
+        "role": "objections",
+        "narrative_act": "Removes hesitation before the process explanation",
+        "argument": "Objections face required by the house structure",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": null,
+        "source_gap": "house structure face without legacy source content"
+      },
+      {
+        "face_id": "face.15",
+        "face_index": 15,
+        "role": "trust_proof",
+        "narrative_act": "Stacks verifiable trust evidence",
+        "argument": "Trust evidence carried by the legacy about section (unverified)",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[2].data.credibility_points"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.16",
+        "face_index": 16,
+        "role": "collaboration",
+        "narrative_act": "Makes the collaboration concrete, part one",
+        "argument": "Von Erstgespräch zu laufendem AI-System in Wochen",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[15].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.17",
+        "face_index": 17,
+        "role": "collaboration",
+        "narrative_act": "Makes the collaboration concrete, part two",
+        "argument": "Von Erstgespräch zu laufendem AI-System in Wochen",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[15].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.18",
+        "face_index": 18,
+        "role": "cta",
+        "narrative_act": "Primary conversion pause",
+        "argument": "Buche jetzt dein kostenloses Erstgespräch mit APEX",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[16].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      },
+      {
+        "face_id": "face.19",
+        "face_index": 19,
+        "role": "brand_breather",
+        "narrative_act": "Deliberate visual breath before the close",
+        "argument": "Brand breather face required by the house structure",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [],
+        "case_slot": null,
+        "source_gap": "house structure face without legacy source content"
+      },
+      {
+        "face_id": "face.20",
+        "face_index": 20,
+        "role": "cta",
+        "narrative_act": "Final back page close",
+        "argument": "Buche jetzt dein kostenloses Erstgespräch mit APEX",
+        "mapping_basis": "explicit_source_path",
+        "page_range_derived": false,
+        "source_content_paths": [
+          "$.payload.pages[16].data"
+        ],
+        "case_slot": null,
+        "source_gap": null
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "code": "human_case_selection_pending",
+      "detail": "5 legacy case candidates await a human owner choosing exactly 3",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot06 (Martina Ammon) has no rights-cleared portrait or identity asset",
+      "content_path": "$.payload.pages[5].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot08 (Cordes Consulting) has no rights-cleared portrait or identity asset",
+      "content_path": "$.payload.pages[7].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot10 (Frese Recruiting) has no rights-cleared portrait or identity asset",
+      "content_path": "$.payload.pages[9].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot12 (Conesso GmbH) has no rights-cleared portrait or identity asset",
+      "content_path": "$.payload.pages[11].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "case_portrait_unresolved",
+      "detail": "case candidate case.candidate.slot13 (Hanisch & Klein) has no rights-cleared portrait or identity asset",
+      "content_path": "$.payload.pages[12].data",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "source_spans_missing",
+      "detail": "the legacy payload is rendered copy without underlying transcripts or documents, so no claim can be grounded with verbatim source spans",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[0].data.intro_body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[0].data.teaser_bullets[0] are unknown until a human resolves them",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[0]",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[1].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[1].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[2].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[3].data.asymmetrie_opener are unknown until a human resolves them",
+      "content_path": "$.payload.pages[3].data.asymmetrie_opener",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[3].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[3].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2024)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[0].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": null,
+      "raw_value": "(Hiring Lab, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[0].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": null,
+      "raw_value": "(PwC, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[1].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": null,
+      "raw_value": "(PwC, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[1].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": null,
+      "raw_value": "(KPMG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[2].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[4].data.beliefs[2].body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": null,
+      "raw_value": "(KPMG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[5].data.kunde.company_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[5].data.kunde.company_url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[6].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[6].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[7].data.kunde.company_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[7].data.kunde.company_url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[8].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[8].data.body",
+      "claim_kind": null,
+      "raw_value": "(2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[9].data.kunde.company_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[9].data.kunde.company_url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[10].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[10].data.body",
+      "claim_kind": null,
+      "raw_value": "(KPMG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[11].data.kunde.company_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[11].data.kunde.company_url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[12].data.kunde.company_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[12].data.kunde.company_url",
+      "claim_kind": null,
+      "raw_value": ""
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[13].data.mechanism_description are unknown until a human resolves them",
+      "content_path": "$.payload.pages[13].data.mechanism_description",
+      "claim_kind": null,
+      "raw_value": "(PwC, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[13].data.steps[2].description are unknown until a human resolves them",
+      "content_path": "$.payload.pages[13].data.steps[2].description",
+      "claim_kind": null,
+      "raw_value": "(KPMG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[14].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2025)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[14].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2024)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[14].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": null,
+      "raw_value": "(Hiring Lab, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[14].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": null,
+      "raw_value": "(KPMG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[14].data.body are unknown until a human resolves them",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": null,
+      "raw_value": "(BCG, 2026)"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.payload.pages[16].data.cta_url are unknown until a human resolves them",
+      "content_path": "$.payload.pages[16].data.cta_url",
+      "claim_kind": null,
+      "raw_value": "https://apex-consulting.ai/"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.images.cover_hero are unknown until a human resolves them",
+      "content_path": "$.images.cover_hero",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1AhpgWjMu98VdUWI_pm-5kkejh_1Qqtfx"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.images.cover_author are unknown until a human resolves them",
+      "content_path": "$.images.cover_author",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=17SdW9iQBpKIXXAboer7y8aR8DQP2onfa"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.images.about_logo are unknown until a human resolves them",
+      "content_path": "$.images.about_logo",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.images.status_quo_scene are unknown until a human resolves them",
+      "content_path": "$.images.status_quo_scene",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1GCnbZGfouIdelNMNL6BR_s1SdDkUzaV1"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.images.fazit_background are unknown until a human resolves them",
+      "content_path": "$.images.fazit_background",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1MLH_DokFJXMRrkcBiMLG5JE0pEPxqanl"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.brand_tokens.logo_dark_url are unknown until a human resolves them",
+      "content_path": "$.brand_tokens.logo_dark_url",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.brand_tokens.logo_light_url are unknown until a human resolves them",
+      "content_path": "$.brand_tokens.logo_light_url",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=1ug7vJA9T_MuvjfNY2yIwniHF1iNK1kvh"
+    },
+    {
+      "code": "source_rights_unresolved",
+      "detail": "rights for source reference at $.brand_tokens.qr_target_url are unknown until a human resolves them",
+      "content_path": "$.brand_tokens.qr_target_url",
+      "claim_kind": null,
+      "raw_value": "https://apex-consulting.ai/"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '70%' at $.payload.pages[0].data.intro_body has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": "number",
+      "raw_value": "70%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30%' at $.payload.pages[0].data.intro_body has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": "number",
+      "raw_value": "30%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[0].data.intro_body has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[0].data.intro_body has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50%' at $.payload.pages[0].data.intro_body has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.intro_body",
+      "claim_kind": "number",
+      "raw_value": "50%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '60%' at $.payload.pages[0].data.teaser_bullets[0] has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[0]",
+      "claim_kind": "number",
+      "raw_value": "60%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[0].data.teaser_bullets[0] has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[0]",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[0].data.teaser_bullets[0] has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[0]",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '5' at $.payload.pages[0].data.teaser_bullets[2] has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[2]",
+      "claim_kind": "number",
+      "raw_value": "5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[0].data.teaser_bullets[2] has no grounded source span or computation",
+      "content_path": "$.payload.pages[0].data.teaser_bullets[2]",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30 %' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "30 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '700' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "700"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '800' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "800"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '60 %' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "60 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '40 %' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "40 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '10' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "10"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "50"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50 %' at $.payload.pages[1].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[1].data.body",
+      "claim_kind": "number",
+      "raw_value": "50 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100' at $.payload.pages[2].data.headline has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.headline",
+      "claim_kind": "number",
+      "raw_value": "100"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100' at $.payload.pages[2].data.intro has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.intro",
+      "claim_kind": "number",
+      "raw_value": "100"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[2].data.intro has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.intro",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[2].data.intro has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.intro",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[2].data.intro has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.intro",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30%' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "30%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "100"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '500.000' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "500.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[2].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.body",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100' at $.payload.pages[2].data.credibility_points[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[0].value",
+      "claim_kind": "number",
+      "raw_value": "100"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[2].data.credibility_points[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[1].value",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50 %' at $.payload.pages[2].data.credibility_points[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[1].value",
+      "claim_kind": "number",
+      "raw_value": "50 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[2].data.credibility_points[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[2].value",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[2].data.credibility_points[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[2].value",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '200.000' at $.payload.pages[2].data.credibility_points[3].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[2].data.credibility_points[3].value",
+      "claim_kind": "number",
+      "raw_value": "200.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '25' at $.payload.pages[3].data.asymmetrie_opener has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.asymmetrie_opener",
+      "claim_kind": "number",
+      "raw_value": "25"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30 %' at $.payload.pages[3].data.asymmetrie_opener has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.asymmetrie_opener",
+      "claim_kind": "number",
+      "raw_value": "30 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[3].data.asymmetrie_opener has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.asymmetrie_opener",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50 %' at $.payload.pages[3].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.body",
+      "claim_kind": "number",
+      "raw_value": "50 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2024' at $.payload.pages[3].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.body",
+      "claim_kind": "number",
+      "raw_value": "2024"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '12' at $.payload.pages[3].data.symptoms[2].title has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.symptoms[2].title",
+      "claim_kind": "number",
+      "raw_value": "12"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[3].data.symptoms[2].title has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.symptoms[2].title",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[3].data.symptoms[3].title has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.symptoms[3].title",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[3].data.symptoms[3].description has no grounded source span or computation",
+      "content_path": "$.payload.pages[3].data.symptoms[3].description",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '77 %' at $.payload.pages[4].data.beliefs[0].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": "number",
+      "raw_value": "77 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[4].data.beliefs[0].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2,9 %' at $.payload.pages[4].data.beliefs[0].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": "number",
+      "raw_value": "2,9 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[4].data.beliefs[0].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50 %' at $.payload.pages[4].data.beliefs[0].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[0].body",
+      "claim_kind": "number",
+      "raw_value": "50 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[4].data.beliefs[1].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '40' at $.payload.pages[4].data.beliefs[1].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": "number",
+      "raw_value": "40"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '45 %' at $.payload.pages[4].data.beliefs[1].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": "number",
+      "raw_value": "45 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[4].data.beliefs[1].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '32 %' at $.payload.pages[4].data.beliefs[1].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[1].body",
+      "claim_kind": "number",
+      "raw_value": "32 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90 %' at $.payload.pages[4].data.beliefs[2].reality has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].reality",
+      "claim_kind": "number",
+      "raw_value": "90 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '90 %' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "90 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '18' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "18"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '58 %' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "58 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '10' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "10"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "50"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[4].data.beliefs[2].body has no grounded source span or computation",
+      "content_path": "$.payload.pages[4].data.beliefs[2].body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[5].data.loesung has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.loesung",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '7' at $.payload.pages[5].data.loesung has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.loesung",
+      "claim_kind": "number",
+      "raw_value": "7"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[5].data.ergebnis_metrics[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.ergebnis_metrics[0].value",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '200.000' at $.payload.pages[5].data.ergebnis_metrics[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.ergebnis_metrics[1].value",
+      "claim_kind": "number",
+      "raw_value": "200.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '4' at $.payload.pages[5].data.ergebnis_metrics[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.ergebnis_metrics[2].value",
+      "claim_kind": "number",
+      "raw_value": "4"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[5].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '200.000' at $.payload.pages[5].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[5].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "200.000"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '60 %' at $.payload.pages[6].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[6].data.body",
+      "claim_kind": "number",
+      "raw_value": "60 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[6].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[6].data.body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.payload.pages[7].data.ergebnis_headline has no grounded source span or computation",
+      "content_path": "$.payload.pages[7].data.ergebnis_headline",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '6' at $.payload.pages[7].data.ergebnis_metrics[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[7].data.ergebnis_metrics[0].value",
+      "claim_kind": "number",
+      "raw_value": "6"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '0' at $.payload.pages[7].data.ergebnis_metrics[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[7].data.ergebnis_metrics[2].value",
+      "claim_kind": "number",
+      "raw_value": "0"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[8].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[8].data.body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '40 %' at $.payload.pages[8].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[8].data.body",
+      "claim_kind": "number",
+      "raw_value": "40 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[9].data.ergebnis_headline has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ergebnis_headline",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '12' at $.payload.pages[9].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "12"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[9].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[9].data.ergebnis_text has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ergebnis_text",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[9].data.ergebnis_metrics[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ergebnis_metrics[0].value",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '0' at $.payload.pages[9].data.ergebnis_metrics[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.ergebnis_metrics[2].value",
+      "claim_kind": "number",
+      "raw_value": "0"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[9].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[9].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '24' at $.payload.pages[10].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[10].data.body",
+      "claim_kind": "number",
+      "raw_value": "24"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '58 %' at $.payload.pages[10].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[10].data.body",
+      "claim_kind": "number",
+      "raw_value": "58 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[10].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[10].data.body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[11].data.ergebnis_headline has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_headline",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[11].data.ergebnis_headline has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_headline",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[11].data.ausgangsproblem has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ausgangsproblem",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[11].data.ergebnis_text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_text",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[11].data.ergebnis_text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_text",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '5' at $.payload.pages[11].data.ergebnis_text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_text",
+      "claim_kind": "number",
+      "raw_value": "5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[11].data.ergebnis_metrics[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_metrics[0].value",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[11].data.ergebnis_metrics[0].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_metrics[0].value",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '60' at $.payload.pages[11].data.ergebnis_metrics[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_metrics[1].value",
+      "claim_kind": "number",
+      "raw_value": "60"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '5' at $.payload.pages[11].data.ergebnis_metrics[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_metrics[1].value",
+      "claim_kind": "number",
+      "raw_value": "5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[11].data.ergebnis_metrics[2].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.ergebnis_metrics[2].value",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[11].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[11].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '5' at $.payload.pages[11].data.pullquote.text has no grounded source span or computation",
+      "content_path": "$.payload.pages[11].data.pullquote.text",
+      "claim_kind": "number",
+      "raw_value": "5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '100 %' at $.payload.pages[12].data.ergebnis_metrics[1].value has no grounded source span or computation",
+      "content_path": "$.payload.pages[12].data.ergebnis_metrics[1].value",
+      "claim_kind": "number",
+      "raw_value": "100 %"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[13].data.mechanism_description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.mechanism_description",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '50%' at $.payload.pages[13].data.mechanism_description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.mechanism_description",
+      "claim_kind": "number",
+      "raw_value": "50%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[13].data.mechanism_description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.mechanism_description",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '61%' at $.payload.pages[13].data.steps[2].description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.steps[2].description",
+      "claim_kind": "number",
+      "raw_value": "61%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[13].data.steps[2].description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.steps[2].description",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30' at $.payload.pages[13].data.steps[3].description has no grounded source span or computation",
+      "content_path": "$.payload.pages[13].data.steps[3].description",
+      "claim_kind": "number",
+      "raw_value": "30"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '25' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "25"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "30%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2025' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "2025"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2024' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "2024"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '77%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "77%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2026' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "2026"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '58%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "58%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '61%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "61%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '40%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "40%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '60%' at $.payload.pages[14].data.body has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.body",
+      "claim_kind": "number",
+      "raw_value": "60%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '25' at $.payload.pages[14].data.cost_of_inaction has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.cost_of_inaction",
+      "claim_kind": "number",
+      "raw_value": "25"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '30%' at $.payload.pages[14].data.cost_of_inaction has no grounded source span or computation",
+      "content_path": "$.payload.pages[14].data.cost_of_inaction",
+      "claim_kind": "number",
+      "raw_value": "30%"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '45' at $.payload.pages[15].data.steps[0].description has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[0].description",
+      "claim_kind": "number",
+      "raw_value": "45"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '1' at $.payload.pages[15].data.steps[0].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[0].duration",
+      "claim_kind": "number",
+      "raw_value": "1"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[15].data.steps[1].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[1].duration",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '5' at $.payload.pages[15].data.steps[1].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[1].duration",
+      "claim_kind": "number",
+      "raw_value": "5"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[15].data.steps[2].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[2].duration",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[15].data.steps[2].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[2].duration",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '1' at $.payload.pages[15].data.steps[3].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[3].duration",
+      "claim_kind": "number",
+      "raw_value": "1"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[15].data.steps[3].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[3].duration",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '2' at $.payload.pages[15].data.steps[4].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[4].duration",
+      "claim_kind": "number",
+      "raw_value": "2"
+    },
+    {
+      "code": "unsupported_claim",
+      "detail": "numeric claim '3' at $.payload.pages[15].data.steps[4].duration has no grounded source span or computation",
+      "content_path": "$.payload.pages[15].data.steps[4].duration",
+      "claim_kind": "number",
+      "raw_value": "3"
+    },
+    {
+      "code": "objections_evidence_missing",
+      "detail": "the house structure requires an objections face, but the legacy report carries no objections content or supporting evidence",
+      "content_path": null,
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "trust_proof_unverified",
+      "detail": "the legacy report asserts trust points that have never been verified against sources",
+      "content_path": "$.payload.pages[2].data.credibility_points",
+      "claim_kind": null,
+      "raw_value": null
+    },
+    {
+      "code": "founder_portrait_rights_unresolved",
+      "detail": "the legacy payload references a founder portrait but carries no usage rights; a human must clear them",
+      "content_path": "$.images.cover_author",
+      "claim_kind": null,
+      "raw_value": "https://drive.google.com/uc?id=17SdW9iQBpKIXXAboer7y8aR8DQP2onfa"
+    }
+  ],
+  "sources": [],
+  "claims": [],
+  "assets": []
+}

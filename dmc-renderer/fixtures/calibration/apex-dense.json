@@ -1,0 +1,12 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.apex-dense",
+  "origin": "synthetic",
+  "recipe": "apex-dense-report",
+  "industry": "B2B automation agency",
+  "tone": "assertive editorial German",
+  "asset_availability": "complete-identity-proof-context",
+  "evidence_density": "dense-grounded",
+  "visual_brand": "apex-blau-tinte",
+  "reference_family": "apex"
+}

@@ -1,0 +1,8 @@
+{
+  "fixture_schema": "dmc-v3-adversarial-recipe/1.0",
+  "scenario": "wrong-face-count",
+  "base": "synthetic-house-20-face-v1",
+  "mutation": "remove-final-planned-face",
+  "expected_owner": "editorial_planning",
+  "expected_code": "face_count_mismatch"
+}

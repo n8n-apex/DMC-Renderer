@@ -1,0 +1,11 @@
+{
+  "fixture_schema": "dmc-calibration-profile/1.0",
+  "fixture_id": "calibration.product-business",
+  "origin": "synthetic",
+  "recipe": "valid-house-report",
+  "industry": "industrial B2B software",
+  "tone": "technical concise German",
+  "asset_availability": "product-identity-and-process",
+  "evidence_density": "dense-grounded",
+  "visual_brand": "product-cobalt-silver"
+}

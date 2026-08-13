@@ -1,0 +1,8 @@
+{
+  "fixture_schema": "dmc-v3-adversarial-recipe/1.0",
+  "scenario": "ungrounded-number",
+  "base": "synthetic-house-20-face-v1",
+  "mutation": "insert-ungrounded-83-percent",
+  "expected_owner": "source_ledger",
+  "expected_code": "ungrounded_numeric_candidate"
+}
