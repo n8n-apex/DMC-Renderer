@@ -711,3 +711,36 @@ async def test_generate_assets_fal_without_promptbuilder_uses_fallback(
     assert "Subject:" in scene.prompt
     assert scene.negative_prompt == "warm tones, grunge"
     assert plan.total_generated == 3
+
+
+def test_fallback_prompt_carries_brand_tone() -> None:
+    """G19 closure: without a design_brief, the fal fallback prompt still
+    names the brand palette (primary + accent hex) so generated imagery is
+    brand-tinted, never generic. Deterministic, no fabrication."""
+    from stages.generate_assets import _compose_prompt
+
+    out = _compose_prompt(
+        None,
+        "a seamless abstract surface",
+        "A4 portrait",
+        fallback="a seamless abstract surface in the brand palette "
+                 "primary=#1A2540, accent=#E97E47",
+    )
+    assert "primary=#1A2540" in out and "accent=#E97E47" in out
+    assert "A4 portrait" in out
+
+
+def test_brief_prompt_wins_over_fallback() -> None:
+    """A real style prompt (from an onboarded brief) beats the fallback and
+    is composed with subject + aspect."""
+    from stages.generate_assets import _compose_prompt
+
+    out = _compose_prompt(
+        "Premium glass aesthetic, soft studio light",
+        "a seamless abstract surface",
+        "A4 portrait",
+        fallback="fallback text",
+    )
+    assert "Premium glass aesthetic" in out
+    assert "fallback text" not in out
+    assert "Aspect ratio A4 portrait" in out

@@ -173,9 +173,9 @@
     },
     {
       "id": "G19",
-      "description": "design_brief wiring (follow-up, not yet closed)",
-      "check_type": "manual",
-      "check": "design_brief still not populated live; fal prompts default style",
+      "description": "design_brief fallback: fal prompts carry brand palette + aspect without an onboard brief",
+      "check_type": "test",
+      "check": "research/preprocessor/tests/test_generate_assets.py::test_fallback_prompt_carries_brand_tone",
       "owner": "preprocessor"
     },
     {

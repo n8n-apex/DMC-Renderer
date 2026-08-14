@@ -236,10 +236,16 @@ def _brief_field(brief: Any, name: str) -> Optional[str]:
 
 def _compose_prompt(style_prompt: Optional[str], subject: str, aspect: str,
                     *, fallback: str) -> str:
-    """Brief-driven prompt when a style prompt exists, else the fallback."""
+    """Brief-driven prompt when a style prompt exists, else the fallback.
+
+    The fallback (a brand-palette-tinted stub message) also receives the
+    aspect ratio — otherwise a no-brief client's prompt lacks the geometry
+    the fal call needs (G19 closure: the fallback is composed, not returned
+    raw).
+    """
     if style_prompt:
         return f"{style_prompt.strip()} Subject: {subject}. Aspect ratio {aspect}."
-    return fallback
+    return f"{fallback} Aspect ratio {aspect}."
 
 
 # ─────────────────────────────────────────────────────────────────────────────
