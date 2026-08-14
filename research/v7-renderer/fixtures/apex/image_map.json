@@ -1,0 +1,96 @@
+{
+  "page_assets": [
+    {
+      "slot": 1,
+      "slot_id": "cover_hero",
+      "image_type": "background",
+      "file": "1_cover_hero.png"
+    },
+    {
+      "slot": 4,
+      "slot_id": "status_quo_scene",
+      "image_type": "scene",
+      "file": "4_status_quo_scene.png"
+    },
+    {
+      "slot": 6,
+      "slot_id": "breathing_bg_1",
+      "image_type": "gradient",
+      "file": "report_atmospheric_gradient.png"
+    },
+    {
+      "slot": 11,
+      "slot_id": "breathing_bg_2",
+      "image_type": "texture",
+      "file": "report_background_texture.png"
+    },
+    {
+      "slot": 17,
+      "slot_id": "breathing_bg_3",
+      "image_type": "background",
+      "file": "report_extra_wide.png"
+    },
+    {
+      "slot": 7,
+      "slot_id": "case_scene_1",
+      "image_type": "scene",
+      "file": "1_cs1_scene.png"
+    },
+    {
+      "slot": 9,
+      "slot_id": "case_scene_2",
+      "image_type": "scene",
+      "file": "2_cs2_scene.png"
+    },
+    {
+      "slot": 12,
+      "slot_id": "case_scene_3",
+      "image_type": "scene",
+      "file": "3_cs3_scene.png"
+    },
+    {
+      "slot": 14,
+      "slot_id": "case_scene_4",
+      "image_type": "scene",
+      "file": "4_cs4_scene.png"
+    },
+    {
+      "slot": 15,
+      "slot_id": "case_scene_5",
+      "image_type": "scene",
+      "file": "5_cs5_scene.png"
+    }
+  ],
+  "report_assets": [
+    {
+      "slot_id": "status_quo_scene_b",
+      "image_type": "scene",
+      "file": "5_status_quo_scene.png"
+    },
+    {
+      "slot_id": "background_texture",
+      "image_type": "texture",
+      "file": "report_background_texture.png"
+    },
+    {
+      "slot_id": "atmospheric_gradient",
+      "image_type": "gradient",
+      "file": "report_atmospheric_gradient.png"
+    },
+    {
+      "slot_id": "extra_square",
+      "image_type": "background",
+      "file": "report_extra_square.png"
+    },
+    {
+      "slot_id": "extra_wide",
+      "image_type": "background",
+      "file": "report_extra_wide.png"
+    },
+    {
+      "slot_id": "panel_texture",
+      "image_type": "panel_texture",
+      "file": "report_navy_stone.png"
+    }
+  ]
+}

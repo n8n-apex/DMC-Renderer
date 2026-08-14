@@ -169,6 +169,26 @@ async def main(use_fal: bool = False) -> int:
             case_index = int(fn) if (isinstance(fn, int) or (isinstance(fn, str) and fn.isdigit())) else case_counter
         page_slots[page.slot] = resolve_slots(page.type, drive_listing, case_index=case_index)
 
+    # Supporting SCENE slot per case study (fal-generated brand-toned abstract,
+    # US-303): a "case_scene" entry on each A3 spread page — the renderer's
+    # .csh-scene band fills the void between narrative sections. The asset
+    # files come from the OFFLINE image_map (the fal run already baked them
+    # into fixtures/apex/assets/), so a re-bake stays reproducible with no keys.
+    for page in pages:
+        if page.type != "ST-07A":
+            continue
+        fs = None
+        fn = page.data.get("fallstudie_number") if isinstance(page.data, dict) else None
+        if isinstance(fn, int) or (isinstance(fn, str) and fn.isdigit()):
+            fs = int(fn)
+        if not fs:
+            continue
+        scene_file = HERE / "assets" / f"{fs}_cs{fs}_scene.png"
+        if scene_file.exists():
+            page_slots[page.slot] = page_slots.get(page.slot, []) + [
+                {"slot_id": "case_scene", "status": "resolved", "path": f"assets/{fs}_cs{fs}_scene.png"}
+            ]
+
     font_config = resolve_fonts(brand_profile)
     components = generate_components_for_report(
         pages,
@@ -285,6 +305,31 @@ async def main(use_fal: bool = False) -> int:
 
     from fixtures.apex.viz_curation import apply_apex_viz
     apply_apex_viz(pkg)
+
+    # ---- A3 case-study supporting SCENES (US-303) ----
+    # The fal-generated brand-toned abstract scenes (assets/<n>_cs<n>_scene.png)
+    # ride the package as a `case_scene` slot on each A3 spread page — the
+    # renderer's .csh-scene band fills the void between narrative sections.
+    # Pure post-mutation (like apply_apex_viz): deterministic, no keys, and a
+    # re-bake reproduces it because the files are baked into the fixture.
+    for page in pkg["pages"]:
+        if page.get("st_type") != "ST-07A":
+            continue
+        fn = (page.get("data") or {}).get("fallstudie_number")
+        if isinstance(fn, int) or (isinstance(fn, str) and fn.isdigit()):
+            fs = int(fn)
+        else:
+            continue
+        scene_path = HERE / "assets" / f"{fs}_cs{fs}_scene.png"
+        if not scene_path.exists():
+            continue
+        existing = [s for s in page.get("slots", []) if s.get("slot_id") == "case_scene"]
+        if not existing:
+            page.setdefault("slots", []).append(
+                {"slot_id": "case_scene", "status": "resolved",
+                 "path": f"assets/{fs}_cs{fs}_scene.png"}
+            )
+
     (HERE / "resolved_package.json").write_text(
         json.dumps(pkg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
     )

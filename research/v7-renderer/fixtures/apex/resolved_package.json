@@ -515,9 +515,24 @@
           "slot_id": "case_study_portrait",
           "image_type": "portrait",
           "aspect_ratio": "1x1"
+        },
+        {
+          "slot_id": "case_scene",
+          "status": "resolved",
+          "path": "assets/1_cs1_scene.png"
         }
       ],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "case_scene_1",
+          "image_type": "scene",
+          "path": "assets/1_cs1_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "layout_variant": "casestudy_hero",
       "page_format": "a3"
@@ -605,9 +620,24 @@
           "slot_id": "case_study_portrait",
           "image_type": "portrait",
           "aspect_ratio": "1x1"
+        },
+        {
+          "slot_id": "case_scene",
+          "status": "resolved",
+          "path": "assets/2_cs2_scene.png"
         }
       ],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "case_scene_2",
+          "image_type": "scene",
+          "path": "assets/2_cs2_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "layout_variant": "casestudy_hero",
       "page_format": "a3"
@@ -731,9 +761,24 @@
           "slot_id": "case_study_portrait",
           "image_type": "portrait",
           "aspect_ratio": "1x1"
+        },
+        {
+          "slot_id": "case_scene",
+          "status": "resolved",
+          "path": "assets/3_cs3_scene.png"
         }
       ],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "case_scene_3",
+          "image_type": "scene",
+          "path": "assets/3_cs3_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "layout_variant": "casestudy_hero",
       "page_format": "a3"
@@ -826,9 +871,24 @@
           "slot_id": "case_study_portrait",
           "image_type": "portrait",
           "aspect_ratio": "1x1"
+        },
+        {
+          "slot_id": "case_scene",
+          "status": "resolved",
+          "path": "assets/4_cs4_scene.png"
         }
       ],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "case_scene_4",
+          "image_type": "scene",
+          "path": "assets/4_cs4_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "layout_variant": "casestudy_hero",
       "page_format": "a3"
@@ -898,9 +958,24 @@
           "slot_id": "case_study_portrait",
           "image_type": "portrait",
           "aspect_ratio": "1x1"
+        },
+        {
+          "slot_id": "case_scene",
+          "status": "resolved",
+          "path": "assets/5_cs5_scene.png"
         }
       ],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "case_scene_5",
+          "image_type": "scene",
+          "path": "assets/5_cs5_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "layout_variant": "casestudy_hero",
       "page_format": "a3"
@@ -1497,12 +1572,12 @@
     "total_warnings": 46
   },
   "asset_summary": {
-    "total_required": 11,
+    "total_required": 16,
     "total_downloaded": 0,
     "total_stubbed": 0,
     "total_client_upload_needed": 0,
     "total_failed": 0,
-    "total_generated": 11
+    "total_generated": 16
   },
   "asset_warnings": []
 }

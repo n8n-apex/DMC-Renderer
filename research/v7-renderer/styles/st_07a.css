@@ -684,6 +684,11 @@
    bottom half (space-between on the whole column would air out the top). */
 .st-07a.format-a3 .csh-left { justify-content: flex-start; }
 .st-07a.format-a3 .csh-narr { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+/* A spread WITH a supporting scene keeps the top-to-bottom distribution
+   (space-between) so the sections still span the sheet; the scene's fixed
+   height rides INSIDE the flow between section 1 and 2, absorbing the middle
+   void. Overflow is prevented upstream: a content-full spread gets NO scene
+   (st_07a.py gates scene_uri on the narrative length). */
 .st-07a .csh-left  { display: flex; flex-direction: column; min-width: 0; padding-right: 13mm; }
 .st-07a .csh-right { display: flex; flex-direction: column; min-width: 0; padding-left: 12mm;
   justify-content: space-between;
@@ -882,3 +887,8 @@
   display: block; border-radius: 2mm;
   box-shadow: 0 4mm 14mm -7mm color-mix(in srgb, var(--color-ink) 55%, transparent);
 }
+/* A dense spread (3 narrative sections + portrait + scene) must not push the
+   sheet over — a compact scene keeps the story on ONE A3 sheet (verified:
+   44mm scene + 3 sections overflowed to a 2nd sheet). */
+.st-07a.format-a3 .csh-scene-img { height: 36mm; }
+.st-07a.format-a3 .csh-scene { margin: var(--space-1) 0 var(--space-2) 0; }

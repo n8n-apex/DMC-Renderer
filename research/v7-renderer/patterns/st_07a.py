@@ -193,8 +193,20 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     # (case_scene slot — fal pipeline output, never a face, never fake data)
     # renders as a full-bleed rounded band INSIDE the left narrative column,
     # between the sections. Absent -> no markup (graceful: a client without a
-    # generated scene keeps the clean spread). ----
+    # generated scene keeps the clean spread). A content-FULL spread (narr +
+    # lede > 1450 chars — the Frese case, measured) gets NO scene: it has no
+    # void band to fill, and the added band would overflow the A3 sheet
+    # (verified: 21-page spill). The threshold is geometry, never content. ----
     scene_uri = ctx.slot_uri(page, "case_scene") or ""
+    if scene_uri:
+        # Count ONLY the sections the template actually renders (Ziel is
+        # dropped on the spread) — a long ziel must not gate the scene out.
+        _narr_total = sum(
+            len(str(d.get(field) or "")) for _, field in _SECTION_SPEC
+            if field != "ziel"
+        ) + len(str(d.get("kurzportraet") or ""))
+        if _narr_total > 1450:
+            scene_uri = ""
 
     # ---- OPTIONAL client-matched social post (DNA §C2 "live social presence";
     # the Social Layout Planner's `case_study_post` binding). When the page
