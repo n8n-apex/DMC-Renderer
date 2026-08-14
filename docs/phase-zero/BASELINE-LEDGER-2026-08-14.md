@@ -113,3 +113,18 @@ renderer 398/0, dmc 138/0 (+4 xfail), guards 13/0, harness 37/39 exit 0.
 
 **Verified (2026-08-14):** renderer 402/0, preprocessor 738/0, dmc 138/0,
 guards 13/0, harness 38/40 exit 0 (G19/G24 human-gated). G27 in registry.
+
+## Continuation pass (US-307 + G19, 2026-08-14)
+
+- US-307: the LIVE /render path (what n8n calls) now derives a social
+  manifest deterministically from the client's IG folder
+  (`build_manifest_from_folder`: filename-pattern roles, client-name
+  containment for brand_text, testimonial markers — no LLM, no credits).
+  Route_package then plans real placements exactly like the fixture
+  (previously manifest=None → zero bindings on live renders).
+- G19 CLOSED: fal fallback prompts now carry the brand palette hexes + the
+  aspect ratio even when a client has no onboard design_brief
+  (`_compose_prompt` composes the fallback instead of returning it raw;
+  golden re-baselined — intentional drift). Verified by test.
+- Only G24 (real client photographs — needs user-supplied assets) remains
+  human-gated. Harness 38/40 → wait: 39/40 with G19 closed (G24 open).

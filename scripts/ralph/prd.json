@@ -241,6 +241,13 @@
       "priority": "high",
       "passes": true,
       "notes": "DONE 2026-08-14: FINAL RENDER: 20/20 pages, void-free A3 spreads"
+    },
+    {
+      "id": "US-307",
+      "description": "live /render social manifest derivation",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14"
     }
   ]
 }
