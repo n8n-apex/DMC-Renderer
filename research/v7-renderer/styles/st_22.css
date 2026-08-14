@@ -1,0 +1,278 @@
+/* ST-22 — collaboration / process page LAYOUT (Plan B rebuild, P-10/P-13).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the heading sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif). The device LOOK (media_figure banner + horizontal_flow step strip) is
+ * owned by the `c-` classes in styles/components.css (already in the shared
+ * head); this sheet only positions them + paints the page-local chrome.
+ *
+ * Every rule is scoped under `.st-22` (the assembler's per-page section class)
+ * so it cannot leak.
+ *
+ * Layout: a FULL-WIDTH banner photo (full CONTENT width — this is a chromed
+ * content page, the persistent header/folio stay) with a bottom scrim carrying an
+ * overlaid eyebrow; a serif display heading + intro lede; then a single row of
+ * connected flow boxes (the Schritt 1 → N process). The flow boxes sit inline
+ * (flexbox is weak for a full-width row in WeasyPrint 68.1) at a fixed share of
+ * the width, centered against the slim accent arrows, with tight --space-* rhythm
+ * so the whole page fits the 261mm content box on one physical sheet (the deck
+ * stays 20 pages).
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the flow
+ * numbers + arrows, the eyebrow rule) — never on body text.
+ */
+
+/* ---- full-width banner photo header (#9) ---- */
+.st-22 .co-banner {
+  position: relative;
+  width: 100%;
+  height: 64mm;                       /* a generous banner band, full content width */
+  overflow: hidden;
+  margin: 0 0 var(--space-4) 0;
+}
+/* the media_figure 'full' variant sets .c-media-img height:100% — give it a host
+   block with a real height so the photo (a background-image) actually paints. */
+.st-22 .co-banner .c-media,
+.st-22 .co-banner .c-media-img {
+  height: 100%;
+}
+/* a bottom scrim so the overlaid eyebrow stays legible over any banner photo
+   (token-only: blend --color-ink to transparent; color-mix() does not paint in
+   WeasyPrint 68.1). A child block over the photo (the banner has real height). */
+.st-22 .co-banner-scrim {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(to bottom, transparent 52%, var(--color-ink) 118%);
+}
+.st-22 .co-banner-label {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-3);
+}
+.st-22 .co-banner-label .c-eyebrow {
+  margin: 0;
+  color: var(--color-on-dark);        /* on the dark scrim, the eyebrow is on-dark */
+}
+
+/* ---- heading + intro lede ---- */
+.st-22 .co-intro-block {
+  margin: 0 0 var(--space-4) 0;
+}
+.st-22 .co-headline {
+  font-family: var(--font-display);   /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-3) 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.st-22 .co-intro {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--density-lead, 1.42);
+  color: var(--color-body);
+  max-width: 165mm;
+}
+.st-22 .co-intro p { margin: 0 0 var(--density-para, var(--space-2)) 0; hyphens: auto; }
+.st-22 .co-intro p:last-child { margin-bottom: 0; }
+.st-22 .co-intro strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- horizontal step flow: the Schritt 1 → N process strip ---- */
+.st-22 .co-flow {
+  margin: var(--space-2) 0 0 0;
+}
+.st-22 .co-flow-label .c-eyebrow {
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+/* size the connected boxes to share the content width (the apex process has 5
+   steps): a fixed width each, centered against the slim accent arrows. Each box
+   gets an accent top-rule (a thin accent edge, a rule per the accent locations)
+   and a touch more padding for the body + Dauer line. Titles wrap within the box. */
+.st-22 .co-flow .c-hflow__step {
+  width: 31mm;
+  padding: var(--space-2);
+  border-top: 0.8mm solid var(--color-accent);
+  vertical-align: top;
+}
+.st-22 .co-flow .c-hflow__arrow {
+  padding: 0 0.6mm;
+}
+.st-22 .co-flow .c-hflow__title {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* ======================================================================== *
+ * FILL VARIANT — a VERTICAL PROCESS TIMELINE (numbered sequence, generous
+ * vertical rhythm).
+ *
+ * Selected per-page via layout_variant="fill". The standard horizontal flow
+ * strip crams the steps into the top ~40% of the sheet and leaves a big empty
+ * bottom band (N08 dead space). The fill variant restructures the SAME steps
+ * into a timeline stacked DOWN the page: a title + intro lede at the top, then
+ * the numbered steps as ROWS joined by a single vertical accent SPINE with
+ * numbered NODES, the rows DISTRIBUTED to fill the full content height — that
+ * full-height fill is what removes the dead band.
+ *
+ * HOW the full-height fill is guaranteed (WeasyPrint 68.1): the fill ROOT is a
+ * column flex box with a DEFINITE height (= the A4 content box, 261mm) — a
+ * definite height is REQUIRED for the flex column to distribute its rows over
+ * the full page (WeasyPrint will not stretch a min-height flex column). The
+ * head is fixed-size at the top; the timeline <ol> takes flex:1 and spreads its
+ * rows with space-between so the spine runs top→bottom.
+ *
+ * Tokens ONLY — no hex / font / client literal. The spine + nodes fire
+ * var(--color-accent); on-accent node digits use var(--color-on-primary).
+ * ======================================================================== */
+
+/* the fill root: a definite-height column that fills the A4 content box. 261mm
+   = 297 - 16(top) - 20(bottom) margins, matching the shared .page content box. */
+.st-22 .co-fill-root {
+  height: 261mm;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* head: eyebrow → serif display heading → intro lede, fixed at the top. */
+.st-22 .co-fill-head {
+  flex: 0 0 auto;
+  margin: 0 0 var(--space-4) 0;
+}
+
+/* the timeline takes the remaining height and DISTRIBUTES its step rows over it
+   (space-between) so the vertical spine runs the full content box top→bottom —
+   the fill that kills the dead band. A reset <ol> (no marker / inset). */
+.st-22 .co-timeline {
+  flex: 1 1 auto;
+  min-height: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* a step ROW: the spine/node column on the left, the text on the right. Each
+   row grows to share the timeline height equally so the rhythm is even. */
+.st-22 .co-tl-step {
+  flex: 1 1 0;
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+/* the SPINE column: a thin vertical accent rule centered behind the numbered
+   node. position:relative hosts the rule (::before) so it connects the nodes
+   into one continuous timeline; the node sits on top. */
+.st-22 .co-tl-spine {
+  position: relative;
+  flex: 0 0 auto;
+  width: 12mm;
+  display: flex;
+  justify-content: center;
+}
+.st-22 .co-tl-spine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0.6mm;
+  margin-left: -0.3mm;
+  background-color: var(--color-accent);
+}
+/* the FIRST node has no spine above it and the LAST none below — clip the rule
+   to start at the first node and end at the last so it doesn't float past the
+   ends of the timeline. */
+.st-22 .co-tl-step:first-child .co-tl-spine::before { top: 6mm; }
+.st-22 .co-tl-step:last-child  .co-tl-spine::before { bottom: calc(100% - 6mm); }
+
+/* the numbered NODE: a solid accent disc with the step number in on-accent ink,
+   sitting on the spine. A surface ring lifts it off the rule. */
+.st-22 .co-tl-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12mm;
+  height: 12mm;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-family: var(--font-head);
+  font-size: var(--type-h2);
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 0 0 1.4mm var(--color-surface);
+}
+
+/* the step TEXT: a title + Dauer line, then the body. A thin top divider on
+   each row (except the first) gives the stacked sequence a clean editorial
+   rhythm. The text is vertically centered against its (equal-height) row. */
+.st-22 .co-tl-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  align-self: center;
+  padding: var(--space-2) 0;
+}
+.st-22 .co-tl-step:not(:first-child) .co-tl-text {
+  border-top: 0.2mm solid var(--color-border, var(--color-muted));
+}
+.st-22 .co-tl-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-1) 0;
+}
+.st-22 .co-tl-title {
+  font-family: var(--font-head);
+  font-size: var(--type-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-ink);
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+/* The fill timeline distributes its rows over the full sheet; the step
+   TITLE is the row's voice, so it must carry the row — a pullquote-size step
+   title (display is too large: overflows the sheet — verified) gives each
+   row editorial weight instead of a small label in a tall box. */
+.st-22 .co-fill-root .co-tl-title {
+  font-size: var(--type-pullquote);
+  letter-spacing: -0.01em;
+}
+.st-22 .co-tl-dauer {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+.st-22 .co-tl-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.32;
+  color: var(--color-body);
+  max-width: 150mm;
+}
+/* Fill timeline: the row's body is the row's support — a larger size and
+   wider measure let the real copy fill the row instead of hugging a narrow
+   column (honest distribution, no padding). */
+.st-22 .co-fill-root .co-tl-body {
+  font-size: var(--type-lede);
+  line-height: 1.42;
+  max-width: 168mm;
+}
