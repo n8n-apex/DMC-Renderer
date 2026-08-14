@@ -221,6 +221,13 @@
       "owner": "quality_loop"
     },
     {
+      "id": "G26",
+      "description": "visual review auto-fix: rejections become plan changes, rebuilds fed back (reflex arc)",
+      "check_type": "test",
+      "check": "dmc-renderer/tests/test_v3_release_flow.py::test_visual_loop_rebuilds_with_conductor_override_and_passes",
+      "owner": "quality_loop"
+    },
+    {
       "id": "L1",
       "description": "dead teaser_items harness check removed",
       "check_type": "grep_absent",
