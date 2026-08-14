@@ -148,6 +148,13 @@ async def main(use_fal: bool = False) -> int:
     )
     # v2.0: typed per-page data + rhetorical charts + social-proof.
     structured = structure_content(pages)
+    # A3 case-study spreads: the case-study pages are ST-07A "casestudy_hero"
+    # Doppelseiten (Richard's spread model for apex case studies) — an explicit
+    # per-page hint so plan_layout resolves the variant AND the a3 sheet format
+    # (the hand-edited JSON re-bakes reproducibly now).
+    for page in pages:
+        if page.type == "ST-07A":
+            page.layout_variant = "casestudy_hero"
     # v2.0: resolve human-photo slots from the apex Client Assets folder
     # (renamed photos live in research/preprocessor/client_assets/apex/).
     client_dir = client_assets_dir("apex", base=PREPROCESSOR / "client_assets")
@@ -331,18 +338,23 @@ async def main(use_fal: bool = False) -> int:
     assert len(pkg["pages"]) == 20, f"expected 20 pages, got {len(pkg['pages'])}"
     assert st_types[0] == "ST-01" and st_types[-1] == "ST-03", st_types
     assert st_types.count("ST-07A") == 5, st_types
-    # Every fill-default ST type (ST-07A/07B/22/FAZIT) must carry the "fill"
-    # layout-variant hint (plumbed by plan_layout → assemble_package); every
-    # OTHER ST type must NOT be forced one.
-    _FILL_DEFAULT_TYPES = {"ST-07A", "ST-07B", "ST-22", "ST-FAZIT"}
+    # Case-study pages are the A3 casestudy_hero spreads; the other fill-default
+    # ST types (ST-07B/22/FAZIT) must carry the "fill" hint; every OTHER ST
+    # type must NOT be forced one.
+    _FILL_DEFAULT_TYPES = {"ST-07B", "ST-22", "ST-FAZIT"}
     fill_variants = [
         (p["slot"], p["st_type"], p.get("layout_variant")) for p in pkg["pages"]
         if p["st_type"] in _FILL_DEFAULT_TYPES
     ]
     assert all(v == "fill" for _, _, v in fill_variants), fill_variants
+    case_variants = [
+        (p["slot"], p.get("layout_variant"), p.get("page_format"))
+        for p in pkg["pages"] if p["st_type"] == "ST-07A"
+    ]
+    assert all(v == "casestudy_hero" and fmt == "a3" for _, v, fmt in case_variants), case_variants
     assert not any(
         "layout_variant" in p for p in pkg["pages"]
-        if p["st_type"] not in _FILL_DEFAULT_TYPES
+        if p["st_type"] not in _FILL_DEFAULT_TYPES and p["st_type"] != "ST-07A"
     ), "a non-fill-default page was forced a layout_variant"
     assert all("page_numbers" in p for p in pkg["pages"]), "page_numbers missing"
     cover_assets = [a["slot_id"] for a in pkg["pages"][0]["assets"]]

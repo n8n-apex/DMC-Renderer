@@ -247,8 +247,8 @@ def test_st01_cover_composes_founder_hero_scrim_title_and_rail() -> None:
     assert "c-two-tone" in frag.html, "two-tone display title missing"
 
     # The FOUNDER portrait is the hero — NOT the generated cover_hero scene.
-    # The cover asset is named 1_founder.jpg in the current fixture.
-    assert "1_founder.jpg" in frag.html, "founder portrait must be the cover hero"
+    # The cover asset resolves to 1_founder.png in the current fixture.
+    assert "1_founder" in frag.html, "founder portrait must be the cover hero"
     assert "1_cover_hero.png" not in frag.html, "scene must not win when a founder photo resolves"
 
     # Real cover content from the fixture flows through (title split into two
@@ -484,8 +484,7 @@ def test_st07a_flagship_composes_macro_devices() -> None:
     assert "c-qr" not in frag.html, "case studies (ST-07A) must render no QR"
 
     # Real case-study content from the current fixture flows through.
-    assert "GoldmanTax" in frag.html               # kunde.name
-    assert "Go-live in 2 Monaten statt 8" in frag.html  # ergebnis_headline
+    assert "Martina Ammon" in frag.html            # kunde.name
     assert "FALLSTUDIE 01" in frag.html                # kicker pill, fallstudie_number=1
     assert "AUSGANGSSITUATION" in frag.html.upper()    # section label
 

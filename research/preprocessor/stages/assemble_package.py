@@ -328,6 +328,10 @@ def _build_manifest(
         # default — back-compat for every other ST type.
         if pp.layout_variant is not None:
             page_dict["layout_variant"] = pp.layout_variant
+        # Per-page sheet format: spread variants ("casestudy_hero") are
+        # A3-designed → "a3"; everything else stays A4 (renderer default).
+        if pp.page_format is not None:
+            page_dict["page_format"] = pp.page_format
         pages_manifest.append(page_dict)
 
     # Report-level assets (page_slot is None — e.g. background_texture /
