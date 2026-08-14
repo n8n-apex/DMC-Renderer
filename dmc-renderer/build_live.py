@@ -948,6 +948,23 @@ def envelope_to_render_request(envelope: dict) -> RenderRequest:
     # writer payload. Coerce first: writers send it as a string ("20"); a value
     # that is not a number at all is ignored (default snapping applies).
     meta = dict(meta)
+    # Identity: the n8n envelope computes clientSlug/recordId but never merges
+    # them into payload.meta, so a bare meta fails ReportMeta validation.
+    # Derive deterministically (same rule as the envelope node + adapter_v3):
+    # client_slug from brand_tokens.company_name_short, report_id from the
+    # envelope's record id. Explicit payload values always win.
+    if not meta.get("client_slug"):
+        import re
+
+        name = bt.get("company_name_short") or ""
+        meta["client_slug"] = (
+            re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", str(name).lower())).strip("-")
+            or "client"
+        )
+    if not meta.get("report_id"):
+        meta["report_id"] = str(
+            envelope.get("record_id") or f"report-{meta['client_slug']}"
+        )
     _pct = meta.get("page_count_target")
     try:
         _pct = int(str(_pct).strip())

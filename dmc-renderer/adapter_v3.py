@@ -134,10 +134,42 @@ def _canonicalize(
     return canonical
 
 
+def _slugify(value: str) -> str:
+    """Deterministic slug: lowercase, non-alnum -> single dashes, trim."""
+    import re
+
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.lower())).strip("-")
+
+
+def _resolve_meta_identity(envelope: dict, raw_meta: dict) -> dict:
+    """Guarantee client_slug + report_id on the canonical meta.
+
+    The n8n envelope node computes clientSlug/recordId but never merges them
+    into payload.meta, so a real live render fails pydantic validation. Two
+    deterministic derivation sources already exist elsewhere in the pipeline:
+    client_slug from brand_tokens.company_name_short (slugified — the same
+    rule the n8n node uses), report_id from envelope.record_id. Explicit
+    payload values always win; a brand token that is missing degrades to a
+    non-empty stem rather than an empty required field.
+    """
+    meta = dict(raw_meta)
+    if meta.get("client_slug"):
+        return meta
+    brand = envelope.get("brand_tokens") or {}
+    name = str(brand.get("company_name_short") or "").strip()
+    client_slug = _slugify(name) if name else "client"
+    meta["client_slug"] = client_slug
+    if not meta.get("report_id"):
+        meta["report_id"] = str(envelope.get("record_id") or f"report-{client_slug}")
+    return meta
+
+
 def adapt_envelope_v3(envelope: dict[str, Any]) -> AdaptedEnvelopeV3:
     payload = envelope["payload"]
     failures: list[AdapterFailure] = []
-    meta = CanonicalReportMeta.model_validate(payload["meta"])
+    meta = CanonicalReportMeta.model_validate(
+        _resolve_meta_identity(envelope, payload["meta"])
+    )
     if meta.page_count_target not in {16, 20, 24, 28}:
         failures.append(
             AdapterFailure(

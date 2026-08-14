@@ -161,3 +161,44 @@ def test_explicit_v3_routes_christoph_to_precomposition_gate(
     assert "case_count_mismatch" in error.value.codes
     assert error.value.codes.count("missing_required") == 5
     assert not (tmp_path / "package.json").exists()
+
+
+def test_meta_identity_derived_when_missing() -> None:
+    """A bare meta (no client_slug/report_id — the n8n envelope node does not
+    merge them) is derived deterministically: client_slug slugifies
+    brand_tokens.company_name_short, report_id falls back to the record id.
+    No literal, no network, no fabrication."""
+    env = minimal_envelope()
+    env["payload"]["meta"] = {
+        "lang": "de", "page_format": "A4", "page_count_target": 20,
+    }
+    env["brand_tokens"] = {
+        "company_name_short": "Apex Consulting",
+    }
+    env["record_id"] = "rec_123abc"
+    adapted = adapt_envelope_v3(env)
+    assert adapted.report_json.meta.client_slug == "apex-consulting"
+    assert adapted.report_json.meta.report_id == "rec_123abc"
+
+
+def test_meta_identity_derived_without_record_id() -> None:
+    """Even without a record id, a report id is never empty: the client slug
+    doubles as the report id stem."""
+    env = minimal_envelope()
+    env["payload"]["meta"] = {
+        "lang": "de", "page_format": "A4", "page_count_target": 20,
+    }
+    env["brand_tokens"] = {"company_name_short": "BuchAgentur"}
+    env.pop("record_id", None)
+    adapted = adapt_envelope_v3(env)
+    assert adapted.report_json.meta.client_slug == "buchagentur"
+    assert adapted.report_json.meta.report_id
+
+
+def test_explicit_meta_identity_wins_over_derivation() -> None:
+    """A payload that DOES carry client_slug/report_id is never overridden."""
+    env = minimal_envelope()
+    env["brand_tokens"] = {"company_name_short": "Apex Consulting"}
+    adapted = adapt_envelope_v3(env)
+    assert adapted.report_json.meta.client_slug == "example-client"
+    assert adapted.report_json.meta.report_id == "example-v3"
