@@ -129,6 +129,76 @@
       "priority": 9,
       "passes": true,
       "notes": "DONE 2026-08-14: preprocessor 736/0, quality_loop new 19/0, dmc 131/0, harness 36/38 exit 0 (G19+G24 human-gated). G25 added to registry. Ledger written."
+    },
+    {
+      "id": "US-201",
+      "description": "loop accepts conductor + scores fresh renders",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: loop accepts conductor + scores fresh renders (11 tests)"
+    },
+    {
+      "id": "US-202",
+      "description": "real build_fn + conductor adapter in build_v3",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: real rebuild + conductor adapter + rationale bridge; seam test green"
+    },
+    {
+      "id": "US-203",
+      "description": "reference retrieval wired (taste)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: per-face reference retrieval wired (taste anchors)"
+    },
+    {
+      "id": "US-204",
+      "description": "case-study A3 routing reproducible",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: casestudy_hero A3 reproducible: plan_layout+assemble+build_package; 20pp"
+    },
+    {
+      "id": "US-205",
+      "description": "A3 sheet fill (kill hollow bottom)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: A3 sheet fill: definite height + narrative distribution + portrait height"
+    },
+    {
+      "id": "US-206",
+      "description": "live entry: derive client_slug/report_id",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: client_slug/report_id derived when meta bare (adapter_v3 + build_live)"
+    },
+    {
+      "id": "US-207",
+      "description": "ST-06 30-50% pixel verification",
+      "priority": "medium",
+      "passes": true,
+      "notes": "DONE 2026-08-14: 30-50% verified clean on pixels (7.6% right-col ink, no clip)"
+    },
+    {
+      "id": "US-208",
+      "description": "ST-22 sparse collaboration page",
+      "priority": "medium",
+      "passes": true,
+      "notes": "DONE 2026-08-14: ST-22 timeline typography step-up (quadrants 10.5-20.1%)"
+    },
+    {
+      "id": "US-209",
+      "description": "full verification + G26 + ledger",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: G26 in registry; harness 37/39 exit 0; ledger updated"
+    },
+    {
+      "id": "US-210",
+      "description": "FINAL RENDER (last step)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: FINAL RENDER: 20 logical = 20 physical, A3 spreads filled, no spill"
     }
   ]
 }
