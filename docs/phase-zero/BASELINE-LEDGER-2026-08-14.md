@@ -87,3 +87,29 @@
 
 **Verified counts (2026-08-14, post-201..208):** preprocessor 738/0,
 renderer 398/0, dmc 138/0 (+4 xfail), guards 13/0, harness 37/39 exit 0.
+
+## Premium & Polish program (US-301..US-306, 2026-08-14)
+
+**User-reported issues → fixes (audit: docs/superpowers/plans/2026-08-14-premium-polish-gap-audit.md):**
+- US-301: SVG ring/cluster center figures were BASELINE-anchored (58%/61%,
+  "6 von 6", "30 bis 50 %" sat above the circle centre). Added
+  `dominant-baseline="central"` + y=cy across donut/gauge/radial_cluster/
+  completion_ring; cluster fitfs inner 46→56 (figures no longer tiny).
+- US-302/303: A3 spreads had TWO completely empty vertical bands (measured
+  0.0% ink at bands 4+6). Built the `.csh-scene` supporting-visual device
+  (renderer) + generated 5 fal brand-toned abstract scenes (2K, cached) +
+  `case_scene` slot routing. Deterministic gate: a content-full spread
+  (>1450 rendered chars) gets NO scene (never overflows — verified).
+  RESULT: all 5 spreads ZERO void bands, 20 pages exact.
+- US-304: ST-FAZIT recap was a 1025-char wall with 6 crammed figures. Split
+  into 4 paragraphs at figure boundaries (no words changed, no figures
+  dropped) + fill-body line-height 1.55, wider paragraph gap, 168mm measure.
+  p18 quadrants 41.9/42.4/37.9/35.5 → 39.2/35.8/40.0/36.0 (balanced).
+- "Reparative treatments": NOT in the apex deck (verified across report.html,
+  fixture JSON, print text layer) — noted, not "fixed" (honesty rule).
+- n8n callability CONFIRMED: DMC-Ingestion-Pipeline-v3-review.json →
+  https://dmc-renderer.up.railway.app/render-v3, uvicorn :8099, shared-secret
+  auth; client_slug/report_id derivation fixed in US-206.
+
+**Verified (2026-08-14):** renderer 402/0, preprocessor 738/0, dmc 138/0,
+guards 13/0, harness 38/40 exit 0 (G19/G24 human-gated). G27 in registry.

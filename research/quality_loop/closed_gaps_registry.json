@@ -228,6 +228,13 @@
       "owner": "quality_loop"
     },
     {
+      "id": "G27",
+      "description": "A3 case-study spreads have no void bands (fal scenes fill them)",
+      "check_type": "test",
+      "check": "research/v7-renderer/tests/test_viz_host_st07a.py::test_casestudy_hero_scene_band_renders_when_resolved",
+      "owner": "quality_loop"
+    },
+    {
       "id": "L1",
       "description": "dead teaser_items harness check removed",
       "check_type": "grep_absent",
