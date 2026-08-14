@@ -4,8 +4,8 @@
     "total_downloaded": 0,
     "total_failed": 0,
     "total_generated": 0,
-    "total_required": 5,
-    "total_stubbed": 5
+    "total_required": 8,
+    "total_stubbed": 8
   },
   "asset_warnings": [],
   "axes": {
@@ -348,7 +348,17 @@
       "st_type": "ST-22"
     },
     {
-      "assets": [],
+      "assets": [
+        {
+          "image_type": "scene",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
+          "path": null,
+          "prompt": "Abstract editorial visualization Case 1: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "slot_id": "case_scene",
+          "status": "stub_not_generated"
+        }
+      ],
       "charts": [],
       "components": [],
       "cover_validation": null,
@@ -409,7 +419,17 @@
       "st_type": "ST-07B"
     },
     {
-      "assets": [],
+      "assets": [
+        {
+          "image_type": "scene",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
+          "path": null,
+          "prompt": "Abstract editorial visualization Case 2: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "slot_id": "case_scene",
+          "status": "stub_not_generated"
+        }
+      ],
       "charts": [],
       "components": [],
       "cover_validation": null,
@@ -470,7 +490,17 @@
       "st_type": "ST-07B"
     },
     {
-      "assets": [],
+      "assets": [
+        {
+          "image_type": "scene",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
+          "path": null,
+          "prompt": "Abstract editorial visualization Case 3: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "slot_id": "case_scene",
+          "status": "stub_not_generated"
+        }
+      ],
       "charts": [],
       "components": [],
       "cover_validation": null,

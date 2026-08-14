@@ -75,8 +75,9 @@ def test_1_inventory_counts_required_images_per_ST_type(tmp_path: Path) -> None:
     # per-page background had no reader). Only the generate-class page slots
     # contribute: ST-01 cover_hero + the ST-09 scene (×2 pages).
     expected_per_page = (
-        len(IMAGE_REQUIREMENTS["ST-01"])     # slot 1
+        len(IMAGE_REQUIREMENTS["ST-01"])        # slot 1
         + len(IMAGE_REQUIREMENTS["ST-09"]) * 2  # slots 4, 5
+        + len(IMAGE_REQUIREMENTS["ST-07A"]) * 3  # slots 10, 12, 15 (case scenes)
     )
     expected_total = expected_per_page + len(REPORT_LEVEL_GENERATED)
 
@@ -744,3 +745,44 @@ def test_brief_prompt_wins_over_fallback() -> None:
     assert "Premium glass aesthetic" in out
     assert "fallback text" not in out
     assert "Aspect ratio A4 portrait" in out
+
+
+def test_11_case_scene_spec_carries_director_brief_prompt(tmp_path: Path) -> None:
+    """The ST-07A case_scene slot is Director-driven: its generated prompt
+    (no fal key → stub records the prompt) carries the page's OWN argument —
+    kunde name, result figure, visual job — NOT a generic 'abstract network'.
+    The Director's no-text/faces negative is attached."""
+    pages = [{
+        "slot": 7, "type": "ST-07A", "data": {
+            "kunde": {"name": "Martina Ammon", "funktion": "Gründerin"},
+            "ergebnis_headline": "Von operativem Chaos zu skalierbarer KI-Infrastruktur",
+            "ergebnis_metrics": [
+                {"label": "Support-Reaktionszeit", "value": "24 Std. → Minuten"},
+                {"label": "Support-Einsparung / Jahr", "value": "> 200.000 €"},
+            ],
+        },
+    }]
+    plan = _run(generate_assets(
+        pages=pages,
+        image_manifest={"images": []},
+        brand_primary="#1A2540", brand_accent="#E97E47",
+        output_dir=tmp_path,
+    ))
+    scene = next(a for a in plan.assets if a.slot_id == "case_scene")
+    prompt = scene.prompt or ""
+    assert "Martina Ammon" in prompt, "prompt must carry the page's kunde verbatim"
+    assert "24 Std. → Minuten" in prompt, "prompt must reference the real result figure"
+    assert "transformation" in prompt, "prompt must carry the visual job"
+    assert "photorealistic people" in (scene.negative_prompt or ""), "Director negative attached"
+
+
+def test_12_case_scene_absent_without_st07a_data(tmp_path: Path) -> None:
+    """A non-ST-07A page never gets a Director brief (graceful)."""
+    pages = [{"slot": 4, "type": "ST-09", "data": {"title": "Status Quo"}}]
+    plan = _run(generate_assets(
+        pages=pages,
+        image_manifest={"images": []},
+        brand_primary="#1A2540", brand_accent="#E97E47",
+        output_dir=tmp_path,
+    ))
+    assert not any(a.slot_id == "case_scene" for a in plan.assets)

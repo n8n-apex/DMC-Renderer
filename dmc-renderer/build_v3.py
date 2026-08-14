@@ -176,19 +176,23 @@ class _VisionReviewerAdapter:
 
     The loop calls reviewer.score_page(page_png, refs, row_ids) and expects
     {row_id: {"score": int, "rationale": str}}. The vision client already
-    implements this shape; this adapter only resolves the reference PNGs for
-    a face from the reference library and lets a missing reference degrade
+    implements this shape; this adapter forwards the DIRECTOR's per-row
+    metadata (visual job / argument / density) so the judge scores the page
+    against its actual editorial job, and lets a missing reference degrade
     gracefully (empty refs -> the page is scored on its own).
     """
 
     def __init__(self, context):
         self.context = context
 
-    def score_page(self, page_png: str, reference_pngs: list[str], row_ids: list[str]):
+    def score_page(self, page_png: str, reference_pngs: list[str],
+                   row_ids: list[str], row_metadata: dict[str, dict] | None = None):
         from quality_loop.vis_client import VisionClient
 
         client = VisionClient()
-        return client.score_page(page_png, reference_pngs, row_ids)
+        return client.score_page(
+            page_png, reference_pngs, row_ids, row_metadata=row_metadata
+        )
 
 
 def _vision_reviewer(context):
@@ -237,6 +241,38 @@ def _reference_pngs_by_row(report_plan: Any, row_ids: list[str]) -> dict[str, li
                 by_row[row_id] = pngs
         return by_row
     except Exception:  # noqa: BLE001 -- a reference miss must never fail the build
+        return {}
+
+
+def _director_row_metadata(report_plan: Any, row_ids: list[str]) -> dict[str, dict]:
+    """The DIRECTOR's semantic context per review row: visual job + argument +
+    density, so the VIS judge scores the page against its actual editorial
+    job. Deterministic (stages/director.compose_visual_job); graceful when a
+    face lacks the fields (that row is judged without metadata)."""
+    faces = list(getattr(report_plan, "faces", ()) or [])
+    if not faces:
+        return {}
+    try:
+        from quality_loop.vis_prompt import QUESTIONS  # noqa: F401 -- row ids validated there
+
+        from stages.director import compose_visual_job
+
+        by_row: dict[str, dict] = {}
+        for index, face in enumerate(faces):
+            row_id = row_ids[index] if index < len(row_ids) else f"face.{index + 1:02d}"
+            st_type = str(getattr(face, "legacy_st_type", "") or "").strip()
+            if not st_type:
+                continue
+            argument = str(getattr(face, "argument", "") or "")
+            density = str(getattr(face, "density_band", "") or "")
+            job = compose_visual_job(st_type, {"argument": argument})
+            by_row[row_id] = {
+                "visual_job": job,
+                "argument": argument,
+                "density": density,
+            }
+        return by_row
+    except Exception:  # noqa: BLE001 -- Director metadata must never fail the build
         return {}
 
 
@@ -915,6 +951,7 @@ def build_and_render_v3(
                 }
 
             refs_by_row = _reference_pngs_by_row(bundle.report_plan, row_ids)
+            row_metadata = _director_row_metadata(bundle.report_plan, row_ids)
             visual_loop_result = run_visual_review_loop(
                 _rebuild,
                 reviewer=_vision_reviewer(context),
@@ -925,6 +962,7 @@ def build_and_render_v3(
                 threshold=_VISUAL_REVIEW_THRESHOLD,
                 whole_deck_pass=True,
                 conductor=_v3_conductor(),
+                row_metadata=row_metadata,
             )
             if visual_loop_result["release_state"] == "review_required":
                 gate_result = gate_result.model_copy(

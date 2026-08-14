@@ -74,14 +74,14 @@ class FakeReviewer:
         self.threshold = threshold
         self.calls = 0
 
-    def score_page(self, page_png, reference_pngs, row_ids):
+    def score_page(self, page_png, reference_pngs, row_ids, row_metadata=None):
         self.calls += 1
         score = self.threshold if self.calls >= self.pass_at_calls else 1
         return {row_ids[0]: {"score": score, "rationale": "ok"}}
 
 
 class FailingReviewer:
-    def score_page(self, page_png, reference_pngs, row_ids):
+    def score_page(self, page_png, reference_pngs, row_ids, row_metadata=None):
         raise RuntimeError("reviewer API down")
 
 
@@ -132,7 +132,7 @@ class DeckBuilder:
 
 
 class DeckReviewer:
-    def score_page(self, page_png, refs, row_ids):
+    def score_page(self, page_png, refs, row_ids, row_metadata=None):
         return {row_ids[0]: {"score": 5, "rationale": "ok"}}
 
 
@@ -191,7 +191,7 @@ class RepairAwareReviewer:
         self.pass_on_png = pass_on_png
         self.scored_pngs: list[str] = []
 
-    def score_page(self, page_png, reference_pngs, row_ids):
+    def score_page(self, page_png, reference_pngs, row_ids, row_metadata=None):
         self.scored_pngs.append(page_png)
         score = self.threshold if page_png == self.pass_on_png else 1
         return {row_ids[0]: {"score": score, "rationale": "ok"}}

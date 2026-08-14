@@ -278,7 +278,7 @@ def test_visual_loop_rebuilds_with_conductor_override_and_passes(
         def __init__(self):
             self.calls = 0
 
-        def score_page(self, page_png, reference_pngs, row_ids):
+        def score_page(self, page_png, reference_pngs, row_ids, row_metadata=None):
             self.calls += 1
             if self.calls == 1:
                 return {row_ids[0]: {"score": 1, "rationale": "bottom half empty; dead space"}}

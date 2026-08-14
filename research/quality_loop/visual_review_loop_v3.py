@@ -81,6 +81,7 @@ def review_page(
     max_attempts: int,
     threshold: int,
     conductor: Callable[..., Any] | None = None,
+    row_metadata: dict[str, dict] | None = None,
 ) -> dict:
     """Review one page: build -> score -> conductor repair -> REBUILD -> re-score.
 
@@ -91,7 +92,9 @@ def review_page(
     a genuinely rebuilt page. A stalled conductor (no change) stops the ladder
     early — re-scoring an identical render is pointless. A transient reviewer
     failure is retried; a page the reviewer cannot score at all is
-    "unreviewable" (honest, never a silent pass).
+    "unreviewable" (honest, never a silent pass). `row_metadata` carries the
+    DIRECTOR's per-row {visual_job, argument, density} so the reviewer judges
+    against the page's actual editorial job.
 
     Returns {"passed": bool, "verdict": str, "attempts": int, "scores": [...],
              "rebuilds": int}.
@@ -105,8 +108,11 @@ def review_page(
         pending_plan = pending_facts = None
         png = _current_png(build, page_png, row_ids)
         page_refs = _current_refs(build, refs, row_ids)
+        row_meta = None
+        if isinstance(row_metadata, dict) and row_ids:
+            row_meta = {row_ids[0]: row_metadata.get(row_ids[0])} if row_metadata.get(row_ids[0]) else None
         scores = retry_transient(
-            lambda: reviewer.score_page(png, page_refs, row_ids),
+            lambda: reviewer.score_page(png, page_refs, row_ids, row_metadata=row_meta),
             attempts=3,
             base_delay_s=0.0,
         )
@@ -157,6 +163,7 @@ def run_visual_review_loop(
     threshold: int,
     whole_deck_pass: bool = True,
     conductor: Callable[..., Any] | None = None,
+    row_metadata: dict[str, dict] | None = None,
 ) -> dict:
     """Build -> review every page -> one whole-deck retry -> decide.
 
@@ -180,7 +187,7 @@ def run_visual_review_loop(
             build_fn, reviewer,
             page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
             max_attempts=max_page_attempts, threshold=threshold,
-            conductor=conductor,
+            conductor=conductor, row_metadata=row_metadata,
         )
         page_outcomes[idx] = outcome
         attempt_records.append({"page": idx, **outcome})
@@ -194,7 +201,7 @@ def run_visual_review_loop(
                 build_fn, reviewer,
                 page_png=page_pngs[idx], refs=refs, row_ids=[row_ids[idx]],
                 max_attempts=max_page_attempts, threshold=threshold,
-                conductor=conductor,
+                conductor=conductor, row_metadata=row_metadata,
             )
             page_outcomes[idx] = retried
             attempt_records.append({"page": idx, "whole_deck": True, **retried})
