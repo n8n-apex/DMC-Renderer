@@ -97,3 +97,62 @@ def test_rationale_records_why_and_degrades_honestly() -> None:
 
 def test_breather_job_is_atmosphere() -> None:
     assert compose_visual_job("ST-31", {"phrase": "Innehalten"}) == "atmosphere"
+
+
+def test_allocate_references_spreads_across_distinct_pages() -> None:
+    """Reference diversification: 5 case studies each request k=3 candidates;
+    the allocator assigns a DISTINCT reference (different report+page) per
+    case study so the deck does not anchor on one Richard page."""
+    from stages.director import allocate_references
+
+    candidates_by_key = {
+        "slot.07": [
+            {"report": "niklas", "page_no": 8, "face_index": 0, "id": 1},
+            {"report": "buchagentur", "page_no": 5, "face_index": 0, "id": 2},
+            {"report": "boss", "page_no": 5, "face_index": 0, "id": 3},
+        ],
+        "slot.09": [
+            {"report": "niklas", "page_no": 8, "face_index": 0, "id": 1},
+            {"report": "buchagentur", "page_no": 6, "face_index": 0, "id": 4},
+            {"report": "werkzeugkoffer", "page_no": 6, "face_index": 0, "id": 5},
+        ],
+        "slot.12": [
+            {"report": "niklas", "page_no": 8, "face_index": 0, "id": 1},
+            {"report": "boss", "page_no": 6, "face_index": 0, "id": 6},
+            {"report": "aerztepartner", "page_no": 5, "face_index": 0, "id": 7},
+        ],
+        "slot.14": [
+            {"report": "niklas", "page_no": 8, "face_index": 0, "id": 1},
+            {"report": "boss", "page_no": 5, "face_index": 0, "id": 3},
+            {"report": "buchagentur", "page_no": 7, "face_index": 0, "id": 8},
+        ],
+        "slot.15": [
+            {"report": "niklas", "page_no": 8, "face_index": 0, "id": 1},
+            {"report": "werkzeugkoffer", "page_no": 7, "face_index": 0, "id": 9},
+            {"report": "boss", "page_no": 7, "face_index": 0, "id": 10},
+        ],
+    }
+    allocation = allocate_references(candidates_by_key)
+    assert set(allocation.keys()) == set(candidates_by_key.keys())
+    chosen = [allocation[k] for k in sorted(allocation)]
+    # every case study gets a reference
+    assert all(c is not None for c in chosen)
+    # distinct (report, page_no) — no two case studies share the same page
+    anchors = {(c["report"], c["page_no"]) for c in chosen}
+    assert len(anchors) == len(chosen), f"duplicate anchors: {anchors}"
+
+
+def test_allocate_references_degrades_when_pool_too_small() -> None:
+    """If candidates are too few to fully diversify, remaining pages take the
+    best available (never None when candidates exist)."""
+    from stages.director import allocate_references
+
+    candidates_by_key = {
+        "slot.07": [{"report": "niklas", "page_no": 8, "face_index": 0, "id": 1}],
+        "slot.09": [{"report": "niklas", "page_no": 8, "face_index": 0, "id": 1}],
+        "slot.12": [{"report": "niklas", "page_no": 8, "face_index": 0, "id": 1}],
+    }
+    allocation = allocate_references(candidates_by_key)
+    assert all(allocation[k] is not None for k in candidates_by_key)
+    # worst case: all three share the one available page (no None, honest)
+    assert {allocation[k]["id"] for k in candidates_by_key} == {1}

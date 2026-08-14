@@ -214,3 +214,59 @@ async def select_references(dsn: str | None, st_type: str, *,
 def director_dsn() -> str | None:
     """The Supabase pooler URL from env, or None (local fallback mode)."""
     return os.environ.get("SUPABASE_POOLER_URL") or None
+
+
+def allocate_references(candidates_by_key: dict[str, list[dict]]) -> dict[str, dict | None]:
+    """Assign DISTINCT references across pages (reference diversification).
+
+    Each page brings its candidate list (k=3, already format/density ranked);
+    the allocator greedily assigns the first candidate whose (report, page_no)
+    anchor is not yet used, so the deck anchors on DIFFERENT Richard pages.
+    When the pool is too small, remaining pages take their best candidate
+    (never None while candidates exist — honest degradation).
+
+    Returns {page_key: chosen_reference_or_None}.
+    """
+    allocation: dict[str, dict | None] = {}
+    used_anchors: set[tuple[str, int]] = set()
+
+    # pages with FEWER candidates first: they are the constrained ones and must
+    # get first pick of the distinct anchors.
+    for page_key in sorted(candidates_by_key, key=lambda k: len(candidates_by_key[k])):
+        candidates = candidates_by_key.get(page_key) or []
+        if not candidates:
+            allocation[page_key] = None
+            continue
+        chosen = None
+        for candidate in candidates:
+            anchor = (str(candidate.get("report") or ""), int(candidate.get("page_no") or 0))
+            if anchor not in used_anchors:
+                chosen = candidate
+                used_anchors.add(anchor)
+                break
+        if chosen is None:
+            chosen = candidates[0]  # pool exhausted: best available, honest
+        allocation[page_key] = chosen
+    return allocation
+
+
+async def select_diversified_references(dsn: str | None, *, st_type: str,
+                                        page_keys: list[str],
+                                        format_: str | None = None,
+                                        client_slug: str = "") -> dict[str, dict | None]:
+    """Query k=5 candidates per page, then allocate DISTINCT anchors.
+
+    The pool must be LARGER than the page count for real diversification
+    (k=3 gave only niklas 8/10/12 — buchagentur 5/6 were 4th/5th rank and
+    unreachable). The allocator then spreads the deck across different
+    Richard pages so five case studies never anchor on one reference.
+    Falls back per-page to the legacy index when no DSN.
+    """
+    candidates_by_key: dict[str, list[dict]] = {}
+    for page_key in page_keys:
+        refs = await select_references(
+            dsn, st_type, format_=format_, k=5,
+            client_slug=client_slug, face_key=page_key,
+        )
+        candidates_by_key[page_key] = refs
+    return allocate_references(candidates_by_key)
