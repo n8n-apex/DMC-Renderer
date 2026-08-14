@@ -1,0 +1,148 @@
+{# viz_transform — TRANSFORMATION family (before→after) of the data-viz PRESET
+   layer. Brand-agnostic / token-only: every colour via var(--token) + color-mix;
+   premium depth (gradient bars, accent glow, display-serif numerals) is honoured
+   by Chromium and dropped losslessly by WeasyPrint. Macros take (v, uid=0): uid
+   is a page-unique id seed (the dispatch passes loop.index) so SVG gradient ids
+   never collide. Every figure is shown VERBATIM; bar/arc geometry is DERIVED
+   from the same string via the `num` filter so it can never diverge. Graceful:
+   missing required fields → renders nothing. #}
+
+{# ba_bars — paired before/after bars. pairs[] of {label, before:{value},
+   after:{value}, delta?}. Height % derives from each value's leading number
+   (num filter), scaled to the pair max, floored to a visible 6%. #}
+{% macro ba_bars(v, uid=0) %}
+{%- if v and v.pairs and (v.pairs | selectattr('before') | list) -%}
+<figure class="c-viz c-viz-ba" role="img" aria-label="{% for p in v.pairs %}{{ p.label }}: {{ p.before.value }} → {{ p.after.value }}{% if v.unit %} {{ v.unit }}{% endif %}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-ba__title">{{ v.title }}</figcaption>{% endif -%}
+  <div class="c-viz-ba__row">
+  {%- for p in v.pairs -%}
+    {%- set bn = p.before.value | num -%}
+    {%- set an = p.after.value | num -%}
+    {%- set m = [bn, an] | max -%}
+    {%- set bh = (((bn / m * 100) if m else 0) | round(0, 'floor') | int, 6) | max -%}
+    {%- set ah = (((an / m * 100) if m else 0) | round(0, 'floor') | int, 6) | max -%}
+    <div class="c-viz-ba__pair">
+      <div class="c-viz-ba__plabel">{{ p.label }}</div>
+      <div class="c-viz-ba__bars">
+        <div class="c-viz-ba__col">
+          <span class="c-viz-ba__num">{{ p.before.value }}</span>
+          <span class="c-viz-ba__bar c-viz-ba__bar--before" style="height:{{ bh }}%"></span>
+          <span class="c-viz-ba__cap">{% if v.unit %}{{ v.unit }} · {% endif %}vorher</span>
+        </div>
+        <div class="c-viz-ba__col">
+          <span class="c-viz-ba__num c-viz-ba__num--after">{{ p.after.value }}</span>
+          <span class="c-viz-ba__bar c-viz-ba__bar--after" style="height:{{ ah }}%"></span>
+          <span class="c-viz-ba__cap">{% if v.unit %}{{ v.unit }} · {% endif %}nachher</span>
+        </div>
+      </div>
+      {%- if p.delta %}<span class="c-viz-ba__delta">{{ p.delta }}</span>{% endif -%}
+    </div>
+  {%- endfor -%}
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# bar_compare — horizontal before/after EXHIBIT (a real chart, not a lone number).
+   pairs[] of {label, before:{value}, after:{value}, delta?}. Every bar scales to
+   the MAX value across all pairs (one shared axis), the verbatim figures sit in
+   their OWN value lane (never over the bars or the delta), and a light gridline
+   scale + axis ticks give it a real chart frame. Optional title/subtitle/unit/
+   source. Brand-agnostic / token-only; geometry derived from the figures via the
+   `num` filter so it can never diverge from the text. Graceful: no pairs → nothing. #}
+{% macro bar_compare(v, uid=0) %}
+{%- if v and v.pairs and (v.pairs | selectattr('before') | list) -%}
+{%- set ns = namespace(amax=0) -%}
+{%- for p in v.pairs -%}
+  {%- set bn = p.before.value | num -%}{%- set an = (p.after.value | num) if p.after else 0 -%}
+  {%- if bn > ns.amax %}{% set ns.amax = bn %}{% endif -%}
+  {%- if an > ns.amax %}{% set ns.amax = an %}{% endif -%}
+{%- endfor -%}
+{%- set amax = ns.amax if ns.amax > 0 else 1 -%}
+{%- set unit = v.unit or '' -%}
+<figure class="c-viz c-viz-barc" role="img" aria-label="{% for p in v.pairs %}{{ p.label }}: {{ p.before.value }} → {{ p.after.value if p.after else '' }} {{ unit }}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-barc__title">{{ v.title }}</figcaption>{% endif -%}
+  {%- if v.subtitle %}<div class="c-viz-barc__sub">{{ v.subtitle }}</div>{% endif -%}
+  <div class="c-viz-barc__legend">
+    <span class="c-viz-barc__leg"><i class="c-viz-barc__sw c-viz-barc__sw--b"></i>Vorher</span>
+    <span class="c-viz-barc__leg"><i class="c-viz-barc__sw c-viz-barc__sw--a"></i>Nachher</span>
+  </div>
+  <div class="c-viz-barc__rows">
+  {%- for p in v.pairs -%}
+    {%- set bn = p.before.value | num -%}{%- set an = (p.after.value | num) if p.after else 0 -%}
+    <div class="c-viz-barc__row">
+      <div class="c-viz-barc__cat">{{ p.label }}</div>
+      <div class="c-viz-barc__plot">
+        <span class="c-viz-barc__grid" style="left:0%"></span><span class="c-viz-barc__grid" style="left:25%"></span><span class="c-viz-barc__grid" style="left:50%"></span><span class="c-viz-barc__grid" style="left:75%"></span><span class="c-viz-barc__grid" style="left:100%"></span>
+        <span class="c-viz-barc__bar c-viz-barc__bar--b" style="width:{{ (bn / amax * 100) | round(1) }}%"></span>
+        <span class="c-viz-barc__bar c-viz-barc__bar--a" style="width:{{ (an / amax * 100) | round(1) }}%"></span>
+      </div>
+      <div class="c-viz-barc__vlane">
+        <span class="c-viz-barc__vb">{{ p.before.value }}</span>
+        {%- if p.after %}<span class="c-viz-barc__va">{{ p.after.value }}</span>{% endif -%}
+      </div>
+      <div class="c-viz-barc__delta">{% if p.delta %}{{ p.delta }}{% endif %}</div>
+    </div>
+  {%- endfor -%}
+  </div>
+  <div class="c-viz-barc__axis">
+    <div></div>
+    <div class="c-viz-barc__ticks">
+      <span style="left:0%">0</span><span style="left:25%">{{ (amax * 0.25) | round | int }}</span><span style="left:50%">{{ (amax * 0.5) | round | int }}</span><span style="left:75%">{{ (amax * 0.75) | round | int }}</span><span style="left:100%">{{ amax | round | int }}{% if unit %} {{ unit }}{% endif %}</span>
+    </div>
+    <div></div><div></div>
+  </div>
+  {%- if v.source %}<figcaption class="c-viz-barc__source">{{ v.source }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# transform_arrow — A → B dark-glass card. from/to are {value, label}. Handles
+   non-numeric afters ("Minuten"). `from` is a Jinja keyword → bracket access. #}
+{% macro transform_arrow(v, uid=0) %}
+{%- set a = v['from'] if v else none -%}
+{%- set b = v['to'] if v else none -%}
+{%- if a and a.value and b and b.value -%}
+<figure class="c-viz c-viz-arrow" role="img" aria-label="{{ a.value }} {{ a.label or '' }} → {{ b.value }} {{ b.label or '' }}">
+  {%- if v.title %}<figcaption class="c-viz-arrow__title">{{ v.title }}</figcaption>{% endif -%}
+  <div class="c-viz-arrow__row">
+    <div class="c-viz-arrow__side">
+      <span class="c-viz-arrow__num">{{ a.value }}</span>
+      {%- if a.label %}<span class="c-viz-arrow__cap">{{ a.label }}</span>{% endif -%}
+    </div>
+    <span class="c-viz-arrow__glyph" aria-hidden="true">→</span>
+    <div class="c-viz-arrow__side c-viz-arrow__side--to">
+      <span class="c-viz-arrow__num c-viz-arrow__num--to">{{ b.value }}</span>
+      {%- if b.label %}<span class="c-viz-arrow__cap">{{ b.label }}</span>{% endif -%}
+    </div>
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# completion_ring — SVG progress ring. percent (0-100) drives the arc; center
+   string shown VERBATIM (e.g. "6/6", "100 %"). Gradient id is page-unique via
+   uid (LOCKED #3). #}
+{% macro completion_ring(v, uid=0) %}
+{%- if v and v.center -%}
+{%- set pct = (v.percent | default(100, true)) | float -%}
+{%- set circ = 314.159 -%}{# 2·π·r, r=50 #}
+{%- set dash = (pct / 100.0 * circ) | round(1) -%}
+<figure class="c-viz c-viz-ring" role="img" aria-label="{{ v.center }} {{ v.label or '' }}">
+  <svg viewBox="0 0 120 120" class="c-viz-ring__svg">
+    <defs>
+      <linearGradient id="vizring{{ uid }}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="color-mix(in srgb, var(--color-accent) 92%, transparent)"/>
+        <stop offset="1" stop-color="color-mix(in srgb, var(--color-primary) 90%, transparent)"/>
+      </linearGradient>
+    </defs>
+    <circle class="c-viz-ring__track" cx="60" cy="60" r="50" fill="none" stroke-width="12"/>
+    <circle class="c-viz-ring__arc" cx="60" cy="60" r="50" fill="none" stroke-width="12"
+            stroke-linecap="round" stroke="url(#vizring{{ uid }})"
+            stroke-dasharray="{{ dash }} {{ circ }}" transform="rotate(-90 60 60)"/>
+    <text class="c-viz-ring__center" x="60" y="60" dominant-baseline="central" text-anchor="middle" style="font-size:{{ v.center | fitfs(70, 30) }}px">{{ v.center }}</text>
+  </svg>
+  {%- if v.label %}<figcaption class="c-viz-ring__label">{{ v.label }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
