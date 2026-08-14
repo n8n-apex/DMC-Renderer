@@ -199,6 +199,48 @@
       "priority": "high",
       "passes": true,
       "notes": "DONE 2026-08-14: FINAL RENDER: 20 logical = 20 physical, A3 spreads filled, no spill"
+    },
+    {
+      "id": "US-301",
+      "description": "SVG center-text vertical centering (dominant-baseline)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: SVG center-text dominant-baseline=central (donut/gauge/cluster/ring)"
+    },
+    {
+      "id": "US-302",
+      "description": "csh-scene supporting-visual device (renderer)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: csh-scene supporting-visual band device (renderer, graceful absent)"
+    },
+    {
+      "id": "US-303",
+      "description": "fal case-study scenes + slot routing into fixture",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: 5 fal case-study scenes routed; all A3 spreads ZERO void bands, 20pp"
+    },
+    {
+      "id": "US-304",
+      "description": "ST-FAZIT breather (paragraph split + spacing)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: ST-FAZIT breather: 4-para recap + airier measure (balanced quadrants)"
+    },
+    {
+      "id": "US-305",
+      "description": "re-bake + verify (void bands gone, p18 balance) + G27",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: G27 in registry; harness 38/40 exit 0; ledger; all suites green"
+    },
+    {
+      "id": "US-306",
+      "description": "FINAL RENDER (last step)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-14: FINAL RENDER: 20/20 pages, void-free A3 spreads"
     }
   ]
 }
