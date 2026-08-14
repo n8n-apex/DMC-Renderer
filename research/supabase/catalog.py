@@ -264,6 +264,66 @@ async def upsert_catalog(dsn: str, *, verbose: bool = False) -> dict:
         await conn.close()
 
 
+async def record_storage_objects(dsn: str, project_url: str, api_key: str,
+                                 bucket: str = "references") -> dict:
+    """Record which source PDFs are stored in Supabase Storage.
+
+    The PDF binaries live in Storage (bucket `references/source-pdfs/<slug>.pdf`);
+    Postgres records the object name + size per report so the pipeline can
+    fetch the durable source or fall back to the local raster cache. Skips
+    reports whose PDF was NOT uploaded (over the Free-plan limit).
+    """
+    import base64
+    import urllib.parse
+
+    project_ref = project_url.rstrip("/").split("//", 1)[-1].split(".", 1)[0]
+    base = f"https://{project_ref}.supabase.co"
+    conn = await asyncpg.connect(dsn, timeout=30, statement_cache_size=0)
+    try:
+        headers = {"apikey": api_key, "Authorization": f"Bearer {api_key}"}
+        import httpx
+
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.post(
+                f"{base}/storage/v1/object/list/{bucket}",
+                headers=headers,
+                json={"prefix": "source-pdfs", "limit": 100},
+            )
+            objects = response.json() if response.status_code == 200 else []
+        updated: list[str] = []
+        for obj in objects:
+            name = obj.get("name") or ""
+            if not name.endswith(".pdf") or "/" in name:
+                continue
+            slug = name.removesuffix(".pdf")
+            meta = obj.get("metadata") or {}
+            rep_id = await conn.fetchval("SELECT id FROM ref_reports WHERE slug = $1", slug)
+            if rep_id is None:
+                continue
+            await conn.execute(
+                """
+                UPDATE ref_reports
+                SET metadata = jsonb_set(
+                        COALESCE(metadata, '{}'),
+                        '{storage}',
+                        $2::jsonb
+                    )
+                WHERE id = $1
+                """,
+                rep_id,
+                json.dumps({
+                    "object": f"source-pdfs/{name}",
+                    "bucket": bucket,
+                    "size": meta.get("size"),
+                    "mimetype": meta.get("mimetype"),
+                }),
+            )
+            updated.append(slug)
+        return {"recorded": updated}
+    finally:
+        await conn.close()
+
+
 async def selector_query(dsn: str, st_type: str, *, format_: str | None = None,
                          role: str | None = None, density: str | None = None,
                          k: int = 3) -> list[dict]:

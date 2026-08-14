@@ -11,6 +11,7 @@ create table if not exists ref_reports (
     source_pdf    text not null,                 -- filename
     is_client     boolean not null default false,-- true for client decks, false for Richard's
     page_count    int not null default 0,
+    metadata      jsonb not null default '{}',
     created_at    timestamptz not null default now()
 );
 
