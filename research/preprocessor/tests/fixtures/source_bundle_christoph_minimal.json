@@ -1,0 +1,19 @@
+{
+  "sources": [],
+  "claims": [],
+  "report_json": {
+    "meta": {
+      "client_slug": "christoph-winter",
+      "report_id": "christoph-v5"
+    },
+    "pages": [
+      {
+        "slot": 13,
+        "type": "ST-07A",
+        "data": {
+          "result": "83% Zeitersparnis"
+        }
+      }
+    ]
+  }
+}

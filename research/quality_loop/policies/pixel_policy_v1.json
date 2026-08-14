@@ -1,0 +1,425 @@
+{
+  "schema_version": "2.0",
+  "policy_id": "dmc-pixel-policy",
+  "version": "2.1.0",
+  "notes": "Deterministic per-face pixel features (policy 2.0.0, 2026-08-06). These are mechanical sanity bounds calibrated against the synthetic mechanical fixture deck rendered by dmc-renderer/tests/test_build_v3.py on 2026-08-06; they reject degenerate rasters (blank, flooded, hierarchy-inverted, rhythm-less, proof-less-case, photo-flooded faces). They are NOT the human visual quality threshold: that threshold lives in research/calibration/policies/visual-threshold-v1.json and stays null until two independent blind raters produce real ratings. Measurement constants: ink_luminance_max=191 (ITU-R 601-2 luma clearly darker than the cream paper, whose luma measures ~241); whitespace_luminance_min=226 (paper-bright, leaving 192-225 as the mid-tone photo/tint zone); top_band_fraction=0.22 (the headline zone of every family grid); row_ink_fraction_min=0.018 (a row belongs to a type band when at least 1.8% of its pixels are ink, above scanner noise but below any real text line); min_band_row_fraction=0.003 (runs shorter than 0.3% of the face height are noise, not type).",
+  "measurement": {
+    "ink_luminance_max": 191,
+    "whitespace_luminance_min": 226,
+    "top_band_fraction": 0.22,
+    "row_ink_fraction_min": 0.018,
+    "min_band_row_fraction": 0.003
+  },
+  "families": {
+    "case_narrative": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.2,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0081).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1145,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's case_narrative pages measure 0.127-0.508 top-band ink share (n=6, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": 0.001,
+        "max_value": null,
+        "rationale": "Case anatomy promises an accent-marked proof block in the lower proof band (measured 0.0178 on the fixture deck); a case face whose proof band carries no trace of accent has lost its proof."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0350 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "closing_cta": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.3,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0000).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.0897,
+        "max_value": 0.9,
+        "rationale": "Corpus-derived: Richard's closing_cta pages measure 0.100-0.517 top-band ink share (n=7, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0004 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "collaboration_pathway": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.18,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0015).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.2081,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's collaboration_pathway pages measure 0.231-0.610 top-band ink share (n=6, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0005 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "editorial_lead": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.18,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0000).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1673,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's editorial_lead pages measure 0.186-0.531 top-band ink share (n=4, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.1786 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "evidence_wall": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.16,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0061).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.2081,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's evidence_wall pages measure 0.231-0.711 top-band ink share (n=5, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0369 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "false_belief_stack": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.22,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0000).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1595,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's false_belief_stack pages measure 0.177-0.906 top-band ink share (n=4, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0004 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "mechanism_spread": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.2,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0018).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1222,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's mechanism_spread pages measure 0.136-0.731 top-band ink share (n=5, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0005 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "objection_response": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.18,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0001).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.0867,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's objection_response pages measure 0.096-0.659 top-band ink share (n=6, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0023 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "summary_synthesis": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.18,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0000).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1564,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's summary_synthesis pages measure 0.174-0.610 top-band ink share (n=6, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0011 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    },
+    "theory_interpretation": {
+      "min_accent_fraction": 0.0,
+      "max_accent_fraction": 0.18,
+      "color_tolerance": 18,
+      "accent_budget_opt_out": false,
+      "accent_rationale": "Accent budget carried unchanged from pixel policy 1.0.0 (fixture deck measured 0.0035).",
+      "ink_occupancy": {
+        "min_value": 0.1029,
+        "max_value": 0.9943,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98 of his measured ink occupancy. The previous band (0.003-0.60) was fitted to the MECHANICAL FIXTURE DECK and rejected 17 percent of his own pages, so it enforced this renderer's characteristics as the standard rather than the reference's. Widened because the STANDARD was wrong, not because output failed it."
+      },
+      "vertical_hierarchy": {
+        "min_value": 0.1336,
+        "max_value": null,
+        "rationale": "Corpus-derived: Richard's theory_interpretation pages measure 0.148-0.685 top-band ink share (n=6, corpus-v2.json). Floor is the corpus minimum less 10 percent, so a page may sit anywhere inside the reference range. Replaces a floor fitted to the renderer's own device-less output."
+      },
+      "whitespace_fraction": {
+        "min_value": 0.0023,
+        "max_value": 0.7687,
+        "rationale": "Corpus-derived from Richard's 84 reference faces: p2-p98. The previous floor of 0.30 rejected 19 percent of his pages, because his full-bleed dark spreads carry almost no white. Fitted to the fixture deck, not to the reference."
+      },
+      "type_rhythm_bands": {
+        "min_value": 1,
+        "max_value": 60,
+        "rationale": "Corpus-derived from Richard's 84 reference faces (p2=1, median 6.5, p98=39, max 44). The previous floor of 2 was fitted to the mechanical fixture deck and demanded 'a headline plus at least one body band', which rejected 22 of his own faces (26 percent) - his image-led and breather pages legitimately carry one band or none. Floor 1 still rejects a blank raster, which is what this check is actually for. REFINEMENT AVAILABLE: a per-family floor would be tighter than this global one, since a text-led family genuinely should carry two bands while a brand_breather should not; that needs per-family sampling from the atlas role mapping."
+      },
+      "proof_visibility": {
+        "min_value": null,
+        "max_value": null,
+        "rationale": "Recorded for calibration only (measured 0.0000 on the fixture deck). Enforcement waits until this family's anatomy pins an accent proof marker inside the proof band."
+      },
+      "image_coverage": {
+        "min_value": null,
+        "max_value": 0.65,
+        "rationale": "Mid-tone (photo/tint) share measured 0.0050 on the fixture deck. No minimum: imagery is asset-dependent. Max 0.65 rejects a face that has become a full-bleed photo, which no v3 family anatomy allows."
+      },
+      "proof_band": [
+        0.6,
+        1.0
+      ]
+    }
+  }
+}

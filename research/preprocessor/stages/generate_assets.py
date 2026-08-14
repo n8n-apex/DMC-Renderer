@@ -627,6 +627,50 @@ def _director_brief_for(st_type: str, data: dict, design_brief: Any) -> Optional
         return None
 
 
+def _director_persist(generate_specs: list[dict], *, client_slug: str,
+                      report_id: str) -> None:
+    """Best-effort: persist each ST-07A Director decision into Supabase.
+
+    Never raises (generation must never depend on persistence). When the
+    pooler URL is absent, decisions are skipped quietly (local fallback mode).
+    """
+    import asyncio
+
+    dsn = os.environ.get("SUPABASE_POOLER_URL")
+    if not dsn:
+        return
+    try:
+        from stages.director import compose_rationale, compose_visual_job
+        from supabase.catalog import record_director_decision
+
+        async def _record() -> None:
+            for spec in generate_specs:
+                brief = spec.get("director_brief") or {}
+                if not brief:
+                    continue
+                st_type = "ST-07A"
+                job = brief.get("visual_job") or compose_visual_job(st_type, spec.get("_page_data") or {})
+                face_key = f"slot.{spec.get('page_slot', 0):02d}"
+                # reference selection is optional at persist time: the decision
+                # records the brief + rationale even without a catalog match
+                await record_director_decision(
+                    dsn,
+                    client_slug=client_slug,
+                    report_id=report_id,
+                    face_key=face_key,
+                    st_type=st_type,
+                    ref_face_id=None,
+                    rationale=compose_rationale(st_type, None, job),
+                    visual_job=job,
+                    brief={"slot": spec.get("page_slot"), "aspect": spec.get("aspect_ratio")},
+                    generator_brief=brief,
+                )
+
+        asyncio.run(_record())
+    except Exception:  # noqa: BLE001 -- persistence is best-effort
+        return
+
+
 async def generate_assets(
     pages: list[Any],
     image_manifest: dict | Any,
@@ -826,6 +870,17 @@ async def generate_assets(
             })
 
     # ── Pass 2: batched prompt-builder, then per-spec fal / stub ──
+    # Best-effort Director-decision persistence (never fails the build): each
+    # ST-07A case scene records its reference choice + brief into Supabase
+    # when the pooler URL is configured; local fallback skips quietly.
+    if generate_specs:
+        try:
+            _director_persist(
+                generate_specs, client_slug=client_slug,
+                report_id=client_slug or "",
+            )
+        except Exception:  # noqa: BLE001 -- persistence must never fail generation
+            pass
     built: dict[str, dict] = {}
     if openrouter_key and generate_specs:
         built = await build_image_prompts(

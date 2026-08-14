@@ -1,0 +1,19 @@
+{
+  "schema_version": "3.0",
+  "policy_registry_version": "1.0.0",
+  "policy_ids": [
+    "hierarchy.one-dominant-mechanism",
+    "density.capacity-before-composition",
+    "tokens.no-arbitrary-values",
+    "typography.readable-measure",
+    "rhythm.spacing-scale",
+    "dataviz.truthful-static-encoding",
+    "review.observation-problem-fix"
+  ],
+  "rows": [
+    {"observation": "Name the first, second, and third elements seen.", "failure": "Attention has no stable entry or reading order.", "remediation": "Return to composition planning and reduce competing emphasis."},
+    {"observation": "Record body measure, font size, line count, and occupied area.", "failure": "Copy is over-compressed, under-filled, or outside the family capacity.", "remediation": "Return to editorial capacity or select another feasible family."},
+    {"observation": "List every chart mark, label, baseline, and encoded variable.", "failure": "The relationship is ambiguous or visually misleading.", "remediation": "Return to contract materialization and choose a truthful static encoding."},
+    {"observation": "Compare repeated spacing and type roles against named tokens.", "failure": "One-off values break rhythm or hierarchy.", "remediation": "Return to renderer tokens or propose a versioned policy exception."}
+  ]
+}

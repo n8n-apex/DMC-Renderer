@@ -1,0 +1,1262 @@
+[
+  {
+    "deck": "apex",
+    "page_no": 1,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p1.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 2,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p2.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 3,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p3.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 4,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p4.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 5,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p5.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 6,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p6.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 7,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p7.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 8,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p8.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 9,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p9.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 10,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p10.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 11,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p11.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 12,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p12.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 13,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p13.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 14,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p14.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 15,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p15.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 16,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p16.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 17,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p17.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 18,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p18.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 19,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p19.png"
+  },
+  {
+    "deck": "apex",
+    "page_no": 20,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif",
+      "palette": "mono_blue_cyan_navy",
+      "accent_mechanic": "tonal",
+      "texture": "frosted_glass_geometric",
+      "density": "airy",
+      "qr_enabled": false,
+      "tone": "tech_premium"
+    },
+    "png_path": "references/pages/apex/p20.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 1,
+    "st_type": "ST-01",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p1.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 2,
+    "st_type": "ST-02",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p2.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 3,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p3.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 4,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p4.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 5,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p5.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 6,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p6.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 7,
+    "st_type": "ST-07B",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p7.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 8,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p8.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 9,
+    "st_type": "ST-07B",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p9.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 10,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p10.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 11,
+    "st_type": "ST-07B",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p11.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 12,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p12.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 13,
+    "st_type": "ST-07B",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p13.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 14,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p14.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 15,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p15.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 16,
+    "st_type": "ST-FAZIT",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p16.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 17,
+    "st_type": "ST-05",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p17.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 18,
+    "st_type": "ST-22",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p18.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 19,
+    "st_type": "LOGO-WALL",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p19.png"
+  },
+  {
+    "deck": "niklas",
+    "page_no": 20,
+    "st_type": "ST-03",
+    "axes": {
+      "headline_type": "serif_sans_caps_accent",
+      "palette": "royal_blue_charcoal",
+      "accent_mechanic": "contrasting",
+      "texture": "darkened_photo",
+      "density": "punchy_5050",
+      "qr_enabled": true,
+      "tone": "masculine_bold"
+    },
+    "png_path": "references/pages/niklas/p20.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 1,
+    "st_type": "ST-01",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p1.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 2,
+    "st_type": "LOGO-WALL",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p2.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 3,
+    "st_type": "ST-09",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p3.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 4,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p4.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 5,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p5.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 6,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p6.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 7,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p7.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 8,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p8.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 9,
+    "st_type": "ST-06",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p9.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 10,
+    "st_type": "ST-22",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p10.png"
+  },
+  {
+    "deck": "buchagentur",
+    "page_no": 11,
+    "st_type": "ST-FAZIT",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "teal_petrol",
+      "accent_mechanic": "contrasting",
+      "texture": "paper_grain",
+      "density": "dense_editorial",
+      "qr_enabled": true,
+      "tone": "editorial_luxury"
+    },
+    "png_path": "references/pages/buchagentur/p11.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 1,
+    "st_type": "ST-01",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p1.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 2,
+    "st_type": "ST-02",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p2.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 3,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p3.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 4,
+    "st_type": "ST-07B",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p4.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 5,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p5.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 6,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p6.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 7,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p7.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 8,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p8.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 9,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p9.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 10,
+    "st_type": "ST-03",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p10.png"
+  },
+  {
+    "deck": "boss",
+    "page_no": 11,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_slab",
+      "palette": "navy_azure",
+      "accent_mechanic": "contrasting",
+      "texture": "flat_icons",
+      "density": "navy_panels",
+      "qr_enabled": false,
+      "tone": "corporate_trust"
+    },
+    "png_path": "references/pages/boss/p11.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 1,
+    "st_type": "ST-01",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p1.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 2,
+    "st_type": "ST-05",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p2.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 3,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p3.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 4,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p4.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 5,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p5.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 6,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p6.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 7,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p7.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 8,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p8.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 9,
+    "st_type": "ST-06",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p9.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 10,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p10.png"
+  },
+  {
+    "deck": "werkzeugkoffer",
+    "page_no": 11,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "all_sans",
+      "palette": "midblue_navy",
+      "accent_mechanic": "tonal",
+      "texture": "darkened_photo",
+      "density": "navy_panels",
+      "qr_enabled": true,
+      "tone": "corporate_masculine"
+    },
+    "png_path": "references/pages/werkzeugkoffer/p11.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 1,
+    "st_type": "ST-01",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p1.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 2,
+    "st_type": "ST-05",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p2.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 3,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p3.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 4,
+    "st_type": "ST-14",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p4.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 5,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p5.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 6,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p6.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 7,
+    "st_type": "ST-07A",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p7.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 8,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p8.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 9,
+    "st_type": "OTHER",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p9.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 10,
+    "st_type": "ST-22",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p10.png"
+  },
+  {
+    "deck": "aerztepartner",
+    "page_no": 11,
+    "st_type": "ST-03",
+    "axes": {
+      "headline_type": "serif_didone",
+      "palette": "navy_gold",
+      "accent_mechanic": "contrasting",
+      "texture": "parchment_marble_gold",
+      "density": "airy_premium",
+      "qr_enabled": false,
+      "tone": "private_banking_luxury"
+    },
+    "png_path": "references/pages/aerztepartner/p11.png"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DMC v3 blind visual rating row",
+  "description": "One blind human rating of one face image against the reference rubric. Rows are appended to ratings.jsonl only by real human raters; fabricating rows is forbidden. Cohorts are blind: the rater must not know whether the face is a reference or a candidate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rater_id",
+    "cohort",
+    "face_image_sha256",
+    "rubric_version",
+    "scores",
+    "overall",
+    "rated_at"
+  ],
+  "properties": {
+    "rater_id": {"type": "string", "minLength": 1},
+    "cohort": {"enum": ["reference", "candidate"]},
+    "face_image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rubric_version": {"type": "string", "minLength": 1},
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hierarchy",
+        "composition",
+        "typography",
+        "rhythm",
+        "density",
+        "proof_visibility",
+        "mechanism_clarity",
+        "brand_coherence"
+      ],
+      "properties": {
+        "hierarchy": {"type": "integer", "minimum": 1, "maximum": 5},
+        "composition": {"type": "integer", "minimum": 1, "maximum": 5},
+        "typography": {"type": "integer", "minimum": 1, "maximum": 5},
+        "rhythm": {"type": "integer", "minimum": 1, "maximum": 5},
+        "density": {"type": "integer", "minimum": 1, "maximum": 5},
+        "proof_visibility": {"type": "integer", "minimum": 1, "maximum": 5},
+        "mechanism_clarity": {"type": "integer", "minimum": 1, "maximum": 5},
+        "brand_coherence": {"type": "integer", "minimum": 1, "maximum": 5}
+      }
+    },
+    "overall": {"type": "integer", "minimum": 1, "maximum": 5},
+    "rated_at": {"type": "string", "format": "date-time"}
+  }
+}

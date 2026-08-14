@@ -1,0 +1,61 @@
+{
+  "_note": "Sample /render input in the n8n POST shape. Mirrors the GEVA case study from research/v7-test/fixture_mw_geva.json, but reshaped into the client + report_json + image_manifest format that n8n posts. Used by tests and the curl-verify in README.",
+  "record_id": "recSAMPLE0000001",
+  "client": {
+    "name": "mein.werkzeug.koffer",
+    "company": "mein.werkzeug.koffer GmbH",
+    "website_url": "https://www.meinwerkzeugkoffer.de",
+    "brand_hex_dark": "#1A2540",
+    "brand_hex_light": "#F5EFE3",
+    "brand_hex_accent": "#E97E47",
+    "visual_style": "Premium 3D",
+    "logo_url": "",
+    "headshot_urls": [],
+    "drive_folder": ""
+  },
+  "report_json": {
+    "meta": {
+      "client_slug": "mein-werkzeugkoffer",
+      "report_id": "MW-2026-SAMPLE",
+      "lang": "de",
+      "page_format": "A4",
+      "page_count_target": 20
+    },
+    "pages": [
+      { "slot": 1,  "type": "ST-01", "data": {
+        "eyebrow": "BERATUNGSREPORT 2026",
+        "title": "Warum 73% der Berater nach 18 Monaten stecken bleiben — und der eine Hebel den Top-Performer kennen",
+        "subtitle": "9 von 10 Berater verlieren in 18 Monaten den Anschluss. Dieser Report zeigt warum — und welche eine Änderung den Durchbruch bringt.",
+        "teaser_bullets": [
+          "Warum 73% der Berater den falschen Engpass diagnostizieren",
+          "Der unsichtbare Hebel den 9 von 10 übersehen",
+          "Die eine Änderung die alles verändert",
+          "Was Top-Performer anders machen — und warum es funktioniert"
+        ],
+        "proof_anchor": "12 Jahre Erfahrung, 4.000+ Berater betreut"
+      } },
+      { "slot": 2,  "type": "ST-02", "data": {} },
+      { "slot": 3,  "type": "ST-05", "data": {} },
+      { "slot": 4,  "type": "ST-09", "data": {} },
+      { "slot": 5,  "type": "ST-09", "data": {} },
+      { "slot": 6,  "type": "ST-14", "data": {} },
+      { "slot": 7,  "type": "ST-14", "data": {} },
+      { "slot": 8,  "type": "ST-06", "data": {} },
+      { "slot": 9,  "type": "ST-22", "data": {} },
+      { "slot": 10, "type": "ST-07A", "data": { "fallstudie_number": 1, "ergebnis_headline": "Case 1" } },
+      { "slot": 11, "type": "ST-07B", "data": {} },
+      { "slot": 12, "type": "ST-07A", "data": { "fallstudie_number": 2, "ergebnis_headline": "Case 2" } },
+      { "slot": 13, "type": "ST-07B", "data": {} },
+      { "slot": 14, "type": "ST-07A", "data": { "fallstudie_number": 3, "ergebnis_headline": "Case 3" } },
+      { "slot": 15, "type": "ST-07B", "data": {} },
+      { "slot": 16, "type": "ST-31", "data": {} },
+      { "slot": 17, "type": "ST-31", "data": {} },
+      { "slot": 18, "type": "ST-22", "data": {} },
+      { "slot": 19, "type": "ST-08", "data": {} },
+      { "slot": 20, "type": "ST-03", "data": {} }
+    ]
+  },
+  "image_manifest": {
+    "images": []
+  }
+}

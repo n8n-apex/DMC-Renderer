@@ -326,12 +326,15 @@ async def record_storage_objects(dsn: str, project_url: str, api_key: str,
 
 async def selector_query(dsn: str, st_type: str, *, format_: str | None = None,
                          role: str | None = None, density: str | None = None,
+                         exclude_report: str | None = None,
                          k: int = 3) -> list[dict]:
     """Semantic reference selection from the catalog — the Director's selector.
 
     Filters by st_type (required) + optional format/role/density, ordered by
     how many optional dimensions match (the semantic closeness), then by the
-    cached sha256 presence. Returns the top-k faces with their rationale data.
+    cached sha256 presence. `exclude_report` drops the client's OWN deck (the
+    output being judged is not the reference bar — Richard's hand-designed
+    decks are). Returns the top-k faces with their rationale data.
     """
     conn = await asyncpg.connect(dsn, timeout=30, statement_cache_size=0)
     try:
@@ -350,6 +353,9 @@ async def selector_query(dsn: str, st_type: str, *, format_: str | None = None,
             params.append(density)
             clauses.append(f"f.density = ${len(params)}")
             order_bonus.append(f"(f.density = ${len(params)})::int")
+        if exclude_report:
+            params.append(exclude_report)
+            clauses.append(f"r.slug <> ${len(params)}")
         order_sql = (" + ".join(order_bonus) + " DESC,") if order_bonus else ""
         params.append(k)
         rows = await conn.fetch(
@@ -366,5 +372,63 @@ async def selector_query(dsn: str, st_type: str, *, format_: str | None = None,
             *params,
         )
         return [dict(row) for row in rows]
+    finally:
+        await conn.close()
+
+
+async def record_director_decision(dsn: str, *, client_slug: str, report_id: str,
+                                   face_key: str, st_type: str, ref_face_id: int | None,
+                                   rationale: str, visual_job: str,
+                                   brief: dict | None = None,
+                                   generator_brief: dict | None = None) -> int | None:
+    """Persist one Director decision (reference choice + brief) into Supabase.
+
+    Returns the decision id, or None when the DSN is absent (local fallback:
+    decisions are not durable but the pipeline still runs).
+    """
+    if not dsn:
+        return None
+    conn = await asyncpg.connect(dsn, timeout=30, statement_cache_size=0)
+    try:
+        if ref_face_id is None:
+            return None
+        decision_id = await conn.fetchval(
+            """
+            INSERT INTO director_decisions
+                (client_slug, report_id, face_key, st_type, ref_face_id,
+                 rationale, visual_job, brief, generator_brief)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+            ON CONFLICT DO NOTHING
+            RETURNING id
+            """,
+            client_slug, report_id, face_key, st_type, ref_face_id,
+            rationale, visual_job,
+            json.dumps(brief or {}), json.dumps(generator_brief or {}),
+        )
+        return decision_id
+    finally:
+        await conn.close()
+
+
+async def record_render_run(dsn: str, *, client_slug: str, report_id: str,
+                            build_id: str, state: str = "started",
+                            decisions: list[int] | None = None,
+                            review: dict | None = None) -> int | None:
+    """Persist one render run (state + review evidence) into Supabase."""
+    if not dsn:
+        return None
+    conn = await asyncpg.connect(dsn, timeout=30, statement_cache_size=0)
+    try:
+        run_id = await conn.fetchval(
+            """
+            INSERT INTO render_runs (client_slug, report_id, build_id, state,
+                                     decisions, review)
+            VALUES ($1,$2,$3,$4,$5,$6)
+            RETURNING id
+            """,
+            client_slug, report_id, build_id, state,
+            json.dumps(decisions or []), json.dumps(review or {}),
+        )
+        return run_id
     finally:
         await conn.close()

@@ -38,20 +38,22 @@ _SCALE_HINTS = ("verdoppelt", "verdoppeln", "skalier", "wachstum", "kapazität",
 def _job_for_case_study(data: dict) -> str:
     """What the case-study visual must make the reader understand.
 
-    Reads the REAL result metrics + headline: a before/after transformation
-    (24 Std. -> Minuten), a completion (6 von 6), or a scale shift (capacity
-    doubled). Falls back to the headline when the metrics are prose.
+    Reads the LEAD result metric (the hero figure the visual supports) + the
+    headline: a before/after transformation (24 Std. -> Minuten), a completion
+    (6 von 6), or a scale shift (capacity doubled). Falls back to the headline
+    when the lead metric is prose.
     """
     metrics = data.get("ergebnis_metrics") or []
     headline = str(data.get("ergebnis_headline") or "").lower()
-    joined = " ".join(
-        str(m.get("value", "") if isinstance(m, dict) else m) for m in metrics
-    ).lower()
-    if any(h in joined for h in _TRANSFORM_HINTS):
+    lead = ""
+    if metrics:
+        first = metrics[0]
+        lead = str(first.get("value", "") if isinstance(first, dict) else first).lower()
+    if any(h in lead for h in _TRANSFORM_HINTS):
         return "transformation"
-    if any(h in joined for h in _COMPLETION_HINTS):
+    if any(h in lead for h in _COMPLETION_HINTS):
         return "completion"
-    if any(h in headline for h in _SCALE_HINTS) or any(h in joined for h in _SCALE_HINTS):
+    if any(h in headline for h in _SCALE_HINTS) or any(h in lead for h in _SCALE_HINTS):
         return "scale"
     return "system"
 
@@ -191,8 +193,10 @@ async def select_references(dsn: str | None, st_type: str, *,
                             report_id: str = "", face_key: str = "") -> list[dict]:
     """Choose reference faces for a page.
 
-    Supabase catalog first (report-driven: format/density weighting); legacy
-    index fallback when no DSN. Each returned row is a ref_faces record.
+    Supabase catalog first (report-driven: format/density weighting, and the
+    client's OWN deck excluded — the output being judged is not the reference
+    bar); legacy index fallback when no DSN. Each returned row is a ref_faces
+    record.
     """
     if dsn:
         try:
@@ -200,6 +204,7 @@ async def select_references(dsn: str | None, st_type: str, *,
 
             return await selector_query(
                 dsn, st_type, format_=format_, density=density, k=k,
+                exclude_report=client_slug or None,
             )
         except Exception:
             return _legacy_select(st_type, k)
