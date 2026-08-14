@@ -868,3 +868,17 @@
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted);
   margin-top: var(--space-2); padding-left: 8mm;
 }
+
+/* Supporting SCENE band on the A3 spread (case_scene slot): a full-bleed
+   rounded visual that absorbs one of the left column's void bands — sits
+   between the narrative sections, brand lift + soft shadow, no caption text.
+   The image is a generated brand-toned abstract (never a face); the frame
+   is fixed height so the band can never collapse or overflow the sheet. */
+.st-07a .csh-scene {
+  margin: var(--space-2) 0 var(--space-3) 0;
+}
+.st-07a .csh-scene-img {
+  width: 100%; height: 44mm; object-fit: cover;
+  display: block; border-radius: 2mm;
+  box-shadow: 0 4mm 14mm -7mm color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
