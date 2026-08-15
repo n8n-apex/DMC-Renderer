@@ -82,7 +82,13 @@
 /* data-viz PRESET proof band — centered market-proof unit below the thesis. */
 .st-fazit .fz-viz {
   /* a floating navy-stone island (chrome from .c-viz-island) narrower than the
-     content width so cream frames it; the rings center inside. */
+     content width so cream frames it; the rings center inside. MUST opt out of
+     flex shrinking: as a child of .fz-fill-flow (justify-content:
+     space-between) the default flex-shrink:1 collapsed it to ~85px while its
+     radial cluster needed ~146px, and .c-viz-island's overflow:hidden clipped
+     the 58%/61% rings (US-401). flex:0 0 auto keeps the island at content
+     height so the full cluster is visible. */
+  flex: 0 0 auto;
   margin: 0 auto var(--space-4) auto;
   max-width: 132mm;
   display: flex;
