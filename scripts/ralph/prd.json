@@ -302,8 +302,8 @@
       "id": "US-408",
       "description": "regenerate remaining 4 case studies + full deck re-render + all suites + acceptance checklist",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0"
     }
   ]
 }
