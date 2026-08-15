@@ -733,46 +733,93 @@ def _director_brief_for(st_type: str, data: dict, design_brief: Any) -> Optional
         return None
 
 
-def _director_persist(generate_specs: list[dict], *, client_slug: str,
-                      report_id: str) -> None:
-    """Best-effort: persist each ST-07A Director decision into Supabase.
+async def _director_persist(generate_specs: list[dict], *, client_slug: str,
+                            report_id: str) -> None:
+    """Best-effort: persist the FULL Director decision + provenance per ST-07A
+    spec into Supabase (§6 of the binding contract). COROUTINE (the caller
+    awaits it — the old sync version ran asyncio.run inside the running
+    generate_assets loop, which raised and was silently swallowed: the
+    provenance never landed, US-406 wiring defect).
 
-    Never raises (generation must never depend on persistence). When the
-    pooler URL is absent, decisions are skipped quietly (local fallback mode).
+    Each record carries: selected reference face + sha256, the EXACT prompt
+    sent, the endpoint, aspect, resolution, and (when known) the output file
+    sha256. Never raises (generation must never depend on persistence); when
+    the pooler URL is absent, decisions are skipped quietly.
     """
-    import asyncio
+    import hashlib
+    from pathlib import Path as _Path
 
     dsn = os.environ.get("SUPABASE_POOLER_URL")
     if not dsn:
         return
     try:
-        from stages.director import compose_rationale, compose_visual_job
+        from stages.director import (
+            compose_generator_brief, compose_rationale, compose_visual_job,
+            select_references,
+        )
         from supabase.catalog import record_director_decision
 
-        async def _record() -> None:
-            for spec in generate_specs:
-                brief = spec.get("director_brief") or {}
-                if not brief:
-                    continue
-                st_type = "ST-07A"
-                job = brief.get("visual_job") or compose_visual_job(st_type, spec.get("_page_data") or {})
-                face_key = f"slot.{spec.get('page_slot', 0):02d}"
-                # reference selection is optional at persist time: the decision
-                # records the brief + rationale even without a catalog match
-                await record_director_decision(
-                    dsn,
-                    client_slug=client_slug,
-                    report_id=report_id,
-                    face_key=face_key,
-                    st_type=st_type,
-                    ref_face_id=None,
-                    rationale=compose_rationale(st_type, None, job),
-                    visual_job=job,
-                    brief={"slot": spec.get("page_slot"), "aspect": spec.get("aspect_ratio")},
-                    generator_brief=brief,
-                )
-
-        asyncio.run(_record())
+        for spec in generate_specs:
+            brief = spec.get("director_brief") or {}
+            if not brief:
+                continue
+            st_type = "ST-07A"
+            page_slot = spec.get("page_slot", 0)
+            face_key = f"slot.{page_slot:02d}"
+            job = brief.get("visual_job") or compose_visual_job(
+                st_type, spec.get("_page_data") or {}
+            )
+            # Select the reference (Supabase-first, own deck excluded) and
+            # recompose the brief WITH it so the persisted prompt matches
+            # what would be sent.
+            refs = await select_references(
+                dsn, st_type, format_="a4", k=1,
+                client_slug=client_slug, face_key=face_key,
+            )
+            ref = refs[0] if refs else None
+            data = spec.get("_page_data") or {}
+            full_brief = compose_generator_brief(
+                st_type, data,
+                brand_primary=_brief_field(
+                    spec.get("_design_brief"), "brand_primary") or "",
+                brand_accent=_brief_field(
+                    spec.get("_design_brief"), "brand_accent") or "",
+                reference=ref, visual_job=job,
+            )
+            prompt = (
+                f"{full_brief['concept']}. Style: "
+                f"{full_brief.get('style', '')} Aspect ratio "
+                f"{spec.get('aspect_ratio', '16:9')}."
+            ).strip()
+            generator_brief = {
+                "endpoint": "fal-ai/nano-banana-pro/edit",
+                "prompt": prompt,
+                "input_image": ref["png_path"] if ref else None,
+                "input_image_sha256": ref.get("sha256") if ref else None,
+                "aspect_ratio": spec.get("aspect_ratio", "16:9"),
+                "resolution": os.environ.get("FAL_IMAGE_RESOLUTION", "2K"),
+            }
+            out_path = spec.get("_output_path")
+            if out_path and _Path(out_path).is_file():
+                generator_brief["output_sha256"] = hashlib.sha256(
+                    _Path(out_path).read_bytes()
+                ).hexdigest()
+            await record_director_decision(
+                dsn,
+                client_slug=client_slug,
+                report_id=report_id,
+                face_key=face_key,
+                st_type=st_type,
+                ref_face_id=ref["id"] if ref else None,
+                rationale=compose_rationale(st_type, ref, job),
+                visual_job=job,
+                brief={
+                    "slot": page_slot,
+                    "aspect": spec.get("aspect_ratio"),
+                    "visual_job": job,
+                },
+                generator_brief=generator_brief,
+            )
     except Exception:  # noqa: BLE001 -- persistence is best-effort
         return
 
@@ -921,6 +968,8 @@ async def generate_assets(
                     "context": preview,
                     "subject": preview or "an abstract on-brand background",
                     "director_brief": director_brief,
+                    "_page_data": data,
+                    "_design_brief": design_brief,
                 })
                 continue
 
@@ -981,7 +1030,7 @@ async def generate_assets(
     # when the pooler URL is configured; local fallback skips quietly.
     if generate_specs:
         try:
-            _director_persist(
+            await _director_persist(
                 generate_specs, client_slug=client_slug,
                 report_id=client_slug or "",
             )
@@ -1081,6 +1130,9 @@ async def generate_assets(
             plan.assets.append(result)
             if result.status == "generated":
                 plan.total_generated += 1
+                # provenance for the Director decision (US-406): the produced
+                # asset path feeds the output sha256 recorded in Supabase.
+                spec["_output_path"] = str(result.path) if result.path else None
                 # Only real POSTs consume the budget; cache hits are free.
                 if not result.from_cache:
                     generated_count += 1
