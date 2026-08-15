@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import asyncio
 import re
+import base64
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -426,6 +427,111 @@ async def fal_generate_image(
             image_type=image_type,
             prompt=prompt,
             negative_prompt=negative_prompt,
+        )
+    finally:
+        if owns:
+            await client.aclose()
+
+
+async def fal_generate_image_edit(
+    *,
+    prompt: str,
+    input_image: Path,
+    aspect_ratio: str,
+    api_key: str,
+    model: str,
+    resolution: str,
+    output_dir: Path,
+    slot_id: str,
+    page_slot: Optional[int] = None,
+    image_type: str = "",
+    http_client: Optional[httpx.AsyncClient] = None,
+    timeout: float = FAL_GENERATE_TIMEOUT_S,
+    cache_dir: Optional[Path] = None,
+    salt: str = "",
+) -> AssetResult:
+    """IMAGE-TO-IMAGE generation (BINDING contract, US-405): the selected
+    Richard reference face raster is an INPUT to the model via `image_urls`
+    (base64 data URI), never a prose description. Endpoint is the EDIT model
+    (`fal-ai/nano-banana-pro/edit`), NOT the text-to-image one. The cache key
+    includes the input image bytes, so a different reference busts the cache.
+
+    `prompt` is the TRANSFORMATION instruction (what grammar to preserve, what
+    subject to place) — never "make an abstract X" boilerplate, never data.
+    """
+    input_bytes = input_image.read_bytes()
+    encoded = base64.b64encode(input_bytes).decode("ascii")
+    data_uri = f"data:image/png;base64,{encoded}"
+
+    cache_key = fal_cache_key(
+        model=model, prompt=prompt, negative_prompt="",
+        aspect=_fal_aspect(aspect_ratio), resolution=resolution,
+        salt=salt, image_bytes=input_bytes,
+    )
+    cached = cache_lookup(cache_dir, cache_key)
+    target_path = output_dir / "assets" / f"{page_slot or 'report'}_{slot_id}.png"
+    if cached is not None:
+        try:
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(cached, target_path)
+        except OSError:
+            cached = None
+        else:
+            return AssetResult(
+                slot_id=slot_id, status="generated", path=target_path,
+                message=f"fal edit cache hit ({cache_key[:12]})",
+                page_slot=page_slot, image_type=image_type,
+                prompt=prompt, negative_prompt="", from_cache=True,
+            )
+
+    request_body = {
+        "prompt": prompt,
+        "image_urls": [data_uri],
+        "aspect_ratio": _fal_aspect(aspect_ratio),
+        "num_images": 1,
+        "resolution": resolution,
+        "output_format": "png",
+    }
+    headers = {"Authorization": f"Key {api_key}",
+               "Content-Type": "application/json"}
+
+    owns = http_client is None
+    client = http_client or httpx.AsyncClient(timeout=timeout, follow_redirects=True)
+    try:
+        resp = await client.post(
+            f"https://fal.run/{model}", json=request_body, headers=headers,
+        )
+        if resp.status_code != 200:
+            return AssetResult(
+                slot_id=slot_id, status="failed", path=None,
+                message=(f"fal edit failed (HTTP {resp.status_code}) for {slot_id}"),
+                page_slot=page_slot, image_type=image_type,
+                prompt=prompt, negative_prompt="",
+            )
+        data = resp.json()
+        url = data["images"][0]["url"]
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        ok = await download_image(url, target_path, client=client, retries=3)
+        if not ok:
+            return AssetResult(
+                slot_id=slot_id, status="failed", path=None,
+                message=f"fal edit download failed for {slot_id} from {url}",
+                page_slot=page_slot, image_type=image_type,
+                prompt=prompt, negative_prompt="",
+            )
+        cache_store(cache_dir, cache_key, target_path)
+        return AssetResult(
+            slot_id=slot_id, status="generated", path=target_path,
+            message=f"Generated via fal edit {model} ({aspect_ratio}, {resolution})",
+            page_slot=page_slot, image_type=image_type,
+            prompt=prompt, negative_prompt="",
+        )
+    except (httpx.HTTPError, KeyError, IndexError, ValueError, TypeError) as exc:
+        return AssetResult(
+            slot_id=slot_id, status="failed", path=None,
+            message=f"fal edit error for {slot_id}: {exc!r}",
+            page_slot=page_slot, image_type=image_type,
+            prompt=prompt, negative_prompt="",
         )
     finally:
         if owns:

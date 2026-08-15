@@ -786,3 +786,74 @@ def test_12_case_scene_absent_without_st07a_data(tmp_path: Path) -> None:
         output_dir=tmp_path,
     ))
     assert not any(a.slot_id == "case_scene" for a in plan.assets)
+
+
+def test_fal_cache_key_includes_input_image_bytes() -> None:
+    """US-405: the cache key MUST include the input reference image bytes —
+    two edits with the same prompt but different input images are DIFFERENT
+    generations and must not share a cache entry."""
+    from stages.assets_cache import fal_cache_key
+
+    k1 = fal_cache_key(model="m", prompt="p", negative_prompt="",
+                       aspect="16:9", resolution="2K", image_bytes=b"AAA")
+    k2 = fal_cache_key(model="m", prompt="p", negative_prompt="",
+                       aspect="16:9", resolution="2K", image_bytes=b"BBB")
+    assert k1 != k2, "different input images must bust the cache"
+    k3 = fal_cache_key(model="m", prompt="p", negative_prompt="",
+                       aspect="16:9", resolution="2K")
+    assert k3 != k1, "image-to-image key must differ from prompt-only key"
+
+
+def test_fal_edit_posts_image_urls_to_edit_endpoint(tmp_path: Path) -> None:
+    """US-405 binding: the edit call posts the reference raster as a base64
+    image_url to the EDIT endpoint and records the transformation prompt."""
+    import base64 as _b64
+    from stages.generate_assets import fal_generate_image_edit
+
+    ref = tmp_path / "ref.png"
+    ref.write_bytes(b"\x89PNG\r\n\x1a\nfake")
+
+    captured = {}
+
+    class FakeClient:
+        async def post(self, url, json=None, headers=None):
+            captured["url"] = url
+            captured["json"] = json
+            return _FakeResp(200, {"images": [{"url": "https://cdn/x.png"}]})
+
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def aclose(self): pass
+
+    class _FakeResp:
+        def __init__(self, code, data):
+            self.status_code = code; self._data = data
+        def json(self): return self._data
+
+    import shutil
+    from stages.generate_assets import download_image
+    original_download = download_image
+
+    async def fake_download(url, path, client=None, retries=0):
+        path.write_bytes(b"%PDF-fake")
+        return True
+
+    import stages.generate_assets as ga
+    ga.download_image = fake_download
+    try:
+        import asyncio
+        result = asyncio.run(fal_generate_image_edit(
+            prompt="preserve the dark proof panel; place a calm workflow-lane abstraction",
+            input_image=ref, aspect_ratio="16:9", api_key="k", model="fal-ai/nano-banana-pro/edit",
+            resolution="2K", output_dir=tmp_path, slot_id="cs14_scene", page_slot=14,
+            image_type="scene", http_client=FakeClient(),
+        ))
+    finally:
+        ga.download_image = original_download
+
+    assert captured["url"].endswith("nano-banana-pro/edit"), captured["url"]
+    body = captured["json"]
+    assert "image_urls" in body and body["image_urls"][0].startswith("data:image/png;base64,")
+    assert "preserve the dark proof panel" in body["prompt"]
+    assert result.status == "generated"
+    assert result.path.exists()
