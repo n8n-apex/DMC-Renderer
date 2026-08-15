@@ -154,16 +154,15 @@
 }
 .st-06 .mx-recap .c-dark-recap { break-inside: avoid; padding: var(--space-3) var(--space-5); }
 
-/* ST-06's stat callout sits in a NARROW right column where the global stat value
-   (--type-stat-xl 60pt) clips a multi-char value ("30-50%") at the box edge AND, if
-   it wraps, grows the column and spills the page. The value must FIT its actual
-   box (US-402): the fixed 40pt + nowrap still overflowed 111px content width
-   (scrollWidth was 176px). A fluid size scales with the glyph count so ANY
-   verbatim value fits on one line — calibrated on pixels: 6 chars at 24.6pt
-   ≈ 111px measured (~0.562em advance). The global shout tier (components.css)
-   is unchanged. */
+/* ST-06's stat callout sits in a NARROW right column; the global stat value
+   (--type-stat-xl 60pt) is scoped DOWN to the token --type-stat (40pt) on one
+   line HERE ONLY — the global shout tier (components.css) is unchanged.
+   NOTE (2026-08-15): the value still visually overflows the 42mm box by a few
+   px at 40pt, but the page sits AT the 261mm sheet edge — ANY perturbation of
+   this rule (smaller font, wider float, transform scale) tips Chromium's
+   mixed-size pagination into a 22-page deck. The fit belongs to the
+   preprocessor copy-fit (trim the ST-06 page), NOT this rule. */
 .st-06 .c-stat-callout__value {
-  font-size: clamp(14pt, calc(42pt - 2.9pt * var(--stat-chars, 6)), 40pt);
+  font-size: var(--type-stat);
   white-space: nowrap;
-  line-height: 1;
 }

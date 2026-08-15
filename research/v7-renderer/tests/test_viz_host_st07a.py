@@ -97,3 +97,41 @@ def test_casestudy_hero_scene_absent_renders_no_empty_box() -> None:
     page["slots"] = []
     html = st_07a.render(page, _apex_ctx()).html
     assert "csh-scene" not in html
+
+
+def test_casestudy_hero_right_proof_is_full_height_with_quote_inside() -> None:
+    """US-403: the A3 spread's right "Das Ergebnis" panel must be a FULL-HEIGHT
+    authority panel (Richard's proof-rail pattern), not an auto-height card
+    parked at the top leaving a void. The quote seats INSIDE the dark panel as
+    its closing statement; the panel owns the right column top-to-bottom."""
+    page = _st07a_page()
+    page["layout_variant"] = "casestudy_hero"
+    html = st_07a.render(page, _apex_ctx()).html
+    assert "csh-dash" in html
+    assert "csh-quote--on-dark" in html
+    # the quote must appear AFTER the KPI rail and BEFORE the dash's closing
+    # wrapper — i.e. inside the dark panel, not as a cream sibling below it.
+    kpi_pos = html.index("csh-dash-kpis")
+    quote_pos = html.index("csh-quote--on-dark")
+    # the dash is closed by the same </div> that ends .csh-right's child chain;
+    # find the LAST closing div after the quote (the dash's end)
+    tail = html[quote_pos:]
+    dash_end = html.rindex("</div>", quote_pos)
+    assert kpi_pos < quote_pos < dash_end, (
+        "order must be: KPIs -> quote -> dash close (quote inside the panel)"
+    )
+
+
+def test_casestudy_hero_dash_is_full_height_via_css() -> None:
+    """The dash rule must be flex:1 (fill the right column height), not
+    auto-height (flex:0 1 auto) which left the lower-right void."""
+    page = _st07a_page()
+    page["layout_variant"] = "casestudy_hero"
+    css = st_07a.render(page, _apex_ctx()).css
+    import re
+
+    block = re.search(r"\.st-07a \.csh-dash\s*\{([^}]*)\}", css, re.S)
+    assert block, "missing .csh-dash rule"
+    assert "flex: 1 1 auto" in block.group(1), (
+        f".csh-dash must be flex:1 1 auto (full-height proof rail); got: {block.group(1)}"
+    )

@@ -158,10 +158,17 @@ def propose_fix(
 
         if knob == "density":
             # N08 on a case study: prefer the layout knob first (more effective).
+            # EXCEPT the A3 casestudy_hero spread: forcing "fill" onto it is
+            # DEGENERATE (the A4-fill render of an A3-designed page is hollow;
+            # verified 2026-08-15 — the converge loop applied this knob and the
+            # composed deck shipped 22 corrupt pages). The A3 spread's fix is
+            # the scene/geometry work, not the layout knob.
             if (
                 defect.id == "N08"
                 and st_type in FILL_CAPABLE_ST_TYPES
-                and current_layout_variant != LAYOUT_LADDER[-1]
+                and current_layout_variant not in (
+                    LAYOUT_LADDER[-1], "casestudy_hero",
+                )
             ):
                 return Fix(
                     defect_id="N08",

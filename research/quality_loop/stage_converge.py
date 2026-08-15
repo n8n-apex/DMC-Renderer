@@ -135,15 +135,53 @@ def run_stage(
     if compose:
         if render_fn is None:
             from assembler import render_package as render_fn  # lazy: renderer dep
-        merged_dir = compose_converged_package(
-            package_dir, result, out_dir / "merged"
+        # SAFE-SHIP guard: only compose the fix-merged deck when the loop
+        # ACTUALLY applied fixes. When the reviewer cannot run (e.g. a
+        # credit-limited VIS key -> per-page convergence errors), no page has
+        # fixes; shipping the merged package then re-renders from a broken
+        # intermediate and produces a corrupt deck (blank/spill sheets).
+        # Without fixes the caller ships its own clean original render.
+        applied = sum(
+            len(getattr(page, "fixes_applied", None) or ())
+            for page in result.pages
         )
-        composed_out = out_dir / "composed"
-        # Pin the SHIP engine to chromium: render_package's function default is
-        # weasyprint (legacy), which silently produces a DIFFERENT deck (addition
-        # A). The convergence grades weasyprint DET facts; the ship is chromium.
-        render_fn(merged_dir, composed_out, engine=engine)
-        report["composed_pdf"] = str(composed_out / "report.pdf")
+        if applied > 0:
+            merged_dir = compose_converged_package(
+                package_dir, result, out_dir / "merged"
+            )
+            composed_out = out_dir / "composed"
+            # Pin the SHIP engine to chromium: render_package's function default is
+            # weasyprint (legacy), which silently produces a DIFFERENT deck (addition
+            # A). The convergence grades weasyprint DET facts; the ship is chromium.
+            render_fn(merged_dir, composed_out, engine=engine)
+            composed_pdf = Path(composed_out) / "report.pdf"
+            # PAGINATION-SAFE guard: the merged re-render must keep the SAME
+            # logical page count as the original package. A density/layout knob
+            # can shift a page's rendered metrics enough that Chromium's mixed
+            # A3/A4 pagination doubles a sheet (verified 2026-08-15: an ST-06
+            # stat-size change + density knob shipped a 22-page deck from a
+            # 20-page original). If the composed deck's physical page count
+            # exceeds the logical count, it is CORRUPT — ship the caller's
+            # original clean render instead.
+            try:
+                import fitz
+
+                with fitz.open(str(composed_pdf)) as composed_doc:
+                    composed_physical = len(composed_doc)
+                logical = getattr(result, "total", 0) or len(result.pages)
+                if composed_physical > logical:
+                    report["composed_pdf"] = None
+                    report["compose_rejected"] = (
+                        f"composed deck {composed_physical} pages > logical "
+                        f"{logical}; shipped the original clean render"
+                    )
+                else:
+                    report["composed_pdf"] = str(composed_pdf)
+            except Exception as exc:  # noqa: BLE001 -- never fail the build on the guard
+                report["composed_pdf"] = None
+                report["compose_rejected"] = f"compose guard error: {exc}"
+        else:
+            report["composed_pdf"] = None
 
     (out_dir / "convergence_report.json").write_text(
         json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"

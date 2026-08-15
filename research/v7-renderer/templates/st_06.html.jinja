@@ -25,7 +25,7 @@
   {% if intro_html or stat_callout %}
   <div class="mx-intro-row">
     {% if stat_callout %}
-    <div class="mx-intro-stat" style="--stat-chars: {{ (stat_callout.value | string | length) if stat_callout.value is not none else 6 }}">{{ stat_callout_card(stat_callout.value, stat_callout.label) }}</div>
+    <div class="mx-intro-stat">{{ stat_callout_card(stat_callout.value, stat_callout.label) }}</div>
     {% endif %}
     {% if intro_html %}<div class="mx-intro">{{ intro_html }}</div>{% endif %}
   </div>

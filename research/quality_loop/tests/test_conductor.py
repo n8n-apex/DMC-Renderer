@@ -373,3 +373,18 @@ def test_apply_density_knob_copies_and_steps(tmp_path):
     assert Path(result["pdf"]).exists()
     # original fixture untouched
     assert json.loads((APEX_PKG / "resolved_package.json").read_text())["axes"]["density"] == "compact"
+
+
+def test_propose_fix_never_layout_knobs_casestudy_hero():
+    """The layout knob must NOT fire on an A3 casestudy_hero spread: forcing
+    'fill' onto the A3-designed page is degenerate (hollow A4-fill render) and
+    shipping that composed deck corrupted the deck to 22 pages (2026-08-15).
+    The spread's fix is the scene/geometry work, not the layout knob."""
+    sc = _bare_score([_n01(), _n08()])
+    fix = propose_fix(
+        sc, {"density": "compact"},
+        st_type="ST-07A", current_layout_variant="casestudy_hero",
+    )
+    assert fix is None or fix.knob != "case_study_layout", (
+        f"casestudy_hero must never get the layout knob; got {fix}"
+    )

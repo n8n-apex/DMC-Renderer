@@ -2131,20 +2131,26 @@ def test_macro_phone_mockup_shows_real_post_and_never_fabricates() -> None:
     assert not _HEX.search(macro) and not _FONT_LIT.search(macro)
 
 
-def test_st06_stat_value_fits_via_fluid_size() -> None:
-    """US-402: the ST-06 stat value ("30-50%") must FIT its narrow box — the
-    scoped rule uses a fluid clamp sized by the value's char count, not a fixed
-    40pt that overflowed (scrollWidth 176px vs 111px box). The template must
-    emit --stat-chars so the fluid math has the glyph count."""
+def test_st06_stat_value_stays_on_token_and_nowrap() -> None:
+    """US-402 regression contract: the ST-06 stat value must keep the TOKEN
+    size (--type-stat) + nowrap. VERIFIED 2026-08-15: any deviation (smaller
+    font, wider float, transform scale) perturbs the ST-06 page at its 261mm
+    sheet edge and Chromium's mixed-size pagination ships a 22-page deck from
+    a 20-page original. The stat fit belongs to the preprocessor copy-fit,
+    NOT this rule. The global shout tier stays --type-stat-xl."""
     from patterns import st_06
 
     page = _load_fixture_page("ST-06")
     frag = st_06.render(page, _ctx(APEX_FIXTURE))
-    html = frag.html
-    assert "--stat-chars" in html, "template must set --stat-chars from the value"
-    assert "c-stat-callout__value" in html
+    assert "c-stat-callout__value" in frag.html
     css = frag.css
-    assert "clamp(" in css, "value rule must be fluid (clamp), not a fixed tier"
+    assert "font-size: var(--type-stat)" in css
+    assert "white-space: nowrap" in css
+    assert "clamp(" not in css, "no fluid font-size on the ST-06 stat (pagination fragile)"
+    import re as _re
+    stat_block = _re.search(r"\.st-06 \.c-stat-callout__value\s*\{([^}]*)\}", css, _re.S)
+    assert stat_block, "missing scoped ST-06 stat rule"
+    assert "transform" not in stat_block.group(1), "no transform on the ST-06 stat (pagination fragile)"
     # the global shout contract stays untouched in components.css
     components = (CHASSIS_ROOT / "styles" / "components.css").read_text(encoding="utf-8")
     import re

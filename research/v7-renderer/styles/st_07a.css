@@ -729,7 +729,7 @@
    AI navy-STONE material. Grounds on --color-ink (panel-contrast rule); cream
    (--color-on-dark) numerals; teal lifts toward on-dark so it reads on navy. */
 .st-07a .csh-dash {
-  position: relative; flex: 0 1 auto; min-height: 0;
+  position: relative; flex: 1 1 auto; min-height: 0;
   display: flex; flex-direction: column;
   background-color: var(--color-ink);
   background-size: cover; background-position: center;
@@ -858,6 +858,18 @@
 }
 
 .st-07a .csh-quote { margin-top: var(--space-4); flex: none; }
+/* The A3 spread's quote sits INSIDE the full-height dark proof panel (US-403:
+   Richard's case-study proof rail owns the right side top-to-bottom; the quote
+   is the panel's closing authority statement). Margin-top:auto anchors it to
+   the panel bottom while the hero + KPIs fill above. */
+.st-07a .csh-dash .csh-quote--on-dark { margin-top: auto; padding-top: var(--space-4); }
+.st-07a .csh-dash .csh-quote--on-dark .csh-quote-text {
+  color: color-mix(in srgb, var(--color-on-dark) 92%, transparent);
+}
+.st-07a .csh-dash .csh-quote--on-dark .csh-quote-text::before { color: var(--color-accent); }
+.st-07a .csh-dash .csh-quote--on-dark .csh-quote-attr {
+  color: color-mix(in srgb, var(--color-on-dark) 62%, transparent);
+}
 
 .st-07a .csh-quote-text {
   font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
