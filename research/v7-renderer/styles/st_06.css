@@ -1,0 +1,169 @@
+/* ST-06 — mechanism / how-it-works page LAYOUT (Plan B rebuild, P-8).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the heading sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif). The device LOOK (step_card / horizontal_flow / bar_chart /
+ * stat_callout_card / dark_recap_panel) is owned by the `c-` classes in
+ * styles/components.css (already in the shared head); this sheet only positions
+ * them and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-06` (the assembler's per-page section class)
+ * so it cannot leak. The mechanism page is the RICHEST interior (a heading +
+ * intro + a 6-stage flow strip + 6 detailed step cards + a dark recap), so the
+ * step cards run in a fixed two-column inline-block grid and the flow boxes sit
+ * inline (flexbox is weak for full-page columns/rows in WeasyPrint 68.1) with
+ * tight line-heights + --space-* rhythm so the whole page fits the 261mm content
+ * box on one physical sheet (the deck stays 20 pages).
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the step
+ * numerals, the flow numbers + arrows, the bar fills, the stat figure, the recap
+ * heading) — never on body text.
+ */
+
+/* ---- header: eyebrow → serif display heading → intro row (lede + floated stat) */
+.st-06 .mx-header {
+  margin: 0 0 var(--space-1) 0;
+}
+.st-06 .mx-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display-xl);     /* section-opener focal headline (DNA §C1) */
+  font-weight: 700;
+  line-height: 0.99;                     /* tight display leading so the bigger
+                                            headline keeps this dense page on one
+                                            physical sheet */
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+/* the intro row floats the result stat card to the right of the lede prose so
+   the lede wraps around it (the page-local float — the card is a discrete plate
+   the body text hugs). The card width is fixed; the prose fills the remainder. */
+.st-06 .mx-intro-row { }
+.st-06 .mx-intro-stat {
+  float: right;
+  width: 42mm;
+  margin: 0 0 var(--space-2) var(--space-4);
+}
+.st-06 .mx-intro {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  line-height: 1.28;
+  color: var(--color-body);
+}
+.st-06 .mx-intro p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.st-06 .mx-intro p:last-child { margin-bottom: 0; }
+.st-06 .mx-intro strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- flow strip: the Schritt 1 → N overview. The c-eyebrow label sits above a
+   single row of connected boxes. Clear the float so the strip starts on its own
+   band, and let each flow box share the width evenly. ---- */
+.st-06 .mx-flow {
+  clear: both;
+  margin: 0 0 0 0;
+}
+.st-06 .mx-flow .c-eyebrow { margin-bottom: var(--space-1); }
+/* size the 6 connected boxes to share the content width: a narrow fixed width
+   each, centered vertically against the slim accent arrows. A hair of internal
+   right padding keeps a long single-word title (e.g. "Kommunikations") from
+   visually butting the next arrow; titles wrap within the box when needed. */
+.st-06 .mx-flow .c-hflow__step {
+  width: 23.5mm;
+  padding-right: var(--space-1);
+}
+.st-06 .mx-flow .c-hflow__arrow {
+  padding: 0 0.4mm;
+}
+
+/* ---- step cards: two-column inline-block grid (robust in WeasyPrint 68.1,
+   which flows them 2-up and wraps to new rows). Each cell carries one step_card;
+   row rhythm comes from the cell's bottom padding. font-size:0 on the grid kills
+   the inline-block whitespace gap; cells reset it. ---- */
+.st-06 .mx-steps {
+  font-size: 0;             /* collapse inter-cell whitespace */
+  margin: 0 0 0 0;
+}
+.st-06 .mx-step-cell {
+  display: inline-block;
+  width: 48.5%;
+  box-sizing: border-box;
+  vertical-align: top;
+  margin: 0 3% 1mm 0;
+  break-inside: avoid;             /* never split a step across pages */
+}
+.st-06 .mx-step-cell:nth-child(2n) { margin-right: 0; }
+/* the boxed step cards stretch to equal height within a row would need a table;
+   inline-block keeps them content-height, which is fine here (the copy lengths
+   are close). Make the card fill its cell width. Tighten the card padding +
+   body leading in this dense 6-card grid (page-local override of the shared
+   component — keeps the component contract global) so the page fits one sheet. */
+/* Step cards in the apex-reference treatment (Richard's "Wie läuft die
+   Zusammenarbeit mit APEX" page): NOT a hard-outlined box — a clean accent-tinted
+   card with a thick accent left-rule, the number shown as a CYAN "SCHRITT N" PILL
+   stacked above a bold title + body. Scoped to .st-06 so the shared component
+   contract stays global. */
+.st-06 .mx-step-cell .c-step-card {
+  height: 100%;
+  flex-direction: column;          /* pill on top, then the title + body */
+  align-items: stretch;
+  padding: var(--space-3);
+  gap: var(--space-2);
+  border: 0;                        /* drop the generic muted outline */
+  background-color: var(--color-accent-tint);
+  border-left: 1mm solid var(--color-accent);
+  border-radius: 0 1.5mm 1.5mm 0;
+  /* subtle lift (Chromium) so the 6 cards read as plates, not flat tints */
+  box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 10%, transparent);
+}
+/* the number → a cyan "Schritt N" pill (the "Schritt" label is added here as a
+   report-type content word; brand-agnostic — no client/hex/font literal). */
+.st-06 .mx-step-cell .c-step-card__num {
+  align-self: flex-start;
+  min-width: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--color-on-accent);
+  background-color: var(--color-accent);
+  border-radius: 999px;
+  padding: 1.1mm 3.2mm;
+  margin: 0 0 var(--space-1) 0;
+}
+.st-06 .mx-step-cell .c-step-card__num::before { content: "Schritt "; }
+.st-06 .mx-step-cell .c-step-card__body { line-height: 1.25; }
+
+/* ---- optional bar chart: the eyebrow label above the token-drawn bars ---- */
+.st-06 .mx-chart {
+  margin: 0 0 var(--space-3) 0;
+}
+.st-06 .mx-chart .c-eyebrow { margin-bottom: var(--space-2); }
+/* data-driven chart SVG(s): let the brand-styled SVG scale to the column width;
+   its own viewBox carries the aspect ratio. */
+.st-06 .mx-chart-svg { width: 100%; margin: 0 0 var(--space-2) 0; }
+.st-06 .mx-chart-svg svg { display: block; width: 100%; height: auto; }
+
+/* ---- dark recap: the solid --color-ink "Das Ergebnis" payoff, full width ---- */
+.st-06 .mx-recap {
+  margin: var(--space-1) 0 0 0;
+}
+.st-06 .mx-recap .c-dark-recap { break-inside: avoid; padding: var(--space-3) var(--space-5); }
+
+/* ST-06's stat callout sits in a NARROW right column where the global stat value
+   (--type-stat-xl 60pt) clips a multi-char value ("30-50%") at the box edge AND, if
+   it wraps, grows the column and spills the page. The value must FIT its actual
+   box (US-402): the fixed 40pt + nowrap still overflowed 111px content width
+   (scrollWidth was 176px). A fluid size scales with the glyph count so ANY
+   verbatim value fits on one line — calibrated on pixels: 6 chars at 24.6pt
+   ≈ 111px measured (~0.562em advance). The global shout tier (components.css)
+   is unchanged. */
+.st-06 .c-stat-callout__value {
+  font-size: clamp(14pt, calc(42pt - 2.9pt * var(--stat-chars, 6)), 40pt);
+  white-space: nowrap;
+  line-height: 1;
+}

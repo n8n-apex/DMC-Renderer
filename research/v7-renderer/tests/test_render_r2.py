@@ -2129,3 +2129,26 @@ def test_macro_phone_mockup_shows_real_post_and_never_fabricates() -> None:
     # macro carries NO client/colour/font literal (brand-agnostic by construction)
     macro = (CHASSIS_ROOT / "components" / "phone_mockup.jinja").read_text(encoding="utf-8")
     assert not _HEX.search(macro) and not _FONT_LIT.search(macro)
+
+
+def test_st06_stat_value_fits_via_fluid_size() -> None:
+    """US-402: the ST-06 stat value ("30-50%") must FIT its narrow box — the
+    scoped rule uses a fluid clamp sized by the value's char count, not a fixed
+    40pt that overflowed (scrollWidth 176px vs 111px box). The template must
+    emit --stat-chars so the fluid math has the glyph count."""
+    from patterns import st_06
+
+    page = _load_fixture_page("ST-06")
+    frag = st_06.render(page, _ctx(APEX_FIXTURE))
+    html = frag.html
+    assert "--stat-chars" in html, "template must set --stat-chars from the value"
+    assert "c-stat-callout__value" in html
+    css = frag.css
+    assert "clamp(" in css, "value rule must be fluid (clamp), not a fixed tier"
+    # the global shout contract stays untouched in components.css
+    components = (CHASSIS_ROOT / "styles" / "components.css").read_text(encoding="utf-8")
+    import re
+
+    block = re.search(r"\.c-stat-callout__value\s*\{([^}]*)\}", components, re.S)
+    assert block and "font-size" in block.group(1)
+    assert "clamp(" not in block.group(1), "global shout tier must stay --type-stat-xl"

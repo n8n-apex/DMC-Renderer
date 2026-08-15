@@ -1,0 +1,80 @@
+{# ST-06 — mechanism / how-it-works page (Plan B rebuild, grammar P-8). DATA
+   comes pre-shaped from patterns/st_06.py; this template only COMPOSES the macro
+   library on the token-themed .st-06 layout (styles/st_06.css). Fragment only —
+   no <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a serif display heading + intro lede (with an OPTIONAL floated
+   stat-callout card pulled from the result metric); a horizontal flow diagram of
+   the stages (horizontal_flow — Schritt 1 → N, the at-a-glance overview); a
+   two-column grid of numbered step cards (step_card — the mechanism stages in
+   detail); an OPTIONAL token-drawn bar chart of a before/after metric; and a
+   solid dark "Das Ergebnis" recap panel (dark_recap_panel). The core (flow +
+   step cards + dark recap) is always present; the bar chart + stat callout are
+   added only when the data supplies them. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'step_card.jinja' import step_card %}
+{% from 'horizontal_flow.jinja' import horizontal_flow %}
+{% from 'bar_chart.jinja' import bar_chart %}
+{% from 'stat_callout_card.jinja' import stat_callout_card %}
+{% from 'dark_recap_panel.jinja' import dark_recap_panel %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+<div class="mx-header">
+  {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+  {% if title %}<h1 class="mx-headline">{{ title }}</h1>{% endif %}
+  {% if intro_html or stat_callout %}
+  <div class="mx-intro-row">
+    {% if stat_callout %}
+    <div class="mx-intro-stat" style="--stat-chars: {{ (stat_callout.value | string | length) if stat_callout.value is not none else 6 }}">{{ stat_callout_card(stat_callout.value, stat_callout.label) }}</div>
+    {% endif %}
+    {% if intro_html %}<div class="mx-intro">{{ intro_html }}</div>{% endif %}
+  </div>
+  {% endif %}
+</div>
+
+{% if flow_steps and steps|length < 5 %}
+<div class="mx-flow">
+  {% if flow_label %}{{ eyebrow(flow_label) }}{% endif %}
+  {{ horizontal_flow(flow_steps) }}
+</div>
+{% elif viz %}
+{# data-viz PRESET band (verbatim grounded step titles from the curation step) —
+   a PROCESS preset (step_cascade) gives the at-a-glance overview of the stages
+   when there are too many (>=5) for the compact horizontal flow strip. The same
+   mechanism stages, visualized as an ordered spine. Absent → nothing. #}
+<div class="mx-flow mx-flow--viz">
+  {% if flow_label %}{{ eyebrow(flow_label) }}{% endif %}
+  {{ render_viz(viz) }}
+</div>
+{% endif %}
+
+{% if steps %}
+<div class="mx-steps">
+  {% for s in steps %}
+  <div class="mx-step-cell">{{ step_card(s.n, s.title, s.body_html) }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if chart_svgs %}
+{# Data-driven brand-styled chart SVG(s) from the pre-processor (page["charts"]
+   specs → appended chart components). When a real chart is present it REPLACES
+   the ad-hoc token bar below — same chart region, richer device. #}
+<div class="mx-chart mx-chart--svg">
+  {% if chart_label %}{{ eyebrow(chart_label) }}{% endif %}
+  {% for svg in chart_svgs %}
+  <div class="mx-chart-svg">{{ svg | safe }}</div>
+  {% endfor %}
+</div>
+{% elif bars %}
+<div class="mx-chart">
+  {% if chart_label %}{{ eyebrow(chart_label) }}{% endif %}
+  {{ bar_chart(bars) }}
+</div>
+{% endif %}
+
+{% if recap_html %}
+<div class="mx-recap">
+  {{ dark_recap_panel(recap_label, recap_html) }}
+</div>
+{% endif %}
