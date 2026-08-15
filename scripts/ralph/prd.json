@@ -295,8 +295,8 @@
       "id": "US-407",
       "description": "Conesso p14 controlled experiment: reference-conditioned art + semantic review + rendered page inspection",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-15: reference-conditioned edit; 3 iterations hardened the prompt (text leak -> charts leak -> abstract band); ARG 3/COMP 2"
     },
     {
       "id": "US-408",
