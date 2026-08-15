@@ -281,8 +281,8 @@
       "id": "US-405",
       "description": "fal_generate_image_edit() image-to-image via /edit + image_urls; cache key includes input bytes; NO t2i in path",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-15: fal_generate_image_edit posts image_urls to /edit; cache key includes input bytes"
     },
     {
       "id": "US-406",
