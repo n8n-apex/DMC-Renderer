@@ -59,13 +59,20 @@ def _job_for_case_study(data: dict) -> str:
 
 
 _JOB_DEVICE_LANGUAGE: dict[str, str] = {
-    "transformation": "a before/after transformation: the old manual state on one side, "
-                      "the automated state on the other, connected by a clear motion arc",
-    "completion": "completion: distinct working parts converging into one unified, "
-                  "complete system",
-    "scale": "scale: an expanding system that grows without adding more of the old "
-             "manual work — more output from the same core",
-    "system": "a coherent system: interconnected parts working as one organized whole",
+    # IMAGE-TO-IMAGE instructions (binding, US-407): what grammar to PRESERVE
+    # from the selected reference and what concrete subject to PLACE. Never
+    # "evokes figures" abstractions — the edit model transforms the reference
+    # raster, it does not imagine a scene from prose.
+    "transformation": "preserve the reference spread's proof-panel grammar and "
+                      "stat rhythm; place a calm abstract visualization of the "
+                      "workflow transformation: distinct lanes on one side "
+                      "converging into one organized operating system on the other",
+    "completion": "preserve the reference's proof grammar; place distinct working "
+                  "parts converging into one unified complete system",
+    "scale": "preserve the reference's authority grammar; place an expanding "
+             "system that grows without adding more manual work",
+    "system": "preserve the reference's editorial grammar; place interconnected "
+              "parts working as one organized whole",
 }
 
 
@@ -119,10 +126,19 @@ def compose_generator_brief(st_type: str, data: dict, *, brand_primary: str = ""
 
     if st_type == "ST-07A":
         subject = _subject_for_case_study(data)
-        figures = _evidence_figures(data)
-        concept = f"Abstract editorial visualization {subject}: {concept}"
-        if figures:
-            concept += f" The scene evokes the figures {', '.join(figures)} without writing them as text."
+        # IMAGE-TO-IMAGE instruction (binding, US-407): the reference raster's
+        # TONE and PALETTE are preserved; its DATA PANELS are deliberately NOT
+        # mirrored (panels invite chart-like cells — the experiment leaked
+        # bar-chart shapes twice). The art is ONE flowing abstract band.
+        concept = (
+            f"Using the input reference image ONLY for its dark-navy tone, "
+            f"amber accent light, and editorial refinement, create ONE purely "
+            f"ABSTRACT flowing contextual band {subject}: {concept}. "
+            f"Do NOT copy the reference's panel grid or columns. STRICTLY "
+            f"ABSTRACT: no text, no words, no numbers, no labels, no icons, "
+            f"no charts, no bars, no axes, no graphs, no UI, no panels, "
+            f"no faces."
+        )
     elif st_type == "ST-31":
         subject = str(data.get("phrase") or "a moment of calm in a demanding working world")
         concept = f"An atmospheric editorial full-bleed visual {subject}"

@@ -771,7 +771,10 @@ def test_11_case_scene_spec_carries_director_brief_prompt(tmp_path: Path) -> Non
     scene = next(a for a in plan.assets if a.slot_id == "case_scene")
     prompt = scene.prompt or ""
     assert "Martina Ammon" in prompt, "prompt must carry the page's kunde verbatim"
-    assert "24 Std. → Minuten" in prompt, "prompt must reference the real result figure"
+    assert "ABSTRACT" in prompt, "prompt must demand purely abstract art"
+    assert "no text" in prompt and "no numbers" in prompt, (
+        "prompt must prohibit text/numbers (US-407: labels leaked in the experiment)"
+    )
     assert "transformation" in prompt, "prompt must carry the visual job"
     assert "photorealistic people" in (scene.negative_prompt or ""), "Director negative attached"
 

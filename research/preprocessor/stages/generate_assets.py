@@ -491,6 +491,17 @@ async def fal_generate_image_edit(
         "num_images": 1,
         "resolution": resolution,
         "output_format": "png",
+        # HARD constraint for image-to-image (US-407): the edit endpoint has no
+        # negative-prompt field; the no-text/no-numbers/no-UI rule goes in the
+        # system prompt so the model cannot add labels or KPIs to the art.
+        "system_prompt": (
+            "STRICT editorial rule: produce a SINGLE abstract context band ONLY. "
+            "NEVER render text, words, letters, numbers, percentages, labels, "
+            "icons, charts, bar charts, axes, graphs, data visualization, UI, "
+            "dashboards, panels with cells, faces, or people. "
+            "Composition must be one calm abstract flow with no discrete "
+            "chart-like elements."
+        ),
     }
     headers = {"Authorization": f"Key {api_key}",
                "Content-Type": "application/json"}

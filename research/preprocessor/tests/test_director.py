@@ -56,15 +56,18 @@ def test_generator_brief_subject_is_verbatim_page_data() -> None:
     never an invented subject."""
     brief = compose_generator_brief("ST-07A", _case_data())
     assert "Martina Ammon" in brief["subject"]
-    assert "24 Std. → Minuten" in brief["concept"]
+    assert "Martina Ammon" in brief["concept"]
     assert "transformation" in brief["visual_job"]
 
 
 def test_generator_brief_never_fabricates_a_figure() -> None:
-    """The concept may REFERENCE the figures but never writes numbers as text
-    and never invents a figure the page does not carry."""
+    """US-407 binding: the concept is an IMAGE-TO-IMAGE instruction (preserve
+    the reference grammar, place the subject) and NEVER names figures — data
+    is renderer-native, and naming numbers in the art invites hallucinated
+    text/diagrams. The negative forbids numbers/text/faces."""
     brief = compose_generator_brief("ST-07A", _case_data())
-    assert "without writing them as text" in brief["concept"]
+    assert "input reference image" in brief["concept"], brief["concept"]
+    assert "figures" not in brief["concept"], "data must never appear in the art"
     assert "numbers" in brief["negative"] and "text" in brief["negative"]
 
 
