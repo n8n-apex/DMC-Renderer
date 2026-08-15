@@ -288,8 +288,8 @@
       "id": "US-406",
       "description": "Director brief wired through generate path; provenance persisted (exact prompt, ref sha256, endpoint, seed, output sha256)",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-15: _director_persist is a coroutine (was silently swallowed); full provenance lands in Supabase"
     },
     {
       "id": "US-407",
