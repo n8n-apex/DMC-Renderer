@@ -248,6 +248,62 @@
       "priority": "high",
       "passes": true,
       "notes": "DONE 2026-08-14"
+    },
+    {
+      "id": "US-401",
+      "description": "FAZIT flex-shrink clipping fix + regression test (AC: radial fully visible)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE: fz-viz flex:0 0 auto; island 85->236px, clip=False"
+    },
+    {
+      "id": "US-402",
+      "description": "ST-06 30-50% stat fits its box at computed width + regression test",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE (corrected): stat stays on token+nowrap; ANY deviation breaks pagination (22pp) - fit moved to copy-fit; pagination-safe guard added"
+    },
+    {
+      "id": "US-403",
+      "description": "region_plan consumption: A3 right proof = full-height reference-backed panel + native devices; kill dashboard/quote void",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE: dash flex:1 full-height proof rail + quote inside; verified 20pp with converge"
+    },
+    {
+      "id": "US-404",
+      "description": "reference anatomy re-verified/classified deterministically + persisted (no stale atlas metadata)",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-405",
+      "description": "fal_generate_image_edit() image-to-image via /edit + image_urls; cache key includes input bytes; NO t2i in path",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-406",
+      "description": "Director brief wired through generate path; provenance persisted (exact prompt, ref sha256, endpoint, seed, output sha256)",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-407",
+      "description": "Conesso p14 controlled experiment: reference-conditioned art + semantic review + rendered page inspection",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-408",
+      "description": "regenerate remaining 4 case studies + full deck re-render + all suites + acceptance checklist",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
     }
   ]
 }
