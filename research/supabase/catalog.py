@@ -432,3 +432,115 @@ async def record_render_run(dsn: str, *, client_slug: str, report_id: str,
         return run_id
     finally:
         await conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Anatomy verification (US-404): the atlas role/mechanism/devices metadata for
+# reference faces is STALE (built from an older deck layout — e.g. buchagentur
+# p5/p6 are case-study pages but the atlas calls them false_beliefs). The
+# contract (§2.3 of the Director spec) forbids stale anatomy from driving
+# generation. This deterministically re-derives the anatomy from the face's
+# ACTUAL page text (extracted from the source PDF at build time) and persists
+# the corrected values.
+# ---------------------------------------------------------------------------
+
+_MECHANISM_HINTS: tuple[tuple[tuple[str, ...], str], ...] = (
+    (("fallstudie", "fallstud", "case study", "ergebnis", "einsparung",
+      "einsparungen", "effizienz", "reduziert", "automatisier"), "case_study_proof"),
+    (("irrglaube", "mythos", "mythen", "lüge", "luege", "falsch", "glauben"), "misconception_sequence"),
+    (("schritt", "ablauf", "prozess", "phase", "workflow"), "process_flow"),
+    (("theorie", "prinzip", "warum", "deshalb", "grund"), "theory_principle"),
+    (("zusammenfassung", "fazit", "kernaussage", "takeaway"), "summary_statement"),
+    (("kontakt", "erstgespräch", "erstgespraech", "buche", "termin"), "cta_closing"),
+    (("über uns", "ueber uns", "agentur", "team", "gründer", "gruender"), "about_team"),
+    (("ausblick", "markt", "trend", "zukunft", "chance"), "outlook_trend"),
+)
+_DEVICE_HINTS: tuple[tuple[tuple[str, ...], str], ...] = (
+    (("%", "prozent", "quote"), "percentage_ring"),
+    (("€", "euro", "kosten", "einsparung"), "money_stat"),
+    (("vorher", "nachher", "von ", " auf ", "statt"), "before_after_transform"),
+    (("schritt", "schritte", "1.", "2.", "3.", "4."), "numbered_steps"),
+    (("zitat", "quote", "„", "“", '"'), "client_quote"),
+    (("foto", "bild", "portrait", "team"), "photo_evidence"),
+    (("logo", "partner", "referenz"), "logo_wall"),
+)
+
+
+def verify_face_anatomy(page_text: str) -> dict:
+    """Deterministic anatomy from the face's ACTUAL page text.
+
+    Returns {"role", "mechanism", "devices", "argument"}. The argument is the
+    first ~120 chars of meaningful text (title-like). Never invents content:
+    everything derives from what the page says.
+    """
+    text = page_text or ""
+    lowered = text.lower()
+
+    mechanism = "editorial"
+    for keywords, label in _MECHANISM_HINTS:
+        if any(k in lowered for k in keywords):
+            mechanism = label
+            break
+
+    devices = [
+        label for keywords, label in _DEVICE_HINTS
+        if any(k in lowered for k in keywords)
+    ]
+    # dedupe preserving order
+    devices = list(dict.fromkeys(devices))
+
+    # argument: the first non-empty line (usually the headline) trimmed
+    argument = ""
+    for line in (text.splitlines() or []):
+        line = line.strip()
+        if len(line) >= 8:
+            argument = line[:120]
+            break
+
+    role = "case_study" if mechanism == "case_study_proof" else (
+        "false_beliefs" if mechanism == "misconception_sequence" else "editorial"
+    )
+    return {"role": role, "mechanism": mechanism, "devices": ",".join(devices),
+            "argument": argument}
+
+
+async def verify_and_persist_anatomy(dsn: str, *, text_provider=None, verbose=False) -> dict:
+    """Re-derive anatomy for every catalog face from its page text and persist.
+
+    `text_provider(deck, page_no) -> str` extracts the page text from the
+    source PDF (injected so this stays testable offline). Faces whose text
+    cannot be extracted keep their current metadata (honest — never a
+    fabricated anatomy).
+    """
+    conn = await asyncpg.connect(dsn, timeout=30, statement_cache_size=0)
+    try:
+        faces = await conn.fetch("""
+            SELECT f.id, r.slug AS deck, f.page_no
+            FROM ref_faces f JOIN ref_reports r ON r.id=f.report_id
+            ORDER BY r.slug, f.page_no
+        """)
+        updated = 0
+        for face in faces:
+            if text_provider is None:
+                continue
+            text = text_provider(str(face["deck"]), int(face["page_no"]))
+            if not text or len(text.strip()) < 20:
+                continue
+            anatomy = verify_face_anatomy(text)
+            await conn.execute(
+                """
+                UPDATE ref_faces
+                SET role=$2, mechanism=$3, devices=$4, argument=$5,
+                    metadata = jsonb_set(
+                        COALESCE(metadata, '{}'), '{anatomy_verified}', 'true'::jsonb)
+                WHERE id=$1
+                """,
+                face["id"], anatomy["role"], anatomy["mechanism"],
+                anatomy["devices"], anatomy["argument"],
+            )
+            updated += 1
+        if verbose:
+            print(f"verified anatomy for {updated} faces")
+        return {"verified": updated}
+    finally:
+        await conn.close()
