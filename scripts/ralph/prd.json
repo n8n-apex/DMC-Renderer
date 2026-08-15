@@ -274,8 +274,8 @@
       "id": "US-404",
       "description": "reference anatomy re-verified/classified deterministically + persisted (no stale atlas metadata)",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-15: verify_face_anatomy deterministic; 64 faces re-verified from PDF text; buchagentur p5/p6 corrected false_beliefs->case_study_proof"
     },
     {
       "id": "US-405",
