@@ -226,6 +226,14 @@ def _write_page_identity(page_dict: dict, pp) -> None:
             page_dict[_key] = _val
 
 
+def _write_director_brief(page_dict: dict, brief: dict) -> None:
+    """US-606: persist the Director page brief on the package page so the
+    renderer and QA can consume it (the contract object, not just Supabase
+    provenance). Written only when a brief is supplied."""
+    if brief:
+        page_dict["director_brief"] = brief
+
+
 def _build_page_slot_dicts(
     page_slots: dict[int, list], page_slot: int, client_dir: Path, output_dir: Path,
 ) -> list[dict]:

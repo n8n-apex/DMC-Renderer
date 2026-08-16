@@ -306,6 +306,41 @@ async def main(use_fal: bool = False) -> int:
     from fixtures.apex.viz_curation import apply_apex_viz
     apply_apex_viz(pkg)
 
+    # ---- US-606 Director page briefs (the contract object, persisted) ----
+    # ONE brief per physical page: client/report identity + the selected
+    # reference (from the legacy index when no Supabase DSN) + the visual job
+    # + verbatim must_show + deterministic page_arc/region_plan/devices. The
+    # renderer + QA consume these from the package.
+    from stages.director import compose_page_brief
+    from stages.assemble_package import _write_director_brief
+
+    _dsn = None
+    try:
+        from settings import Settings as _S
+        _cfg = _S()
+        _dsn = _cfg.supabase_pooler_url or None
+    except Exception:
+        _dsn = None
+    for page in pkg["pages"]:
+        _st = str(page.get("st_type") or "")
+        _data = page.get("data") or {}
+        _ref = None
+        try:
+            from stages.director import _legacy_select
+            _cands = _legacy_select(_st, 1)
+            _ref = _cands[0] if _cands else None
+        except Exception:
+            _ref = None
+        _brief = compose_page_brief(
+            st_type=_st, data=_data,
+            client_slug="apex", report_id="APEX-R1",
+            page_key=str(page.get("page_id") or f"slot.{page.get('slot')}"),
+            section_id=str(page.get("section_id") or f"section.{page.get('slot')}"),
+            reference=_ref,
+            continuation_role=str(page.get("continuation_role") or ""),
+        )
+        _write_director_brief(page, _brief)
+
     # ---- A3 case-study supporting SCENES (US-303) ----
     # The fal-generated brand-toned abstract scenes (assets/<n>_cs<n>_scene.png)
     # ride the package as a `case_scene` slot on each A3 spread page — the

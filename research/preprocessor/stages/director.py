@@ -286,3 +286,146 @@ async def select_diversified_references(dsn: str | None, *, st_type: str,
         )
         candidates_by_key[page_key] = refs
     return allocate_references(candidates_by_key)
+
+
+# ---------------------------------------------------------------------------
+# US-606 — the REAL page brief (the Director contract object)
+# ---------------------------------------------------------------------------
+
+# Deterministic page-arc roles per st_type (the section's composition sequence).
+_PAGE_ARC_BY_ST: dict[str, list[str]] = {
+    "ST-07A": ["intro", "mechanism", "result"],
+    "ST-06": ["intro", "mechanism", "result"],
+    "ST-22": ["intro", "process", "result"],
+    "ST-FAZIT": ["close", "result"],
+    "ST-02": ["context", "evidence"],
+    "ST-09": ["problem", "reassurance"],
+    "ST-14": ["beliefs", "synthesis"],
+    "ST-05": ["identity", "proof"],
+    "ST-07B": ["essay", "insight"],
+}
+
+# Deterministic region roles per st_type (layout regions the renderer can
+# consume; bounds are fractions of the sheet — normalized, brand-agnostic).
+_REGION_PLAN_BY_ST: dict[str, list[dict]] = {
+    "ST-07A": [
+        {"region": "left_story", "role": "narrative", "bounds": [0.0, 0.0, 0.56, 1.0]},
+        {"region": "right_proof", "role": "full_height_data_panel", "bounds": [0.58, 0.0, 1.0, 1.0]},
+    ],
+    "ST-06": [
+        {"region": "header", "role": "intro", "bounds": [0.0, 0.0, 1.0, 0.22]},
+        {"region": "mechanism", "role": "mechanism", "bounds": [0.0, 0.24, 1.0, 0.55]},
+        {"region": "result", "role": "result", "bounds": [0.0, 0.77, 1.0, 1.0]},
+    ],
+    "ST-22": [
+        {"region": "banner", "role": "intro", "bounds": [0.0, 0.0, 1.0, 0.18]},
+        {"region": "process", "role": "process", "bounds": [0.0, 0.20, 1.0, 0.70]},
+        {"region": "cta", "role": "result", "bounds": [0.0, 0.72, 1.0, 1.0]},
+    ],
+    "ST-FAZIT": [
+        {"region": "close", "role": "close", "bounds": [0.0, 0.0, 1.0, 0.70]},
+        {"region": "cta", "role": "cta", "bounds": [0.0, 0.72, 1.0, 1.0]},
+    ],
+}
+
+# Renderer-native devices the page may host (the renderer owns ALL data
+# relationships; fal never draws numbers).
+_RENDERER_DEVICES_BY_ST: dict[str, list[str]] = {
+    "ST-07A": ["transform_arrow", "grouped_bars", "stat_stack", "completion_ring"],
+    "ST-06": ["step_cascade", "stat_strip", "stat_callout", "bar_chart"],
+    "ST-22": ["horizontal_flow", "timeline", "stat_strip"],
+    "ST-FAZIT": ["radial_cluster", "mega_numeral", "url_band", "signoff"],
+    "ST-02": ["radial_cluster", "stat_strip"],
+    "ST-09": ["mega_numeral", "stat_strip", "numbered_block"],
+    "ST-14": ["concept_diagram", "stat_strip", "numbered_block"],
+    "ST-05": ["stat_strip", "testimonial_cards", "logo_wall"],
+    "ST-07B": ["key_insight", "mega_numeral"],
+}
+
+
+def must_show_figures(st_type: str, data: dict, max_figures: int = 3) -> list[str]:
+    """The VERBATIM figures the page's visual must show (never invented).
+
+    Reads the page's own structured data (metrics values, diagram figures,
+    stats). Every returned figure appears verbatim in the page data.
+    """
+    figs: list[str] = []
+    for m in data.get("ergebnis_metrics") or []:
+        v = str(m.get("value", "") if isinstance(m, dict) else m)
+        if v and v not in figs:
+            figs.append(v)
+        if len(figs) >= max_figures:
+            return figs
+    stats = data.get("stats") or data.get("ergebnis_stats") or []
+    for s in stats:
+        v = str(s.get("value", "") if isinstance(s, dict) else s)
+        if v and v not in figs:
+            figs.append(v)
+        if len(figs) >= max_figures:
+            return figs
+    return figs
+
+
+def _must_not_imply(st_type: str) -> list[str]:
+    """What the page's visual must NOT imply (deterministic, brand-agnostic)."""
+    return ["new metric", "fake interface", "real customer photograph", "price"]
+
+
+def compose_page_brief(
+    *,
+    st_type: str,
+    data: dict,
+    client_slug: str,
+    report_id: str,
+    page_key: str,
+    section_id: str,
+    reference: dict | None = None,
+    continuation_role: str = "",
+) -> dict:
+    """The ONE Director page brief per physical page (US-606, contract §3).
+
+    Deterministic + no-fabrication: must_show is VERBATIM page data;
+    page_arc/region_plan/renderer_devices come from the st_type tables; the
+    selected reference (when provided) is recorded with its identity.
+    """
+    job = compose_visual_job(st_type, data)
+    arc_roles = _PAGE_ARC_BY_ST.get(st_type, ["intro", "result"])
+    regions = _REGION_PLAN_BY_ST.get(st_type, [
+        {"region": "main", "role": "main", "bounds": [0.0, 0.0, 1.0, 1.0]},
+    ])
+    if continuation_role:
+        # a continuation page's arc/regions narrow to its own role
+        arc_roles = [r for r in arc_roles if r == continuation_role] or [continuation_role]
+        regions = [r for r in regions if r["role"] == continuation_role] or regions
+
+    brief = {
+        "client_slug": client_slug,
+        "report_id": report_id,
+        "page_key": page_key,
+        "section_id": section_id,
+        "st_type": st_type,
+        "selected_reference": (
+            {
+                "face_id": reference.get("face_id"),
+                "report": reference.get("report"),
+                "page_no": reference.get("page_no"),
+                "raster_uri": reference.get("raster_uri"),
+                "sha256": reference.get("sha256"),
+                "anatomy": {
+                    "regions": [],
+                    "devices": str(reference.get("devices") or "").split(","),
+                    "mechanism": reference.get("mechanism"),
+                    "density": reference.get("density"),
+                },
+            }
+            if reference else None
+        ),
+        "rationale": compose_rationale(st_type, reference, job),
+        "visual_job": job,
+        "must_show": must_show_figures(st_type, data),
+        "must_not_imply": _must_not_imply(st_type),
+        "page_arc": [{"page": i + 1, "role": r} for i, r in enumerate(arc_roles)],
+        "region_plan": regions,
+        "renderer_devices": _RENDERER_DEVICES_BY_ST.get(st_type, []),
+    }
+    return brief
