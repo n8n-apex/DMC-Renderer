@@ -141,8 +141,10 @@
    resolve bottom:0 to the page bottom (verified WeasyPrint 68.1 behaviour).
    261mm = 297 - 16(top) - 20(bottom) margins, matching the shared .page box. */
 .st-fazit .fz-fill-root {
+  /* US-510: the root no longer forces a definite 261mm with an absolute
+     band — it is a natural container (may exceed one sheet; multi-page OK). */
   position: relative;
-  height: 261mm;
+  min-height: 261mm;
 }
 
 /* the upper flow: header → body → thesis → big-number cost, DISTRIBUTED across
@@ -150,16 +152,14 @@
    bottom padding so the flow never runs under it). space-between spreads the
    blocks so the upper region is filled rather than top-clustered. */
 .st-fazit .fz-fill-flow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding-bottom: 62mm;       /* reserve the bottom strip for the dark closing strip (54mm band + gap) */
-  box-sizing: border-box;
+  /* US-510 (QA gate caught the p18 overlap): the CTA band is now a NORMAL
+     FLOW block after the cost — no absolute positioning, so overlap is
+     structurally impossible. The flow is a natural column; the page may span
+     a second sheet when the content is tall (multi-page is allowed — the
+     user's directive: never cram content to avoid a spill). */
+  position: static;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 /* the header band keeps the solid-primary anchor but no bottom margin (the flex
@@ -191,7 +191,9 @@
    authority): a small uppercase label, a HUGE accent figure, and the prose note
    below. Replaces the standard tinted cost plate with a number-led callout that
    carries vertical weight in the fill composition. */
-.st-fazit .fz-cost--fill { margin: 0; }
+.st-fazit .fz-cost--fill {
+  margin: 0;
+}
 .st-fazit .fz-bignum { margin: 0; }
 .st-fazit .fz-bignum-label {
   font-family: var(--font-head);
@@ -228,11 +230,10 @@
    booking CTA; a 48pt URL repeated here read as a crude billboard). Pinned
    bottom:0 against the definite-height root so it sits flush at the page bottom. */
 .st-fazit .fz-cta-band {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 54mm;
+  /* US-510: normal flow block (was absolute) — no overlap possible. */
+  position: static;
+  width: 100%;
+  margin-top: var(--space-4);
   background-color: var(--color-ink);
   padding: var(--space-4) var(--space-5);
   box-sizing: border-box;

@@ -99,32 +99,26 @@ def test_casestudy_hero_scene_absent_renders_no_empty_box() -> None:
     assert "csh-scene" not in html
 
 
-def test_casestudy_hero_right_proof_is_full_height_with_quote_inside() -> None:
-    """US-403: the A3 spread's right "Das Ergebnis" panel must be a FULL-HEIGHT
-    authority panel (Richard's proof-rail pattern), not an auto-height card
-    parked at the top leaving a void. The quote seats INSIDE the dark panel as
-    its closing statement; the panel owns the right column top-to-bottom."""
+def test_casestudy_hero_right_proof_is_short_box_quote_outside() -> None:
+    """REVERTED (user 2026-08-16): the A3 right "Das Ergebnis" panel is a SHORT
+    clean box (auto-height), NOT a full-height stretched panel — the stretched
+    version was an abomination against the negative space. The quote is a
+    sibling BELOW the box (cream), not inside it. The negative space is the
+    Director's infographic job."""
     page = _st07a_page()
     page["layout_variant"] = "casestudy_hero"
     html = st_07a.render(page, _apex_ctx()).html
     assert "csh-dash" in html
-    assert "csh-quote--on-dark" in html
-    # the quote must appear AFTER the KPI rail and BEFORE the dash's closing
-    # wrapper — i.e. inside the dark panel, not as a cream sibling below it.
-    kpi_pos = html.index("csh-dash-kpis")
-    quote_pos = html.index("csh-quote--on-dark")
-    # the dash is closed by the same </div> that ends .csh-right's child chain;
-    # find the LAST closing div after the quote (the dash's end)
-    tail = html[quote_pos:]
-    dash_end = html.rindex("</div>", quote_pos)
-    assert kpi_pos < quote_pos < dash_end, (
-        "order must be: KPIs -> quote -> dash close (quote inside the panel)"
-    )
+    assert "csh-quote" in html
+    assert "csh-quote--on-dark" not in html, "quote must NOT be inside the dark box"
+    # the quote comes AFTER the dash closes (sibling, not child)
+    dash_end = html.index("</div>", html.index("csh-dash-kpis") if "csh-dash-kpis" in html else html.index("csh-dash"))
+    quote_pos = html.index("csh-quote")
+    assert quote_pos > dash_end, "quote must be OUTSIDE (below) the dark box"
 
 
-def test_casestudy_hero_dash_is_full_height_via_css() -> None:
-    """The dash rule must be flex:1 (fill the right column height), not
-    auto-height (flex:0 1 auto) which left the lower-right void."""
+def test_casestudy_hero_dash_is_auto_height_via_css() -> None:
+    """The dash must be auto-height (flex:0 1 auto) — the short clean box."""
     page = _st07a_page()
     page["layout_variant"] = "casestudy_hero"
     css = st_07a.render(page, _apex_ctx()).css
@@ -132,8 +126,8 @@ def test_casestudy_hero_dash_is_full_height_via_css() -> None:
 
     block = re.search(r"\.st-07a \.csh-dash\s*\{([^}]*)\}", css, re.S)
     assert block, "missing .csh-dash rule"
-    assert "flex: 1 1 auto" in block.group(1), (
-        f".csh-dash must be flex:1 1 auto (full-height proof rail); got: {block.group(1)}"
+    assert "flex: 0 1 auto" in block.group(1), (
+        f".csh-dash must be auto-height (short box); got: {block.group(1)}"
     )
 
 
@@ -147,3 +141,36 @@ def test_metric_transform_german_sentence_case() -> None:
     ]
     html = st_07a.render(page, _apex_ctx()).html
     assert "Von bis zu 24 Stunden" in html, "transform 'from' must be sentence-cased"
+
+
+def test_casestudy_hero_fills_void_with_data_infographic_band() -> None:
+    """The Director's infographic placement: the A3 spread's negative space
+    (below the short dash) is filled with a DATA band — the real viz devices
+    + remaining metrics rendered as flat stat cells. NEVER decorative art;
+    always the page's actual figures."""
+    page = _st07a_page()
+    page["layout_variant"] = "casestudy_hero"
+    page["data"]["ergebnis_metrics"] = [
+        {"value": "von 30 auf 2 Minuten", "label": "Onboarding-Zeit"},
+        {"value": "von 60 auf 5 Minuten", "label": "Copywriting pro Asset"},
+        {"value": "3 kritische Workflows eliminiert", "label": "Operative Engpässe"},
+    ]
+    page["data"]["viz"] = [
+        {"preset": "transform_arrow",
+         "from": {"value": "30 Minuten", "label": "Onboarding vorher"},
+         "to": {"value": "2 Minuten", "label": "mit APEX"}},
+    ]
+    html = st_07a.render(page, _apex_ctx()).html
+    assert "csh-infographics" in html, "the infographic band must render"
+    assert "30 Minuten" in html and "2 Minuten" in html, "real transform data must show"
+    assert "3 kritische Workflows eliminiert" in html, "real metric must show"
+
+
+def test_casestudy_hero_infographics_absent_without_data() -> None:
+    """No metrics/viz -> no infographic band (never an empty filler)."""
+    page = _st07a_page()
+    page["layout_variant"] = "casestudy_hero"
+    page["data"]["ergebnis_metrics"] = []
+    page["data"]["viz"] = []
+    html = st_07a.render(page, _apex_ctx()).html
+    assert "csh-infographics" not in html

@@ -324,14 +324,44 @@
       </div>
       {% endif %}
 
-      {% if pullquote_text %}
-      <div class="csh-dash-rule" aria-hidden="true"></div>
-      <figure class="csh-quote csh-quote--on-dark">
-        <blockquote class="csh-quote-text">{{ pullquote_text }}</blockquote>
-        {% if pullquote_attribution %}<figcaption class="csh-quote-attr">{{ pullquote_attribution }}</figcaption>{% endif %}
-      </figure>
+    </div>
+
+    {% if pullquote_text %}
+    <figure class="csh-quote">
+      <blockquote class="csh-quote-text">{{ pullquote_text }}</blockquote>
+      {% if pullquote_attribution %}<figcaption class="csh-quote-attr">{{ pullquote_attribution }}</figcaption>{% endif %}
+    </figure>
+    {% endif %}
+
+    {# DIRECTOR INFographic placement (user 2026-08-16): the negative space below
+       the short dash is filled with a DATA infographic band — the real viz
+       devices + remaining metrics as flat stat cells. Renderer-native, real
+       figures, never decorative art. Renders only when there IS data. The viz
+       renders here ONLY when the dash's hero device isn't already showing it
+       (no double-render of the same figure). #}
+    {# the band renders the REMAINING data: when the viz has no dash hero it
+       renders here; the stat cells always show what the dash isn't already
+       carrying (_kpi_stats = stats minus the hero's figure). #}
+    {% if (viz and not _has_device) or _kpi_stats %}
+    <div class="csh-infographics">
+      {% if viz and viz[0] is mapping and not _has_device %}
+      <div class="csh-infographic-viz">
+        {% from 'viz.jinja' import viz as render_viz %}
+        {{ render_viz(viz) }}
+      </div>
+      {% endif %}
+      {% if _kpi_stats %}
+      <div class="csh-infographic-cells">
+        {% for s in _kpi_stats %}
+        <div class="csh-infographic-cell">
+          <span class="csh-infographic-value">{{ s.value }}</span>
+          {% if s.label %}<span class="csh-infographic-label">{{ s.label }}</span>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
       {% endif %}
     </div>
+    {% endif %}
   </div>
 </div>
 {% else %}
