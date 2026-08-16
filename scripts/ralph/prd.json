@@ -365,15 +365,15 @@
       "id": "US-509",
       "description": "re-render + full 20-page vision audit; iterate until core pages clear",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
     },
     {
       "id": "US-510",
       "description": "FINAL upgraded report PDF delivered",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
     }
   ]
 }
