@@ -169,12 +169,21 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         continuation_role if continuation_role in ("intro", "result") else ""
     )
 
+    # US-608: on the INTRO continuation the slice carries the mechanism body
+    # (no ergebnis) — bind the body's OWN real figure as the page's stat so
+    # the page displays a bound data point (the reviewer requires one). The
+    # figure is VERBATIM in the slice's copy; the stat is suppressed when no
+    # figure exists (graceful, no fabrication).
+    _intro_stat = None
+    if not ergebnis and continuation_role == "intro":
+        _intro_stat = _stat_callout(str(d.get("body") or ""))
+
     template = get_env().get_template("st_06.html.jinja")
     html = template.render(
         kicker=_KICKER,
         title=d.get("title", ""),
         intro_html=preprocess_body(d.get("body", "")),
-        stat_callout=_stat_callout(ergebnis),
+        stat_callout=_stat_callout(ergebnis) or _intro_stat,
         flow_label=_FLOW_LABEL if flow_steps else "",
         flow_steps=flow_steps,
         steps=steps,

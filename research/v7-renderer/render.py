@@ -13,6 +13,8 @@ Hard constraints preserved from the prior frame:
 
 from __future__ import annotations
 
+import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -211,18 +213,26 @@ def _gate_rows_for_stype(st_type: str) -> list[str]:
         # atmosphere (P13) + a bound figure ONLY when the body carries real
         # figures (a figure-free essay must never fabricate one).
         return ["P13", "P11*?figures"]
+    if st == "ST-CONT":
+        # US-608: CONTINUATION pages (a section's 2nd+ sheet) carry the
+        # section's SLICE (e.g. 3 step cards or the closing blocks). Their
+        # composition quality is owned by the DET gates (overlap CLEAN,
+        # boundary tests) — the vision bar is ONLY the honest figure check:
+        # the slice must display its bound figure where the data carries one.
+        # P12/P13/P14 all misread a deliberately clean second sheet.
+        return ["P11*?figures"]
     return ["P12", "P11*"]           # other editorial: density + bound figure
 
 
-def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
-    """US-510: the VISUAL QA gate — the taste check the render must pass.
+def _run_visual_qa_gate(out_dir: Path, *, package_dir: Path | None = None,
+                        threshold: int = 2) -> None:
+    """US-510/608: the VISUAL QA gate — the taste check the render must pass.
 
-    Every page PNG is scored by the vision reviewer against the rubric's
-    composition/device rows. Any page whose DEVICE-quality score is below
-    `threshold` fails the gate: the deck does NOT ship. This is the "why did
-    the Power BI abominations pass?" answer — they will not anymore. Requires
-    OPENROUTER_API_KEY (env or .env); without it the gate is skipped with a
-    LOUD warning (never a silent pass).
+    Every page PNG is scored by the vision reviewer AGAINST THE PAGE'S OWN
+    REFERENCE PAGES + Director brief (US-608: the audit found the gate passed
+    zero references and no metadata). Any page below the threshold fails the
+    gate: the deck does NOT ship. Requires OPENROUTER_API_KEY (env or .env);
+    without it the gate is skipped with a LOUD warning (never a silent pass).
     """
     import os
     import sys
@@ -259,48 +269,90 @@ def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
     # NUMERIC sort — the filenames are report-p1..p20; a plain sorted() puts
     # p10 before p2 (lexicographic), scrambling the PNG->st_type mapping.
     pngs = sorted(out_dir.glob("report-p*.png"), key=lambda f: int(f.stem.rsplit("p", 1)[1]))
-    # map rasterized PNG order -> page st_type from the package (the PDF pages
-    # are logical-order; PNGs are rasterized 1:1 with physical pages).
+    # map rasterized PNG order -> page st_type from the PACKAGE (US-608: the
+    # package dir is the source, never a hardcoded fixture path). The PDF pages
+    # are logical-order; PNGs are rasterized 1:1 with physical pages.
     st_types: list[str] = []
-    pkg_json = out_dir.parent / "fixtures" / "apex" / "resolved_package.json"
+    page_objs: list[dict] = []
+    pkg_json = (package_dir or out_dir) / "resolved_package.json"
+    axes: dict = {}
     if pkg_json.exists():
         import json as _json
         pkg = _json.loads(pkg_json.read_text(encoding="utf-8"))
+        axes = pkg.get("axes") or {}
         for pg in pkg.get("pages", []):
             st_types.append(str(pg.get("st_type", "")))
+            page_objs.append(pg)
+    # US-608: reference-grounded review — retrieve the page's reference pages
+    # (the same library the convergence loop uses) so the reviewer compares
+    # the output against Richard's grammar, not a zero-reference vacuum.
+    _ref_pngs_by_type: dict[str, list[str]] = {}
+    try:
+        from quality_loop.references import retrieve_references
+        _ql_root_path = Path(ql_root)
+        for _st in set(st_types):
+            _refs = retrieve_references(_st, axes, k=2)
+            _pngs = []
+            for _r in _refs:
+                _p = _r.get("png_path")
+                if _p:
+                    _cand = (_ql_root_path / _p)
+                    if _cand.exists():
+                        _pngs.append(str(_cand.resolve()))
+            _ref_pngs_by_type[_st] = _pngs
+    except Exception as exc:  # noqa: BLE001 -- reference retrieval must not
+        # break the gate; a missing reference is a loud warning, not a pass.
+        print(f"[qa] reference retrieval unavailable ({exc})")
+
     failed: list[str] = []
     for i, png in enumerate(pngs):
-        rows = _gate_rows_for_stype(st_types[i] if i < len(st_types) else "")
+        # US-608: continuation pages (a section's 2nd+ sheet) gate on their
+        # own intent rows (clean resolved composition), not Richard-packing.
+        _is_cont = bool(
+            (page_objs[i].get("continuation_index") if i < len(page_objs) else None)
+        )
+        rows = _gate_rows_for_stype("ST-CONT" if _is_cont
+                                    else (st_types[i] if i < len(st_types) else ""))
+        # US-608: normalize decorated IDs (P11*/P11*?figures) to the real
+        # rubric IDs the prompt/client know, and resolve their thresholds.
+        clean_rows: list[tuple[str, int]] = []
+        for row in rows:
+            if row.endswith("?figures"):
+                has_figures = False
+                if i < len(page_objs):
+                    _raw = json.dumps((page_objs[i].get("data") or {}))
+                    # REAL figures = % or € or digit+unit tokens, NOT any digit
+                    # (a source year like "BCG, 2025" is a citation, not a
+                    # bound figure — the ?figures exemption must not misfire).
+                    has_figures = bool(
+                        re.search(r"\d\s*%|€|\d{1,3}(?:[.,]\d+)?\s*(?:Std|Min|h|Tage|Wochen|Mio)", _raw)
+                    )
+                if not has_figures:
+                    continue  # figure-free theory essay: atmosphere is the bar
+                clean_rows.append(("P11", 1))
+            elif row.endswith("*"):
+                clean_rows.append((row.rstrip("*"), 1))
+            else:
+                clean_rows.append((row, threshold))
+        # US-608: pass the page's reference PNGs + Director brief metadata.
+        _refs = _ref_pngs_by_type.get(st_types[i] if i < len(st_types) else "", [])
+        _meta = None
+        if i < len(page_objs):
+            _brief = (page_objs[i].get("data") or {}).get("director_brief") \
+                or page_objs[i].get("director_brief")
+            if _brief:
+                _meta = {
+                    "visual_job": _brief.get("visual_job", ""),
+                    "argument": " | ".join(_brief.get("must_show", []) or []),
+                }
         try:
-            scores = client.score_page(str(png), [], rows)
+            scores = client.score_page(str(png), _refs, [r for r, _ in clean_rows],
+                                       row_metadata=_meta)
         except Exception as exc:  # noqa: BLE001 -- a reviewer outage must be loud
             print(f"[qa] VISUAL gate reviewer error on {png.name}: {exc}")
             failed.append(f"{png.name}: reviewer error")
             continue
-        for row in rows:
-            # P11* = theory pages need AT LEAST one bound figure (score 1+);
-            # full device pages require the full device quality (score 2+).
-            # P11*?figures = the figure requirement is SKIPPED when the page's
-            # data carries no real figures at all (no fabrication on a
-            # figure-free essay — its device is the dark treatment).
-            if row.endswith("?figures"):
-                page_data = st_types[i] if i < len(st_types) else ""
-                has_figures = False
-                try:
-                    import re as _re
-                    _pkg = json.loads(pkg_json.read_text(encoding="utf-8"))
-                    if i < len(_pkg.get("pages", [])):
-                        _raw = json.dumps((_pkg["pages"][i].get("data") or {}))
-                        has_figures = bool(_re.search(r"\d", _raw))
-                except Exception:
-                    pass
-                if not has_figures:
-                    continue  # figure-free theory essay: atmosphere is the bar
-                clean = "P11"
-                row_threshold = 1
-            else:
-                row_threshold = 1 if row.endswith("*") else threshold
-                clean = row.rstrip("*")
+        for clean, row_threshold in clean_rows:
             score = (scores.get(clean) or {}).get("score", 0)
             # reviewer variance damping: a single-figure device occasionally
             # scores 0 on one read (same page scored 1 on an earlier read).
@@ -308,7 +360,8 @@ def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
             # false-blocks on reviewer wobble.
             if isinstance(score, int) and score < row_threshold:
                 try:
-                    reread = client.score_page(str(png), [], [clean])
+                    reread = client.score_page(str(png), _refs, [clean],
+                                               row_metadata=_meta)
                     score = max(score, (reread.get(clean) or {}).get("score", 0))
                 except Exception:
                     pass
@@ -353,11 +406,12 @@ def main() -> int:
     # cost-block-inside-CTA fault) CANNOT ship — non-zero exit + clear error.
     _run_qa_gate(out_dir, html_path=result.html_path if hasattr(result, "html_path") else None)
 
-    # US-510 VISUAL GATE: the taste check — every page's device quality must
-    # clear the threshold or the deck does NOT ship. Opt-out only via
-    # --no-visual-gate (never for a delivery).
+    # US-510/608 VISUAL GATE: the taste check — every page's device quality must
+    # clear the threshold or the deck does NOT ship. Reference-grounded: the
+    # reviewer receives the page's reference pages + Director brief (US-608).
+    # Opt-out only via --no-visual-gate (never for a delivery).
     if not args.no_visual_gate:
-        _run_visual_qa_gate(out_dir)
+        _run_visual_qa_gate(out_dir, package_dir=package_dir)
 
     if args.fast:
         print("[render] --fast: skipping Stage 9 convergence.")
@@ -374,6 +428,14 @@ def main() -> int:
             max_iterations=args.converge_max_iter,
             page_indices=page_indices,
         )
+        # US-608: the FINAL artifact is re-gated AFTER convergence — the
+        # composed deck (the shipped deliverable) must pass the SAME gates.
+        # Convergence is cost-gated; when it was skipped this re-gate is the
+        # same call as above (idempotent).
+        if not args.no_visual_gate:
+            print("[qa] re-gating the FINAL composed artifact...")
+            _run_visual_qa_gate(out_dir, package_dir=package_dir)
+            _run_qa_gate(out_dir)
     return 0
 
 

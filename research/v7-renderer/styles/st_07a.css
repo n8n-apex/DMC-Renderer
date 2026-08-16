@@ -931,7 +931,7 @@
   margin-top: 1.2mm;
 }
 
-.st-07a .csh-quote { margin-top: var(--space-4); flex: none; }
+.st-07a .csh-quote { margin-top: var(--space-3); flex: none; }
 
 .st-07a .csh-quote-text {
   font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
@@ -976,9 +976,9 @@
   /* the DIRECTOR data band (user 2026-08-16): fills the A3 right rail's bottom
      with the page's REAL metrics as big editorial gold numerals — a data WALL,
      not small cells. flex column so the cells distribute down the band. */
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
   border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
-  padding-top: var(--space-3);
+  padding-top: var(--space-2);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
