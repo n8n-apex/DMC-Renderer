@@ -181,11 +181,16 @@
   justify-content: center;
 }
 .st-22 .co-tl-spine::before {
+  /* US-509: the spine ran through the node's centre ("line bisecting solid
+     squares" per the audit). Richard's timeline line CONNECTS steps in the
+     gutter — sit it at the node's right edge (node is 11mm wide, so its
+     right edge is 5.5mm from the column left) so the line passes BETWEEN
+     the node and the text, not through the numeral. */
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
+  left: 5.5mm;
   width: 0.6mm;
   margin-left: -0.3mm;
   background-color: var(--color-accent);

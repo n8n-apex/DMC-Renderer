@@ -79,9 +79,12 @@
    base for grounding + folio legibility) — NOT the heavy abstract darken. The photo
    is the hero; this only adds depth + a premium graded base. Token-only. */
 .st-31 .br-bleed--photo .br-scrim {
+  /* US-509: the thesis sat over busy photo folds ("poor legibility" per the
+     audit). Deepen the bottom grounding — the photo stays visible in the
+     upper 2/3, the thesis zone gets a solid ink base. */
   background-image:
-    linear-gradient(to bottom, transparent 22%, var(--color-ink) 96%);
-  opacity: 0.72;
+    linear-gradient(to bottom, transparent 30%, color-mix(in srgb, var(--color-ink) 30%, transparent) 62%, var(--color-ink) 92%);
+  opacity: 0.85;
 }
 
 /* ---- centered statement layer (above the overlay + veil) ---- */

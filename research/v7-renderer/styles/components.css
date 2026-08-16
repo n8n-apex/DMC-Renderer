@@ -495,9 +495,16 @@
 /* ---- stat_callout_card: a small tint card — a big accent figure over an
    uppercase label. Floats beside body copy (ST-06). #} */
 .c-stat-callout {
-  background-color: var(--color-accent-tint);
-  padding: var(--space-3) var(--space-4);
-  text-align: center;
+  /* US-509 (structural): the stat callout was a centered accent-tint BOX —
+     the audit's recurring "cheap PowerPoint widget / floating rounded
+     rectangle" (p1, p16). Richard's stat treatment is FLAT and editorial:
+     no box, left-aligned, the accent numeral over the muted label with a
+     hairline. The page ground carries it. */
+  background-color: transparent;
+  padding: 0;
+  text-align: left;
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-2);
 }
 .c-stat-callout__value {
   font-family: var(--font-head);
@@ -1108,9 +1115,10 @@
   border-radius: 50%;
   border: 0.4mm solid color-mix(in srgb, var(--color-accent) 70%, transparent);
   background: transparent;
-  /* soft accent OUTER GLOW (Chromium) so each disc reads as lit, not outlined;
-     weasy drops box-shadow losslessly. */
-  box-shadow: 0 0 7mm color-mix(in srgb, var(--color-neutral-dark) 30%, transparent);
+  /* US-509: the outer GLOW was the audit's "soft drop shadows / PowerPoint
+     template" (p5). Richard's Venn (buchagentur p6) is FLAT overlapping
+     translucent discs — no glow. */
+  box-shadow: none;
 }
 .c-venn__fill {
   position: absolute;
@@ -1330,12 +1338,16 @@
    Chrome + shadow live HERE, not viz.css (the flat-on-cream gate forbids shadows
    there). ============================================================= */
 .c-viz-island {
+  /* US-509 (structural): the viz island was a ROUNDED dark box with a drop
+     shadow = the audit's "heavy dark box feels like a generic PowerPoint
+     template" (p2, p18). Richard's dark zones are FLAT sharp-edged panels
+     (the dark columns in niklas/buchagentur) — no radius, no shadow. */
   position: relative;
   background-color: var(--color-ink);
   background-size: cover; background-position: center;
-  border-radius: 2.4mm; overflow: hidden;
+  border-radius: 0; overflow: hidden;
   padding: var(--space-4) var(--space-5);
-  box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent);
+  box-shadow: none;
 }
 .c-viz-island__seam {
   position: absolute; left: 0; top: 0; bottom: 0; width: 1.1mm;
