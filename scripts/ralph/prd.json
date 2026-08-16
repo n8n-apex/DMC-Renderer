@@ -337,15 +337,15 @@
       "id": "US-505",
       "description": "art policy: kill abstract waves + ghost letter 'A'; data devices + real photos only",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: fal scenes removed; ghost letter -> giant zero-padded section number on dark beats"
     },
     {
       "id": "US-506",
       "description": "signature move: giant low-contrast section numeral on dark panels (Richard's '01')",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: fal scenes removed; ghost letter -> giant zero-padded section number on dark beats"
     },
     {
       "id": "US-507",
