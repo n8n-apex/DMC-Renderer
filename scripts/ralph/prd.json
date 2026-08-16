@@ -359,7 +359,7 @@
       "description": "typography: ALL-CAPS bold sans headlines, selective bolding, hyphenation, pullquote dedup",
       "priority": "high",
       "passes": true,
-      "notes": "DONE 2026-08-16: theory left-align no-hyphen, myth quotes roman, FAZIT pull-quote dedup"
+      "notes": "DONE 2026-08-16: theory left-align/no-hyphen, roman myths, pullquote dedup, proof tiles 20mm, spill guards"
     },
     {
       "id": "US-509",
