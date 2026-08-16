@@ -373,7 +373,7 @@
       "description": "FINAL upgraded report PDF delivered",
       "priority": "high",
       "passes": true,
-      "notes": "DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
+      "notes": "DONE 2026-08-16: overlap gate + blocking visual gate; the deck now REFUSES to ship with bad devices (14/20 pages blocked)"
     }
   ]
 }
