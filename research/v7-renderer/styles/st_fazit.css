@@ -141,10 +141,14 @@
    resolve bottom:0 to the page bottom (verified WeasyPrint 68.1 behaviour).
    261mm = 297 - 16(top) - 20(bottom) margins, matching the shared .page box. */
 .st-fazit .fz-fill-root {
-  /* US-510: the root no longer forces a definite 261mm with an absolute
-     band — it is a natural container (may exceed one sheet; multi-page OK). */
+  /* US-510: the root is a DEFINITE 261mm box — the flow distributes inside it
+     (space-between) so the CTA lands at the sheet bottom and the page is
+     genuinely FULL. If the content ever exceeds 261mm it flows onto a second
+     sheet naturally (multi-page is allowed). A definite height (not min) is
+     what makes the FAZIT a deliberate closing page instead of a half-filled
+     orphan with a blank follow-on. */
   position: relative;
-  min-height: 261mm;
+  height: 261mm;
 }
 
 /* the upper flow: header → body → thesis → big-number cost, DISTRIBUTED across
@@ -154,9 +158,11 @@
 .st-fazit .fz-fill-flow {
   /* US-510 (QA gate caught the p18 overlap): the CTA band is now a NORMAL
      FLOW block after the cost — no absolute positioning, so overlap is
-     structurally impossible. The flow is a natural column; the page may span
-     a second sheet when the content is tall (multi-page is allowed — the
-     user's directive: never cram content to avoid a spill). */
+     structurally impossible. The flow is a natural column; the CTA pins to
+     the root's bottom via margin-top:auto (no absolute, no overlap, and the
+     page fills). If the content exceeds the sheet it flows onto a second
+     page naturally (multi-page is allowed — the user's directive: never
+     cram content to avoid a spill). */
   position: static;
   display: flex;
   flex-direction: column;
@@ -230,10 +236,12 @@
    booking CTA; a 48pt URL repeated here read as a crude billboard). Pinned
    bottom:0 against the definite-height root so it sits flush at the page bottom. */
 .st-fazit .fz-cta-band {
-  /* US-510: normal flow block (was absolute) — no overlap possible. */
+  /* US-510: normal flow block (was absolute) — no overlap possible. Pinned to
+     the root bottom by margin-top:auto inside the flex column. */
   position: static;
   width: 100%;
-  margin-top: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-4);
   background-color: var(--color-ink);
   padding: var(--space-4) var(--space-5);
   box-sizing: border-box;
