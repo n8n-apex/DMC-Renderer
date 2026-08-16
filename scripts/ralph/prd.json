@@ -304,6 +304,76 @@
       "priority": "high",
       "passes": true,
       "notes": "DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0"
+    },
+    {
+      "id": "US-501",
+      "description": "remove header CTA from running header (wordmark + folio only)",
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: header CTA removed (chromium @top-right + weasy page-header); verified on p2/p4/p9"
+    },
+    {
+      "id": "US-502",
+      "description": "measure/leading pass: body ~70 chars, line-height 1.5, paragraph spacing",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-503",
+      "description": "flat-design purge: no shadows, sharp corners, pills->flat, checkmarks->rules",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-504",
+      "description": "data-device grammar: 30-50% clip fix, German metric caps, prose->real devices",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-505",
+      "description": "art policy: kill abstract waves + ghost letter 'A'; data devices + real photos only",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-506",
+      "description": "signature move: giant low-contrast section numeral on dark panels (Richard's '01')",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-507",
+      "description": "whitespace distribution: asymmetric 60/40, wide gutters, generous margins",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-508",
+      "description": "typography: ALL-CAPS bold sans headlines, selective bolding, hyphenation, pullquote dedup",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-509",
+      "description": "re-render + full 20-page vision audit; iterate until core pages clear",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
+    },
+    {
+      "id": "US-510",
+      "description": "FINAL upgraded report PDF delivered",
+      "priority": "high",
+      "passes": "pending",
+      "notes": ""
     }
   ]
 }
