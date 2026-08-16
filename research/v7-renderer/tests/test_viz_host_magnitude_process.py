@@ -42,6 +42,11 @@ def _ctx() -> RenderContext:
 
 def _page(st_type: str) -> dict:
     pkg = load_package(APEX)
+    # US-604: prefer a NON-continuation page (the ST-06 section spans two
+    # continuation pages; the intro one carries the viz/flow band).
+    for p in pkg.pages:
+        if str(p.get("st_type")) == st_type and not p.get("continuation_index"):
+            return copy.deepcopy(p)
     return copy.deepcopy(next(p for p in pkg.pages if str(p.get("st_type")) == st_type))
 
 
@@ -81,7 +86,17 @@ def test_st09_no_viz_unchanged():
 
 
 def test_st06_renders_viz_when_present():
+    # US-604: the apex ST-06 is continuation pages; the flow/viz band renders
+    # on a SINGLE-page ST-06 (synthetic, no identity) — the legacy contract.
     page = _page("ST-06")
+    for k in ("page_id", "section_id", "continuation_index",
+              "continuation_role", "section_page_count"):
+        page.pop(k, None)
+    # the viz cascade fires when the flow strip is suppressed (>=5 steps) —
+    # inject 6 steps + the cascade spec, mirroring the old single-page state.
+    page["data"]["steps"] = [
+        {"title": f"Schritt {i}", "body": f"Body {i} " * 20} for i in range(1, 7)
+    ]
     page["data"]["viz"] = [
         {"preset": "step_cascade", "title": "Der Ablauf",
          "steps": [{"title": "Audit"}, {"title": "Bereinigung"}]}]

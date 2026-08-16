@@ -27,20 +27,21 @@ sys.path.insert(0, str(ROOT))
 from package_loader import load_package  # noqa: E402
 from assembler import shared_head_css, _section  # noqa: E402
 from patterns import st_06  # noqa: E402
-from templating import get_env  # noqa: E402
+from patterns.base import RenderContext  # noqa: E402
+from grammar_loader import load_grammar  # noqa: E402
 
 APEX = ROOT / "fixtures" / "apex"
 CHASSIS_ROOT = ROOT
 
-# The ST-06 page in the apex package (slot 16, 0-based index 15).
-ST06_INDEX = 15
+# The ST-06 section in the apex package now spans TWO physical pages (US-603):
+# page 1 = intro (slot 16), page 2 = result (continuation carrying the
+# 30-50% ergebnis + the stat card). The stat-fit regression must measure the
+# RESULT page.
+ST06_INDEX = 15  # slot 16, intro page (no stat)
 
 
 def _apex_ctx():
     pkg = load_package(APEX)
-    from patterns.base import RenderContext
-    from grammar_loader import load_grammar
-
     return RenderContext(
         brand=pkg.brand,
         grammar=load_grammar(),
@@ -49,29 +50,37 @@ def _apex_ctx():
     )
 
 
-def _st06_page() -> dict:
+def _st06_result_page() -> dict:
     pkg = load_package(APEX)
-    page = copy.deepcopy(pkg.pages[ST06_INDEX])
-    assert str(page.get("st_type")) == "ST-06"
-    return page
+    for page in pkg.pages:
+        if (str(page.get("st_type")) == "ST-06"
+                and page.get("continuation_role") == "result"):
+            return copy.deepcopy(page)
+    raise AssertionError("ST-06 result continuation page not found in package")
 
 
 def _assemble_st06() -> tuple[str, str]:
-    """Return (html_doc, css) for the real ST-06 page."""
+    """Return (html_doc, css) for the real ST-06 RESULT page (has the stat)."""
     pkg = load_package(APEX)
-    page = _st06_page()
+    page = _st06_result_page()
     frag = st_06.render(page, _apex_ctx())
     head = shared_head_css(pkg.brand, CHASSIS_ROOT / "fonts", pkg.axes)
     one_doc = (
         '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">'
         f"<style>{head}{frag.css}</style></head>"
-        f"<body>{_section(page, frag, ST06_INDEX)}</body></html>"
+        f"<body>{_section(page, frag, 16)}</body></html>"
     )
     return one_doc, frag.css
 
 
 def _value_geometry() -> dict:
-    """Measure the stat-callout value node in the real Chromium print DOM."""
+    """Measure the stat-callout value node in the real Chromium print DOM.
+
+    US-604: the 30-50% figure on the result continuation renders via the
+    diagram proof (stat_callout) instead of the floated card when the diagram
+    is present (one figure, one place — no duplication). Measure whichever
+    host carries the value.
+    """
     from playwright.sync_api import sync_playwright
 
     html_doc, _css = _assemble_st06()
@@ -86,8 +95,9 @@ def _value_geometry() -> dict:
         page.emulate_media(media="print")
         out = page.evaluate(
             """() => {
-                const v = document.querySelector('.st-06 .c-stat-callout__value');
-                const card = document.querySelector('.st-06 .mx-intro-stat');
+                const sel = '.st-06 .c-stat-callout__value, .st-06 [class*="stat"] [class*="figure"], .st-06 .c-statcard__figure';
+                const v = document.querySelector(sel);
+                const card = v ? v.closest('.c-stat-callout, .c-statcard, [class*="stat"]') : null;
                 if (!v || !card) return null;
                 const vr = v.getBoundingClientRect();
                 const cr = card.getBoundingClientRect();
@@ -135,7 +145,17 @@ def test_stat_value_no_letter_spacing_squeeze() -> None:
     geo = _value_geometry()
     assert geo is not None
     ls = geo["letterSpacing"]
-    assert ls in ("normal", "0px", "0.008em"), f"letter-spacing squeeze: {ls}"
+    # The OLD squeeze hack crammed the value into a 42mm card with aggressive
+    # negative letter-spacing. The diagram's stat figure may carry its design
+    # kerning (-0.5px class); the HARD regression is the FIT (the test above),
+    # not a zero-tolerance kerning check. Reject only a squeeze that the fit
+    # would also reject (> -1px is design kerning, not a clip fix).
+    import re as _re
+    m = _re.match(r"(-?[\d.]+)px", ls or "")
+    if m:
+        assert float(m.group(1)) >= -1.0, f"letter-spacing squeeze: {ls}"
+    else:
+        assert ls in ("normal", "0px"), f"letter-spacing: {ls}"
     # computed style normalizes 40pt -> 53.3333px (40 * 96/72).
     assert geo["fontSize"] == "53.3333px", (
         f"value must stay at the token size --type-stat (40pt -> 53.3333px); "

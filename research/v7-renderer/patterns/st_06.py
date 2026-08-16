@@ -159,6 +159,16 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     viz = d.get("viz")
     viz = viz if isinstance(viz, list) and viz else None
 
+    # US-604: continuation-role awareness. The ST-06 section may span two
+    # physical pages (US-603 planner): page 1 = intro + early steps, page 2 =
+    # late steps + result. Each page renders as a FULL composition (the intro
+    # page carries an explicit continuation cue; the result page carries the
+    # recap). A single-page ST-06 has no role -> legacy markup unchanged.
+    continuation_role = str(page.get("continuation_role") or "").strip()
+    continuation_role = (
+        continuation_role if continuation_role in ("intro", "result") else ""
+    )
+
     template = get_env().get_template("st_06.html.jinja")
     html = template.render(
         kicker=_KICKER,
@@ -174,5 +184,11 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         recap_label=_RECAP_LABEL if ergebnis else "",
         recap_html=preprocess_body(ergebnis),
         viz=viz,
+        continuation_role=continuation_role,
+        # the page's diagram proof (plan_diagrams output — real data, e.g. the
+        # stat_callout figure). Rendered on the RESULT continuation so the page
+        # carries its full data payload (the vision audit flagged the dead band
+        # above the recap).
+        diagram=d.get("diagram") if isinstance(d.get("diagram"), dict) else None,
     )
     return PageFragment(html=html, css=_CSS)

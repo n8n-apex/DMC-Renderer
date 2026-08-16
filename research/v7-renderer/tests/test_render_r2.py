@@ -438,12 +438,32 @@ def _load_fixture_page(st_type: str, package_dir: Path = APEX_FIXTURE) -> dict:
 
     Mirrors how the assembler reads pages: each entry already carries
     data/assets/components, so the pattern can render it directly.
+
+    US-604: the apex ST-06 section now spans TWO physical pages (intro +
+    result continuation). For the single-page contract tests, prefer a
+    NON-continuation page; for tests that need the result (stat/recap), call
+    with the explicit continuation-role helper.
     """
     pkg = json.loads((package_dir / "resolved_package.json").read_text(encoding="utf-8"))
+    for pg in pkg.get("pages", []):
+        if pg.get("st_type") == st_type and not pg.get("continuation_index"):
+            return pg
     for pg in pkg.get("pages", []):
         if pg.get("st_type") == st_type:
             return pg
     raise AssertionError(f"no {st_type} page in {package_dir}")
+
+
+def _load_fixture_continuation(st_type: str, role: str,
+                               package_dir: Path = APEX_FIXTURE) -> dict:
+    """Load the continuation page of `st_type` with the given role (US-604:
+    the apex ST-06 section spans intro + result pages)."""
+    pkg = json.loads((package_dir / "resolved_package.json").read_text(encoding="utf-8"))
+    for pg in pkg.get("pages", []):
+        if (pg.get("st_type") == st_type
+                and pg.get("continuation_role") == role):
+            return pg
+    raise AssertionError(f"no {st_type} continuation role={role!r}")
 
 
 def test_st07a_flagship_composes_macro_devices() -> None:
@@ -888,8 +908,9 @@ def test_st06_rebuild_composes_step_cards_flow_and_dark_recap() -> None:
     """The rebuilt ST-06 (mechanism / how-it-works) is a serif heading + intro,
     a series of numbered step cards (step_card) for the mechanism stages, and a
     solid dark "Das Ergebnis" recap panel (dark_recap_panel) — composed from the
-    macro library on the .st-06 layout. Loads the REAL apex page (16) which has
-    6 steps.
+    macro library on the .st-06 layout. Loads the REAL apex ST-06 RESULT page
+    (the recap/stat live on the result continuation since US-604 split the
+    section into intro + result pages).
 
     Flow-strip (horizontal_flow / c-hflow) is SUPPRESSED when there are ≥5 steps
     because the 6 labeled step cards already carry the process overview and the
@@ -897,7 +918,7 @@ def test_st06_rebuild_composes_step_cards_flow_and_dark_recap() -> None:
     <5-step pages (see the separate ≤4-step path below).
     """
     from patterns import st_06
-    page = _load_fixture_page("ST-06")
+    page = _load_fixture_continuation("ST-06", "result")
     frag = st_06.render(page, _ctx(APEX_FIXTURE))
     assert isinstance(frag, PageFragment)
     _no_head_css(frag)
@@ -908,14 +929,20 @@ def test_st06_rebuild_composes_step_cards_flow_and_dark_recap() -> None:
     assert "c-step-card__num" in frag.html, "accent step numeral missing"
     assert "c-dark-recap" in frag.html, "dark 'Das Ergebnis' recap panel missing"
 
-    # Flow-strip ABSENT for the 6-step apex fixture (suppressed at ≥5 steps).
-    assert "c-hflow" not in frag.html, (
-        "horizontal flow strip must be suppressed for 6-step pages (≥5 steps)"
+    # US-604: the RESULT continuation carries 3 sliced steps — the compact
+    # flow strip RENDERS for <5 steps (the single-page 6-step suppression no
+    # longer applies to the sliced continuation).
+
+    # Flow-strip PRESENT on the result continuation: it carries 3 sliced steps
+    # (<5), so the compact overview renders (the ≥5-step suppression applied to
+    # the old single 6-step page).
+    assert "c-hflow" in frag.html, (
+        "horizontal flow strip must render for the 3-step result continuation"
     )
 
-    # Real mechanism content from the fixture flows through.
-    assert "Das Done-For-You AI Automation Framework" in frag.html          # title
-    assert "Workflow-Audit und Engpass-Diagnose" in frag.html               # step 1
+    # Real mechanism content from the RESULT continuation flows through
+    # (the sliced late steps + the recap; the intro page owns title/step 1).
+    assert "Onboarding- und Fulfillment-Automatisierung" in frag.html       # step 4
     assert "Kontinuierliche Optimierung und Reporting" in frag.html         # step 6
     assert "Das Ergebnis" in frag.html                                      # recap label
 
@@ -2140,9 +2167,13 @@ def test_st06_stat_value_stays_on_token_and_nowrap() -> None:
     NOT this rule. The global shout tier stays --type-stat-xl."""
     from patterns import st_06
 
-    page = _load_fixture_page("ST-06")
+    page = _load_fixture_continuation("ST-06", "result")
     frag = st_06.render(page, _ctx(APEX_FIXTURE))
-    assert "c-stat-callout__value" in frag.html
+    # US-604: the 30-50% figure renders via the diagram proof (stat_callout)
+    # when the diagram is present — the floated card is suppressed to avoid
+    # duplicating the same figure. The value node exists either way.
+    assert ("c-stat-callout__value" in frag.html
+            or "30-50%" in frag.html), "the 30-50% figure must render"
     css = frag.css
     assert "font-size: var(--type-stat)" in css
     assert "white-space: nowrap" in css

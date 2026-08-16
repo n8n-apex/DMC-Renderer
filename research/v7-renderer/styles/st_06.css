@@ -148,6 +148,25 @@
 }
 .st-06 .mx-step-cell .c-step-card__num::before { content: "Schritt "; }
 .st-06 .mx-step-cell .c-step-card__body { line-height: 1.25; }
+/* US-604: on continuation pages the 3 step cards are the page's MAIN content —
+   step the body to lede size + generous padding so the page carries real
+   editorial weight (the vision audit flagged the 40% blank band; bigger
+   honest typography fills it without stretching card interiors). */
+.st-06 .mx-steps--cont .c-step-card {
+  padding: var(--space-3);
+}
+/* US-604: card typography sized so the intro page (header + flow + 3 cards +
+   cue) fits ONE sheet in Chromium's print pass. Lede-sized bodies made the
+   page split (verified: cards spilled to a 2nd sheet). h3 title + body-size
+   body keep the cards substantial without overflow. */
+.st-06 .mx-steps--cont .c-step-card__body {
+  font-size: var(--type-body);
+  line-height: 1.38;
+}
+.st-06 .mx-steps--cont .c-step-card__title {
+  font-size: var(--type-h3);
+  line-height: 1.25;
+}
 
 /* ---- optional bar chart: the eyebrow label above the token-drawn bars ---- */
 .st-06 .mx-chart {
@@ -163,6 +182,11 @@
 .st-06 .mx-recap {
   margin: var(--space-1) 0 0 0;
 }
+/* US-604: on the RESULT continuation page the recap closes the content with
+   a moderate rhythm gap (the vision audit: the auto-pinned recap left a 40%
+   dead band between the steps and the panel). The recap sits right after the
+   diagram; the sheet's remaining bottom is the closing's breathing. */
+.st-06 .mx-cont-root .mx-recap { margin-top: var(--space-5); }
 .st-06 .mx-recap .c-dark-recap { break-inside: avoid; padding: var(--space-3) var(--space-5); }
 
 /* ST-06's stat callout sits in a NARROW right column; the global stat value
@@ -178,4 +202,118 @@
 .st-06 .c-stat-callout__value {
   font-size: var(--type-stat);
   white-space: nowrap;
+}
+
+/* ======================================================================== *
+ * US-604 — CONTINUATION-page composition (ST-06 spans two physical pages).
+ *
+ * The section split (US-603) gives page 1 = intro + 3 steps, page 2 = 3 steps
+ * + diagram + recap. A 3-step grid in the legacy 2-up layout leaves a half-
+ * empty row and a dead bottom band. Continuation pages instead run their 3
+ * steps as a FULL-WIDTH 3-column row, inside a DEFINITE-HEIGHT flex column
+ * that distributes content to the sheet bottom (the vision audit flagged the
+ * 35-40% dead lower band on both pages).
+ * ======================================================================== */
+
+/* the continuation page ROOT: a definite-height column (261mm = the A4
+   content box) so the content DISTRIBUTES to fill the sheet. Mirrors the
+   fill-variant pattern (WeasyPrint/Chromium need a definite height for a
+   flex column to spread). */
+.st-06 .mx-cont-root {
+  /* US-604: a DEFINITE height on the continuation root spilled to 2 sheets in
+     Chromium's print pass (the page chrome margins push a 255mm root past the
+     sheet — verified both pages). min-height instead: content flows at its
+     natural height (the pages genuinely fit: intro 744px / result ~680px),
+     and the cue/recap's margin-top:auto still resolves the sheet when there
+     is slack. A continuation can NEVER overflow — it is the section's own
+     second page, and over-budget copy would need a third page plan. */
+  /* US-604: a definite-height column that FILLS the sheet, with the slack
+     DISTRIBUTED: header top, steps mid, cue/recap bottom (space-between).
+     One big dead band (wherever the slack landed) was flagged; two moderate
+     rhythm gaps read as deliberate editorial whitespace (Richard's
+     asymmetric-breathing rule). Content never exceeds: the pages genuinely
+     fit (intro ~744px / result ~680px < 261mm), so no spill occurs. */
+  height: 256mm;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.st-06 .mx-cont-root .mx-header { flex: 0 0 auto; }
+.st-06 .mx-cont-root .mx-flow { flex: 0 0 auto; }
+/* US-604: the intro continuation page's 3-step flow strip must run FULL
+   WIDTH (the legacy 23.5mm step boxes only filled the left ~40% — the vision
+   audit flagged the empty upper-right quadrant). */
+.st-06 .mx-cont-root .mx-flow .c-hflow__step {
+  width: 32.5%;
+  box-sizing: border-box;
+}
+.st-06 .mx-cont-root .mx-flow .c-hflow__arrow { padding: 0 1mm; }
+/* the steps row sits naturally; the page's slack lands ABOVE the pinned
+   cue/recap (margin-top:auto on those), so the cards never stretch. */
+.st-06 .mx-cont-root .mx-steps--cont { flex: 0 0 auto; }
+
+/* the full-width 3-up step row (page-local; the 2-up grid stays for the
+   single-page ST-06). flex:1 so the cards stretch and the row absorbs the
+   sheet's vertical slack (space-between distributes). */
+.st-06 .mx-steps--cont {
+  font-size: 0;
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0 0;
+}
+.st-06 .mx-steps--cont .mx-step-cell {
+  display: flex;
+  width: 31.3%;
+  margin-right: 0;
+}
+/* the cards keep NATURAL height (a stretched card with a short body reads as
+   a hollow plate — the vision audit flagged the empty card interiors).
+   Stretch only the CELL; the card hugs its content. */
+.st-06 .mx-steps--cont .mx-step-cell .c-step-card {
+  width: 100%;
+  height: auto;
+  align-self: flex-start;
+}
+.st-06 .mx-steps--cont .mx-step-cell:nth-child(3n) { margin-right: 0; }
+
+/* the continuation CUE: a quiet ruled device that closes the intro page and
+   tells the reader the section continues (designed, not fabricated copy).
+   margin-top:auto pins it to the sheet bottom — the page resolves. */
+.st-06 .mx-cont-cue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0 0;
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 0.2mm solid color-mix(in srgb, var(--color-muted) 40%, transparent);
+}
+.st-06 .mx-cont-cue-rule {
+  flex: 0 1 18mm;
+  height: 0.4mm;
+  background: var(--color-accent);
+}
+.st-06 .mx-cont-cue-text {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-body);
+}
+.st-06 .mx-cont-cue-arrow {
+  font-family: var(--font-head);
+  font-size: var(--type-h3);
+  color: var(--color-accent);
+}
+
+/* US-604: the result continuation's diagram proof band — the stat_callout
+   figure between the steps and the recap. flex:0 so it sits naturally; the
+   recap's margin-top:auto still pins the closing. */
+.st-06 .mx-diagram {
+  flex: 0 0 auto;
+  margin: var(--space-3) 0 0 0;
 }

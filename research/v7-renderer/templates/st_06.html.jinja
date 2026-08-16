@@ -18,13 +18,15 @@
 {% from 'stat_callout_card.jinja' import stat_callout_card %}
 {% from 'dark_recap_panel.jinja' import dark_recap_panel %}
 {% from 'viz.jinja' import viz as render_viz %}
+{% from 'diagram.jinja' import diagram as render_diagram %}
 
+{% if continuation_role %}<div class="mx-cont-root">{% endif %}
 <div class="mx-header">
   {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
   {% if title %}<h1 class="mx-headline">{{ title }}</h1>{% endif %}
   {% if intro_html or stat_callout %}
   <div class="mx-intro-row">
-    {% if stat_callout %}
+    {% if stat_callout and not diagram %}
     <div class="mx-intro-stat">{{ stat_callout_card(stat_callout.value, stat_callout.label) }}</div>
     {% endif %}
     {% if intro_html %}<div class="mx-intro">{{ intro_html }}</div>{% endif %}
@@ -49,10 +51,21 @@
 {% endif %}
 
 {% if steps %}
-<div class="mx-steps">
+<div class="mx-steps{% if continuation_role %} mx-steps--cont{% endif %}">
   {% for s in steps %}
   <div class="mx-step-cell">{{ step_card(s.n, s.title, s.body_html) }}</div>
   {% endfor %}
+</div>
+{% endif %}
+
+{% if continuation_role == 'intro' %}
+{# US-604: the intro continuation page ends with an explicit "Fortsetzung" cue
+   (a designed device, not fabricated copy) so the reader knows the section
+   continues and the page resolves to a deliberate close. #}
+<div class="mx-cont-cue" aria-hidden="true">
+  <span class="mx-cont-cue-rule"></span>
+  <span class="mx-cont-cue-text">Fortsetzung</span>
+  <span class="mx-cont-cue-arrow">→</span>
 </div>
 {% endif %}
 
@@ -73,8 +86,16 @@
 </div>
 {% endif %}
 
+{% if diagram %}
+{# US-604: the page's diagram proof (real data — the stat_callout figure)
+   renders between the steps and the recap on the RESULT continuation, so the
+   page carries its full data payload instead of a dead band. #}
+<div class="mx-diagram">{{ render_diagram(diagram) }}</div>
+{% endif %}
+
 {% if recap_html %}
 <div class="mx-recap">
   {{ dark_recap_panel(recap_label, recap_html) }}
 </div>
 {% endif %}
+{% if continuation_role %}</div>{% endif %}
