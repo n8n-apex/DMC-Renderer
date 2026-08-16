@@ -76,7 +76,7 @@
   font-size: var(--type-body);
   line-height: var(--density-lead, 1.42);
   color: var(--color-body);
-  max-width: 165mm;
+  max-width: 128mm;   /* US-502: cap the measure (~70 chars) */
 }
 .st-22 .co-intro p { margin: 0 0 var(--density-para, var(--space-2)) 0; hyphens: auto; }
 .st-22 .co-intro p:last-child { margin-bottom: 0; }

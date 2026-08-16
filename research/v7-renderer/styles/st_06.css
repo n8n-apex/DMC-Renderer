@@ -51,8 +51,9 @@
 .st-06 .mx-intro {
   font-family: var(--font-body);
   font-size: var(--type-label);
-  line-height: 1.28;
+  line-height: 1.55;    /* US-502: 1.28 was "suffocating" per the audit */
   color: var(--color-body);
+  max-width: 120mm;     /* US-502: cap the measure (~65 chars) */
 }
 .st-06 .mx-intro p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
 .st-06 .mx-intro p:last-child { margin-bottom: 0; }

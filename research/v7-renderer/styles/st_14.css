@@ -1,0 +1,181 @@
+/* ST-14 - false-beliefs page LAYOUT (Plan B rebuild, P-5).
+ *
+ * Semantic design tokens ONLY (var(--…)) - NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the color-block heading sizes off var(--font-display), which
+ * resolves to the SERIF face when the brand's axis is headline_type=serif (the
+ * apex deck IS serif). The device LOOK (color_block_opener / numbered_block) is
+ * owned by the `c-` classes in styles/components.css (already in the shared
+ * head); this sheet only positions them and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-14` (the assembler's per-page section class)
+ * so it cannot leak. Three belief→reality blocks (each: a myth quote title + an
+ * accent-ruled Realität reality body + a source line) run single-column with
+ * modest line-heights + --space-* rhythm so the page fits the 261mm content box
+ * on one physical sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the solid
+ * color-block fill, the numerals, the reality left-rule + label) - never on body
+ * text.
+ */
+
+/* ---- solid-accent color-block opener: bleed it to the content edges so it
+   reads as a banner. The component owns the fill + serif heading; here we only
+   set the bottom rhythm and bump this page's FOCAL heading to the display-xl
+   tier (DNA §C1 - the section-opener headline is the focal element). The size
+   is scoped to ST-14 so the shared color-block component is unchanged. ---- */
+/* Phase-B reflow: scoped override reduces color-block padding top/bottom (8mm→6mm)
+   without touching the global component. */
+/* TRUE-SCALE REFLOW (the silent global ~85 percent Chromium shrink is gone:
+   any fragment overflowing its sheet used to scale the WHOLE document down,
+   so this page's tuning encoded 85 percent of every size). The steps below
+   reproduce the APPROVED visual sizes at true print scale: display-xl at 85
+   percent is display, h3 at 85 percent is lede, and so on. The page is also a
+   definite-height flex column now (backstop: the belief list absorbs slack
+   and the section can never exceed its sheet again). */
+.page.st-14 {
+  height: 260.6mm;   /* a hair under the 261mm page area: exact-equality
+                        fragments spill on subpixel rounding */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.st-14 .fb-opener, .st-14 .fb-intro, .st-14 .fb-diagram, .st-14 .fb-proof { flex: 0 0 auto; }
+.st-14 .fb-list { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.st-14 .fb-opener .c-color-block { padding: var(--space-3) var(--space-5); }
+.st-14 .fb-opener { margin: 0 0 var(--space-2) 0; }
+.st-14 .fb-opener .c-color-block__heading {
+  font-size: var(--type-display);
+}
+
+/* ---- intro lede ---- */
+.st-14 .fb-intro {
+  font-family: var(--font-body);
+  font-size: var(--type-body);   /* true-scale step-down (lede at 85 percent) */
+  font-style: italic;
+  line-height: 1.5;   /* US-502: 1.24 was the audit's "vibrating, illegible texture" */
+  color: var(--color-primary);
+  max-width: 128mm;   /* US-502: cap the measure (~70 chars) */
+  margin: 0 0 var(--space-3) 0;
+}
+.st-14 .fb-intro p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.st-14 .fb-intro p:last-child { margin-bottom: 0; }
+.st-14 .fb-intro strong { font-weight: 700; font-style: normal; color: var(--color-ink); }
+
+/* ---- belief list: single column, one numbered_block per myth. A hairline
+   divider between items keeps the three beliefs distinct without boxing them. */
+.st-14 .fb-item {
+  padding: 0 0 var(--space-1) 0;
+  margin: 0 0 var(--space-1) 0;
+  border-bottom: 0.2mm solid var(--color-muted);
+}
+.st-14 .fb-list .fb-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+/* the myth is a quote, not a plain heading: set it in the serif display face,
+   italic, at h3 - a page-local restyle of the numbered_block title so the myth
+   reads as the "lie" the reality below rebuts. */
+.st-14 .fb-item .c-numbered-block__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--type-lede);   /* true-scale step-down (h3 at 85 percent) */
+  line-height: 1.22;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+}
+/* the reality is the payload here (no separate body) - give it a touch more
+   air and let the accent rule carry the contrast. */
+/* Phase-B reflow: scoped micro-margins for reality + source blocks. */
+.st-14 .fb-item .c-numbered-block__reality { margin-top: var(--space-1); }
+.st-14 .fb-item .c-numbered-block__source { margin-top: var(--space-1); }
+
+/* ---- convergence diagram: a summarising Venn under the three beliefs (the
+   three Irrglauben → one Antwort). The component owns the figure; here we only
+   set its top rhythm + a hairline divider so it reads as the page's payoff. */
+.st-14 .fb-diagram {
+  margin-top: var(--space-1);
+  padding-top: var(--space-1);
+  border-top: 0.2mm solid var(--color-muted);
+}
+
+/* proof band: the sourced figures behind the belief answers - a centered row of
+   donut rings (data.viz) + scalar stat tiles at the page foot. Tokens only.
+   GEOMETRY BUDGET: the band is UNBREAKABLE, so it must fit the flow slack under
+   the belief blocks (~36mm on a full 3-belief page) or Chromium breaks the
+   whole band onto a SPILL SHEET (18 physical for 17 logical - the 2026-07-13
+   regression). Hence the deliberately tight margins + 22mm rings below. */
+.st-14 .fb-proof {
+  /* space-2 + zero padding: at TRUE print scale the page sat at exactly its
+     261mm budget and the page's own 0.4mm frame borders tipped the fragment
+     over the sheet (the band spilled whole, per the note above). The tighter
+     joins buy the ~4mm of real headroom the knife-edge page needs. */
+  margin-top: var(--space-2);
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-1);
+  break-inside: avoid;
+  /* donut row AND stat tiles share ONE horizontal band: a second stacked row
+     exceeded the ~36mm slack and the unbreakable band spilled a sheet (the
+     range figure became a stat tile under the rings, 2026-07-13). */
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+.st-14 .fb-proof-viz {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: flex-start;
+  justify-content: space-around;
+}
+.st-14 .fb-proof-viz .c-viz { flex: 0 1 auto; min-width: 0; }
+.st-14 .fb-proof-stats {
+  flex: 0 1 auto;
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+  margin-top: 0;
+}
+.st-14 .fb-proof-stat { min-width: 0; max-width: 52mm; }
+.st-14 .fb-proof-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h3);   /* compact tile inside the shared proof band */
+  line-height: 1.15;
+  color: var(--color-ink);
+}
+.st-14 .fb-proof-label {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  color: var(--color-muted);
+  margin-top: 1mm;
+}
+.st-14 .fb-proof-source {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.6mm;
+}
+
+/* compact 3-across donut row inside the proof band: ring above, label below,
+   centered - three sourced rings fit ONE ~40mm band instead of stacking three
+   wide rows that spill past the sheet. */
+.st-14 .fb-proof-viz .c-viz-donut {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-1);
+  margin: 0;                    /* kill the figure default margins */
+}
+.st-14 .fb-proof-viz .c-viz-donut__svg { width: 22mm; height: 22mm; }
+.st-14 .fb-proof-viz .c-viz-donut__meta { max-width: 52mm; }
+.st-14 .fb-proof-viz .c-viz-donut__label { font-size: var(--type-caption); line-height: 1.25; }
+.st-14 .fb-proof-viz .c-viz-donut__source { margin-top: 0.4mm; }

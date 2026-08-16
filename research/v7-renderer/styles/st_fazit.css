@@ -170,7 +170,7 @@
    A 4-paragraph recap (split at figure boundaries) gets REAL paragraph air:
    a taller leading + wider paragraph gap + a narrower measure, so the recap
    reads as four beats, not a wall (user: "there should be some breather"). */
-.st-fazit .fz-body--fill { margin: 0; max-width: 168mm; }
+.st-fazit .fz-body--fill { margin: 0; max-width: 128mm; }  /* US-502 */
 .st-fazit .fz-body--fill p {
   line-height: 1.55;
   margin: 0 0 var(--space-3) 0;
