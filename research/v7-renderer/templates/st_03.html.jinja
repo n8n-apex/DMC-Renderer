@@ -1,0 +1,58 @@
+{# ST-03 - back-cover HARD CTA. DATA comes pre-shaped from patterns/st_03.py;
+   this template COMPOSES the geo_shapes overlay + the QR macro on the token-themed
+   full-bleed .st-03 layout (styles/st_03.css). Fragment only - no <html>/<head>/
+   <style>/@page/@font-face/:root (those live in the head).
+
+   Richard's closing SKELETON (apex/NMR/boss back covers): a LOWER-WEIGHTED
+   composition on a full-bleed dark authority ground - deliberate textured dark
+   space up top (the quiet geo motif), then the content clustered in the lower
+   portion: a short serif headline + supporting line, a DESIGNED CTA cluster (a thin
+   accent rule → an uppercase label → the PROPORTIONATE accent URL on the left with
+   the QR beside it), and a centered wordmark sign-off at the very bottom.
+
+   The URL is the BARE DOMAIN (scheme stripped in st_03.py) sized at --type-h2 (a
+   confident, contained CTA - NOT the page's biggest type / a naked oversized
+   string, which read as crude). It fires in --color-accent: high-contrast on the
+   dark --color-ink ground. The QR (white box) sits beside it as one CTA unit.
+
+   WeasyPrint: the bleed block carries an explicit min-height (the full A4 sheet)
+   so its dark background paints (an abspos inset:0 bg child paints 0 ink); the
+   geo_shapes container + the content column are real children, so the block is
+   never empty. #}
+{% from 'geo_shapes.jinja' import geo_shapes %}
+{% from 'qr.jinja' import qr %}
+
+<div class="cta-bleed"{% if ground_uri %} style="--cta-ground: url('{{ ground_uri }}');"{% endif %}>
+  {# the geo motif fills FLAT navy; over a real atmosphere ground it floats as
+     a random shape, so it only renders when no ground asset resolved (st_03.py
+     mirrors that: it passes variant=None when a ground is present). #}
+  {% if not ground_uri %}{{ geo_shapes(variant) }}{% endif %}
+  {# the giant ghost section numeral (the deck's recurring device) fills the
+     deliberately quiet upper dark zone — Richard's closing pages carry the
+     oversized page number as a designed watermark, never a dead void. #}
+  <div class="cta-ghost" aria-hidden="true">{{ ghost_number }}</div>
+  <div class="cta-content">
+
+    <div class="cta-head">
+      {% if eyebrow %}<div class="cta-eyebrow">{{ eyebrow }}</div>{% endif %}
+      {% if headline %}<h1 class="cta-headline">{{ headline }}</h1>{% endif %}
+      {% if body_html %}<div class="cta-body">{{ body_html }}</div>{% endif %}
+    </div>
+
+    {% if url %}
+    <div class="cta-action">
+      <div class="cta-rule"></div>
+      <div class="cta-action-row">
+        <div class="cta-action-text">
+          {% if cta_label %}<div class="cta-label">{{ cta_label }}</div>{% endif %}
+          <div class="cta-url">{{ url }}</div>
+        </div>
+        {% if qr_svg %}<div class="cta-qr">{{ qr(qr_svg) }}</div>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if wordmark %}<div class="cta-wordmark">{{ wordmark }}</div>{% endif %}
+
+  </div>
+</div>

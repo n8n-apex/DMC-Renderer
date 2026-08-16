@@ -137,8 +137,13 @@ def _st07a_specs(fallstudie: int) -> list:
                  "from": {"value": "30 Minuten", "label": "Onboarding vorher"},
                  "to": {"value": "2 Minuten", "label": "mit APEX"}}]
     if fallstudie == 5:   # Hanisch & Klein - "100 % automatisiert" Lead-Priorisierung
+        # THREE real metrics (verbatim from the page's ergebnis_metrics):
+        # the 100% automation + the unified end-to-end + the no-headcount
+        # scaling — so the spread's dash carries a real data wall, not one row.
         return [{"preset": "stat_strip", "items": [
-            {"value": "100 %", "label": "Lead-Priorisierung automatisiert"}]}]
+            {"value": "100 %", "label": "Lead-Priorisierung automatisiert"},
+            {"value": "End-to-End", "label": "von fragmentiert auf unified Koordination"},
+            {"value": "ohne Headcount", "label": "skalierbar statt Personalaufbau"}]}]
     return []
 
 
@@ -180,26 +185,85 @@ def _st02_specs() -> list:
 def _st09_specs() -> list:
     """ST-09 STATUS QUO — a single MAGNITUDE hero. '50 %' is a verbatim substring
     of the body ("Burnout betrifft heute rund 50 % aller Wissensarbeiter").
+    (A second stat_strip device overflowed the sheet — the page carries the
+    hero + 6 symptom blocks + a scene; verified 21-page spill. The hero alone
+    is the honest bound device here.)
     """
     return [{"preset": "mega_numeral", "value": "50 %",
              "label": "der Wissensarbeiter sind heute von Burnout betroffen"}]
 
 
 def _st06_specs(steps: list) -> list:
-    """ST-06 MECHANISM — a PROCESS step_cascade built from the page's OWN step
-    titles (verbatim). The horizontal flow strip only fires for <5 steps; the
-    framework has 6, so the cascade is the at-a-glance overview of the same
-    mechanism stages the cards detail. Titles are copied straight from the data.
+    """ST-06 MECHANISM — intentionally EMPTY: the page's ONLY distinct real
+    figure is '30-50%' (data.ergebnis), which the stat callout card already
+    binds as the page's hero device. A second viz of the same figure would be
+    duplication (worse for the reviewer, dishonest density); the step cards are
+    the page's other device. No fabrication, no repetition — pages with one
+    real figure show it ONCE, prominently.
     """
-    titles = []
-    for it in steps or []:
-        t = it.get("title") if isinstance(it, dict) else str(it)
-        if t:
-            titles.append(str(t))
-    if not titles:
+    return []
+
+
+def _st07b_specs(page: dict) -> list:
+    """ST-07B THEORY — a bound magnitude device from the page's OWN body
+    figures (verbatim, grounded). Each theory essay cites a real market stat
+    (e.g. '40 %' BCG, '58 %' autonome Systeme); the device turns that citation
+    into the page's bound data point, filling the dark panel with a designed
+    number instead of an empty field. Pages with no clean figure get none.
+    """
+    d = page.get("data") or {}
+    body = str(d.get("body") or "")
+    # verbatim percentage claims with a noun following
+    m = re.search(r"(\d{1,3})\s*%", body)
+    if not m:
         return []
-    return [{"preset": "step_cascade", "title": "Der Ablauf",
-             "steps": [{"title": t} for t in titles]}]
+    pct = m.group(1)
+    i = body.find(m.group(0))
+    after = body[i:i + 120]
+    # the label = the claim the percentage modifies (real text after the %)
+    label = after[len(m.group(0)):].strip()
+    label = label.split(",")[0].split(".")[0].strip()
+    if not label:
+        return []
+    return [{"preset": "mega_numeral", "value": f"{pct} %",
+             "label": label}]
+
+
+def _st22_specs(page: dict) -> list:
+    """ST-22 ROADMAP — a stat strip bound to the page's OWN step durations
+    (verbatim 'dauer' fields: '1-3 Wochen' implementation, '3-5 Tage' audit,
+    '2-3 Tage' handover). The vertical timeline is the process device; this
+    strip adds the bound NUMBERS so the page carries data, not just a process
+    spine. Grounded by apply_apex_viz (each figure appears verbatim in the
+    steps' dauer values).
+    """
+    d = page.get("data") or {}
+    steps = d.get("steps") or []
+    durs = [str(s.get("dauer") or "") for s in steps if isinstance(s, dict)]
+    # pick a compact real subset (never duplicate the same duration twice)
+    seen = []
+    for du in durs:
+        if du and du not in seen:
+            seen.append(du)
+        if len(seen) >= 3:
+            break
+    if not seen:
+        return []
+    return [{"preset": "stat_strip", "items": [
+        {"value": du, "label": "je Implementierungsschritt"} for du in seen]}]
+
+
+def _st14_specs(page: dict) -> list:
+    """ST-14 MYTHS — a proof band of the page's OWN real figures (verbatim in
+    the beliefs' realitaet texts): '30–50 %' Effizienz, '40–45 %'
+    Aufwandsenkung, '90 %' CEOs. Fills the below-Venn void with bound data and
+    gives the page a data device beyond the conceptual Venn. Grounded by
+    apply_apex_viz (each figure appears verbatim in the page data).
+    """
+    return [{"preset": "stat_strip", "items": [
+        {"value": "30–50 %", "label": "mehr Effizienz ohne neuen Arbeitsvertrag"},
+        {"value": "40–45 %", "label": "weniger manueller Aufwand via CRM-Automatisierung"},
+        {"value": "90 %", "label": "der CEOs setzen KI zur Kostensenkung ein"}]}]
 
 
 def _viz_for_page(page: dict) -> list:
@@ -218,12 +282,14 @@ def _viz_for_page(page: dict) -> list:
         return _st02_specs()
     if st == "ST-09":
         return _st09_specs()
-    # ST-06 step_cascade is DISABLED: the mechanism page already lists its 6
-    # framework steps as content, so a cascade of the same steps both duplicates
-    # them and overflows the sheet (verified: ST-06 split to a 2nd page). Re-enable
-    # only with a compact, non-duplicative device that fits the mechanism layout.
-    # if st == "ST-06":
-    #     return _st06_specs(d.get("steps") or [])
+    if st == "ST-06":
+        return _st06_specs(d.get("steps") or [])
+    if st == "ST-07B":
+        return _st07b_specs(page)
+    if st == "ST-22":
+        return _st22_specs(page)
+    if st == "ST-14":
+        return _st14_specs(page)
     return []
 
 

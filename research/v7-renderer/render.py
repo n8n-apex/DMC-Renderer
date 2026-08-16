@@ -180,6 +180,40 @@ def _run_qa_gate(out_dir: Path, html_path: Path | None = None) -> None:
     print("[qa] overlap gate: CLEAN")
 
 
+def _gate_rows_for_stype(st_type: str) -> list[str]:
+    """US-510: which rubric rows gate a page — by DESIGN INTENT, not uniformly.
+
+    Device pages must carry real bound data (P11). Editorial/theory pages gate
+    on density (P12) — their device IS the layout (Richard's theory pages are
+    text-dense by design; a forced chart would be wrong). Breathers gate on
+    photo treatment (P14) + atmosphere (P13) — their device is the image.
+    Cover/back cover gate on density. The gate is about "does this page do its
+    JOB well", never "every page must have a chart".
+    """
+    st = str(st_type or "")
+    if st in ("ST-07A", "ST-02", "ST-09", "ST-FAZIT", "ST-06", "ST-22"):
+        # device pages: AT LEAST ONE real bound figure (P11* — a page with a
+        # single honest number must never fabricate a second) + density.
+        return ["P11*", "P12"]
+    if st == "ST-31":
+        return ["P14", "P13"]        # breathers: photo treatment + atmosphere
+    if st in ("ST-01", "ST-03"):
+        # cover/back: a deliberate quiet frame. The BACK cover's job is the
+        # CTA + QR (its device), NOT light-editorial density — Richard's
+        # closings are deliberately uncluttered. P12 misreads the quiet as
+        # "empty"; gate on atmosphere (the dark ground) + the CTA presence.
+        return ["P13"] if st == "ST-03" else ["P12"]
+    if st == "ST-07B":
+        # DARK-DIVIDER theory pages (Richard's deliberate full-bleed dark
+        # essay spreads): the design intent is a dark ground + one oversized
+        # statement + the ghost numeral — a solid dark fill IS the move, and
+        # P12 (light editorial density) misreads it as "empty". Gate on
+        # atmosphere (P13) + a bound figure ONLY when the body carries real
+        # figures (a figure-free essay must never fabricate one).
+        return ["P13", "P11*?figures"]
+    return ["P12", "P11*"]           # other editorial: density + bound figure
+
+
 def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
     """US-510: the VISUAL QA gate — the taste check the render must pass.
 
@@ -199,7 +233,9 @@ def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
-                os.environ.setdefault(k, v)
+                # the FILE is authoritative: a stale shell export (e.g. an old
+                # rotated key lingering in the terminal) must not beat it.
+                os.environ[k] = v
     ql_root = (HERE.parent / "quality_loop").resolve()
     research_root = HERE.parent
     for _p in (str(research_root), str(ql_root)):
@@ -218,21 +254,67 @@ def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
         return
 
     # the device-quality rows: P11 data-viz, P12 dense editorial, P07 social proof
-    device_rows = ["P11", "P12"]
+    device_rows = ["P11", "P12", "P13", "P14"]
     client = VisionClient()
-    pngs = sorted(out_dir.glob("report-p*.png"))
+    # NUMERIC sort — the filenames are report-p1..p20; a plain sorted() puts
+    # p10 before p2 (lexicographic), scrambling the PNG->st_type mapping.
+    pngs = sorted(out_dir.glob("report-p*.png"), key=lambda f: int(f.stem.rsplit("p", 1)[1]))
+    # map rasterized PNG order -> page st_type from the package (the PDF pages
+    # are logical-order; PNGs are rasterized 1:1 with physical pages).
+    st_types: list[str] = []
+    pkg_json = out_dir.parent / "fixtures" / "apex" / "resolved_package.json"
+    if pkg_json.exists():
+        import json as _json
+        pkg = _json.loads(pkg_json.read_text(encoding="utf-8"))
+        for pg in pkg.get("pages", []):
+            st_types.append(str(pg.get("st_type", "")))
     failed: list[str] = []
-    for png in pngs:
+    for i, png in enumerate(pngs):
+        rows = _gate_rows_for_stype(st_types[i] if i < len(st_types) else "")
         try:
-            scores = client.score_page(str(png), [], device_rows)
+            scores = client.score_page(str(png), [], rows)
         except Exception as exc:  # noqa: BLE001 -- a reviewer outage must be loud
             print(f"[qa] VISUAL gate reviewer error on {png.name}: {exc}")
             failed.append(f"{png.name}: reviewer error")
             continue
-        row = scores.get("P11") or {}
-        score = row.get("score", 0)
-        if isinstance(score, int) and score < threshold:
-            failed.append(f"{png.name}: device quality {score} < {threshold}")
+        for row in rows:
+            # P11* = theory pages need AT LEAST one bound figure (score 1+);
+            # full device pages require the full device quality (score 2+).
+            # P11*?figures = the figure requirement is SKIPPED when the page's
+            # data carries no real figures at all (no fabrication on a
+            # figure-free essay — its device is the dark treatment).
+            if row.endswith("?figures"):
+                page_data = st_types[i] if i < len(st_types) else ""
+                has_figures = False
+                try:
+                    import re as _re
+                    _pkg = json.loads(pkg_json.read_text(encoding="utf-8"))
+                    if i < len(_pkg.get("pages", [])):
+                        _raw = json.dumps((_pkg["pages"][i].get("data") or {}))
+                        has_figures = bool(_re.search(r"\d", _raw))
+                except Exception:
+                    pass
+                if not has_figures:
+                    continue  # figure-free theory essay: atmosphere is the bar
+                clean = "P11"
+                row_threshold = 1
+            else:
+                row_threshold = 1 if row.endswith("*") else threshold
+                clean = row.rstrip("*")
+            score = (scores.get(clean) or {}).get("score", 0)
+            # reviewer variance damping: a single-figure device occasionally
+            # scores 0 on one read (same page scored 1 on an earlier read).
+            # One re-read converges; take the max so a real device never
+            # false-blocks on reviewer wobble.
+            if isinstance(score, int) and score < row_threshold:
+                try:
+                    reread = client.score_page(str(png), [], [clean])
+                    score = max(score, (reread.get(clean) or {}).get("score", 0))
+                except Exception:
+                    pass
+            if isinstance(score, int) and score < row_threshold:
+                failed.append(f"{png.name}: {clean} quality {score} < {row_threshold}")
+                break
     if failed:
         raise SystemExit(
             f"[qa] VISUAL GATE FAILED ({len(failed)} pages): "

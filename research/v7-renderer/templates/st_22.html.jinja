@@ -1,0 +1,77 @@
+{# ST-22 — collaboration / process page (Plan B rebuild, P-10/P-13). DATA comes
+   pre-shaped from patterns/st_22.py; this template only COMPOSES the macro
+   library on the token-themed .st-22 layout (styles/st_22.css). Fragment only —
+   no <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a FULL-WIDTH banner photo header (media_figure, full content width)
+   carrying an overlaid eyebrow; a serif display heading + intro lede; then a
+   horizontal numbered step flow (horizontal_flow — Schritt 1 → N with accent
+   connectors + Dauer durations). Checklist hits: #9 full-width banner, #12
+   horizontal flow with connectors. #}
+{% from 'media_figure.jinja' import media_figure %}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'horizontal_flow.jinja' import horizontal_flow %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{% if layout_variant == 'fill' %}
+{# ---- FILL variant (vertical process timeline) ----
+   The standard horizontal flow strip crams the steps into the top ~40% of the
+   sheet, leaving a big empty bottom band (N08 dead space). The fill variant
+   restructures the SAME steps into a VERTICAL TIMELINE: the title + intro lede
+   at the top, then the numbered steps stacked DOWN the page, joined by a single
+   vertical accent SPINE with numbered NODES, each step a ROW (node + title +
+   body + Dauer). The rows are distributed (a definite-height flex column) so the
+   timeline STRETCHES to fill the full content box top→bottom regardless of how
+   short the prose is — the full-height fill is what removes the dead band.
+
+   The full height is carried by .co-fill-root (a definite-height box = the A4
+   content box) because WeasyPrint 68.1 needs a DEFINITE height for a flex column
+   to distribute its rows over the full page. #}
+<div class="co-fill-root" data-co-variant="fill">
+  <div class="co-fill-head">
+    <div class="co-flow-label">{{ eyebrow('Der Ablauf — Schritt für Schritt') }}</div>
+    {% if title %}<h1 class="co-headline">{{ title }}</h1>{% endif %}
+    {% if intro_html %}<div class="co-intro">{{ intro_html }}</div>{% endif %}
+  </div>
+  {% if steps %}
+  <ol class="co-timeline">
+    {% for s in steps %}
+    <li class="co-tl-step">
+      <div class="co-tl-spine" aria-hidden="true">
+        <span class="co-tl-node">{{ s.n if s.n is defined and s.n else loop.index }}</span>
+      </div>
+      <div class="co-tl-text">
+        <div class="co-tl-head">
+          {% if s.title %}<div class="co-tl-title">{{ s.title }}</div>{% endif %}
+          {% if s.dauer %}<div class="co-tl-dauer">{{ s.dauer }}</div>{% endif %}
+        </div>
+        {% if s.body %}<div class="co-tl-body">{{ s.body }}</div>{% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+
+  {% if viz %}
+  <div class="co-viz">{{ render_viz(viz) }}</div>
+  {% endif %}
+</div>
+{% else %}
+<div class="co-banner">
+  {{ media_figure(banner_uri, alt=banner_alt, ratio='full') }}
+  <div class="co-banner-scrim"></div>
+  <div class="co-banner-label">{{ eyebrow('Zusammenarbeit') }}</div>
+</div>
+
+<div class="co-intro-block">
+  {% if title %}<h1 class="co-headline">{{ title }}</h1>{% endif %}
+  {% if intro_html %}<div class="co-intro">{{ intro_html }}</div>{% endif %}
+</div>
+
+{% if steps %}
+<div class="co-flow">
+  <div class="co-flow-label">{{ eyebrow('Der Ablauf — Schritt für Schritt') }}</div>
+  {{ horizontal_flow(steps) }}
+</div>
+{% endif %}
+{% endif %}

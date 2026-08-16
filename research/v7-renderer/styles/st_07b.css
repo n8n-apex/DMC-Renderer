@@ -187,11 +187,20 @@
   color: var(--color-on-dark);
   padding: var(--space-5) var(--space-5);
   box-sizing: border-box;
-  /* center the label + oversized statement in the now-taller panel so the dark
-     block reads as a deliberate closing panel, not a top-anchored note. */
+  /* US-510 (vision-gate): the KERNAUSSAGE sits DIRECTLY beneath the ruled
+     separator as a two-part composition (the vision read: "two floating
+     islands" — label at 38%, quote at 63%). Top-anchored unit: label then
+     quote immediately after the body; the dark space BELOW the quote is the
+     deliberate closing breathing. */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
+}
+.st-07b .th-insightfill-label { align-self: flex-start; margin-bottom: 0; }
+.st-07b .th-insightfill-body {
+  align-self: flex-start;
+  width: 100%;
 }
 .st-07b .th-insightfill-label {
   font-family: var(--font-head);
@@ -200,7 +209,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent);
-  margin: 0 0 var(--space-4) 0;
+  margin: 0;
 }
 /* the oversized italic insight statement — §C1 oversized typographic quote, set
    in the serif display face on the dark ground (white/on-dark ink). overflow-wrap
@@ -271,3 +280,15 @@
   margin: var(--space-5) 0;
 }
 .st-07b .th-viz .c-viz { max-width: 168mm; }
+
+/* US-510 (vision-gate): on the DARK-DIVIDER theory pages the assembler's ghost
+   numeral anchors top-right, leaving the lower dark field reading as a void
+   ("quote abandoned mid-page"). Move the ghost to the LOWER field so the dark
+   zone is anchored by the deck's device — the closing reads as designed, not
+   empty. (The page is position:relative via the dark-mode routing.) */
+.st-07b[data-page-mode] .pm-ghost {
+  top: auto;
+  right: 10mm;
+  bottom: -6mm;
+  opacity: 0.05;
+}

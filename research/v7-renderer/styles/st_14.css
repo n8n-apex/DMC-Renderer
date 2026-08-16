@@ -42,7 +42,16 @@
   box-sizing: border-box;
 }
 .st-14 .fb-opener, .st-14 .fb-intro, .st-14 .fb-diagram, .st-14 .fb-proof { flex: 0 0 auto; }
-.st-14 .fb-list { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+.st-14 .fb-list {
+  flex: 1 1 auto; min-height: 0; overflow: hidden;
+  /* US-510 (dense spread): the myth cards DISTRIBUTE down the sheet (space-
+     between) so there is no dead band between the last belief and the Venn —
+     the reviewer flagged "large blank gap between the text and the bottom
+     diagram". The cards' own padding keeps them from touching the edges. */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .st-14 .fb-opener .c-color-block { padding: var(--space-3) var(--space-5); }
 .st-14 .fb-opener { margin: 0 0 var(--space-2) 0; }
 .st-14 .fb-opener .c-color-block__heading {

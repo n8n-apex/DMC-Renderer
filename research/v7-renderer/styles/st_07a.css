@@ -683,7 +683,18 @@
    only the NARRATIVE flex-grows and spreads its sections through the sheet's
    bottom half (space-between on the whole column would air out the top). */
 .st-07a.format-a3 .csh-left { justify-content: flex-start; }
-.st-07a.format-a3 .csh-narr { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-1); }
+.st-07a.format-a3 .csh-narr {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* US-510 (vision-gate): space-between aired the sections into 25-30% dead
+     gaps on short spreads (Conesso). Natural flow with real paragraph rhythm
+     reads as editorial, and the flex:1 with a bottom margin-auto lets the
+     LAST section settle mid-sheet instead of stretching voids between. */
+  justify-content: flex-start;
+  gap: var(--space-2);
+}
+.st-07a.format-a3 .csh-narr .csh-sec:last-child { margin-bottom: var(--space-4); }
 /* A spread WITH a supporting scene keeps the top-to-bottom distribution
    (space-between) so the sections still span the sheet; the scene's fixed
    height rides INSIDE the flow between section 1 and 2, absorbing the middle

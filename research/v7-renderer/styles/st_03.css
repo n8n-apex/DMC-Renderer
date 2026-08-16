@@ -93,8 +93,11 @@
   height: 100%;      /* fill the explicit-height bleed block */
   display: flex;
   flex-direction: column;
+  /* US-510 (vision-gate): the closing must RESOLVE — head group top, CTA
+     mid-sheet, wordmark bottom, the voids distributed (space-between) so no
+     single 40% dead zone remains ("floating islands"). */
   justify-content: flex-start;
-  padding: 34mm 24mm 24mm 24mm;
+  padding: 34mm 24mm 20mm 24mm;
   box-sizing: border-box;
   color: var(--color-on-dark);
 }
@@ -103,7 +106,11 @@
    margin-top:auto is the low-anchor (see the .cta-content note above). */
 .st-03 .cta-head {
   flex: 0 0 auto;
-  margin-top: auto;
+  /* US-510 (vision-gate): margin-top:auto pinned the whole CTA cluster to the
+     bottom, leaving the top 55% a dead void ("oppressive emptiness"). Start
+     the cluster ~a third from the top — the ghost numeral + the headline
+     anchor the upper region, and the lower half stays the quiet closing. */
+  margin-top: var(--space-5);
   margin-bottom: var(--space-7);
 }
 .st-03 .cta-eyebrow {
@@ -197,4 +204,30 @@
   color: var(--color-on-dark);
   opacity: 0.95;
   text-align: center;
+  /* US-510 (vision-gate): the wordmark sits DIRECTLY beneath the CTA cluster
+     (tight, deliberate spacing) — no mid-page island, no 40% void. The lower
+     dark field below the colophon is the closing page's breathing. */
+  margin-top: var(--space-6);
+  padding-top: 0;
+}
+
+/* the giant ghost section numeral (US-510): fills the deliberately quiet upper
+   dark zone with the deck's recurring oversized-page-number device — a designed
+   watermark, never a dead void. Anchored top-right behind the content. */
+.st-03 .cta-ghost {
+  position: absolute;
+  /* US-510 (vision-gate): the ghost anchors the BOTTOM field — the closing
+     page's lower zone is the deck's device space, never a dead void (the
+     top carries the headline hierarchy; a numeral there competed with it). */
+  bottom: 6mm;
+  right: 14mm;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 88mm;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-on-dark);
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
 }

@@ -412,7 +412,26 @@
           "center_lead": "Systeme",
           "center": "statt Ressourcen",
           "source": "plan_diagrams"
-        }
+        },
+        "viz": [
+          {
+            "preset": "stat_strip",
+            "items": [
+              {
+                "value": "30–50 %",
+                "label": "mehr Effizienz ohne neuen Arbeitsvertrag"
+              },
+              {
+                "value": "40–45 %",
+                "label": "weniger manueller Aufwand via CRM-Automatisierung"
+              },
+              {
+                "value": "90 %",
+                "label": "der CEOs setzen KI zur Kostensenkung ein"
+              }
+            ]
+          }
+        ]
       },
       "charts": [],
       "social_proof": null,
@@ -653,7 +672,14 @@
         "title": "Kapazität entsteht nicht durch Köpfe, sondern durch Systeme",
         "body": "Wer operative Engpässe mit Headcount löst, kauft sich Zeit – aber keinen Vorsprung.\n\nCordes Consulting hatte kein Nachfrageproblem. Der Markt war da. Die Kunden wollten kaufen. Das Wachstum stockte trotzdem – weil sechs manuelle Kernprozesse jeden neuen Auftrag in Mehrarbeit verwandelten. Die operative Kapazität war nicht durch Marktgrenzen limitiert, sondern durch Wissensabhängigkeit und inkonsistente Ausführung.\n\nDie Wahrheit lautet: Jedes Unternehmen, das Wachstum mit Headcount beantwortet, löst das falsche Problem. Mehr Mitarbeiter erhöhen den Overhead, multiplizieren Koordinationsaufwand und konservieren die Fehlerquellen, die schon vorher existierten. Laut BCG (2025) berichten bereits mehr als 40 % der großen Unternehmen, dass sie agentische KI-Implementierungen skalieren – nicht weil es ein Trend ist, sondern weil manuell ausgeführte Prozesse strukturell nicht skalieren.\n\nDas Prinzip dahinter ist einfach: Wenn ein Prozess von Wissen einer einzelnen Person abhängt, ist er kein Prozess – er ist ein Risiko. Fällt die Person aus, stockt die Lieferkette. Wächst das Volumen, wächst die Belastung linear mit. Automatisierung bricht diese Linearität. Sie entkoppelt Kapazität von Köpfen.\n\nWas Cordes Consulting demonstriert: Die Engpässe lagen nicht im Markt und nicht im Team – sie lagen in der Architektur der Abläufe. Wer diese Architektur verändert, ohne den bestehenden Tool-Stack aufzugeben, gewinnt Kapazität, ohne Komplexität hinzuzufügen.",
         "key_insight": "Operative Kapazität ist keine Frage des Headcounts – sie ist eine Frage der Prozessarchitektur.",
-        "compare": null
+        "compare": null,
+        "viz": [
+          {
+            "preset": "mega_numeral",
+            "value": "40 %",
+            "label": "der großen Unternehmen"
+          }
+        ]
       },
       "charts": [],
       "social_proof": null,
@@ -794,7 +820,14 @@
         "title": "Kommunikation skaliert nicht durch Köpfe",
         "body": "Wer Antwortzeiten durch Personalaufbau lösen will, kauft sich ein strukturelles Problem auf Zeit.\n\nFrese Recruiting hatte kein Nachfrageproblem. Die Anfragen kamen. Das Problem war, dass jede einzelne davon manuell bearbeitet wurde. WhatsApp, E-Mail, Support-Ticket — drei Kanäle, ein Team, keine Systematik. Das Ergebnis: 24 Stunden Antwortzeit, ein überlastetes Team und eine Skalierungsgrenze, die nicht durch Marktgröße, sondern durch operative Kapazität gesetzt wurde. Das ist kein Ausnahmefall. 58 % der B2B-Unternehmen setzen bereits auf autonome Systeme, weil sie erkannt haben, dass Headcount das falsche Werkzeug für Kommunikationsvolumen ist (KPMG, 2026). Die Wahrheit lautet: Jede neue Stelle, die du zur Bewältigung von Anfragen schaffst, erhöht deinen Fixkostenblock — ohne das strukturelle Problem zu lösen. Wächst das Volumen weiter, brauchst du die nächste Stelle. Und die übernächste. Der eigentliche Hebel liegt nicht im Wer, sondern im Wie: Welche Prozesse laufen automatisch ab, bevor ein Mensch überhaupt eingreifen muss? Unternehmen, die diese Frage systematisch beantworten, erzielen Umsatzwachstum bei gleichbleibendem Personalstand — nicht als Ausnahme, sondern als reproduzierbares Muster.",
         "key_insight": "Kommunikationsvolumen durch Personal zu lösen ist teuer und temporär — Systeme skalieren, Menschen nicht.",
-        "compare": null
+        "compare": null,
+        "viz": [
+          {
+            "preset": "mega_numeral",
+            "value": "58 %",
+            "label": "der B2B-Unternehmen setzen bereits auf autonome Systeme"
+          }
+        ]
       },
       "charts": [],
       "social_proof": null,
@@ -938,6 +971,14 @@
               {
                 "value": "100 %",
                 "label": "Lead-Priorisierung automatisiert"
+              },
+              {
+                "value": "End-to-End",
+                "label": "von fragmentiert auf unified Koordination"
+              },
+              {
+                "value": "ohne Headcount",
+                "label": "skalierbar statt Personalaufbau"
               }
             ]
           }
@@ -1151,6 +1192,25 @@
             "title": "Übergabe & Ergebnismessung",
             "body": "Nach der Implementierung übergeben wir vollständig dokumentierte Systeme und messen gemeinsam die ersten Ergebnisse gegen die definierten KPIs. Du siehst den ROI, bevor die erste Rechnung fällig ist.",
             "dauer": "2-3 Tage"
+          }
+        ],
+        "viz": [
+          {
+            "preset": "stat_strip",
+            "items": [
+              {
+                "value": "1 Tag",
+                "label": "je Implementierungsschritt"
+              },
+              {
+                "value": "3-5 Tage",
+                "label": "je Implementierungsschritt"
+              },
+              {
+                "value": "2-3 Tage",
+                "label": "je Implementierungsschritt"
+              }
+            ]
           }
         ]
       },
