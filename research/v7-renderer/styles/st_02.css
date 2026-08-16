@@ -88,8 +88,8 @@
      (island + quote + checklist stacked with no air). Give the island room —
      the fill column distributes the slack, so the extra margin re-balances
      rather than pushing a spill (verified: 20pp holds). */
-  padding: var(--space-4) var(--space-5);
-  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-5);
+  margin: var(--space-2) 0;
   flex: 0 0 auto;
   break-inside: avoid;
 }

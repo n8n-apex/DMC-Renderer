@@ -86,8 +86,10 @@
 }
 .st-05 .ab-body p {
   margin: 0 0 var(--space-1) 0;
-  text-align: justify;
-  hyphens: auto;
+  /* US-508: justify + auto-hyphens cause print-pass reflow variance (the
+     About page tipped to a blank spill sheet). Richard is left-aligned. */
+  text-align: left;
+  hyphens: none;
 }
 .st-05 .ab-body p:first-child { margin-top: 0; }
 .st-05 .ab-body p:last-child { margin-bottom: 0; }
@@ -192,7 +194,10 @@
    Bias the focal point HIGH so the FACES land in the strip → a clean headshot-row
    credibility band rather than a mid-body slice. */
 .st-05 .ab-proof .c-proof-gallery__item {
-  height: 24mm;
+  /* US-508 spill fix: 24mm + the roomier body leading pushed the About page
+     to a 2nd sheet (blank p03). 20mm keeps the headshot-row credibility band
+     (focal bias retained) and restores one sheet. */
+  height: 20mm;
   background-position: center 18%;
 }
 
@@ -214,8 +219,8 @@
 }
 .st-05 .ab-testimonials__card {
   display: block;
-  width: 41.6mm;
-  height: 52mm;                 /* 4:5 — matches the card art so cover = whole card */
+  width: 36.8mm;
+  height: 46mm;                 /* 4:5 — matches the card art so cover = whole card; US-508: 52mm pushed the About page to a spill sheet */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

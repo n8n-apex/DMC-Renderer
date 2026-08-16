@@ -1,0 +1,49 @@
+{
+  "brand_tokens": {
+    "brand_primary": "#4A7C7E",
+    "brand_accent": "#4A7C7E",
+    "brand_neutral_dark": "#2E3E50",
+    "brand_neutral_mid": "#5E5E58",
+    "brand_neutral_light": "#F6F3ED",
+    "font_heading": "Gestura Headline",
+    "font_body": "Source Sans 3",
+    "qr_target_url": "https://apex-consulting.ai",
+    "company_name_short": "APEX Consulting",
+    "company_url_display": "apex-consulting.ai"
+  },
+  "brand_profile": {
+    "font_head": "Gestura Headline",
+    "font_body": "Source Sans 3",
+    "accent_mechanic": "tonal_same_hue",
+    "ground_mode": "cool_light",
+    "texture": "smooth",
+    "headline_type": "serif",
+    "density": "compact"
+  },
+  "design_brief": {
+    "visual_style_summary": "Premium restrained editorial print system on a warm cream ground with a single soft navy depth plane. Every generated element is decorative MATERIAL only: paper grounds and matte navy stone, never illustration, never scenery, never anything with meaning. The look reads near-flat and quiet at arm's length and only reveals its fine grain up close.",
+    "mood": ["premium", "restrained", "editorial", "material", "calm", "quiet"],
+    "imagery": {
+      "style": "abstract printed-material surfaces only; no scenes, no objects, no illustration",
+      "subjects": "uncoated fine-art paper grounds in warm cream; matte dark navy stone fields and bands for dark panels",
+      "treatment": "near-flat, whisper-amplitude texture; under 4 percent local contrast; generous calm negative space for overlaid type",
+      "lighting": "flat even diffuse matte light, or at most ONE soft low-frequency off-center glow; never a hard ring, spotlight, ray, or flare",
+      "avoid": [
+        "text", "letters", "words", "numbers", "logos", "watermarks", "icons",
+        "charts", "graphs", "data", "UI", "faces", "people",
+        "marble veining", "stock luxury", "gold", "metallic", "foil", "gloss", "bevel",
+        "lens flare", "spotlight", "rays", "particles", "banding", "hard vignette ring", "seams",
+        "teal", "cyan", "blue", "purple", "green"
+      ]
+    },
+    "color_usage": "Ground is warm CREAM #F6F3ED (never plain white, never beige). The single depth plane is soft matte NAVY #2E3E50 (never bright blue, cyan, purple, or black). Generated MATERIALS are brand-locked to cream and navy ONLY. The muted TEAL #4A7C7E accent is renderer-drawn micro-trim and MUST NOT appear in any generated material. No third hue, no gradients into other colors.",
+    "shape_language": "Calm rectilinear print fields with generous negative space; one off-center soft light source at most; one navy depth plane per dark surface; no busy detail, no patterning, no repeating motifs.",
+    "texture_material": "Two materials only. (1) Uncoated fine-art paper grounds: single warm cream tone, extremely subtle long-fiber tooth plus barely-perceptible soft cloudy tonal undulation, flat even matte light, seamless tiling. (2) Matte dark navy stone for dark panels, bands, and closing fields: smooth premium matte navy with at most one soft diffuse lighter-navy glow, fine dither to avoid banding, low contrast for legible overlaid type. No marble, no veining, no polish, no reflections.",
+    "typography_character": "Serif editorial headlines (Gestura Headline) with a humanist sans body (Source Sans 3); quiet, confident, restrained. Type is always renderer-drawn and is NEVER baked into a generated material.",
+    "composition": "One depth plane, one soft off-center light source, calm central negative space, low contrast so overlaid type stays legible; the upper area of any band or panel stays lighter and cleaner to host content.",
+    "iconography": "None in generated material. Any trim, hairline, curve, icon, or rule is renderer-drawn vector, never generated.",
+    "image_style_prompt": "Seamless abstract premium printed-material surface, brand-locked to warm cream #F6F3ED ground and matte navy #2E3E50 depth, near-flat whisper-amplitude texture, flat even diffuse matte lighting or at most one soft off-center lighter-navy glow, generous calm negative space, low contrast for overlaid type, no text or logos or data or faces, decorative material only",
+    "negative_prompt": "no text, no letters, no words, no numbers, no logos, no watermarks, no icons, no charts, no graphs, no data, no UI, no faces, no people, no marble-slab stock-luxury veining, no gold, no metallic, no foil, no gloss, no bevel, no lens flare, no spotlight, no rays, no particles, no banding, no hard vignette ring, no seams, no teal, no #4A7C7E, no cyan, no bright blue, no purple, no green, not white, not beige, not black",
+    "confidence": 0.95
+  }
+}

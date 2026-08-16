@@ -58,7 +58,7 @@
 
 /* ---- heading + intro lede ---- */
 .st-22 .co-intro-block {
-  margin: 0 0 var(--space-4) 0;
+  margin: 0 0 var(--space-3) 0;   /* US-508: space-4 left the page at 1px slack */
 }
 .st-22 .co-headline {
   font-family: var(--font-display);   /* serif via the headline_type axis */

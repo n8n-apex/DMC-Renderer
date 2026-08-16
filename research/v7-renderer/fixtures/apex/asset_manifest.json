@@ -1,0 +1,18 @@
+{
+  "handle": "jousefmrd",
+  "assets": [
+    { "path": "jousefmrd_avatar.jpg", "role": "founder_portrait", "visual_appeal": 3 },
+    { "path": "jousefmrd_DVOLEK-DKKz_0.jpg", "role": "client_photo", "brand_text": "Goldman Tax", "visual_appeal": 2 },
+    { "path": "jousefmrd_DVOLEK-DKKz_1.jpg", "role": "client_photo", "brand_text": "Goldman Tax", "visual_appeal": 3 },
+    { "path": "jousefmrd_DQXmnfZjKnp_2.jpg", "role": "content_card", "is_testimonial_card": true, "brand_text": "Bildungsfabrik", "has_overlaid_text": true, "visual_appeal": 3 },
+    { "path": "jousefmrd_DM__cn-IgiY_3.jpg", "role": "content_card", "is_testimonial_card": true, "brand_text": "Aramaz Digital", "has_overlaid_text": true, "visual_appeal": 3 },
+    { "path": "jousefmrd_DYiL0zNI3go_4.jpg", "role": "client_photo", "brand_text": "Frese Recruiting", "visual_appeal": 3 },
+    { "path": "jousefmrd_DYhZxkqjD6G_5.jpg", "role": "interview", "brand_text": "Frese Recruiting", "visual_appeal": 3 },
+    { "path": "jousefmrd_DYhZxkqjD6G_6.jpg", "role": "interview", "brand_text": "Frese Recruiting", "visual_appeal": 2 },
+    { "path": "jousefmrd_DYhZxkqjD6G_7.jpg", "role": "interview", "brand_text": "Frese Recruiting", "visual_appeal": 2 },
+    { "path": "jousefmrd_DX2kDuvDL40_8.jpg", "role": "speaking", "visual_appeal": 3 },
+    { "path": "jousefmrd_DX2kDuvDL40_9.jpg", "role": "speaking", "visual_appeal": 2 },
+    { "path": "jousefmrd_DX2kDuvDL40_10.jpg", "role": "speaking", "visual_appeal": 2 },
+    { "path": "jousefmrd_DX2kDuvDL40_11.jpg", "role": "speaking", "visual_appeal": 2 }
+  ]
+}

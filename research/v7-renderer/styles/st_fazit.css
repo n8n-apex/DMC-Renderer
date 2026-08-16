@@ -181,7 +181,7 @@
    standard h2 to the display size so it reads as the editorial centerpiece of
    the closing page (the c-these component supplies the serif/accent-rule look;
    this only sizes it up for the fill composition). */
-.st-fazit .fz-these--fill { margin: 0 0 var(--space-3) 0; }  /* US-507 breathing */
+.st-fazit .fz-these--fill { margin: 0 0 var(--space-2) 0; }  /* breathing minus the knife-edge (slack 1px) */
 .st-fazit .fz-these--fill .c-these {
   font-size: var(--type-h2);
   line-height: 1.22;
