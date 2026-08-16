@@ -193,11 +193,10 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     # (case_scene slot — fal pipeline output, never a face, never fake data)
     # renders as a full-bleed rounded band INSIDE the left narrative column,
     # between the sections. Absent -> no markup (graceful: a client without a
-    # generated scene keeps the clean spread). A content-FULL spread (narr +
-    # lede > 1450 chars — the Frese case, measured) gets NO scene: it has no
-    # void band to fill, and the added band would overflow the A3 sheet
-    # (verified: 21-page spill). The threshold is geometry, never content. ----
-    scene_uri = ctx.slot_uri(page, "case_scene") or ""
+    # US-505 (Richard grammar): the abstract fal "scene" bands are REMOVED.
+    # Richard NEVER uses abstract generative art — his case-study spreads use
+    # data devices (the right proof panel) + real photography. The abstract
+    # waves were flagged on p7/p9/p14/p15 as "generic, meaningless, zero data".
     # US-503 measure-fit: a DENSE spread (narrative > 1300 chars, e.g. Frese)
     # cannot hold kicker+headline+portrait+lede+3 sections on the 260mm sheet
     # at the roomier measure. The LEDE is suppressed on dense spreads —
@@ -210,10 +209,7 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     lede_html = preprocess_body(d.get("kurzportraet", ""))
     if _narr_only > 1300:
         lede_html = ""
-    if scene_uri:
-        _narr_total = _narr_only + len(str(d.get("kurzportraet") or ""))
-        if _narr_total > 1450:
-            scene_uri = ""
+    scene_uri = ""
 
     # ---- OPTIONAL client-matched social post (DNA §C2 "live social presence";
     # the Social Layout Planner's `case_study_post` binding). When the page

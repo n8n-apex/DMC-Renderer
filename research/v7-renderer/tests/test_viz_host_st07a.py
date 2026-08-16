@@ -76,22 +76,22 @@ def _scene_png(tmp_path) -> str:
     return str(p)
 
 
-def test_casestudy_hero_scene_band_renders_when_resolved(tmp_path) -> None:
-    """A resolved case_scene slot renders a .csh-scene supporting band INSIDE
-    the left narrative column (between sections) on the A3 spread — the visual
-    that fills the void bands."""
+def test_casestudy_hero_scene_removed_even_when_resolved(tmp_path) -> None:
+    """US-505 (Richard grammar): abstract fal scene bands are REMOVED from the
+    A3 spreads — Richard never uses abstract generative art; his case-study
+    spreads use data devices + real photography. Even a resolved case_scene
+    slot renders NO .csh-scene markup."""
     page = _st07a_page()
     page["layout_variant"] = "casestudy_hero"
     page["slots"] = [{"slot_id": "case_scene", "path": _scene_png(tmp_path)}]
     ctx = _SceneCtx(_apex_ctx(), _scene_png(tmp_path))
     html = st_07a.render(page, ctx).html
-    assert "csh-scene" in html
-    assert "cs_scene.png" in html
+    assert "csh-scene" not in html, "abstract art bands are forbidden on spreads"
 
 
 def test_casestudy_hero_scene_absent_renders_no_empty_box() -> None:
-    """No case_scene slot -> no .csh-scene markup at all (graceful, never an
-    empty frame — a client without a generated scene gets the clean spread)."""
+    """No case_scene slot -> no .csh-scene markup (graceful — and with US-505
+    the markup NEVER renders: the proof panel + measure carry the spread)."""
     page = _st07a_page()
     page["layout_variant"] = "casestudy_hero"
     page["slots"] = []

@@ -323,14 +323,15 @@
         {% endfor %}
       </div>
       {% endif %}
-    </div>
 
-    {% if pullquote_text %}
-    <figure class="csh-quote">
-      <blockquote class="csh-quote-text">{{ pullquote_text }}</blockquote>
-      {% if pullquote_attribution %}<figcaption class="csh-quote-attr">{{ pullquote_attribution }}</figcaption>{% endif %}
-    </figure>
-    {% endif %}
+      {% if pullquote_text %}
+      <div class="csh-dash-rule" aria-hidden="true"></div>
+      <figure class="csh-quote csh-quote--on-dark">
+        <blockquote class="csh-quote-text">{{ pullquote_text }}</blockquote>
+        {% if pullquote_attribution %}<figcaption class="csh-quote-attr">{{ pullquote_attribution }}</figcaption>{% endif %}
+      </figure>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% else %}

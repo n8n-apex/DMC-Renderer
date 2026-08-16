@@ -696,18 +696,23 @@ body {{
   --color-body: var(--color-on-dark);
   --color-muted: var(--color-on-dark);
 }}
-/* ghost brand letterform on the dark beats — Richard's 5-10% watermark device */
+/* ghost SECTION NUMBER on the dark beats — Richard's signature device
+   (niklas "01"/"02"/"03" overlapping the dark panel). US-505/506: the prior
+   brand-letter watermark read as generic filler; the giant zero-padded page
+   number is Richard's actual move. Sized to the panel (~40% height), low
+   contrast, anchored top-right behind the content. */
 .page[data-page-mode] .pm-ghost {{
   position: absolute;
   z-index: -1;
-  top: -34mm;
-  right: -18mm;
-  font-family: var(--font-display);
-  font-size: 200mm;
+  top: -8mm;
+  right: -6mm;
+  font-family: var(--font-head);
+  font-size: 88mm;
   font-weight: 800;
   line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--color-on-dark);
-  opacity: 0.05;
+  opacity: 0.07;
 }}
 .page[data-page-mode="color_flood"] {{
   background-color: var(--color-primary);
@@ -1091,7 +1096,12 @@ def render_package(package_dir: Path, output_dir: Path,
     # it floats into every page's @top-center margin box. Chromium has no
     # position:running (the div would render in-flow as junk before page 1), so
     # its chrome comes from the @page margin-box strings in shared_head_css.
-    _ghost = (pkg.brand.company_name_short or "").strip()[:1].upper()
+    # US-505/506 (Richard grammar): the dark beats' watermark was the brand's
+    # first letter ("A") — the audit called it "cheap generic decorative art".
+    # Richard's actual signature device is the GIANT low-contrast SECTION
+    # NUMBER (niklas "01"/"02"/"03" overlapping the dark panel). The watermark
+    # is now the page's logical index, zero-padded. The value is passed per
+    # section (index-aware), not a single brand letter.
     _burl = getattr(pkg.brand, "company_url_display", "") or ""
     _chrome = (
         pkg.brand.company_name_short or "",
@@ -1099,7 +1109,8 @@ def render_package(package_dir: Path, output_dir: Path,
         "",  # US-501: no booking CTA in the header
     )
     sections_html = "".join(
-        _section(page, frag, i, ghost_letter=_ghost,
+        _section(page, frag, i,
+                 ghost_letter=f"{i + 1:02d}",
                  treatment=page_treatments[i][0], page_format=page_treatments[i][1],
                  chrome=_chrome)
         for i, (page, frag) in enumerate(fragments)
