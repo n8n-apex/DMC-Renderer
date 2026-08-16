@@ -55,8 +55,11 @@
 }
 .st-07b .th-body p {
   margin: 0 0 var(--density-para, var(--space-2)) 0;
-  text-align: justify;
-  hyphens: auto;
+  /* US-508: justify + auto-hyphenation created the "berich-/ten" and
+     "fehlen-/des" cross-column breaks the audit flagged (p8/p10/p13).
+     Richard's pages are LEFT-ALIGNED, no justified rivers. */
+  text-align: left;
+  hyphens: none;
 }
 .st-07b .th-body p:first-child {
   margin-top: 0;
@@ -216,7 +219,7 @@
   color: var(--color-on-dark);
   margin: 0;
   overflow-wrap: break-word;
-  hyphens: auto;
+  hyphens: none;   /* US-508: a display statement must never hyphenate */
 }
 /* a LONG statement (>110 chars) steps down one display size: at true print
    scale the xl cut ran 5+ lines and pushed the section past its sheet (the

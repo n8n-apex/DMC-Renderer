@@ -79,11 +79,15 @@
    italic, at h3 - a page-local restyle of the numbered_block title so the myth
    reads as the "lie" the reality below rebuts. */
 .st-14 .fb-item .c-numbered-block__title {
+  /* US-508: the myth was bold-italic serif at lede for LONG quoted sentences
+     = the audit's "vibrating, illegible texture". Richard quotes long beliefs
+     in ROMAN serif with selective weight — the emphasis comes from the accent
+     number + the reality rebuttal, not a vibrating italic block. */
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 700;
+  font-style: normal;
+  font-weight: 600;
   font-size: var(--type-lede);   /* true-scale step-down (h3 at 85 percent) */
-  line-height: 1.22;
+  line-height: 1.32;
   color: var(--color-ink);
   margin: 0 0 var(--space-1) 0;
 }
