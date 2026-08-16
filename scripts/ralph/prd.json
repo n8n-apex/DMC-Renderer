@@ -351,8 +351,8 @@
       "id": "US-507",
       "description": "whitespace distribution: asymmetric 60/40, wide gutters, generous margins",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: ST-02 island margin, FAZIT these gap, ST-22 rule span, ST-14 reality bar align"
     },
     {
       "id": "US-508",
