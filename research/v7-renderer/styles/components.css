@@ -495,16 +495,9 @@
 /* ---- stat_callout_card: a small tint card — a big accent figure over an
    uppercase label. Floats beside body copy (ST-06). #} */
 .c-stat-callout {
-  /* US-509 (structural): the stat callout was a centered accent-tint BOX —
-     the audit's recurring "cheap PowerPoint widget / floating rounded
-     rectangle" (p1, p16). Richard's stat treatment is FLAT and editorial:
-     no box, left-aligned, the accent numeral over the muted label with a
-     hairline. The page ground carries it. */
-  background-color: transparent;
-  padding: 0;
-  text-align: left;
-  border-top: 0.4mm solid var(--color-accent);
-  padding-top: var(--space-2);
+  background-color: var(--color-accent-tint);
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
 }
 .c-stat-callout__value {
   font-family: var(--font-head);
