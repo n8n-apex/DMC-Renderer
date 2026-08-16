@@ -1,0 +1,505 @@
+/* a4_editorial_fill treatment (A4-portrait). Scoped under
+ * .page.treatment-a4_editorial_fill so it cannot leak. Semantic design tokens
+ * ONLY (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * A DEFINITE-height (257mm) flex column. The HEAD hero anchors the top; the MID
+ * grows to own the middle; the STAT rail + FOOT anchor the bottom. On LIST pages
+ * the numbered items are LARGE bands (oversized accent numerals) that spread to
+ * fill the slack -- so a thin page reads as a designed editorial cover, not a
+ * clump of text with a dead bottom band (the failure the legacy patterns had).
+ */
+.page.treatment-a4_editorial_fill .ef-grid {
+  position: relative;
+  height: 257mm;
+  box-sizing: border-box;
+}
+/* THE RAIL ANCHOR (bisect-proven, 2026-07-15). A rail positioned against the
+   GRID and reaching past it with negative offsets has its paint TRUNCATED BY
+   THE FOLLOWING PAGE's geometry: About -> chromed ST-09 clipped the rail at
+   271mm, while ST-02 -> About and the About page ALONE both painted the full
+   296.5mm. (The case rails only escaped because a dark beat follows each.)
+   On a rail page the SECTION is the sheet, so anchoring the rail to the
+   section's padding box removes the dependency on the grid box AND on the
+   neighbour: no negative offsets, nothing to truncate. The grid goes static
+   so the rail resolves against the section. */
+.page.tp-rail.treatment-a4_editorial_fill .ef-grid { position: static; }
+/* Chromium print clips content at the page area AND ignores @page
+   backgrounds, so the portrait rail's negative offsets never reach the sheet
+   edges on a chromed page. Rail pages route to the suppressed `bleed` named
+   page (margin:0) with the margins replicated as section padding: internal
+   geometry is untouched while the rail bleeds through the padding zone to the
+   sheet edges. The suppressed chrome is re-drawn inside the section
+   (tp-chrome bars, injected by the assembler). */
+/* rail-page routing lives on the assembler's section-level .tp-rail rule
+   (one source of truth for every railed treatment): the :has()-based routing
+   that sat here silently failed in Chromium's print pass. */
+/* the flex FILL column (the old grid behavior) lives on .ef-main so the grid
+   can also host the absolute portrait rail without disturbing the column. */
+.page.treatment-a4_editorial_fill .ef-main {
+  height: 257mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* PORTRAIT-RAIL variant (About): left field keeps 58% measure and clips; the
+   dark rail owns the right 42% and bleeds to the sheet edges like the
+   case-study rail (same offsets: 14mm right margin, 20mm bottom + 4mm reach). */
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-main {
+  position: relative;
+  z-index: 1;
+  width: 58%;
+  padding-right: var(--space-6);
+}
+.page.treatment-a4_editorial_fill .ef-rail {
+  position: absolute;
+  z-index: 0;
+  /* anchored to the SECTION (the sheet) on rail pages, see THE RAIL ANCHOR
+     note above: top at the content-box line so the chrome band stays clean,
+     bottom/right flush to the trim. */
+  top: 16mm;
+  bottom: 0;
+  right: 0;
+  left: auto;
+  height: auto;
+  /* ABSOLUTE width, not a percentage: the rail now resolves against the
+     SECTION (210mm sheet), while the left field's 58% resolves against the
+     GRID (178mm content box). The designed rail is 42% of the content box
+     plus the 14mm right margin = 0.42*178 + 14 = 88.8mm; as a percentage of
+     the section it would eat ~13mm of the text column. */
+  width: 88.8mm;
+  box-sizing: border-box;
+  padding: var(--space-6) calc(14mm + var(--space-5)) 26mm var(--space-6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 82% 8%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 48%),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-on-dark) 6%, transparent) 0%,
+      transparent 34%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 100%);
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+}
+/* the founder photo as a designed PLATE: full rail width, accent base rule. */
+.page.treatment-a4_editorial_fill .ef-rail-photo-plate {
+  flex: 0 0 auto;
+  border-bottom: 1.2mm solid var(--color-accent);
+}
+.page.treatment-a4_editorial_fill .ef-rail-photo {
+  width: 100%;
+  height: 74mm;
+  background-size: cover;
+  background-position: center 18%;
+  background-repeat: no-repeat;
+}
+.page.treatment-a4_editorial_fill .ef-rail-ident { flex: 0 0 auto; margin-top: var(--space-3); }
+.page.treatment-a4_editorial_fill .ef-rail-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_editorial_fill .ef-rail-role {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-top: 0.6mm;
+}
+/* the page's stats ON-DARK in the rail (the ERGEBNIS language of the case rail) */
+.page.treatment-a4_editorial_fill .ef-rail-stats {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
+  padding-top: var(--space-4);
+}
+.page.treatment-a4_editorial_fill .ef-rail-stats-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.page.treatment-a4_editorial_fill .ef-rail-stat { min-width: 0; }
+.page.treatment-a4_editorial_fill .ef-rail-stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-on-dark);
+  overflow-wrap: anywhere;
+}
+.page.treatment-a4_editorial_fill .ef-rail-stat.is-figure .ef-rail-stat-value { font-size: var(--type-stat); line-height: 1.0; }
+.page.treatment-a4_editorial_fill .ef-rail-stat.is-statement .ef-rail-stat-value { font-size: var(--type-h3); line-height: 1.22; font-weight: 600; }
+.page.treatment-a4_editorial_fill .ef-rail-stat-label {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--color-on-dark) 72%, var(--color-ink));
+  margin-top: 0.8mm;
+}
+.page.treatment-a4_editorial_fill .ef-rail-stat-source {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 55%, var(--color-ink));
+  margin-top: 0.4mm;
+}
+
+/* ---- HEAD (hero, anchored top) ---- */
+.page.treatment-a4_editorial_fill .ef-head { flex: 0 0 auto; min-width: 0; }
+.page.treatment-a4_editorial_fill .ef-head .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.28em;
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a4_editorial_fill .ef-head .c-two-tone {
+  font-size: var(--type-display);   /* canon H1 (28-40, def 32) -- a real token */
+  line-height: 1.05;
+  letter-spacing: -0.014em;
+  max-width: 172mm;
+}
+/* TRUE-SCALE REFIT of the RAILED variant (the silent ~85 percent Chromium
+   print shrink is gone, so this layout's sizes now print at their real
+   values). The rail takes 42 percent of the measure, so the left field is
+   ~103mm: at the full display headline the About page ran past its 257mm
+   column and the clip ate the last list band AND the rail's stat block. One
+   tier down per element reproduces the APPROVED visual at true scale. */
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-head .c-two-tone {
+  font-size: var(--type-h2);   /* --type-h1 does NOT exist: an undefined token
+                                  silently voids the whole declaration */
+  line-height: 1.08;
+}
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-lede { font-size: var(--type-body); }
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-body { font-size: var(--type-body); }
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-list-n { font-size: var(--type-h2); }
+.page.treatment-a4_editorial_fill .ef-grid.has-rail .ef-list-t { font-size: var(--type-body); }
+.page.treatment-a4_editorial_fill .ef-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-5) 0 0 0;
+  max-width: 158mm;
+}
+
+/* ---- MID (grows to own the page middle) ---- */
+.page.treatment-a4_editorial_fill .ef-mid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: var(--space-6) 0;
+  /* LAST-RESORT guard only: the scene/device bands now SHRINK with the column
+     (their own flex + min-height floors below), so this clip engages only when
+     even the floors cannot fit; without it the content could paint over the
+     stats/foot siblings. */
+  overflow: hidden;
+}
+/* prose pages: center the (natural-height) prose block so the surrounding
+   whitespace reads as balanced, designed air rather than a dead bottom band.
+   list pages keep top-alignment so the bands can flex-fill downward. */
+.page.treatment-a4_editorial_fill .ef-mid.is-prose { justify-content: center; }
+/* when a foot (CTA / quote) anchors the bottom, flow the mid from the lede so a
+   single framed gap sits above the foot -- not a block floating between two gaps. */
+.page.treatment-a4_editorial_fill .ef-mid.is-prose.has-foot { justify-content: flex-start; }
+/* a short single-column lead-in above a numbered list (never 2-column orphan) */
+.page.treatment-a4_editorial_fill .ef-lead-in {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  max-width: 158mm;
+  margin-bottom: var(--space-6);
+}
+.page.treatment-a4_editorial_fill .ef-lead-in p { margin: 0 0 var(--space-3) 0; }
+.page.treatment-a4_editorial_fill .ef-lead-in p:last-child { margin-bottom: 0; }
+
+/* running prose (About / Fazit). MANY blocks -> a 2-column justified block that
+   fills the middle. THIN prose (<=2 blocks, .is-wide) -> one WIDE lede-scale
+   column, which fills more honestly than a cramped 2-col split with orphans. */
+.page.treatment-a4_editorial_fill .ef-body {
+  flex: 0 0 auto;
+  column-count: 2;
+  column-gap: var(--space-7);
+  column-fill: balance;
+  column-rule: 0.2mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.52;
+  color: var(--color-body);
+}
+.page.treatment-a4_editorial_fill .ef-body.is-wide {
+  column-count: 1;
+  column-rule: none;
+  font-size: var(--type-h3);   /* a confident lead measure on a thin page */
+  line-height: 1.58;
+  max-width: 160mm;
+}
+.page.treatment-a4_editorial_fill .ef-body p { margin: 0 0 var(--space-4) 0; text-align: justify; hyphens: auto; }
+.page.treatment-a4_editorial_fill .ef-body.is-wide p { text-align: left; }
+.page.treatment-a4_editorial_fill .ef-body p:last-child { margin-bottom: 0; }
+/* hero quote: a page whose only middle payload is a thesis (Fazit) -- promoted
+   to a large centered pull-statement that owns the middle instead of a foot line. */
+.page.treatment-a4_editorial_fill .ef-hero-quote {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-signature);   /* a commanding climax statement (28pt) */
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+  padding-left: var(--space-6);
+  border-left: 1.6mm solid var(--color-accent);
+  max-width: 172mm;
+  /* long German compounds at display size must break inside the measure,
+     never clip at the column edge. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.page.treatment-a4_editorial_fill .ef-hero-quote-attr {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: var(--space-4) 0 0 var(--space-6);
+}
+
+/* a folded lone credibility line: set off from the running prose as a lead */
+.page.treatment-a4_editorial_fill .ef-body-lead {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  line-height: 1.34;
+  color: var(--color-ink);
+  border-left: 1mm solid var(--color-accent);
+  padding-left: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+/* the numbered editorial list: LARGE bands that spread to fill the slack --
+   oversized accent numerals, a top rule per item, generous air between them. */
+.page.treatment-a4_editorial_fill .ef-list {
+  flex: 1 1 auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 176mm;
+}
+/* each item is an EQUAL-height band (flex:1 1 0) so N items evenly divide the
+   list's vertical slack -- a filled, rhythmic column of bands, never floating
+   rows with dead voids between them. */
+.page.treatment-a4_editorial_fill .ef-list-item {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  border-top: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  padding: var(--space-4) 0;
+}
+.page.treatment-a4_editorial_fill .ef-list-item:last-child {
+  border-bottom: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+.page.treatment-a4_editorial_fill .ef-list-n {
+  flex: 0 0 auto;
+  min-width: 20mm;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-stat);       /* oversized numeral -- gives the list weight */
+  line-height: 0.9;
+  color: var(--color-accent);
+}
+.page.treatment-a4_editorial_fill .ef-list-t {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.4;
+  color: var(--color-ink);
+  align-self: center;
+}
+
+/* the fal-generated scene/background art as a designed full-width photo band:
+   a bounded strip (24-40mm) with an accent base rule (Richard's photo-strip
+   device), never a wash under the copy. The band SHRINKS with the column
+   (flex 0 1 auto, floored at 24mm) instead of holding a fixed height and
+   being clipped mid-plate by the mid's overflow guard: a squeezed page keeps
+   a complete plate WITH its accent base rule (the rule rides the band's own
+   border-bottom, so it survives any shrink). */
+.page.treatment-a4_editorial_fill .ef-sceneband {
+  flex: 0 1 auto;
+  height: auto;
+  min-height: 24mm;
+  max-height: 40mm;
+  /* DUOTONE PLATE, not a raw crop-strip: an ink wash graded over the generated
+     art ties the photo into the page's material language (the reference decks
+     integrate photos as toned plates, never bare screenshots). */
+  background-image:
+    linear-gradient(to right,
+      color-mix(in srgb, var(--color-ink) 46%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 16%, transparent) 55%,
+      transparent 100%),
+    var(--ef-scene, none);
+  background-size: cover, cover;
+  background-position: center, center 40%;
+  background-repeat: no-repeat, no-repeat;
+  border-bottom: 1mm solid var(--color-accent);
+  /* generous bottom clearance so the following stats cap never overlaps the
+     photo's base rule (it printed over the band edge at space-4). */
+  margin: var(--space-4) 0 var(--space-6) 0;
+}
+/* on a THIN prose page with a CTA foot (the closing pages) the plate absorbs
+   the column's slack instead of leaving a void between it and the foot; the
+   cover crop makes growth safe. */
+.page.treatment-a4_editorial_fill .ef-mid.is-prose.has-foot .ef-sceneband {
+  flex: 1 1 40mm;
+  min-height: 24mm;
+  max-height: 96mm;
+  height: auto;
+}
+
+/* ---- VIZ / COMPONENT host bands: the page's data-viz presets + generated
+   component SVGs render as a centered device band in the middle. Tokens only. */
+.page.treatment-a4_editorial_fill .ef-vizband {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+.page.treatment-a4_editorial_fill .ef-vizband .c-viz { max-width: 176mm; }
+/* the device band SHRINKS with the column (floored at 32mm) rather than
+   holding its natural height and being clipped mid-frame by the mid's
+   overflow guard; the .ef-product height:100% below scales the device down
+   proportionally inside the squeezed band. */
+.page.treatment-a4_editorial_fill .ef-compband {
+  flex: 0 1 auto;
+  min-height: 32mm;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+.page.treatment-a4_editorial_fill .ef-comp { min-width: 0; max-width: 176mm; }
+.page.treatment-a4_editorial_fill .ef-comp svg { max-width: 100%; height: auto; }
+
+/* ---- STATS rail: the synthesized big-number callouts as the proof anchor ---- */
+.page.treatment-a4_editorial_fill .ef-stats { flex: 0 0 auto; }
+.page.treatment-a4_editorial_fill .ef-stats-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.page.treatment-a4_editorial_fill .ef-stats-row {
+  display: flex;
+  gap: var(--space-7);
+  align-items: flex-end;
+}
+.page.treatment-a4_editorial_fill .ef-stat { min-width: 0; }
+.page.treatment-a4_editorial_fill .ef-stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.page.treatment-a4_editorial_fill .is-figure .ef-stat-value { font-size: var(--type-stat); line-height: 1.0; }
+.page.treatment-a4_editorial_fill .is-statement .ef-stat-value { font-size: var(--type-h3); line-height: 1.22; font-weight: 600; }
+.page.treatment-a4_editorial_fill .ef-stat-label {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  line-height: 1.3;
+  color: var(--color-muted);
+  margin-top: 0.6mm;
+}
+
+/* ---- FOOT: pull-quote or CTA anchored at the bottom ---- */
+.page.treatment-a4_editorial_fill .ef-foot { flex: 0 0 auto; margin-top: var(--space-6); }
+.page.treatment-a4_editorial_fill .ef-quote {
+  border-left: 1mm solid var(--color-accent);
+  padding-left: var(--space-5);
+}
+.page.treatment-a4_editorial_fill .ef-quote-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--type-h3);
+  line-height: 1.3;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 165mm;
+}
+.page.treatment-a4_editorial_fill .ef-quote-attr {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  margin-top: var(--space-3);
+}
+.page.treatment-a4_editorial_fill .ef-cta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-4);
+}
+.page.treatment-a4_editorial_fill .ef-cta-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.page.treatment-a4_editorial_fill .ef-cta-url {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h2);
+  color: var(--color-accent);
+}
+
+/* a source citation under a sourced stat (kennzahlen quelle -> sub) */
+.page.treatment-a4_editorial_fill .ef-stat-source {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: 0.6mm;
+}
+
+/* the client's REAL product shot in the component band (frame is in the image).
+   max-height + contain: a portrait-aspect shot at 150mm wide would run ~285mm
+   tall and blow the 257mm column (the uncapped-device failure class).
+   height:100% + width:auto track the band's flexed height, so a squeezed band
+   scales the device down proportionally instead of clipping it mid-frame. */
+.page.treatment-a4_editorial_fill .ef-product {
+  max-width: 150mm;
+  width: auto;
+  height: 100%;
+  max-height: 88mm;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+

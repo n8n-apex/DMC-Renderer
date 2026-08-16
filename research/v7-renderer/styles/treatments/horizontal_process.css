@@ -1,0 +1,214 @@
+/* horizontal_process treatment (A3-landscape). Scoped under
+ * .page.treatment-horizontal_process so it cannot leak. Semantic design tokens
+ * ONLY (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * REBUILT 2026-07-13 to the ST-06 reference spread anatomy:
+ * a THREE-ZONE A3 spread. LEFT = product-mockup hero + centered headline +
+ * lede. MIDDLE = the navy numbered-steps panel (oversized accent numerals,
+ * on-dark text). RIGHT = full-height navy rail with the payoff statement and
+ * the CTA anchored at its foot. Replaces the old flat card row + spine that
+ * read as boxes-with-an-arrow (owner critique 2026-07-13).
+ *
+ * The A3-landscape content box is 420 - 14(right) - 18(left) = 388mm wide,
+ * 297 - 16(top) - 20(bottom) = 261mm tall. A definite-height flex ROW with a
+ * small safety inset so sub-pixel rounding never spills to a 2nd sheet. */
+.page.treatment-horizontal_process.format-a3 .hp-grid {
+  height: 258mm;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-6);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ---- LEFT zone: mockup hero + headline + lede ---- */
+.page.treatment-horizontal_process .hp-left {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.page.treatment-horizontal_process .hp-hero-mockup {
+  width: 100%;
+  max-height: 148mm;
+  object-fit: contain;
+  object-position: center top;
+  display: block;
+}
+.page.treatment-horizontal_process .hp-head { margin-top: var(--space-5); min-width: 0; }
+.page.treatment-horizontal_process .hp-head .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.28em;
+}
+.page.treatment-horizontal_process .hp-head .c-two-tone {
+  font-size: var(--type-h2);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+}
+.page.treatment-horizontal_process .hp-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-4) auto 0 auto;
+  max-width: 118mm;
+}
+.page.treatment-horizontal_process .hp-viz {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  display: flex;
+  justify-content: center;
+}
+/* generated SVG components band (the ST-06 process-flow device): sized to the
+   left column width, capped so it can never crowd the headline block out. */
+.page.treatment-horizontal_process .hp-comps {
+  width: 100%;
+  min-width: 0;
+  margin-top: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+.page.treatment-horizontal_process .hp-comp {
+  width: 100%;
+  min-width: 0;
+  max-height: 70mm;
+  overflow: hidden;
+}
+.page.treatment-horizontal_process .hp-comp svg {
+  width: 100%;
+  height: auto;
+  max-height: 70mm;
+}
+
+/* ---- MIDDLE zone: the navy numbered-steps panel (the reference device) ---- */
+.page.treatment-horizontal_process .hp-steps-panel {
+  flex: 0 0 118mm;
+  box-sizing: border-box;
+  border-radius: 3mm;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 80% 6%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 46%);
+  padding: var(--space-6) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  overflow: hidden;
+}
+.page.treatment-horizontal_process .hp-step {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.page.treatment-horizontal_process .hp-step + .hp-step {
+  border-top: 0.25mm solid color-mix(in srgb, var(--color-on-dark) 18%, transparent);
+  padding-top: var(--space-4);
+}
+.page.treatment-horizontal_process .hp-step-n {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--type-h2);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.page.treatment-horizontal_process .hp-step-text { min-width: 0; }
+.page.treatment-horizontal_process .hp-step-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-body);
+  color: var(--color-on-dark);
+}
+.page.treatment-horizontal_process .hp-step-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-on-dark) 82%, var(--color-ink));
+}
+.page.treatment-horizontal_process .hp-step-title + .hp-step-body::before {
+  content: " ";
+}
+
+/* ---- RIGHT zone: navy payoff + CTA rail, full height ---- */
+.page.treatment-horizontal_process .hp-rail {
+  flex: 0 0 96mm;
+  box-sizing: border-box;
+  border-radius: 3mm;
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-on-dark) 5%, transparent) 0%,
+      transparent 32%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 100%);
+  padding: var(--space-6) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+/* no result: the rail carries the CTA alone (the template sets this modifier
+   from the same td.result guard as the payoff); center it vertically so the
+   rail never reads as a stranded top cap over a navy void. */
+.page.treatment-horizontal_process .hp-rail--cta-only {
+  justify-content: center;
+}
+.page.treatment-horizontal_process .hp-rail-cap {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.page.treatment-horizontal_process .hp-rail-payoff {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.page.treatment-horizontal_process .hp-rail-statement {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--type-h2);
+  line-height: 1.35;
+  color: var(--color-on-dark);
+  margin: 0;
+}
+.page.treatment-horizontal_process .hp-rail-source {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 55%, var(--color-ink));
+  margin-top: var(--space-3);
+}
+.page.treatment-horizontal_process .hp-rail-cta {
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.page.treatment-horizontal_process .hp-rail-cta-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink));
+}
+.page.treatment-horizontal_process .hp-rail-cta-url {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  color: var(--color-accent);
+  overflow-wrap: anywhere;
+}

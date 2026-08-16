@@ -1,0 +1,477 @@
+/* editorial treatment (A3-landscape hero, reworked for the ABOUT page). Scoped
+ * under .page.treatment-editorial so it cannot leak. Semantic design tokens ONLY
+ * (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * !! STATUS 2026-06-20 (see CURRENT-STATE.md §E + memory ai-decorative-assets) !!
+ *   (1) OPEN DEFECT: the .ed-footer curved navy band crest collides on the LEFT
+ *       with the .ed-field-foot closing paragraph (dark text on the dark band =
+ *       illegible). FIX: shorten/flatten the band (.ed-footer height + the
+ *       --footer-curve path) so the paragraph clears it; qc_dead_space does NOT
+ *       catch this (text-on-panel), so crop-inspect.
+ *   (2) The footer/panel marble fill (--panel-marble) is PROCEDURAL CSS today
+ *       (fixtures/apex/panel_marble.py) = a STOPGAP. Per the user, the final fill
+ *       is an AI img2img navy-STONE asset (report_navy_stone / report_navy_footer);
+ *       keep the renderer's curve + double teal hairline GEOMETRY, swap the fill.
+ *
+ * The dark portrait column ALWAYS grounds on var(--color-ink) with
+ * var(--color-on-dark) text (the invisible-stat / panel-contrast rule); teal
+ * accents on the dark column lift toward on-dark via
+ * color-mix(var(--color-accent), var(--color-on-dark)) exactly as the st_07a
+ * dark rail does (mirrored, not a new shade).
+ *
+ * Reference: treatments/refs/{html,png}/treat_editorial_v2 (the About page). The
+ * mockup's raw hex + font names + apex strings are replaced by tokens + td data.
+ *
+ * Layout: a 2-column grid filling the A3 content box. The left cream field is a
+ * TOP / MIDDLE / BOTTOM distributed stack (head / metrics-zone / closing block)
+ * that FILLS the A3 left field height so there is no dead band, top OR bottom:
+ * space-between pins the head to the top and the closing block to the bottom
+ * edge, and the metrics zone GROWS (flex:1) between them and centers its content
+ * so the donut + KPI callouts sit as the visual heart with even breathing above
+ * and below. The right dark column FULL-BLEEDS to the physical sheet edges via
+ * negative offsets equal to the page's margins, so the founder portrait runs
+ * edge-to-edge like the reference.
+ */
+
+/* the A3 content box is 420 - 14(right) - 18(left) = 388mm wide, 261mm tall. The
+   grid is a DEFINITE-height relative box (a small safety inset so sub-pixel
+   rounding never spills onto a 2nd sheet). overflow:hidden clips the bled dark
+   column to the box. The dark column is ABSOLUTELY positioned (so it never adds
+   flow height); the left field is the lone in-flow child and reserves the right
+   strip via its own width so its text never runs under the column. */
+.page.treatment-editorial.format-a3 .ed-grid {
+  position: relative;
+  height: 258mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- LEFT cream field: a TOP / MIDDLE / BOTTOM distributed stack (head /
+   metrics-zone / closing block) that FILLS the A3 height with even rhythm (no
+   dead band, top OR bottom). space-between pins the head to the top edge and the
+   closing block to the bottom edge; the metrics zone grows between them. Reserves
+   the right ~38% for the absolutely-positioned dark column + a gutter. */
+.page.treatment-editorial .ed-field {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* extra bottom room reserves a quiet band for the curved marble footer (below)
+     so the band's curved crest never crowds the closing paragraph. */
+  padding: var(--space-5) var(--space-7) 46mm 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* ---- THE CURVED MARBLE FOOTER (replaces the rejected sine wave) ---------------
+   A full-width navy-marble band sweeping the page bottom with ONE graceful curved
+   top edge + a double teal hairline, connecting visually to the right navy column
+   (same marble + ink). The craft target is the InDesign footer reference:
+   a deep navy band rising across the width with a single shallow asymmetric sweep,
+   traced by a fine double metallic hairline, filled with navy stone.
+
+   It full-bleeds left + right + bottom to the SHEET edges (the grid box sits inside
+   the 16/14/20mm @page margins; the grid's overflow:hidden clips the over-bleed).
+   Painted FIRST in the DOM so the absolute navy column lands ON TOP on the right --
+   the band + column read as one connected navy mass at the foot. Layers: an
+   absolute marble fill (masked to the curve) + an un-clipped double-hairline SVG. */
+.page.treatment-editorial {
+  /* the FILLED curve silhouette (navy region = everything BELOW the sweep), used as
+     the footer fill's mask so the band's TOP edge IS the curve. Kept identical to
+     the framework footer so both pages read as the same designed object. */
+  --footer-curve: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 104 C 175 40 345 24 515 34 C 770 49 985 70 1200 78 L1200 200 L0 200 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+.page.treatment-editorial .ed-footer {
+  position: absolute;
+  left: -18mm;
+  right: -14mm;
+  bottom: -20mm;
+  /* band height ~ the reserved bottom room + the bleed: a 56mm tall footer reads as
+     ~16% of the A3 height once the curve crest is in. */
+  height: 56mm;
+  z-index: 0;
+  pointer-events: none;
+}
+.page.treatment-editorial .ed-footer-fill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 40% 0%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 44%),
+    linear-gradient(to bottom, transparent 52%,
+      color-mix(in srgb, var(--color-ink) 60%, transparent) 100%),
+    var(--panel-marble, none);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+  -webkit-mask-image: var(--footer-curve);
+  mask-image: var(--footer-curve);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* the DOUBLE METALLIC HAIRLINE tracing the curve: an upper (bolder, brighter teal)
+   on the crest + a lower (finer, dimmer) a hair below, token-coloured via CSS
+   classes and NOT clipped by the fill's mask, so the rule stays crisp. */
+.page.treatment-editorial .ed-footer-edge {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.page.treatment-editorial .ed-edge-hi {
+  stroke: color-mix(in srgb, var(--color-accent) 72%, var(--color-on-dark));
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+.page.treatment-editorial .ed-edge-lo {
+  stroke: color-mix(in srgb, var(--color-accent) 50%, var(--color-ink));
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+.page.treatment-editorial .ed-field-head { flex: 0 0 auto; min-width: 0; }
+
+/* the metrics zone grows to absorb the field's slack and CENTERS its content
+   (donut + KPI callouts) in the band between the head and the closing block, so
+   the field reads as a composed column with balanced breathing above and below
+   the visual heart (no top-loaded hole, no bottom dead band). A leading hairline
+   rule + a small section label cap the zone so it reads as a deliberate metrics
+   block, mirroring the reference's metric band. */
+.page.treatment-editorial .ed-field-mid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: var(--space-5) 0;
+  /* a squeezed mid must clip, never overpaint the head above or the closing
+     block below it. */
+  overflow: hidden;
+}
+
+/* ---- BOTTOM closing block: anchored at the foot of the cream field (the
+   space-between pins it to the bottom edge). It carries the remaining About body
+   paragraphs (the founding thesis) or, as a fallback, a compact credibility
+   line, so the left column fills top-to-bottom with no parked band. A short teal
+   rule caps it as a deliberate closing note, echoing the reference's foot. */
+.page.treatment-editorial .ed-field-foot {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 200mm;
+}
+.page.treatment-editorial .ed-foot-rule {
+  display: block;
+  width: 28mm;
+  height: 0.9mm;
+  background: var(--color-accent);
+  margin-bottom: var(--space-4);
+}
+.page.treatment-editorial .ed-foot-para {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.55;
+  color: var(--color-body);
+  margin: 0 0 var(--space-3) 0;
+}
+.page.treatment-editorial .ed-foot-para:last-child { margin-bottom: 0; }
+.page.treatment-editorial .ed-foot-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+.page.treatment-editorial .ed-foot-point {
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  line-height: 1.4;
+  color: var(--color-body);
+  padding-left: var(--space-3);
+  border-left: 0.6mm solid var(--color-accent);
+}
+/* a hairline + label band above the metrics, echoing the reference's metric cap
+   and adding a structural anchor so the zone is not a floating island. */
+.page.treatment-editorial .ed-metrics-cap {
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  padding-top: var(--space-4);
+  margin-bottom: var(--space-5);
+  max-width: 215mm;
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* the eyebrow reads as a kicker over the headline */
+.page.treatment-editorial .ed-field .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.30em;
+  margin-bottom: var(--space-4);
+}
+
+/* the signature serif display headline, sized large for the wide A3 left field */
+.page.treatment-editorial .ed-field .c-two-tone {
+  font-size: var(--type-hero);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  max-width: 210mm;
+}
+
+/* the lede / standfirst under the headline: a calm intro measure */
+.page.treatment-editorial .ed-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-5) 0 0 0;
+  max-width: 168mm;
+}
+
+/* ---- the METRICS ZONE: the donut + KPI callouts (the visual heart) ----
+   A row: the proportion DONUT on the left, the KPI callouts stacked beside it.
+   A leading hairline + a small label band echo the reference's "Betriebskosten"
+   donut cap, but the donut macro already carries its own label, so the row is
+   just donut + KPIs with a generous gap. */
+.page.treatment-editorial .ed-metrics {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  max-width: 215mm;
+}
+
+/* the donut: enlarged so the verbatim range figure ("30-50%") is the prominent
+   centerpiece. The viz macro emits .c-viz-donut (an inline-flex of svg + meta);
+   we scale the svg up and seat its label below the figure. */
+.page.treatment-editorial .ed-donut { flex: 0 0 auto; }
+.page.treatment-editorial .ed-donut .c-viz-donut {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.page.treatment-editorial .ed-donut .c-viz-donut__svg {
+  /* shrinkable: full size when the zone allows, scaling down with the zone so a
+     squeezed mid can never push the ring over its neighbours. */
+  width: min(62mm, 100%);
+  max-height: 62mm;
+  height: auto;
+}
+/* a vivid SOLID teal arc on a faint track, matching the reference's clean teal
+   ring (the shared muted/gradient donut reads pale at this large scale). */
+.page.treatment-editorial .ed-donut .c-viz-donut__track {
+  stroke: color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+.page.treatment-editorial .ed-donut .c-viz-donut__arc {
+  stroke: var(--color-accent) !important;
+  filter: none;
+}
+.page.treatment-editorial .ed-donut .c-viz-donut__center {
+  font-family: var(--font-display);
+  fill: var(--color-ink);
+  font-weight: 600;
+}
+.page.treatment-editorial .ed-donut .c-viz-donut__label {
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* the KPI callouts: big serif numerals with an uppercase accent label, each an
+   accent-ruled cell. Sized large so 100+ / €200k+ read as the heart's figures. */
+.page.treatment-editorial .ed-kpis {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.page.treatment-editorial .ed-kpi {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  border-left: 0.8mm solid var(--color-accent);
+  background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+  padding: var(--space-3) var(--space-5);
+}
+.page.treatment-editorial .ed-kpi-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-display);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  min-width: 42mm;
+}
+.page.treatment-editorial .ed-kpi-label {
+  font-size: var(--type-body);
+  color: var(--color-body);
+  letter-spacing: 0.01em;
+}
+
+/* ---- RIGHT dark column: full-bleed portrait + scrim caption + credential wall
+   ---- Grounds on var(--color-ink) (panel-contrast rule). The column extends past
+   the page's margins so the portrait bleeds to the physical sheet edges, matching
+   the reference's edge-to-edge navy band. */
+.page.treatment-editorial .ed-column {
+  position: absolute;
+  /* above the curved marble footer band so the column reads as the navy mass the
+     footer connects INTO (the band sweeps the cream-left, the column owns the
+     right). */
+  z-index: 2;
+  /* bleed to the top, bottom, and right SHEET edges. The grid box IS the content
+     box (inside the 16/14/20mm @page margins), so negative offsets reach the
+     physical sheet edges; the grid's overflow:hidden clips the over-bleed and the
+     column adds NO flow height (so the page can never spill to a 2nd sheet). */
+  top: -16mm;
+  right: -14mm;
+  bottom: -23mm;
+  width: 38%;
+  /* a COMPOSED dark MATERIAL: the SAME navy MARBLE as the curved footer (so the
+     column + footer read as one stone), with a faint accent aurora at the top-right
+     + a primary cast deepening toward the base layered OVER the marble, all
+     token-derived via color-mix so it reads as a quiet material at large scale,
+     never a glow. The marble only shows where the portrait does not cover (behind
+     the caption + credential wall), so legibility is unaffected. The marble is the
+     wired panel asset (var(--panel-marble)); absent -> the flat ink ground shows
+     through (graceful). NOT a box-shadow glow -- background-image layers only. */
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 82% 9%,
+      color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 54%),
+    linear-gradient(165deg, transparent 38%,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 132%),
+    var(--panel-marble, none);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+  color: var(--color-on-dark);
+  /* an accent seam on the inner edge, mirroring the reference's teal seam */
+  border-left: 1.2mm solid var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* the column bleeds 16mm above + 23mm below the visible sheet; inset the FLEX
+     content by those amounts so the portrait, scrim, and credential wall land
+     INSIDE the visible sheet. The bled strips above/below stay solid ink. */
+  padding-top: 16mm;
+  padding-bottom: 23mm;
+}
+
+/* the portrait fills the upper ~56% of the column as a face-safe cover
+   background. The founder JPG is a true 3:4 portrait; center top keeps the face
+   high and intact (never a bad landscape crop).
+
+   The column's two children (portrait + credential wall) BOTH carry an EXPLICIT
+   flex-basis that sums to 100% of the column's content height (56% + 44%), so the
+   column fills top-to-bottom with NO empty navy band. We do NOT use flex-grow to
+   absorb the slack: Chromium's print/paged-media engine collapses a flex-grow
+   child (flex:1 1 auto) to ZERO height inside an ABSOLUTELY-positioned flex
+   container (the credential wall vanished, leaving a dead navy box). Explicit
+   complementary bases lay out deterministically in both screen and print. */
+.page.treatment-editorial .ed-portrait {
+  position: relative;
+  flex: 0 0 56%;
+  min-height: 0;
+  background-color: var(--color-ink);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+/* a bottom scrim so the caption seats cleanly over the portrait foot */
+.page.treatment-editorial .ed-portrait::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48mm;
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-ink) 0%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 94%, transparent) 100%
+  );
+}
+.page.treatment-editorial .ed-caption {
+  position: absolute;
+  left: var(--space-6);
+  right: var(--space-6);
+  bottom: var(--space-5);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+.page.treatment-editorial .ed-caption-name {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  font-weight: 560;
+  line-height: 1.1;
+  color: var(--color-on-dark);
+}
+.page.treatment-editorial .ed-caption-role {
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink));
+  margin-top: var(--space-2);
+}
+
+/* the credential wall in the lower dark band (omitted entirely when
+   td.credentials is empty). Stacked names with thin on-dark dividers. Carries an
+   EXPLICIT 44% basis (complementing the portrait's 56%) so it deterministically
+   fills the lower column from the portrait foot to the bottom edge with NO dead
+   navy band, in BOTH screen and print (see the .ed-portrait note: flex-grow
+   collapses to zero in Chromium's paged-media engine inside the absolute column,
+   which is what left the navy box empty). space-between distributes the eyebrow
+   to the top of the band and the name list below it, so the wall fills the band. */
+.page.treatment-editorial .ed-creds {
+  flex: 0 0 44%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6) var(--space-6);
+}
+.page.treatment-editorial .ed-creds .c-eyebrow {
+  /* light-teal-on-navy accent: lifted toward on-dark so it reads on the dark
+     column (mirrors the st_07a dark rail's accent treatment). */
+  color: color-mix(in srgb, var(--color-accent) 55%, var(--color-on-dark));
+  letter-spacing: 0.28em;
+  margin-bottom: var(--space-4);
+}
+.page.treatment-editorial .ed-creds-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* the name rows distribute down the lower band so the wall reads as the
+     reference's evenly-spaced credential stack (not a top-clumped list). An
+     explicit basis (not flex-grow) keeps it painting under Chromium print. */
+  flex: 0 0 78%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.page.treatment-editorial .ed-creds-item {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 480;
+  color: var(--color-on-dark);
+  padding: var(--space-4) 0;
+  border-top: 0.2mm solid color-mix(in srgb, var(--color-on-dark) 18%, transparent);
+}
+.page.treatment-editorial .ed-creds-item:first-child { border-top: none; }
+
+/* only-child absorbers (mirrors the a3_case_study .cs-quote:only-child fix): no
+   portrait -> the credential wall fills the whole column; no credentials -> the
+   portrait does. Either way the column carries no dead navy band. */
+.page.treatment-editorial .ed-portrait:only-child { flex: 0 0 100%; }
+.page.treatment-editorial .ed-creds:only-child { flex: 0 0 100%; }

@@ -1,0 +1,212 @@
+/* a4_vertical_timeline treatment (A4-portrait). Scoped under
+ * .page.treatment-a4_vertical_timeline so it cannot leak. Semantic design tokens
+ * ONLY (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * Reference: treatments/refs/{html,png}/a4_vertical_timeline. The mockup's raw
+ * hex + font names + apex strings are replaced by tokens + td data.
+ *
+ * Layout: the root fills the A4 content box (261mm) as a flex column. The steps
+ * list takes the remaining height and distributes its rows (space-between) so a
+ * page with no right stats and no bottom quote (the real ST-06 / ST-22 render)
+ * still breathes evenly down the rail with no dead band. The spine is a hand
+ * rolled connecting line drawn between numbered nodes (no macro provides it).
+ */
+
+.page.treatment-a4_vertical_timeline .tl-root {
+  display: flex;
+  flex-direction: column;
+  /* a DEFINITE height pinned to the A4 content box (261mm) with a safety inset, so
+     the steps list (flex:1) distributes its rows within a FIXED box and a 6-step
+     page never grows past one sheet. overflow:hidden is the final clip guard. */
+  height: 257mm;
+  overflow: hidden;
+  padding: var(--space-1) 0 var(--space-2) 0;
+}
+
+/* ---- header ---- */
+.page.treatment-a4_vertical_timeline .tl-head {
+  padding-bottom: var(--space-4);
+  border-bottom: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  flex: 0 0 auto;
+}
+.page.treatment-a4_vertical_timeline .tl-head .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.28em;
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a4_vertical_timeline .tl-head .c-two-tone {
+  font-size: var(--type-h2);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  max-width: 165mm;
+}
+.page.treatment-a4_vertical_timeline .tl-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--color-ink);
+  margin: var(--space-3) 0 0 0;
+  max-width: 150mm;
+}
+
+/* ---- the timeline: an ordered list that fills the remaining height ---- */
+.page.treatment-a4_vertical_timeline .tl-steps {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-4) 0 0 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* anchors the single absolute spine drawn by ::before below */
+  position: relative;
+}
+/* the connecting SPINE, drawn ONCE on the list container: one absolute 0.6mm
+   hairline behind the node dots, running the full rail from the first node
+   center to the last (practical approximation: a 6mm inset at each end).
+   Replaces the old per-node stubs, which left visible gaps between rows once
+   space-between distributed the steps. The opaque 8mm dots paint on top. */
+.page.treatment-a4_vertical_timeline .tl-steps::before {
+  content: "";
+  position: absolute;
+  left: 3.7mm;
+  top: 6mm;
+  bottom: 6mm;
+  width: 0.6mm;
+  background-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+/* each step row: a fixed node column (carrying the spine) + the content row. */
+.page.treatment-a4_vertical_timeline .tl-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+.page.treatment-a4_vertical_timeline .tl-node {
+  position: relative;
+  flex: 0 0 16mm;
+  align-self: stretch;
+}
+/* the numbered node dot, seated on the spine (the spine itself is drawn once on
+   the .tl-steps container above) */
+.page.treatment-a4_vertical_timeline .tl-dot {
+  position: absolute;
+  left: 0;
+  top: 1.5mm;
+  width: 8mm;
+  height: 8mm;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 0.6mm solid var(--color-accent);
+  box-sizing: border-box;
+}
+.page.treatment-a4_vertical_timeline .tl-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.4mm;
+  height: 3.4mm;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  transform: translate(-50%, -50%);
+}
+/* the final node reads as the destination: a solid accent fill. */
+.page.treatment-a4_vertical_timeline .tl-step:last-child .tl-dot {
+  background-color: var(--color-accent);
+}
+.page.treatment-a4_vertical_timeline .tl-step:last-child .tl-dot::after {
+  background-color: var(--color-surface);
+}
+
+/* the content row: the step's main copy, with an OPTIONAL right stat column. */
+.page.treatment-a4_vertical_timeline .tl-row {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: 0 0 var(--space-4) var(--space-3);
+  min-width: 0;
+}
+.page.treatment-a4_vertical_timeline .tl-row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.page.treatment-a4_vertical_timeline .tl-rowtop {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+.page.treatment-a4_vertical_timeline .tl-idx {
+  font-family: var(--font-display);
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+}
+.page.treatment-a4_vertical_timeline .tl-title {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 520;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.page.treatment-a4_vertical_timeline .tl-desc {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-2) 0 0 0;
+  max-width: 120mm;
+}
+
+/* OPTIONAL right-aligned big stat per step (omitted by the template when there is
+   no paired stat). A serif accent figure over an uppercase label. */
+.page.treatment-a4_vertical_timeline .tl-fig {
+  flex: 0 0 42mm;
+  text-align: right;
+}
+.page.treatment-a4_vertical_timeline .tl-fig-v {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  font-weight: 560;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-accent);
+}
+.page.treatment-a4_vertical_timeline .tl-fig-k {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ---- OPTIONAL bottom pull-quote (omitted when td.quote is absent) ---- */
+.page.treatment-a4_vertical_timeline .tl-quote {
+  flex: 0 0 auto;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+}
+.page.treatment-a4_vertical_timeline .tl-quote .c-pull-quote-text {
+  font-size: var(--type-h3);
+  line-height: 1.4;
+  color: var(--color-ink);
+  max-width: 150mm;
+}
+
+/* device band: the page's data-viz presets centered above the closing quote. */
+.page.treatment-a4_vertical_timeline .tl-viz {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+.page.treatment-a4_vertical_timeline .tl-viz .c-viz { max-width: 170mm; }

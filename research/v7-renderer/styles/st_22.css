@@ -204,9 +204,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 12mm;
-  height: 12mm;
-  border-radius: 50%;
+  width: 11mm;
+  height: 11mm;
+  /* US-503: flat sharp square number — the audit called the circles
+     "amateurish circles-on-a-stick / Canva slide". Richard numbers are
+     sharp-edged blocks. */
+  border-radius: 0;
   background-color: var(--color-accent);
   color: var(--color-on-accent);
   font-family: var(--font-head);

@@ -1,0 +1,416 @@
+/* viz_compare.css - the COMPARISON family of the data-viz PRESET library
+   (formula_ladder / grouped_bars / stacked_bar_100 / entity_bars).
+
+   Token-only / brand-agnostic: every colour via var(--token) + color-mix; no hex,
+   no font-family literal, no branding. Matches the flat-on-cream editorial style
+   of viz.css: solid accent marks, muted-gray context, hairline rules, ink
+   numerals in the display face; no glow, no shadow, no gradient fill.
+
+   This sheet is a SIBLING of viz.css (wired separately in assembler.py) so the
+   comparison family can evolve without touching the preset library's own sheet.
+
+   Chromium print: all geometry is percentage-of-column or intrinsic; no fixed mm
+   heights that could blow a 257mm column, no flex-grow inside absolutely
+   positioned columns. Backgrounds print because the renderer passes
+   print_background=True. Every device avoids breaking across a page. */
+
+/* ============================== FORMULA LADDER ============================== */
+
+/* The calculation device: numbered steps down to a dark result box. Nothing is
+   scaled here (a derivation's steps share no axis), so there is no bar geometry:
+   the hierarchy IS the device. */
+.c-viz-ladder { width: 100%; }
+.c-viz-ladder__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-ladder__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Each step is its own line, separated by a hairline. The last step's rule is
+   dropped so the ladder lands cleanly on the result box. */
+.c-viz-ladder__row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 0.2mm solid color-mix(in srgb, var(--color-muted) 30%, transparent);
+  break-inside: avoid;
+}
+.c-viz-ladder__row:last-child { border-bottom: 0; }
+/* The step numeral: a small accent chip, the ladder's rung marker. */
+.c-viz-ladder__chip {
+  flex: 0 0 auto;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  font-weight: 700;
+  line-height: var(--space-4);
+  text-align: center;
+}
+.c-viz-ladder__figure {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+/* The step's value: the largest thing on the row, in the display face. */
+.c-viz-ladder__wert {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+.c-viz-ladder__einheit {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  color: var(--color-muted);
+}
+/* The explanatory label carries the step's reasoning; it yields to the figure. */
+.c-viz-ladder__label {
+  flex: 1 1 auto;
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  color: var(--color-body);
+  text-align: right;
+}
+/* The landing: the dark box the whole ladder was built to reach. Dark navy is the
+   emphasis register, used once per device, never as a full-height rail. */
+.c-viz-ladder__ergebnis {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-ink);
+  break-inside: avoid;
+}
+.c-viz-ladder__ergebnis-wert {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  font-weight: 700;
+  color: var(--color-on-dark);
+  font-variant-numeric: tabular-nums;
+}
+.c-viz-ladder__ergebnis-label {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  text-align: right;
+  color: color-mix(in srgb, var(--color-on-dark) 78%, transparent);
+}
+.c-viz-ladder__source {
+  font-family: var(--font-body);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ============================== GROUPED BARS =============================== */
+
+/* Before/after per category. Both series share ONE scale (the max across the
+   whole table), which is what makes rows comparable; the muted/accent pairing is
+   what makes the direction of change readable without reading a number. */
+.c-viz-grouped { width: 100%; }
+.c-viz-grouped__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-grouped__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.c-viz-grouped__row { break-inside: avoid; }
+.c-viz-grouped__label {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: var(--space-1);
+}
+/* The two bars of a category stack tight, so the pair reads as one unit. */
+.c-viz-grouped__pair {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+}
+/* The track holds the bar and its end label side by side; the bar's width is a
+   percentage of the track, the label follows it. */
+.c-viz-grouped__track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+.c-viz-grouped__bar {
+  flex: 0 0 auto;
+  height: 3mm;
+  min-width: 0;
+  border-radius: 0.5mm;
+}
+/* Vorher: muted context. Nachher: solid accent, the figure that matters. */
+.c-viz-grouped__bar--vorher {
+  background-color: color-mix(in srgb, var(--color-muted) 42%, transparent);
+}
+.c-viz-grouped__bar--nachher { background-color: var(--color-accent); }
+.c-viz-grouped__val {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.c-viz-grouped__legend {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 0.2mm solid color-mix(in srgb, var(--color-muted) 30%, transparent);
+}
+.c-viz-grouped__leg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+}
+.c-viz-grouped__swatch {
+  width: 2.5mm;
+  height: 2.5mm;
+  border-radius: 0.5mm;
+}
+.c-viz-grouped__swatch--vorher {
+  background-color: color-mix(in srgb, var(--color-muted) 42%, transparent);
+}
+.c-viz-grouped__swatch--nachher { background-color: var(--color-accent); }
+.c-viz-grouped__source {
+  font-family: var(--font-body);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ============================ 100% STACKED BAR ============================= */
+
+/* Composition of a whole, and the before/after of one ratio (two bars, one ramp).
+   Segment widths ARE the writer's percents: nothing is normalised to force a sum
+   of 100, so a stated 99% draws as 99% and the missing 1% is honest whitespace. */
+.c-viz-stack { width: 100%; }
+.c-viz-stack__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-stack__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.c-viz-stack__line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  break-inside: avoid;
+}
+/* The outside lane: reserved only when some segment is too thin to hold its own
+   percent, and reserved on EVERY line so the two series stay baseline-aligned. */
+.c-viz-stack--outside .c-viz-stack__line { padding-top: var(--space-4); }
+.c-viz-stack__rowlabel {
+  flex: 0 0 auto;
+  min-width: 18mm;
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+/* No overflow:hidden here, on purpose: a thin segment's outside label has to be
+   able to escape the track. The end segments carry the rounding instead. */
+.c-viz-stack__track {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  height: 7mm;
+  position: relative;
+}
+.c-viz-stack__seg {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+.c-viz-stack__seg:first-child { border-radius: 0.6mm 0 0 0.6mm; }
+.c-viz-stack__seg:last-child { border-radius: 0 0.6mm 0.6mm 0; }
+/* The tonal ramp: accent, to ink, to muted. Derived from tokens via color-mix, so
+   it re-hues itself for any brand and never hardcodes a palette. Five stops cycle
+   (a composition with more than five parts is not a composition, it is a table). */
+.c-viz-stack__seg--t1 { background-color: var(--color-accent); }
+.c-viz-stack__seg--t2 {
+  background-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-ink));
+}
+.c-viz-stack__seg--t3 { background-color: var(--color-ink); }
+.c-viz-stack__seg--t4 {
+  background-color: color-mix(in srgb, var(--color-ink) 45%, var(--color-surface));
+}
+.c-viz-stack__seg--t5 {
+  background-color: color-mix(in srgb, var(--color-muted) 40%, transparent);
+}
+/* Inside percent: sits on the segment's own ground. */
+.c-viz-stack__pct {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  font-weight: 700;
+  color: var(--color-on-dark);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.c-viz-stack__seg--t1 .c-viz-stack__pct { color: var(--color-on-accent); }
+.c-viz-stack__seg--t5 .c-viz-stack__pct { color: var(--color-ink); }
+/* Outside percent: lifted above its (thin) segment and centred on it, so a 1%
+   sliver still states its value. Ink on the page ground, not on the segment. */
+.c-viz-stack__pct--outside {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.8mm;
+  color: var(--color-ink);
+}
+.c-viz-stack__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.c-viz-stack__leg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+}
+.c-viz-stack__swatch {
+  flex: 0 0 auto;
+  width: 2.5mm;
+  height: 2.5mm;
+  border-radius: 0.5mm;
+}
+.c-viz-stack__swatch--t1 { background-color: var(--color-accent); }
+.c-viz-stack__swatch--t2 {
+  background-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-ink));
+}
+.c-viz-stack__swatch--t3 { background-color: var(--color-ink); }
+.c-viz-stack__swatch--t4 {
+  background-color: color-mix(in srgb, var(--color-ink) 45%, var(--color-surface));
+}
+.c-viz-stack__swatch--t5 {
+  background-color: color-mix(in srgb, var(--color-muted) 40%, transparent);
+}
+.c-viz-stack__source {
+  font-family: var(--font-body);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* =============================== ENTITY BARS =============================== */
+
+/* Entities compared on one metric. The mark is a text pill (never an emoji flag:
+   emoji do not embed reliably in print and carry no semantic value here). The
+   value prints verbatim, so a range ("3-5") stays a range while its bar takes the
+   range's leading number. */
+.c-viz-entity { width: 100%; }
+.c-viz-entity__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-entity__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.c-viz-entity__row { break-inside: avoid; }
+.c-viz-entity__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+/* The entity mark: a short code or name in a tinted pill. */
+.c-viz-entity__marke {
+  flex: 0 0 auto;
+  padding: 0.4mm var(--space-2);
+  border-radius: 1mm;
+  background-color: var(--color-accent-tint);
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.c-viz-entity__name {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+.c-viz-entity__track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+.c-viz-entity__bar {
+  flex: 0 0 auto;
+  height: 3mm;
+  min-width: 0;
+  border-radius: 0.5mm;
+  background-color: var(--color-accent);
+}
+.c-viz-entity__wert {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.c-viz-entity__source {
+  font-family: var(--font-body);
+  font-size: var(--type-source);
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}

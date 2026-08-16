@@ -1,0 +1,132 @@
+/* ST-31 / ST-32 — Atemseite / breathing page LAYOUT (Plan B rebuild).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); an optional short statement sizes off var(--font-display)
+ * (serif via the headline_type axis). The geometric overlay LOOK lives in the
+ * `c-geo` classes in styles/components.css (already in the shared head); this
+ * sheet only paints the full-bleed atmospheric ground + positions the overlay.
+ *
+ * Every rule is scoped under `.st-31` (the assembler's per-page section class).
+ *
+ * Full-bleed technique (WeasyPrint 68.1) — the SAME as the cover (ST-01): the
+ * breathing section assigns itself the suppressed named `bleed` page (margin:0,
+ * header band + folio removed — declared in the shared head) via the `page:`
+ * property below. The atmospheric block is a BLOCK with an explicit min-height
+ * equal to the full A4 sheet (297mm) carrying the texture/gradient asset as a
+ * cover background (an absolutely-positioned inset:0 background child paints 0
+ * ink in WeasyPrint; a block with real height does paint). When NO asset is
+ * supplied, a token gradient ground (--color-primary → --color-ink) is painted
+ * instead (`to bottom` lands the dark stop at the bottom edge — verified in
+ * WeasyPrint 68.1). A faint veil (token ink → transparent) deepens the
+ * atmosphere so the low-opacity geometric motif + the optional statement read.
+ *
+ * Accent discipline (§3.7): the only color firing here is the low-opacity
+ * geometric motif (geo_shapes, owned by components.css) — the page is a quiet,
+ * deliberate pause, never a busy content page.
+ */
+
+/* Route the breathing section to the suppressed full-bleed named page. */
+.page.st-31 { page: bleed; }
+
+/* Cancel the default per-page content ground/min-height (the breathing page
+   paints its own full-sheet atmospheric ground instead of sitting in the content
+   box). Both ST types share this layout (ST-32 re-exports the render). */
+.st-31.page { min-height: 0; background: none; }
+
+/* ---- the full-bleed atmospheric block: texture/gradient ground + full A4 ---- */
+.st-31 .br-bleed {
+  position: relative;
+  width: 100%;
+  height: 297mm;                           /* full A4 portrait (margin:0 page). DEFINITE
+                                              height (not min-height) so the absolutely
+                                              positioned darken scrim + geo overlay
+                                              resolve top:0/bottom:0 to the FULL sheet —
+                                              WeasyPrint 68.1 will NOT stretch an abs box
+                                              against a min-height container (verified). */
+  background-color: var(--color-ink);  /* fallback ground if no asset */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+/* No asset: a token gradient ground (a calm primary → ink atmospheric field).
+   `to bottom` anchors the deeper ink at the bottom edge (verified to paint). */
+.st-31 .br-bleed--gradient {
+  background-image: linear-gradient(to bottom, var(--color-primary), var(--color-ink));
+}
+
+/* ---- atmospheric darken (ALWAYS painted): the breathing page is a deliberate
+   DEEP brand field — a designed pacing beat (like the back cover), never a pale
+   blank. A full-cover diagonal ramp between two SOLID token colours
+   (--color-primary → --color-ink) composites cleanly in WeasyPrint 68.1 (the same
+   solid→solid gradient the --gradient fallback uses; only an opacity ramp toward
+   `transparent` banded, which this avoids). At ~0.9 element opacity it deepens the
+   ground to a brand-navy atmosphere while a sliver of the underlying texture peeks
+   through for life; the geo motif + any centered statement read clearly above it.
+   Token-only: --color-primary / --color-ink (no raw rgba; color-mix() does not
+   paint here). ---- */
+.st-31 .br-scrim {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(152deg, var(--color-primary) 0%, var(--color-ink) 72%, var(--color-ink) 100%);
+  opacity: 0.9;
+}
+/* REAL-PHOTO breather (a routed founder/client scene): a LIGHT cinematic gradient
+   (transparent at the top so the faces/scene read clearly, deepening to ink at the
+   base for grounding + folio legibility) — NOT the heavy abstract darken. The photo
+   is the hero; this only adds depth + a premium graded base. Token-only. */
+.st-31 .br-bleed--photo .br-scrim {
+  background-image:
+    linear-gradient(to bottom, transparent 22%, var(--color-ink) 96%);
+  opacity: 0.72;
+}
+
+/* ---- centered statement layer (above the overlay + veil) ---- */
+.st-31 .br-center {
+  position: relative;
+  z-index: 1;
+  min-height: 297mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28mm 26mm;
+}
+.st-31 .br-phrase {
+  font-family: var(--font-display);        /* serif via the headline_type axis */
+  font-weight: 600;
+  font-size: var(--type-display);
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--color-on-dark);
+  text-align: center;
+  max-width: 150mm;
+  margin: 0;
+  text-wrap: balance;
+}
+/* On a REAL-PHOTO breather the statement is an EDITORIAL overlay (the apex/Richard
+   "FAZIT ZU DEN 7 MYTHEN" treatment): anchored BOTTOM-LEFT over the deepened base
+   gradient (where the photo is darkest → the white serif reads), with a short
+   accent rule above it. The abstract-ground breathers keep the centred statement. */
+.st-31 .br-bleed--photo .br-center {
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 24mm 30mm 24mm;
+}
+.st-31 .br-bleed--photo .br-phrase {
+  text-align: left;
+  max-width: 150mm;
+  padding-top: var(--space-2);
+  border-top: 1mm solid var(--color-accent);
+}
+
+/* ---- "live social presence" phone mockup, centred on the breather ground (the
+   geo motif frames it). The device chrome lives in .c-phone (components.css);
+   this only sizes + layers it above the scrim/overlay. ---- */
+.st-31 .br-phone { position: relative; z-index: 1; }
+.st-31 .br-phone .c-phone { width: 92mm; }
+/* the profile-grid phone is a touch wider so the 3×29.5mm cells fill the screen
+   edge-to-edge with breathing room (a more present "brand presence" page). */
+.st-31 .br-phone .c-phone--grid { width: 100mm; }

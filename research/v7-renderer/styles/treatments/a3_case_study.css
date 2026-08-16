@@ -1,0 +1,372 @@
+/* a3_case_study treatment (A3-landscape, ST-07A). Scoped under
+ * .page.treatment-a3_case_study so it cannot leak. Semantic design tokens ONLY
+ * (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * Adapted from styles/treatments/editorial.css (the proven A3 scaffold), so it
+ * inherits the same hard-won A3 mechanics: a DEFINITE-height grid (the page can
+ * never spill to a 2nd sheet), a LEFT cream distributed-stack field, and a RIGHT
+ * navy-MARBLE column that is ABSOLUTELY positioned (adds no flow height) and
+ * full-bleeds to the sheet edges. Panel-contrast rule: the dark column grounds on
+ * var(--color-ink) with var(--color-on-dark) text; teal accents on the dark
+ * column lift toward on-dark via color-mix (mirrors the st_07a dark rail).
+ *
+ * DIFFERENCES vs editorial: the LEFT field's middle is the case-study NARRATIVE
+ * (Ausgangsproblem / Wendepunkt / Loesung as a label+paragraph stack) and the
+ * FOOT is the RESULT metrics zone (ring + KPIs); the RIGHT column carries the
+ * client PULL-QUOTE (not a credential wall) under the portrait.
+ */
+
+/* ---- the A3 grid: a definite-height relative box, clipped, flex column. Height
+   258mm ~ the A3 content box with a small safety inset so sub-pixel rounding
+   never spills onto a 2nd sheet. ---- */
+.page.treatment-a3_case_study.format-a3 .cs-grid {
+  position: relative;
+  height: 258mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- LEFT cream field: TOP (head) / MIDDLE (narrative, grows) / FOOT (metrics)
+   distributed stack filling the A3 height. Reserves the right ~38% for the
+   absolute dark column + a bottom band for the curved marble footer. ---- */
+.page.treatment-a3_case_study .cs-field {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* bottom reserve clears the 56mm curved marble footer so the metrics zone never
+     collides with the navy band (dark-on-dark). */
+  padding: var(--space-5) var(--space-7) 62mm 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* ---- the CURVED MARBLE FOOTER (same designed object as editorial, so the deck
+   reads consistent). Full-bleeds left/right/bottom to the sheet edges; the grid's
+   overflow:hidden clips the over-bleed. Painted FIRST so the navy column lands on
+   top on the right (band + column = one navy mass at the foot). ---- */
+.page.treatment-a3_case_study {
+  --footer-curve: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cpath d='M0 104 C 175 40 345 24 515 34 C 770 49 985 70 1200 78 L1200 200 L0 200 Z' fill='%23000'/%3E%3C/svg%3E");
+}
+.page.treatment-a3_case_study .cs-footer {
+  position: absolute;
+  left: -18mm;
+  right: -14mm;
+  bottom: -20mm;
+  height: 56mm;
+  z-index: 0;
+  pointer-events: none;
+}
+.page.treatment-a3_case_study .cs-footer-fill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 40% 0%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 44%),
+    linear-gradient(to bottom, transparent 52%,
+      color-mix(in srgb, var(--color-ink) 60%, transparent) 100%),
+    var(--panel-marble, none);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+  -webkit-mask-image: var(--footer-curve);
+  mask-image: var(--footer-curve);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.page.treatment-a3_case_study .cs-footer-edge {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.page.treatment-a3_case_study .cs-edge-hi {
+  stroke: color-mix(in srgb, var(--color-accent) 72%, var(--color-on-dark));
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+.page.treatment-a3_case_study .cs-edge-lo {
+  stroke: color-mix(in srgb, var(--color-accent) 50%, var(--color-ink));
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---- TOP: eyebrow + result headline + kurzportraet lede ---- */
+.page.treatment-a3_case_study .cs-field-head { flex: 0 0 auto; min-width: 0; }
+.page.treatment-a3_case_study .cs-field .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.30em;
+  margin-bottom: var(--space-4);
+}
+.page.treatment-a3_case_study .cs-field .c-two-tone {
+  font-size: var(--type-display);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+  max-width: 205mm;
+}
+.page.treatment-a3_case_study .cs-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-4) 0 0 0;
+  max-width: 170mm;
+}
+
+/* ---- MIDDLE: the narrative: labeled sections. Grows to absorb the field slack;
+   top-aligned (reads top-down) with even spacing between blocks. ---- */
+.page.treatment-a3_case_study .cs-field-mid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+  max-width: 205mm;
+  /* an overlong narrative must clip inside the mid band, never paint down into
+     the footer reserve onto the navy crest (dark-on-dark). */
+  overflow: hidden;
+}
+.page.treatment-a3_case_study .cs-section { min-width: 0; }
+.page.treatment-a3_case_study .cs-section-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding-left: var(--space-3);
+  border-left: 0.8mm solid var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a3_case_study .cs-section-text {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: 0;
+}
+
+/* ---- FOOT: the RESULT metrics zone (ring + KPI callouts), anchored at the foot
+   of the cream field, above the reserved marble-footer band. ---- */
+.page.treatment-a3_case_study .cs-field-foot { flex: 0 0 auto; min-width: 0; max-width: 205mm; }
+.page.treatment-a3_case_study .cs-metrics-cap {
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+  padding-top: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.page.treatment-a3_case_study .cs-metrics {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+.page.treatment-a3_case_study .cs-ring { flex: 0 0 auto; }
+.page.treatment-a3_case_study .cs-ring .c-viz-donut {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.page.treatment-a3_case_study .cs-ring .c-viz-donut__svg { width: 48mm; height: 48mm; }
+.page.treatment-a3_case_study .cs-ring .c-viz-donut__track {
+  stroke: color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+/* plain CSS outranks the macro's inline gradient stroke (an SVG presentation
+   attribute), so no !important is needed here, and the on-dark .cs-column
+   override below can win by specificity alone. */
+.page.treatment-a3_case_study .cs-ring .c-viz-donut__arc {
+  stroke: var(--color-accent);
+  filter: none;
+}
+.page.treatment-a3_case_study .cs-ring .c-viz-donut__center {
+  font-family: var(--font-display);
+  fill: var(--color-ink);
+  font-weight: 600;
+}
+.page.treatment-a3_case_study .cs-ring .c-viz-donut__label {
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+.page.treatment-a3_case_study .cs-kpis {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.page.treatment-a3_case_study .cs-kpi {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  border-left: 0.8mm solid var(--color-accent);
+  background: color-mix(in srgb, var(--color-ink) 4%, transparent);
+  padding: var(--space-2) var(--space-5);
+}
+.page.treatment-a3_case_study .cs-kpi-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-h2);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  min-width: 40mm;
+}
+.page.treatment-a3_case_study .cs-kpi-label {
+  font-size: var(--type-body);
+  color: var(--color-body);
+}
+
+/* ---- RIGHT dark column: full-bleed client portrait + pull-quote. Grounds on
+   var(--color-ink) (panel-contrast). Absolutely positioned, bleeds to the sheet
+   edges, adds no flow height. Portrait 56% / quote 44% via EXPLICIT flex-basis
+   (Chromium paged-media collapses flex-grow to 0 in an absolute flex box). ---- */
+.page.treatment-a3_case_study .cs-column {
+  position: absolute;
+  z-index: 2;
+  top: -16mm;
+  right: -14mm;
+  bottom: -23mm;
+  width: 38%;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 82% 9%,
+      color-mix(in srgb, var(--color-accent) 13%, transparent), transparent 54%),
+    linear-gradient(165deg, transparent 38%,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 132%),
+    var(--panel-marble, none);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+  color: var(--color-on-dark);
+  border-left: 1.2mm solid var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: 16mm;
+  padding-bottom: 23mm;
+}
+.page.treatment-a3_case_study .cs-portrait {
+  position: relative;
+  flex: 0 0 56%;
+  min-height: 0;
+  background-color: var(--color-ink);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+.page.treatment-a3_case_study .cs-portrait::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44mm;
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-ink) 0%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 94%, transparent) 100%
+  );
+}
+.page.treatment-a3_case_study .cs-caption {
+  position: absolute;
+  left: var(--space-6);
+  right: var(--space-6);
+  bottom: var(--space-5);
+  z-index: 2;
+}
+.page.treatment-a3_case_study .cs-caption-name {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 560;
+  line-height: 1.1;
+  color: var(--color-on-dark);
+}
+
+/* the PULL-QUOTE in the lower dark band (explicit 44% basis, complementing the
+   portrait's 56%, so it fills the band with no dead nav:  see editorial note). */
+.page.treatment-a3_case_study .cs-quote {
+  flex: 0 0 44%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-5) var(--space-6) var(--space-6);
+}
+/* no portrait -> the quote is the column's ONLY child; fill the whole column so
+   there is no empty navy void above it (portraits arrive later via Drive/upload). */
+.page.treatment-a3_case_study .cs-quote:only-child { flex: 0 0 100%; }
+.page.treatment-a3_case_study .cs-quote-mark {
+  font-family: var(--font-display);
+  font-size: var(--type-hero);
+  line-height: 0.5;
+  color: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark));
+}
+.page.treatment-a3_case_study .cs-quote-text {
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+  font-weight: 480;
+  line-height: 1.28;
+  color: var(--color-on-dark);
+  margin: var(--space-3) 0 0 0;
+}
+.page.treatment-a3_case_study .cs-quote-attr {
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink));
+  margin-top: var(--space-4);
+}
+
+/* ============================================================================
+   B-7: the metrics DASHBOARD now lives in the RIGHT navy column. Distribute
+   [portrait?] + dash + quote down the column (fills top-to-bottom, no void), and
+   recolor the metrics ON DARK (the .cs-ring/.cs-kpi rules above assume a cream
+   ground; these .cs-column-scoped rules win by specificity).
+   ============================================================================ */
+.page.treatment-a3_case_study .cs-column { justify-content: space-evenly; gap: var(--space-5); }
+.page.treatment-a3_case_study .cs-portrait { flex: 0 0 84mm; }
+
+.page.treatment-a3_case_study .cs-dash { flex: 0 0 auto; width: 100%; }
+.page.treatment-a3_case_study .cs-dash-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-accent) 55%, var(--color-on-dark));
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
+  padding-top: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+/* stack the ring above the KPI rail in the narrow column */
+.page.treatment-a3_case_study .cs-column .cs-metrics { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+.page.treatment-a3_case_study .cs-column .cs-ring .c-viz-donut__svg { width: 40mm; height: 40mm; }
+/* on-dark ring recolor: the canonical on-dark recipe lives in components.css
+   (.c-viz-island); this mirrors it (arc lifted toward on-dark, track at 15%).
+   No !important: this wins over the cream .cs-ring rule by specificity. */
+.page.treatment-a3_case_study .cs-column .cs-ring .c-viz-donut__track { stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent); }
+.page.treatment-a3_case_study .cs-column .cs-ring .c-viz-donut__arc { stroke: color-mix(in srgb, var(--color-accent) 62%, var(--color-on-dark)); }
+.page.treatment-a3_case_study .cs-column .cs-ring .c-viz-donut__center { fill: var(--color-on-dark); }
+.page.treatment-a3_case_study .cs-column .cs-ring .c-viz-donut__label { color: color-mix(in srgb, var(--color-accent) 55%, var(--color-on-dark)); }
+.page.treatment-a3_case_study .cs-column .cs-kpis { flex: 0 0 auto; width: 100%; gap: var(--space-3); }
+.page.treatment-a3_case_study .cs-column .cs-kpi {
+  border-left-color: color-mix(in srgb, var(--color-accent) 70%, var(--color-on-dark));
+  background: color-mix(in srgb, var(--color-on-dark) 7%, transparent);
+}
+.page.treatment-a3_case_study .cs-column .cs-kpi-value { color: var(--color-on-dark); font-size: var(--type-h3); min-width: 0; }
+.page.treatment-a3_case_study .cs-column .cs-kpi-label { color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink)); }
+.page.treatment-a3_case_study .cs-column .cs-quote { flex: 0 0 auto; }

@@ -262,10 +262,12 @@
 }
 .st-fazit .fz-signoff__avatar {
   display: block;
-  width: 34mm;
-  height: 34mm;
+  width: 26mm;
+  height: 34mm;              /* 3:4 portrait — Richard's sharp-framed photo */
   flex: 0 0 auto;
-  border-radius: 50%;
+  /* US-503: the circular badge read as a "low-res LinkedIn profile badge";
+     Richard frames portraits as SHARP RECTANGLES (niklas/buchagentur). */
+  border-radius: 0;
   background-size: cover;
   background-position: center 22%;   /* bias to the face (portrait crop) */
   background-repeat: no-repeat;

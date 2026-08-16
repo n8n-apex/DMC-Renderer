@@ -198,13 +198,20 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     # void band to fill, and the added band would overflow the A3 sheet
     # (verified: 21-page spill). The threshold is geometry, never content. ----
     scene_uri = ctx.slot_uri(page, "case_scene") or ""
+    # US-503 measure-fit: a DENSE spread (narrative > 1300 chars, e.g. Frese)
+    # cannot hold kicker+headline+portrait+lede+3 sections on the 260mm sheet
+    # at the roomier measure. The LEDE is suppressed on dense spreads —
+    # Richard's case-study spreads lead with the narrative; the portrait +
+    # headline carry the intro.
+    _narr_only = sum(
+        len(str(d.get(field) or "")) for _, field in _SECTION_SPEC
+        if field != "ziel"
+    )
+    lede_html = preprocess_body(d.get("kurzportraet", ""))
+    if _narr_only > 1300:
+        lede_html = ""
     if scene_uri:
-        # Count ONLY the sections the template actually renders (Ziel is
-        # dropped on the spread) — a long ziel must not gate the scene out.
-        _narr_total = sum(
-            len(str(d.get(field) or "")) for _, field in _SECTION_SPEC
-            if field != "ziel"
-        ) + len(str(d.get("kurzportraet") or ""))
+        _narr_total = _narr_only + len(str(d.get("kurzportraet") or ""))
         if _narr_total > 1450:
             scene_uri = ""
 
@@ -357,7 +364,7 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         # oversized digit behind the kicker, DNA §C1/§C6). Falsy → no ghost.
         fallstudie_number=fallstudie_number,
         headline=d.get("ergebnis_headline", ""),
-        lede_html=preprocess_body(d.get("kurzportraet", "")),
+        lede_html=lede_html,
         portrait_uri=portrait_uri,
         portrait_alt=kunde.get("name", ""),
         scene_uri=scene_uri,

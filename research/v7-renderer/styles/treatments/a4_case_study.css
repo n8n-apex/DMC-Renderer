@@ -1,0 +1,331 @@
+/* a4_case_study treatment (A4-portrait, ST-07A Fallstudie Einzelseite). Scoped
+ * under .page.treatment-a4_case_study so it cannot leak. Semantic design tokens
+ * ONLY (var(--...)): NO raw hex, NO font-family literal, NO client string.
+ *
+ * Reference anatomy: nikl_p08 / aerz_p05-left (08_DMC_Design_System_v2 §ST-07A +
+ * §Fallstudie "Kundenfoto prominent, Ergebnis-Zahl groß min. 40pt, Vorher/Nachher").
+ *
+ * Layout: a DEFINITE-height (257mm) A4 content box. LEFT cream field (60%) carries
+ * the narrative and distributes it down the column. RIGHT dark rail (40%) is
+ * ABSOLUTELY positioned and full-bleeds to the right + bottom sheet edges (adds no
+ * flow height, so the page can never spill to a 2nd sheet); it grounds on
+ * var(--color-ink) with var(--color-on-dark) text and carries the ghost numeral,
+ * the client portrait (when one resolves), the big Ergebnis numbers (the
+ * data-viz), and the pull-quote: distributed top-to-bottom so it always fills.
+ */
+
+/* ---- the A4 grid: definite-height relative box. NOT clipped (the rail must be
+   free to bleed past the content box to the sheet edges); the LEFT field clips
+   its own overflow instead. ---- */
+/* Chromium print clips page content at the page area AND ignores @page
+   backgrounds, so the rail's negative offsets alone can NEVER reach the sheet
+   edges on a chromed page (a cream halo framed every rail). The page routes
+   to the suppressed `bleed` named page (margin:0) and replicates the margins
+   as section padding: internal geometry is untouched, the grid still sits at
+   the old content-box position, and the rail's negative offsets now paint
+   into the visible padding zone all the way to the sheet edges. The chrome
+   the named page suppressed is re-drawn inside the section (tp-chrome bars,
+   injected by the assembler). */
+/* rail-page routing (page: bleed + explicit 296.5mm height + margins-as-
+   padding + clip) lives on the assembler's section-level .tp-rail rule: one
+   source of truth for every railed treatment. */
+.page.treatment-a4_case_study .cs4-grid {
+  position: relative;
+  height: 257mm;
+}
+/* THE RAIL ANCHOR (bisect-proven, 2026-07-15): a rail positioned against the
+   GRID and reaching past it with negative offsets has its paint TRUNCATED BY
+   THE FOLLOWING PAGE's geometry (proven on the About page: a chromed page
+   after it clipped the rail at 271mm). These rails only escaped because a
+   dark beat follows each case study - the same page-order luck could break
+   any future deck. On a rail page the SECTION is the sheet, so the rail
+   anchors to the section's padding box: no negative offsets, no neighbour
+   dependency. The grid goes static so the rail resolves against the section. */
+.page.tp-rail.treatment-a4_case_study .cs4-grid { position: static; }
+
+/* ---- LEFT: cream narrative field, 60%, clipped, top/foot distributed stack. ---- */
+.page.treatment-a4_case_study .cs4-main {
+  position: relative;
+  z-index: 1;
+  width: 60%;
+  height: 257mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-1) var(--space-6) var(--space-4) 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.page.treatment-a4_case_study .cs4-head { flex: 0 0 auto; min-width: 0; }
+.page.treatment-a4_case_study .cs4-head .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.28em;
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a4_case_study .cs4-head .c-two-tone {
+  font-size: var(--type-h2);
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+  max-width: 118mm;
+}
+.page.treatment-a4_case_study .cs4-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.38;
+  color: var(--color-body);
+  margin: var(--space-4) 0 0 0;
+  max-width: 112mm;
+}
+
+/* the narrative sections: grow to fill the field, top-aligned, even gaps. */
+.page.treatment-a4_case_study .cs4-sections {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  max-width: 118mm;
+}
+/* devices band: the case's data-viz (A->B transformation card) + generated
+   component SVGs, anchored at the FOOT of the cream field. Fills the lower-left
+   band that sat empty while the dark rail was full. Tokens only. */
+.page.treatment-a4_case_study .cs4-devices {
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: var(--space-4);
+  max-width: 118mm;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz { max-width: 118mm; }
+.page.treatment-a4_case_study .cs4-comp svg { max-width: 100%; height: auto; }
+
+.page.treatment-a4_case_study .cs4-section { min-width: 0; }
+.page.treatment-a4_case_study .cs4-section-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding-left: var(--space-3);
+  border-left: 0.8mm solid var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+.page.treatment-a4_case_study .cs4-section-text {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;   /* Richard B.1: body leading ~1.4; serif sets wider than the old sans fallback */
+  color: var(--color-body);
+  margin: 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* ---- RIGHT: the dark proof rail. Absolute; bleeds right + bottom to the sheet
+   edges (offsets = the @page 14mm right / 20mm bottom margins). Top sits at the
+   content-box top so the running header stays clean above it. ---- */
+.page.treatment-a4_case_study .cs4-rail {
+  /* the dark proof rail, anchored to the SECTION (the sheet) per THE RAIL
+     ANCHOR note above: top at the content-box line so the running chrome band
+     stays clean, bottom/right flush to the trim. */
+  position: absolute;
+  z-index: 0;
+  top: 16mm;
+  bottom: 0;
+  right: 0;
+  left: auto;
+  height: auto;
+  /* ABSOLUTE width (see the editorial-fill rail note): the rail resolves
+     against the SECTION (210mm) while the cream field's 60% resolves against
+     the GRID (178mm). The designed rail = 40% of the content box + the 14mm
+     right margin = 0.40*178 + 14 = 85.2mm. */
+  width: 85.2mm;
+  box-sizing: border-box;
+  padding: var(--space-6) calc(14mm + var(--space-5)) 26mm var(--space-6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 82% 8%,
+      color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 48%),
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-on-dark) 6%, transparent) 0%,
+      transparent 34%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 100%),
+    var(--panel-marble, none);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+}
+
+/* the oversized GHOST numeral, top of the rail. */
+.page.treatment-a4_case_study .cs4-numeral {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(var(--type-display-xl) * 2.1);
+  line-height: 0.8;
+  text-align: right;
+  color: color-mix(in srgb, var(--color-on-dark) 12%, transparent);
+  margin: 0 0 var(--space-2) 0;
+}
+
+/* the rail body distributes person / stats / quote down the remaining height. */
+.page.treatment-a4_case_study .cs4-rail-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+/* person block: portrait (when one resolves) + name / role / url. */
+.page.treatment-a4_case_study .cs4-person { flex: 0 0 auto; }
+.page.treatment-a4_case_study .cs4-portrait {
+  width: 100%;
+  height: 52mm;
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a4_case_study .cs4-ident-name {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-body);
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_case_study .cs4-ident-role {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  color: color-mix(in srgb, var(--color-on-dark) 68%, var(--color-ink));
+  margin-top: 0.4mm;
+}
+.page.treatment-a4_case_study .cs4-ident-url {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  margin-top: var(--space-2);
+}
+
+/* the Ergebnis DASHBOARD: the big result numbers (the data-viz). >=40pt anchors. */
+.page.treatment-a4_case_study .cs4-stats {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.page.treatment-a4_case_study .cs4-stats-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark));
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
+  padding-top: var(--space-3);
+}
+.page.treatment-a4_case_study .cs4-stat {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;   /* statement: label (kicker) above, text below */
+  gap: 0.6mm;
+}
+/* a FIGURE stacks the big number ON TOP of its caption (nikl "15 / Erstbewerbungen"). */
+.page.treatment-a4_case_study .cs4-stat.is-figure { flex-direction: column-reverse; }
+
+.page.treatment-a4_case_study .cs4-stat-value {
+  font-family: var(--font-display);
+  color: var(--color-on-dark);
+  /* long German compounds (Marktnachfrage) hyphenate/wrap instead of clipping at
+     the rail edge; the page is lang="de" so auto-hyphenation applies. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+/* FIGURE: the big result number: the >=40pt visual anchor. */
+.page.treatment-a4_case_study .is-figure .cs4-stat-value {
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+}
+/* STATEMENT: a phrase outcome: emphasized, but a readable LINE, not a giant. */
+.page.treatment-a4_case_study .is-statement .cs4-stat-value {
+  font-weight: 600;
+  font-size: var(--type-h3);
+  line-height: 1.24;
+}
+/* a source citation under a sourced stat: a sourced figure must never print
+   detached from its citation. */
+.page.treatment-a4_case_study .cs4-stat-source {
+  font-family: var(--font-head);
+  font-size: var(--type-source);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 55%, var(--color-ink));
+  margin-top: 0.4mm;
+}
+.page.treatment-a4_case_study .cs4-stat-label {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink));
+}
+/* STATEMENT label reads as a small accent KICKER above the phrase (topic -> outcome). */
+.page.treatment-a4_case_study .is-statement .cs4-stat-label {
+  font-family: var(--font-head);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark));
+}
+
+/* client pull-quote at the foot of the rail. */
+.page.treatment-a4_case_study .cs4-quote {
+  flex: 0 0 auto;
+  position: relative;
+  padding-top: var(--space-3);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 20%, transparent);
+}
+.page.treatment-a4_case_study .cs4-quote-mark {
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  line-height: 0.2;
+  color: color-mix(in srgb, var(--color-accent) 65%, var(--color-on-dark));
+}
+.page.treatment-a4_case_study .cs4-quote-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--type-body);
+  line-height: 1.36;
+  color: var(--color-on-dark);
+  margin: var(--space-2) 0 0 0;
+}
+.page.treatment-a4_case_study .cs4-quote-attr {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--color-accent) 55%, var(--color-on-dark));
+  margin-top: var(--space-2);
+}
+
+/* the client's REAL product shot (pre-framed device render) in the devices
+   band. The frame is part of the image; no chrome added here. */
+.page.treatment-a4_case_study .cs4-product {
+  max-width: 118mm;
+  width: 100%;
+  height: auto;
+  /* the devices band shares the field FOOT with the A->B card; an uncapped
+     wide render (2560px source ~ 74mm tall) pushed past the clip and vanished.
+     Cap + contain keeps the full frame visible in the band. */
+  max-height: 62mm;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+}

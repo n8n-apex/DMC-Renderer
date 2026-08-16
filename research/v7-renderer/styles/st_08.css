@@ -1,0 +1,66 @@
+/* ST-08 — FAQ page LAYOUT (Plan B rebuild, Master S19).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the heading sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif) — set against the sans var(--font-body) answers, that serif/sans pairing
+ * is the §18 hit. The Q&A unit LOOK (accent question + body answer) is owned by
+ * the `c-qa-item` class in styles/components.css (already in the shared head);
+ * this sheet only positions the items and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-08` (the assembler's per-page section class)
+ * so it cannot leak. The FAQ stack runs TWO columns via inline-block cells
+ * (robust in WeasyPrint 68.1, which flows them 2-up and wraps automatically —
+ * flexbox is weak for full-page columns), each Q&A pair kept whole with
+ * break-inside:avoid, with modest line-heights + --space-* rhythm so the page
+ * fits the 261mm content box on one physical sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the eyebrow is
+ * muted; each qa_item question is accent) — never on answer body text.
+ */
+
+/* ---- header: small uppercase eyebrow → serif heading → optional intro lede --- */
+.st-08 .faq-header {
+  margin: 0 0 var(--space-4) 0;
+}
+.st-08 .faq-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.st-08 .faq-intro {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--density-lead, 1.42);
+  color: var(--color-body);
+  max-width: 170mm;
+  margin: var(--space-3) 0 0 0;
+}
+.st-08 .faq-intro p { margin: 0 0 var(--density-para, var(--space-2)) 0; hyphens: auto; }
+.st-08 .faq-intro p:last-child { margin-bottom: 0; }
+.st-08 .faq-intro strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- Q&A grid: two columns via inline-block cells. The font-size:0 on the grid
+   kills the inline-block whitespace gap; the cells reset it. Each cell carries
+   one qa_item; row rhythm comes from the cell's bottom padding so the Q&A pairs
+   pack tight but legible. ---- */
+.st-08 .faq-list {
+  font-size: 0;             /* collapse inter-cell whitespace */
+}
+.st-08 .faq-cell {
+  display: inline-block;
+  width: 47.5%;
+  box-sizing: border-box;
+  vertical-align: top;
+  padding: 0 0 var(--space-3) 0;
+  margin-right: 5%;
+  break-inside: avoid;             /* never split a Q&A pair across columns/pages */
+}
+.st-08 .faq-cell:nth-child(2n) { margin-right: 0; }

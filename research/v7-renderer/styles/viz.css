@@ -1,0 +1,710 @@
+/* viz.css - premium data-viz PRESET library (Chromium engine).
+   Token-only / brand-agnostic: every colour via var(--token) + color-mix; no
+   hex, no font-family literal, no client data. FLAT-ON-CREAM editorial style
+   (Richard / Power-BI): solid accent marks, muted-gray context, hairline rules,
+   navy-ink numerals; no glow, no shadows, no gradient fills (they fight the cream
+   ground). Families: viz_transform / viz_proportion / viz_magnitude / viz_process. */
+.c-viz { break-inside: avoid; margin: var(--space-3) 0 0 0; }
+
+/* ============================ TRANSFORMATION ============================ */
+
+/* ba_bars - paired before/after bars. The pair shares a baseline; the BEFORE
+   bar is a flat muted-gray context fill, the AFTER bar a solid accent fill, so
+   the drop reads instantly. Numerals are display-serif. Delta is an accent tint
+   pill (no semantic-green token). */
+.c-viz-ba__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-ba__row { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.c-viz-ba__pair { flex: 1 1 0; min-width: 46mm; }
+.c-viz-ba__plabel {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+}
+.c-viz-ba__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  height: 34mm;
+}
+.c-viz-ba__col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.c-viz-ba__num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat);
+  line-height: 0.98;
+  color: var(--color-ink);
+  margin-bottom: 1.5mm;
+}
+.c-viz-ba__num--after {
+  color: var(--color-primary);
+}
+.c-viz-ba__bar {
+  width: 100%;
+  max-width: 16mm;
+  border-radius: 1.5mm 1.5mm 0 0;
+  min-height: 1.5mm;
+}
+.c-viz-ba__bar--before {
+  background-color: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface));
+}
+.c-viz-ba__bar--after {
+  background-color: var(--color-accent);
+}
+.c-viz-ba__cap {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  color: var(--color-muted);
+  margin-top: 1.5mm;
+}
+.c-viz-ba__delta {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-caption);
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--color-primary) 75%, var(--color-ink));
+  background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  border-radius: 1.5mm;
+  padding: 1mm 2.5mm;
+}
+
+/* transform_arrow - A → B on a dark-glass card; the TO side glows in accent. */
+.c-viz-arrow {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2mm;
+  padding: var(--space-4) var(--space-5);
+  background-color: color-mix(in srgb, var(--color-ink) 4%, var(--color-surface));
+  border: 0.3mm solid color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+.c-viz-arrow__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+.c-viz-arrow__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.c-viz-arrow__side { text-align: center; flex: 1 1 0; }
+.c-viz-arrow__num {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-stat);
+  line-height: 1;
+  color: var(--color-ink);
+}
+.c-viz-arrow__num--to {
+  color: var(--color-accent);
+}
+.c-viz-arrow__cap {
+  display: block;
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-top: 2mm;
+}
+.c-viz-arrow__glyph { color: var(--color-accent); font-size: var(--type-h3); line-height: 1; }
+
+/* completion_ring - SVG progress ring as a centered ring + caption UNIT (a lone
+   small ring reads sparse in a wide band; the horizontal composition gives it
+   presence). Track muted, arc gradient + glow, center figure display-serif. */
+.c-viz-ring {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: left;
+}
+.c-viz-ring__svg { width: 42mm; height: 42mm; flex: none; }
+.c-viz-ring__track { stroke: color-mix(in srgb, var(--color-muted) 26%, transparent); }
+.c-viz-ring__arc { stroke: var(--color-accent); }
+.c-viz-ring__center {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 30px;
+  fill: var(--color-primary);
+}
+.c-viz-ring__label {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-lede);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  max-width: 58mm;
+  margin: 0;
+}
+
+/* bar_compare - horizontal before/after EXHIBIT. Flat-on-cream: muted 'before'
+   bar, accent 'after' bar, verbatim values in their OWN lane column (never over
+   the bars/delta), a light gridline scale + axis. Four fixed columns so every row
+   and the axis align: [category | plot | value-lane | delta]. Token-only. */
+.c-viz-barc {
+  margin-top: var(--space-3);
+  --barc-cat: 38mm; --barc-lane: 18mm; --barc-delta: 22mm;
+}
+.c-viz-barc__title {
+  font-family: var(--font-head); font-weight: 700; font-size: var(--type-h3);
+  color: var(--color-ink); margin: 0 0 var(--space-1) 0;
+}
+.c-viz-barc__sub {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  color: var(--color-muted); margin: 0 0 var(--space-2) 0;
+}
+.c-viz-barc__legend {
+  display: flex; gap: var(--space-4); margin-bottom: var(--space-2);
+  font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-ink);
+}
+.c-viz-barc__sw {
+  display: inline-block; width: 3mm; height: 3mm; border-radius: 0.5mm;
+  vertical-align: middle; margin-right: 1.6mm;
+}
+.c-viz-barc__sw--b { background-color: var(--color-muted); }
+.c-viz-barc__sw--a { background-color: var(--color-accent); }
+.c-viz-barc__row {
+  display: grid;
+  grid-template-columns: var(--barc-cat) 1fr var(--barc-lane) var(--barc-delta);
+  align-items: center; column-gap: var(--space-3);
+}
+.c-viz-barc__cat {
+  text-align: right; font-family: var(--font-head); font-weight: 600;
+  font-size: var(--type-caption); line-height: 1.15; color: var(--color-ink);
+}
+.c-viz-barc__plot { position: relative; height: 14mm; }
+.c-viz-barc__grid {
+  position: absolute; top: 1mm; bottom: 1mm;
+  border-left: 0.2mm solid color-mix(in srgb, var(--color-muted) 40%, transparent);
+}
+.c-viz-barc__bar { position: absolute; height: 4.4mm; border-radius: 0 1mm 1mm 0; min-width: 0.6mm; }
+.c-viz-barc__bar--b { top: 2.6mm; background-color: var(--color-muted); }
+.c-viz-barc__bar--a { top: 7.8mm; background-color: var(--color-accent); }
+.c-viz-barc__vlane {
+  position: relative; height: 14mm; white-space: nowrap;
+  font-family: var(--font-head); font-weight: 700; font-size: var(--type-caption);
+}
+.c-viz-barc__vb { position: absolute; top: 2.3mm; color: var(--color-ink); }
+.c-viz-barc__va { position: absolute; top: 7.5mm; color: var(--color-accent); }
+.c-viz-barc__delta {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  color: var(--color-accent); line-height: 1;
+}
+.c-viz-barc__axis {
+  display: grid;
+  grid-template-columns: var(--barc-cat) 1fr var(--barc-lane) var(--barc-delta);
+  column-gap: var(--space-3); margin-top: 1mm;
+}
+.c-viz-barc__ticks { position: relative; height: 5mm; }
+.c-viz-barc__ticks span {
+  position: absolute; top: 0; transform: translateX(-50%);
+  font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted);
+}
+.c-viz-barc__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ============================== PROPORTION ============================== */
+
+/* donut - ring + center figure + meta beside (horizontal unit). */
+.c-viz-donut { display: inline-flex; align-items: center; gap: var(--space-4); }
+.c-viz-donut__svg { width: 38mm; height: 38mm; flex: none; }
+.c-viz-donut__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+/* NO stroke here: the CSS override was flattening the ring to plain accent -
+   the SVG arc carries its own premium GRADIENT stroke (url(#vizdonutN),
+   defined per-instance in viz_proportion.jinja) and CSS stroke beats the
+   presentation attribute. The gradient is token-derived (brand-agnostic). */
+.c-viz-donut__center {
+  font-family: var(--font-head); font-weight: 800; font-size: 27px;
+  fill: var(--color-primary);
+}
+.c-viz-donut__meta { max-width: 56mm; }
+.c-viz-donut__label {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-lede);
+  line-height: 1.2; color: var(--color-ink);
+}
+.c-viz-donut__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--color-muted); margin-top: var(--space-1);
+}
+
+/* split_bar - two-segment bar; a accent, b muted; percents knocked out inside. */
+.c-viz-split { width: 100%; }
+.c-viz-split__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-split__bar {
+  display: flex; height: 13mm; border-radius: 2mm; overflow: hidden;
+}
+.c-viz-split__seg { display: flex; align-items: center; justify-content: center; }
+.c-viz-split__seg--a {
+  background-color: var(--color-accent);
+}
+.c-viz-split__seg--b { background-color: color-mix(in srgb, var(--color-muted) 34%, transparent); }
+.c-viz-split__pct {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+}
+/* text sits on the ACCENT segment ground (seg--a), so it uses --color-on-accent
+   (the WCAG-derived role for accent backgrounds), not --color-on-primary: the two
+   coincide when primary == accent, but on-accent stays contrast-correct for a
+   brand whose accent differs from its primary. */
+.c-viz-split__seg--a .c-viz-split__pct { color: var(--color-on-accent); }
+.c-viz-split__seg--b .c-viz-split__pct { color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+.c-viz-split__legend { display: flex; justify-content: space-between; margin-top: var(--space-2); }
+.c-viz-split__leg { font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted); }
+.c-viz-split__leg--a { color: var(--color-primary); }
+.c-viz-split__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* gauge - semicircle range band + center figure. */
+.c-viz-gauge { text-align: center; }
+.c-viz-gauge__svg { width: 56mm; height: 36mm; }
+.c-viz-gauge__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+.c-viz-gauge__band { stroke: var(--color-accent); }
+.c-viz-gauge__center {
+  font-family: var(--font-head); font-weight: 800; font-size: 26px;
+  fill: var(--color-primary);
+}
+.c-viz-gauge__label {
+  font-family: var(--font-head); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; fill: var(--color-muted);
+}
+.c-viz-gauge__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+}
+
+/* radial_cluster - 2-3 rings in a row. */
+.c-viz-cluster__row { display: flex; gap: var(--space-5); justify-content: center; flex-wrap: wrap; }
+.c-viz-cluster__cell { text-align: center; }
+.c-viz-cluster__svg { width: 28mm; height: 28mm; }
+.c-viz-cluster__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+.c-viz-cluster__arc { stroke: var(--color-accent); }
+.c-viz-cluster__center { font-family: var(--font-head); font-weight: 800; font-size: 19px; fill: var(--color-primary); }
+.c-viz-cluster__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.2;
+  color: var(--color-muted); margin-top: var(--space-1); max-width: 30mm;
+}
+.c-viz-cluster__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  text-align: center; margin-top: var(--space-2);
+}
+
+/* icon_array - waffle of inline-SVG circles + figure/label. */
+.c-viz-iconarray { display: inline-flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.c-viz-iconarray__grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.2mm;
+}
+.c-viz-iconarray__dot { width: 6.5mm; height: 6.5mm; }
+.c-viz-iconarray__dot.is-filled circle { fill: color-mix(in srgb, var(--color-accent) 85%, var(--color-primary)); }
+.c-viz-iconarray__dot.is-empty circle { fill: color-mix(in srgb, var(--color-muted) 32%, transparent); }
+.c-viz-iconarray__meta { max-width: 56mm; }
+.c-viz-iconarray__figure {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-stat); color: var(--color-primary); line-height: 1;
+}
+.c-viz-iconarray__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-1);
+}
+
+/* =============================== MAGNITUDE ============================== */
+
+/* stat_strip - a row of big-figure proof cells (value + small label). */
+.c-viz-strip { width: 100%; text-align: center; }
+.c-viz-strip__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-strip__row {
+  display: flex; gap: var(--space-5); justify-content: center;
+  align-items: flex-end; flex-wrap: wrap;
+}
+.c-viz-strip__cell { flex: 1 1 0; min-width: 34mm; }
+.c-viz-strip__value {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-stat-xl); line-height: 1; color: var(--color-primary);
+}
+.c-viz-strip__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-2);
+}
+.c-viz-strip__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-3);
+}
+
+/* money_bar - a single currency figure as a hero on a full-width accent bar. */
+.c-viz-money { width: 100%; text-align: center; }
+.c-viz-money__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-money__bar {
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4) var(--space-5); border-radius: 2mm;
+  /* grounds on the TRUE dark (--color-ink), never --color-primary: a brand whose
+     primary equals its accent would read as a pale slab, not a dark island, and
+     collapse on-panel contrast (panel-contrast rule / regression #9). */
+  background-color: var(--color-ink);
+}
+.c-viz-money__value {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-stat);
+  line-height: 1; color: var(--color-on-dark);
+}
+.c-viz-money__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.3;
+  color: var(--color-muted); margin-top: var(--space-2);
+}
+.c-viz-money__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+/* mega_numeral - ONE oversized hero figure + small label. */
+.c-viz-mega { text-align: center; }
+.c-viz-mega__value {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-display-xl); line-height: 0.95; color: var(--color-primary);
+}
+.c-viz-mega__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-lede);
+  line-height: 1.25; color: var(--color-muted); margin-top: var(--space-2);
+  max-width: 80mm; margin-left: auto; margin-right: auto;
+}
+.c-viz-mega__source {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* kpi_card - boxed dark-glass figure + label. */
+.c-viz-kpi {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: var(--space-4) var(--space-5); border-radius: 2mm;
+  background-color: var(--color-ink);
+}
+.c-viz-kpi__value {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-stat);
+  line-height: 1; color: var(--color-on-dark);
+}
+.c-viz-kpi__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.3;
+  color: color-mix(in srgb, var(--color-on-dark) 78%, transparent);
+  margin-top: var(--space-2); text-align: center;
+}
+.c-viz-kpi__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 60%, transparent);
+  margin-top: var(--space-1);
+}
+
+/* ranked_bars - horizontal ranking; bar width derived from each figure. */
+.c-viz-ranked { width: 100%; }
+.c-viz-ranked__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-ranked__list { list-style: none; margin: 0; padding: 0; }
+.c-viz-ranked__row {
+  display: flex; align-items: center; gap: var(--space-4); padding: 1.5mm 0;
+}
+.c-viz-ranked__label {
+  flex: 0 0 38mm; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.2; color: var(--color-ink);
+}
+.c-viz-ranked__track {
+  flex: 1 1 0; display: flex; align-items: center; gap: var(--space-3);
+}
+.c-viz-ranked__bar {
+  height: 5mm; border-radius: 2.5mm; flex: none;
+  background-color: var(--color-accent);
+}
+.c-viz-ranked__figure {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-lede);
+  color: var(--color-primary); white-space: nowrap;
+}
+.c-viz-ranked__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* =============================== PROCESS =============================== */
+
+/* phase_timeline - horizontal numbered phases on a spine + titles/durations. */
+.c-viz-phase { width: 100%; }
+.c-viz-phase__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-phase__track {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: var(--space-4); justify-content: space-between;
+}
+.c-viz-phase__step {
+  flex: 1 1 0; text-align: center; position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-1);
+}
+.c-viz-phase__step:not(:last-child)::after {
+  content: ""; position: absolute; top: 5mm; left: calc(50% + 6mm);
+  width: calc(100% - 12mm); height: 0.4mm;
+  background: color-mix(in srgb, var(--color-accent) 38%, transparent);
+}
+.c-viz-phase__node {
+  flex: none; width: 10mm; height: 10mm; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  /* true-dark node (--color-ink + on-dark), not --color-primary (pale/low-contrast
+     for primary==accent brands); the accent lives in the connecting spine. */
+  color: var(--color-on-dark);
+  background-color: var(--color-ink);
+}
+.c-viz-phase__duration {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent);
+}
+.c-viz-phase__steptitle {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-caption);
+  line-height: 1.2; color: var(--color-ink); max-width: 30mm;
+}
+
+/* step_cascade - numbered accent nodes joined by a connecting spine + titles. */
+.c-viz-cascade__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-cascade__list { list-style: none; margin: 0; padding: 0; }
+.c-viz-cascade__step {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: 2.5mm 0; position: relative;
+}
+.c-viz-cascade__step:not(:last-child)::before {
+  content: ""; position: absolute; left: 5mm; top: 10mm; height: calc(100% - 2mm);
+  width: 0.4mm; background: color-mix(in srgb, var(--color-accent) 38%, transparent);
+}
+.c-viz-cascade__node {
+  flex: none; width: 10mm; height: 10mm; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  /* true-dark node (--color-ink + on-dark), not --color-primary (pale/low-contrast
+     for primary==accent brands); the accent lives in the connecting spine. */
+  color: var(--color-on-dark);
+  background-color: var(--color-ink);
+}
+.c-viz-cascade__steptitle {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-lede);
+  line-height: 1.2; color: var(--color-ink);
+}
+
+/* ---- dark-beat legibility for LIGHT-chip presets (2026-07-11) --------------
+   Dark page modes (dark_divider / data_dark) locally reassign --color-ink /
+   --color-muted to on-dark WHITE so descendant copy auto-reverses. The
+   transform_arrow is a LIGHT chip (surface ground), so its ink/muted text went
+   white-on-cream (unreadable). Repoint ITS text to --color-neutral-dark - the
+   one dark token those modes deliberately do NOT reassign. Tokens only. */
+.page[data-page-mode="dark_divider"] .c-viz-arrow__num,
+.page[data-page-mode="data_dark"] .c-viz-arrow__num,
+.page[data-page-mode="color_flood"] .c-viz-arrow__num {
+  color: var(--color-neutral-dark);
+}
+.page[data-page-mode="dark_divider"] .c-viz-arrow__num--to,
+.page[data-page-mode="data_dark"] .c-viz-arrow__num--to,
+.page[data-page-mode="color_flood"] .c-viz-arrow__num--to {
+  color: var(--color-accent);
+}
+.page[data-page-mode="dark_divider"] .c-viz-arrow__title,
+.page[data-page-mode="data_dark"] .c-viz-arrow__title,
+.page[data-page-mode="color_flood"] .c-viz-arrow__title,
+.page[data-page-mode="dark_divider"] .c-viz-arrow__cap,
+.page[data-page-mode="data_dark"] .c-viz-arrow__cap,
+.page[data-page-mode="color_flood"] .c-viz-arrow__cap {
+  color: color-mix(in srgb, var(--color-neutral-dark) 78%, transparent);
+}
+.page[data-page-mode="dark_divider"] .c-viz-arrow,
+.page[data-page-mode="data_dark"] .c-viz-arrow,
+.page[data-page-mode="color_flood"] .c-viz-arrow {
+  border-color: color-mix(in srgb, var(--color-neutral-dark) 18%, transparent);
+}
+
+/* ================================= FACTS ================================= */
+/* icon_stat_row + column_chart (components/viz_facts.jinja) + the shared
+   line-icon glyph (components/icons.jinja). Same flat-on-cream law as the rest
+   of this sheet: solid accent marks, muted-gray context, hairline rules,
+   navy-ink numerals. The fact cards deliberately carry NO soft shadow: the
+   reference decks read as softly shadowed cards because they sit on a light
+   blue-white ground, but that recipe on the cream ground is exactly what
+   test_viz_flat_on_cream.py forbids (it was the owner's "dull / looks bad"
+   complaint). The card separates with a hairline border + a surface fill
+   instead, which is the same figure/ground read, flat. */
+
+/* ---- c-icon - the shared glyph. Sized by its HOST (the badge below), coloured
+   by inheritance: the markup carries stroke="currentColor", so an icon has no
+   colour of its own and can never be a brand literal. */
+.c-icon { display: block; width: 5mm; height: 5mm; flex: none; }
+
+/* ---- icon_stat_row - the workhorse: a row of 3-5 sourced fact cards. */
+.c-viz-facts { width: 100%; }
+.c-viz-facts__row {
+  display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: stretch;
+}
+/* Equal widths via an equal flex basis (the .c-viz-strip__cell precedent), with
+   a min-width that decides when a dense row wraps rather than squeezing. */
+.c-viz-facts__card {
+  flex: 1 1 0; min-width: 30mm;
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: var(--space-4); border-radius: 2mm;
+  background-color: var(--color-surface);
+  border: 0.3mm solid color-mix(in srgb, var(--color-ink) 16%, transparent);
+  /* min-width must count the padding, or a 5-across row wraps: the assembler's
+     reset already sets this globally, restated here so the card's wrap maths
+     hold wherever it is hosted. */
+  box-sizing: border-box;
+}
+.c-viz-facts__badge {
+  display: flex; align-items: center; justify-content: center; flex: none;
+  width: 11mm; height: 11mm; border-radius: 50%;
+  margin-bottom: var(--space-3);
+  color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface));
+  border: 0.3mm solid color-mix(in srgb, var(--color-accent) 28%, transparent);
+}
+.c-viz-facts__badge .c-icon { width: 6mm; height: 6mm; }
+.c-viz-facts__figur {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-stat);
+  line-height: 1; color: var(--color-primary);
+}
+.c-viz-facts__label {
+  font-family: var(--font-head); font-weight: 700; font-size: var(--type-label);
+  line-height: 1.25; color: var(--color-ink); margin-top: var(--space-2);
+}
+.c-viz-facts__text {
+  font-family: var(--font-body); font-size: var(--type-caption);
+  line-height: 1.35; color: var(--color-muted); margin-top: var(--space-2);
+}
+/* The source rides WITH its figure (contract: never detached). Natural case, no
+   uppercasing: this tier carries "(Destatis, 2018)" style parentheticals. */
+.c-viz-facts__quelle {
+  font-family: var(--font-head); font-size: var(--type-source);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-2);
+}
+/* Density ladder: the figure steps DOWN the type ramp as the row gets denser.
+   A 40pt numeral is right for 2 cards and overflows a 5-card column, so the
+   count drives the tier (data-count carries the count of cards actually drawn).
+   Cards also narrow past 3, so 5 still fit one row and 6 wrap to a second.
+   The tiers are sized against the WIDEST reference figure, "87,8 %" (Martic p5,
+   a 3-across): at 32pt it broke over two lines in a 3-card column, so the
+   3-tier lands at 28pt. Verified by rendering, not by arithmetic. */
+.c-viz-facts__row[data-count="3"] .c-viz-facts__figur { font-size: var(--type-signature); }
+.c-viz-facts__row[data-count="4"] .c-viz-facts__figur,
+.c-viz-facts__row[data-count="5"] .c-viz-facts__figur,
+.c-viz-facts__row[data-count="6"] .c-viz-facts__figur { font-size: var(--type-h2); }
+.c-viz-facts__row[data-count="4"] .c-viz-facts__card,
+.c-viz-facts__row[data-count="5"] .c-viz-facts__card,
+.c-viz-facts__row[data-count="6"] .c-viz-facts__card {
+  min-width: 24mm; padding: var(--space-3);
+}
+.c-viz-facts__row[data-count="5"] .c-viz-facts__badge,
+.c-viz-facts__row[data-count="6"] .c-viz-facts__badge {
+  width: 9mm; height: 9mm; margin-bottom: var(--space-2);
+}
+.c-viz-facts__row[data-count="5"] .c-viz-facts__badge .c-icon,
+.c-viz-facts__row[data-count="6"] .c-viz-facts__badge .c-icon {
+  width: 5mm; height: 5mm;
+}
+
+/* ---- column_chart - the trend device: value above each bar, label below, the
+   last (or named) bar in the accent. Geometry is a viewBox, so it scales to its
+   column and can never overflow a fixed mm height in print. */
+.c-viz-col { width: 100%; }
+.c-viz-col__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-col__unit {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  color: var(--color-muted); margin: 0 0 var(--space-2) 0;
+}
+/* overflow:visible so a long x label at the first/last band is never clipped by
+   the SVG viewport edge. */
+.c-viz-col__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.c-viz-col__bar { fill: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface)); }
+.c-viz-col__bar.is-hl { fill: var(--color-accent); }
+/* px INSIDE a viewBox is a USER unit (geometry), not a type token: it scales
+   with the chart exactly like the donut's centre figure. The pt type ramp cannot
+   express SVG user space, so this is the same carve-out the donut already uses. */
+.c-viz-col__val {
+  font-family: var(--font-head); font-weight: 800; font-size: 12px;
+  fill: var(--color-ink);
+}
+.c-viz-col__val.is-hl { fill: var(--color-primary); }
+.c-viz-col__xlab {
+  font-family: var(--font-head); font-size: 9.5px; fill: var(--color-muted);
+}
+.c-viz-col__axis {
+  stroke: color-mix(in srgb, var(--color-ink) 22%, transparent); stroke-width: 0.7;
+}
+.c-viz-col__quelle {
+  font-family: var(--font-head); font-size: var(--type-source);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-2);
+}
+
+/* ---- dark-beat legibility for the facts card (same fix as the transform_arrow
+   block above). Dark page modes locally reassign --color-ink / --color-muted to
+   on-dark WHITE so descendant copy auto-reverses. The facts card is a LIGHT chip
+   (surface ground), so its ink/muted copy would go white-on-cream. Repoint ITS
+   text to --color-neutral-dark, the one dark token those modes do NOT reassign. */
+.page[data-page-mode="dark_divider"] .c-viz-facts__label,
+.page[data-page-mode="data_dark"] .c-viz-facts__label,
+.page[data-page-mode="color_flood"] .c-viz-facts__label {
+  color: var(--color-neutral-dark);
+}
+.page[data-page-mode="dark_divider"] .c-viz-facts__text,
+.page[data-page-mode="data_dark"] .c-viz-facts__text,
+.page[data-page-mode="color_flood"] .c-viz-facts__text,
+.page[data-page-mode="dark_divider"] .c-viz-facts__quelle,
+.page[data-page-mode="data_dark"] .c-viz-facts__quelle,
+.page[data-page-mode="color_flood"] .c-viz-facts__quelle {
+  color: color-mix(in srgb, var(--color-neutral-dark) 78%, transparent);
+}
+.page[data-page-mode="dark_divider"] .c-viz-facts__card,
+.page[data-page-mode="data_dark"] .c-viz-facts__card,
+.page[data-page-mode="color_flood"] .c-viz-facts__card {
+  border-color: color-mix(in srgb, var(--color-neutral-dark) 18%, transparent);
+}

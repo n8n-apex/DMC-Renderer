@@ -1,0 +1,238 @@
+/* ST-05 — about / "über uns" page LAYOUT (Plan B rebuild, P-3).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the heading sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif) — set against the sans var(--font-body) body prose, that serif/sans
+ * pairing is the §18 contrast. The device LOOK (stat_strip big numbers,
+ * media_figure plate, logo_wall grayscale tiles, section_label rule) is owned by
+ * the `c-` classes in styles/components.css (already in the shared head); this
+ * sheet only positions them and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-05` (the assembler's per-page section class) so
+ * it cannot leak. The about page is a two-column body (a fixed table-layout —
+ * flexbox is weak for full-page structural columns in WeasyPrint 68.1): the about
+ * prose in the wide main column beside a sidebar carrying the stat trio (stacked
+ * vertically in the narrow rail), the optional founder portrait, and a credibility
+ * list; then a full-width grayscale logo wall band below. Modest line-heights +
+ * --space-* rhythm keep it on one physical sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the stat
+ * numbers, the section-label rules) — never on body text; the logo wall is a
+ * quiet monochrome band (no accent), per a credibility wall's neutral read.
+ */
+
+/* ---- header: small uppercase eyebrow → large serif heading ---- */
+.st-05 .ab-header {
+  margin: 0 0 var(--space-2) 0;
+}
+.st-05 .ab-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* ---- positioning panel: the body's first paragraph (the thesis) on a DARK
+   authority panel (DNA §C3/§D — the About page anchors on a dark panel, never a
+   pale tint). The --color-primary ground reads as the brand's authority block for
+   ANY brand (a luminance-derived --color-on-primary keeps the text legible on it,
+   light OR dark primary). A slightly larger lead size + an accent top-rule mark it
+   as the lede. break-inside:avoid keeps it whole. ---- */
+.st-05 .ab-lead {
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  padding: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-1) 0;
+  border-top: 0.8mm solid var(--color-accent);
+  break-inside: avoid;
+}
+.st-05 .ab-lead p {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: var(--color-on-primary);
+  margin: 0 0 var(--space-2) 0;
+  hyphens: auto;
+}
+.st-05 .ab-lead p:last-child { margin-bottom: 0; }
+/* inline-bold emphasis stays legible on the dark panel (on-primary, not ink) */
+.st-05 .ab-lead strong { font-weight: 700; color: var(--color-on-primary); }
+
+/* ---- two-column body: wide prose main (~62%) + sidebar rail ---- */
+.st-05 .ab-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 0 0 var(--space-2) 0;
+}
+.st-05 .ab-grid > tbody > tr > td { vertical-align: top; padding: 0; }
+.st-05 .ab-grid .ab-main { width: auto; }
+.st-05 .ab-grid .ab-gutter { width: var(--space-5); }
+.st-05 .ab-grid .ab-side { width: 38%; }
+
+/* about prose — the sans body face (the serif/sans contrast against the heading) */
+.st-05 .ab-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.32;
+  color: var(--color-body);
+}
+.st-05 .ab-body p {
+  margin: 0 0 var(--space-1) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+.st-05 .ab-body p:first-child { margin-top: 0; }
+.st-05 .ab-body p:last-child { margin-bottom: 0; }
+.st-05 .ab-body strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- sidebar: framed founder portrait → stat trio → credibility list ---- */
+/* WeasyPrint 68.1 does NOT size a box from aspect-ratio alone (a background-image
+   div collapses to height:0), so the media_figure macro's 4:3 ratio never takes —
+   give the sidebar portrait a concrete height here (page-local layout, not a
+   component restyle). The sidebar is ~38% of the content box (~67mm) → ~50mm tall
+   at 4:3. */
+.st-05 .ab-portrait { margin: 0 0 var(--space-3) 0; }
+.st-05 .ab-portrait .c-media-img { height: 48mm; aspect-ratio: auto; }
+.st-05 .ab-portrait-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+/* the stat trio sits on a DARK STAT PANEL (the apex-reference "Über APEX" page):
+   the brand --color-primary ground carries the 3 big ACCENT numbers stacked under
+   the "in Zahlen" label — the same authority treatment as the case-study rails, so
+   the headline credibility figures POP instead of floating flat on the light
+   ground. The horizontal c-stat-strip stacks VERTICALLY in the narrow rail
+   (page-local override); a faint on-primary divider gives the column rhythm. */
+.st-05 .ab-stats {
+  background-color: var(--color-ink);
+  /* US-503 (Richard grammar): flat ink panel, sharp-edged, no glow gradient,
+     no shadow, no radius — the audit called the previous tile "a generic mobile
+     app widget". The accent top rule carries the emphasis. */
+  background-image: none;
+  box-shadow: none;
+  border-radius: 0;
+  color: var(--color-on-primary);
+  padding: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-2) 0;
+  border-top: 0.8mm solid var(--color-accent);
+  break-inside: avoid;
+}
+.st-05 .ab-stats .c-section-label { color: var(--color-on-primary); }
+.st-05 .ab-stats .c-section-label--rule { border-bottom-color: var(--color-accent); }
+.st-05 .ab-stats .c-stat-strip {
+  flex-direction: column;
+  gap: 0;
+}
+.st-05 .ab-stats .c-stat-cell {
+  padding: var(--space-1) 0;
+  border-top: 0.15mm solid var(--color-on-primary);
+}
+.st-05 .ab-stats .c-stat-cell:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.st-05 .ab-stats .c-stat-value {
+  font-size: var(--type-display);
+  /* on-dark (white) numerals on the ink panel — legible + matches the ST-07A stat
+     rail. Accent (teal) here would be near-invisible whenever a brand sets
+     primary == accent (APEX does), which is exactly the bug this replaces. */
+  color: var(--color-on-dark);
+}
+.st-05 .ab-stats .c-stat-label { color: var(--color-on-primary); }
+
+/* credibility list — quiet bulleted proof points under the stats */
+.st-05 .ab-cred {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.st-05 .ab-cred-item {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  line-height: 1.32;
+  color: var(--color-body);
+  margin: 0 0 var(--space-1) 0;
+  padding-left: var(--space-3);
+  border-left: 0.3mm solid var(--color-accent);
+}
+.st-05 .ab-cred-item:last-child { margin-bottom: 0; }
+
+/* ---- proof gallery (§C4 social-proof): a framed full-color credibility photo
+   row below the body. The framed tiles + "Referenzen" label come from the
+   c-proof-gallery component; this only spaces the band. ---- */
+.st-05 .ab-proof {
+  margin: 0 0 var(--space-2) 0;
+}
+/* Crisper frame so the credibility photos read as intentional (DNA §C4). NOTE:
+   the About page is at vertical capacity — enlarging the tiles overflows it, which
+   is precisely why the proof photos should be DISTRIBUTED across the deck (spec
+   §12) rather than crammed here; that distribution is a separate pre-processor
+   slot-routing task. This is a no-height-cost frame polish only. */
+.st-05 .ab-proof .c-proof-gallery__item {
+  border: 0.4mm solid var(--color-ink);
+}
+/* Proof tiles on the About page: 24mm is the fit-safe ceiling (the page is at
+   vertical capacity with the full About copy — 27mm+ overflows to a 2nd page;
+   giving these photos MORE room is a pre-processor copy-fit / photo-distribution
+   job, not a renderer one). The credibility photos are full-body standing shots,
+   so a `center` crop sliced through torsos/hands (no faces — the "broken" look).
+   Bias the focal point HIGH so the FACES land in the strip → a clean headshot-row
+   credibility band rather than a mid-body slice. */
+.st-05 .ab-proof .c-proof-gallery__item {
+  height: 24mm;
+  background-position: center 18%;
+}
+
+/* ---- testimonial cards (§C4 social proof): the designed client-quote graphics
+   shown WHOLE in a centered row. Each box is the cards' native 4:5 ratio so
+   `cover` shows the full card without cropping the quote. A hairline frame +
+   slight radius reads them as cards. SIZE: the About page now carries BOTH the
+   testimonial cards AND the real proof gallery beneath them (two proof layers),
+   then the logo wall — so the card height is the fit-safe ceiling that lets all
+   three bands + the body share ONE A4 sheet (a taller card spilled the logo wall
+   onto a 2nd page). The 4:5 ratio is held by width = 0.8 * height so `cover`
+   still shows the whole card uncropped. ---- */
+.st-05 .ab-testimonials { margin: 0 0 var(--space-1) 0; }
+.st-05 .ab-testimonials__row {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  align-items: flex-start;
+}
+.st-05 .ab-testimonials__card {
+  display: block;
+  width: 41.6mm;
+  height: 52mm;                 /* 4:5 — matches the card art so cover = whole card */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--color-surface);
+  border: 0.3mm solid var(--color-muted);
+  /* US-503 (Richard grammar): flat, sharp-edged — no radius, no drop shadow.
+     The audit called the cards "cheap SaaS landing page aesthetics". */
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ---- "bekannt aus" logo wall: a full-width grayscale band below the body. The
+   grayscale tiles / quiet name-chip fallback come from the c-logo-wall component;
+   this only spaces the band + its label. ---- */
+.st-05 .ab-logos {
+  margin: 0;
+  padding-top: var(--space-1);
+  border-top: 0.2mm solid var(--color-muted);
+}
+.st-05 .ab-logos .c-logo-wall { break-inside: avoid; }

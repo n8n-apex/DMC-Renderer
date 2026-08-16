@@ -1,0 +1,114 @@
+/* ST-02 — outlook page LAYOUT (Plan B rebuild, P-2).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the question-headline sizes off var(--font-display), which
+ * resolves to the SERIF face when the brand's axis is headline_type=serif (the
+ * apex deck IS serif) — set against the sans var(--font-body) two-column prose,
+ * that serif/sans pairing is the §18 hit. The check-list panel LOOK (tint fill,
+ * accent check glyphs) is owned by the `c-` classes in styles/components.css
+ * (callout_panel + check_list, already in the shared head); this sheet only
+ * positions them and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-02` (the assembler's per-page section class)
+ * so it cannot leak. The outlook page is a single prose column SPLIT two-up
+ * (column-count is robust for flowing TEXT in WeasyPrint 68.1 — unlike flexbox
+ * for full-page structural columns) over a tint Zielgruppe panel, with modest
+ * line-heights + --space-* rhythm so it fits the 261mm content box on one sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the eyebrow is
+ * muted; the check glyphs + the panel label are accent; the panel is a tint
+ * fill) — never on body text.
+ */
+
+/* ---- fill root: a full-height flex column so the page DISTRIBUTES to fill the
+   261mm content box. The header + two-column intro take their natural height at
+   the TOP; the audience panel is pushed to the BOTTOM (margin-top:auto), and the
+   gap between is deliberate editorial breathing — not a trailing void. min-height
+   (not height) so a long intro can still flow past + the overflow validator flags
+   it rather than clipping. ---- */
+.st-02 .ol-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 261mm;       /* the A4 content box (297 - 16 top - 20 bottom) */
+  box-sizing: border-box;
+}
+
+/* ---- header: small uppercase eyebrow → large serif question-headline ---- */
+.st-02 .ol-header {
+  margin: 0 0 var(--space-4) 0;
+  flex: 0 0 auto;
+}
+.st-02 .ol-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* ---- two-column body: the intro prose flowed into two balanced columns. A
+   thin column-rule in the gutter reads as an editorial divider; the body sets in
+   the sans body face (the serif/sans contrast against the headline). ---- */
+.st-02 .ol-body {
+  column-count: 2;
+  column-gap: var(--density-col-gap, var(--space-5));
+  column-rule: 0.2mm solid var(--color-muted);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--density-lead, 1.42);
+  color: var(--color-body);
+  margin: 0 0 var(--space-4) 0;
+}
+.st-02 .ol-body p {
+  margin: 0 0 var(--density-para, var(--space-2)) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+.st-02 .ol-body p:first-child { margin-top: 0; }
+.st-02 .ol-body p:last-child { margin-bottom: 0; }
+.st-02 .ol-body strong { font-weight: 700; color: var(--color-ink); }
+/* keep the first paragraph from orphaning across the column break */
+.st-02 .ol-body p:first-child { break-after: avoid; }
+
+/* ---- thesis pull-quote: the report's core claim on a DARK callout panel (the
+   apex-reference outlook page's dark box) — the visual punch between the prose and
+   the audience panel. The c-pull-quote component owns the quote LOOK (oversized
+   accent glyph + italic on-dark text); this only paints the dark ground + rhythm. */
+/* the radial_cluster as a floating navy-stone island (chrome from .c-viz-island
+   in components.css); COMPACT padding/margin here because the AUSBLICK page is
+   dense (header + 2-col body + island + quote + bottom-pinned checklist), so the
+   island must not push the checklist onto a 2nd sheet (spill guard). */
+.st-02 .ol-viz {
+  padding: var(--space-3) var(--space-5);
+  margin: var(--space-2) 0;
+  flex: 0 0 auto;
+  break-inside: avoid;
+}
+
+/* the thesis quote, SOFTENED to flat cream (on_panel=false): a left accent rule
+   on the cream ground (no dark panel) — the page's one dark island is the rings
+   above; this also reclaims the old panel's padding so the page fits one sheet. */
+.st-02 .ol-quote {
+  border-left: 0.8mm solid var(--color-accent);
+  padding: 0 0 0 var(--space-4);
+  margin: 0 0 var(--space-3) 0;
+  flex: 0 0 auto;
+  break-inside: avoid;
+}
+
+/* ---- audience panel: the tint callout carrying the accent check-list, spanning
+   full width below the body. break-inside:avoid keeps it whole. ---- */
+/* audience panel: anchored to the BOTTOM of the fill column (margin-top:auto
+   absorbs the slack), so a sparse outlook page fills the sheet with the panel as
+   a grounded base instead of leaving a bottom void. */
+.st-02 .ol-zg {
+  margin: 0;
+  margin-top: auto;
+  flex: 0 0 auto;
+}
+.st-02 .ol-zg .c-callout-panel { break-inside: avoid; }

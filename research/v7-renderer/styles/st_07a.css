@@ -683,7 +683,7 @@
    only the NARRATIVE flex-grows and spreads its sections through the sheet's
    bottom half (space-between on the whole column would air out the top). */
 .st-07a.format-a3 .csh-left { justify-content: flex-start; }
-.st-07a.format-a3 .csh-narr { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.st-07a.format-a3 .csh-narr { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-1); }
 /* A spread WITH a supporting scene keeps the top-to-bottom distribution
    (space-between) so the sections still span the sheet; the scene's fixed
    height rides INSIDE the flow between section 1 and 2, absorbing the middle
@@ -711,7 +711,7 @@
 /* A3 spread: give the portrait a DEFINITE height so its box does not depend on
    the image's intrinsic ratio (a 1:1 crop would otherwise scale ~2x taller than
    the 16:9 frame in engines that ignore aspect-ratio, overflowing the sheet). */
-.st-07a.format-a3 .csh-portrait-img { aspect-ratio: auto; height: 86mm; }
+.st-07a.format-a3 .csh-portrait-img { aspect-ratio: auto; height: 72mm; }  /* US-503: 86mm pushed dense spreads past the sheet */
 .st-07a .csh-portrait-cap { display: flex; flex-direction: column; margin-top: var(--space-1); }
 .st-07a .csh-pname { font-family: var(--font-head); font-weight: 700; font-size: var(--type-caption); color: var(--color-ink); }
 .st-07a .csh-prole { font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted); }
@@ -729,13 +729,15 @@
    and open the leading; the narrative stays left-aligned (no justify + hyphens
    = the audit's "rivers of white space"). */
 .st-07a.format-a3 .csh-body {
-  line-height: 1.52;
-  max-width: 118mm;
+  line-height: 1.42;   /* dense spreads must fit 260mm: 1.52/1.45 overflowed */
+  max-width: 132mm;    /* ~85 chars — the measure fix (was 100+) without the
+                          sheet overflow; Richard's ~70 is unreachable with this
+                          content volume (copy-fit's job, not CSS) */
   text-align: left;
 }
 .st-07a.format-a3 .csh-lede {
-  line-height: 1.55;
-  max-width: 118mm;
+  line-height: 1.5;
+  max-width: 132mm;
 }
 
 /* ===== "Das Ergebnis" FLOATING DARK-ISLAND DASHBOARD =====================
@@ -748,9 +750,13 @@
   display: flex; flex-direction: column;
   background-color: var(--color-ink);
   background-size: cover; background-position: center;
-  border-radius: 2.4mm; overflow: hidden;
+  /* US-503: Richard's dark proof panel is a sharp-edged full-height block —
+     no radius, no drop shadow. The audit called the prior look "floating dark
+     box / PowerPoint". */
+  border-radius: 0;
+  overflow: hidden;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
-  box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent);
+  box-shadow: none;
 }
 .st-07a .csh-dash-seam {
   position: absolute; left: 0; top: 0; bottom: 0; width: 1.1mm;

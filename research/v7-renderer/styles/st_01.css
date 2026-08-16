@@ -1,0 +1,317 @@
+/* ST-01 — report COVER LAYOUT (Phase 4b founder-hero rebuild).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the title sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif). The component LOOK (pill / stat-rail / two-tone headline) is owned by
+ * the `c-` classes in styles/components.css (already in the shared head); this
+ * sheet paints the full-bleed cover composition and positions the overlay.
+ *
+ * Every rule is scoped under `.st-01` (the assembler's per-page section class).
+ *
+ * COMPOSITION (founder-as-hero, DNA §C2): a full-bleed column split into a
+ * PROMINENT founder-portrait hero (upper ~58% of the A4 sheet) over a dark
+ * editorial title band (lower ~42%). The hero is a BLOCK with explicit height
+ * carrying the portrait as a background (an abspos inset:0 bg child paints 0 ink
+ * in WeasyPrint; a block with real height does paint). A child scrim ramps to
+ * --color-ink at its foot so it fuses into the dark band below and the overlaid
+ * nav / stat-rail text stays legible over any photo. The band is a solid
+ * --color-ink ground (on-dark text) — the §C3 dark authority panel — carrying
+ * the founder byline, the two-tone display title, audience + subtitle, and the
+ * teaser rail.
+ *
+ * Full-bleed technique (WeasyPrint 68.1): the cover section assigns itself the
+ * suppressed named cover page (margin:0, header/folio removed — declared in the
+ * shared head) via the `page:` property below. color-mix() does NOT paint in
+ * WeasyPrint 68.1 (verified), so scrims blend a token color to `transparent`
+ * (token-only, no raw rgba). Graceful: a missing hero leaves the
+ * --color-primary ground under the scrim, so the cover never renders blank.
+ *
+ * Accent discipline (§3.7): accent fires via the components (pill border,
+ * stat-rail numbers) + the two-tone title's deliberate ACCENT run — never on
+ * body copy.
+ */
+
+/* Route the cover section to the suppressed full-bleed named page. */
+.page.st-01 { page: cover; }
+
+/* Cancel the default per-page content ground/min-height (the cover paints its
+   own full-sheet composition instead of sitting in the 261mm content box). */
+.st-01.page { min-height: 0; background: none; }
+
+/* ---- the full-bleed cover column: hero (top) over dark band (bottom) ---- */
+.st-01 .cv {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 297mm;                 /* full A4 portrait height (margin:0 page) */
+  background-color: var(--color-ink);
+  overflow: hidden;
+}
+
+/* ---- the founder-portrait HERO block: photo ground + explicit height ----
+   Sized to the upper portion of the sheet; the photo is positioned to favour
+   the top so a seated founder's face is not cropped at the band seam. The
+   --color-primary fallback ground shows if neither portrait nor scene resolves. */
+.st-01 .cv-hero {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 172mm;                     /* ~58% of the 297mm sheet */
+  background-color: var(--color-ink);
+  background-size: cover;
+  background-position: center 28%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+/* A founder PORTRAIT is framed slightly tighter and higher than a wide scene. */
+.st-01 .cv-hero--portrait {
+  background-position: center 22%;
+}
+
+/* ---- scrim: a gradient overlay for legibility + a seam into the dark band.
+   A child block (filling the hero via inset:0 + the hero's explicit height) so
+   WeasyPrint paints it. Two stacked token-only gradients blend --color-ink to
+   `transparent`: a faint top veil keeps the wordmark + kicker pills legible over
+   a light photo; a strong bottom ramp lands SOLID --color-ink at the foot so the
+   hero dissolves seamlessly into the title band below. NO raw rgba — the alpha
+   comes from blending the token color toward transparent across the stops. */
+.st-01 .cv-scrim {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(to bottom, transparent 0%, transparent 55%, var(--color-ink) 100%),
+    linear-gradient(to bottom, var(--color-ink) 0%, transparent 26%);
+}
+
+/* ---- hero overlay: a padded flex column above the scrim (nav + stat rail) -- */
+.st-01 .cv-hero-overlay {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16mm 16mm 6mm 18mm;
+  color: var(--color-on-dark);
+}
+
+/* top nav row: wordmark left, kicker pills right */
+.st-01 .cv-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.st-01 .cv-wordmark {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  white-space: nowrap;
+  padding-top: 1mm;
+}
+.st-01 .cv-pills {
+  text-align: right;
+  max-width: 120mm;
+}
+/* On the dark hero the outline pill reads better in on-dark ink than accent. */
+.st-01 .cv-pills .c-pill {
+  margin: 0 0 var(--space-1) var(--space-1);
+}
+.st-01 .cv-pills .c-pill--outline {
+  color: var(--color-on-dark);
+  border-color: var(--color-on-dark);
+}
+
+/* stat rail: pushed to the lower-right of the hero, sitting in the strong foot
+   scrim so its on-dark numbers/labels keep contrast over any portrait. */
+.st-01 .cv-rail {
+  position: relative;
+  margin-top: auto;                  /* push to the bottom of the hero */
+  align-self: flex-end;
+  width: 60mm;
+  padding: var(--space-3) var(--space-4);
+}
+/* GLASS material (brand texture axis → data-material="glass"): the cover stat rail
+   becomes a dark-glass card over the photo — rounded + a hairline light EDGE. The
+   translucent dark fill is the ::before (opacity), so the on-dark numbers stay
+   crisp. WeasyPrint-safe faux-glass (no backdrop-filter); depth comes from the
+   photo behind. Non-glass brands get the plain scrim. */
+[data-material="glass"] .st-01 .cv-rail {
+  border-radius: 2mm;
+  border: 0.2mm solid var(--color-on-dark);
+}
+[data-material="glass"] .st-01 .cv-rail::before {
+  opacity: 0.42;            /* slightly more see-through → reads as glass */
+  border-radius: 2mm;       /* match the rounded glass panel */
+}
+/* Cover-scoped stat size: the global stat rail value is --type-stat-xl (60pt),
+   which OVERFLOWS the fixed-width cover rail for a multi-char value (e.g.
+   "30-50%" ran off the right page edge). On the cover the rail is a compact
+   teaser, so step it to --type-stat (40pt) — still bold, but it fits any
+   reasonable value inside the rail. overflow-wrap is a belt-and-braces guard. */
+.st-01 .cv-rail .c-stat-value {
+  font-size: var(--type-stat);
+  line-height: 1.0;
+  overflow-wrap: anywhere;
+}
+/* A frosted ink backing GUARANTEES the rail's labels stay legible over a bright
+   patch of the photo (the hero is content-driven and differs per report). The
+   opacity sits on this pseudo-element so the rail's text above (z-index:1) stays
+   full-strength; the fill is the token ink (no raw rgba). */
+.st-01 .cv-rail::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--color-ink);
+  opacity: 0.46;
+  z-index: 0;
+}
+.st-01 .cv-rail .c-stat-rail {
+  position: relative;
+  z-index: 1;
+}
+/* The cover rail is a NARROW overlay column on the photo, so the global stat
+   shout (--type-stat-xl 60pt) breaks a real figure MID-NUMBER there: "300.000 €"
+   printed as "300.00" / "0 €" (observed 2026-07-16, once the contract-audit fix
+   started feeding proof_stats). A figure must never split. Scope it DOWN to
+   --type-stat (40pt) on ONE line HERE ONLY, exactly as ST-06 does for its narrow
+   right column; the guarded global tier in components.css is unchanged. */
+.st-01 .cv-rail .c-stat-rail .c-stat-value {
+  font-size: var(--type-signature);
+  white-space: nowrap;
+}
+
+/* ---- dark editorial TITLE BAND (the §C3 authority panel): byline -> two-tone
+   title -> audience + subtitle -> teaser rail. Solid --color-ink ground, on-dark
+   text, filling the lower portion of the sheet. ---- */
+.st-01 .cv-band {
+  flex: 1 1 auto;
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  padding: 4mm 18mm 20mm 18mm;
+  display: flex;
+  flex-direction: column;
+}
+
+/* founder byline: an accent eyebrow "Mit" + the big serif name + italic role. */
+.st-01 .cv-author {
+  margin: 0 0 var(--space-3) 0;
+  line-height: 1.2;
+}
+.st-01 .cv-author-kicker {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-right: var(--space-2);
+  vertical-align: 0.4mm;
+}
+.st-01 .cv-author-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h2);
+  color: var(--color-on-dark);
+}
+.st-01 .cv-author-role {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--type-label);
+  color: var(--color-on-dark);
+  opacity: 0.82;
+}
+.st-01 .cv-author-name + .cv-author-role::before {
+  content: " · ";
+  font-style: normal;
+  opacity: 0.55;
+}
+
+/* the two-tone display title — the biggest type on the cover (the flagship hero
+   headline, DNA §C1). The macro owns the two-tone run colors
+   (.c-two-tone__accent fires --color-accent); here we bump the SIZE to the HERO
+   tier and recolor the LEAD run to on-dark (the band is dark, so the neutral run
+   is white, the accent run stays the brand accent). Tight line-height (~0.98) +
+   a touch more negative tracking is the editorial display convention — at hero
+   size the GIANT title stacks compactly so a multi-line German title still fits
+   the band's title zone above the audience/subtitle/teaser rail. */
+.st-01 .cv-title { margin: var(--space-1) 0 0 0; }
+.st-01 .cv-title .c-two-tone {
+  font-size: var(--type-hero);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--color-on-dark);
+}
+.st-01 .cv-title .c-two-tone__lead { color: var(--color-on-dark); }
+
+/* audience line: an uppercase letter-spaced band under the title. */
+.st-01 .cv-audience {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: var(--space-3) 0 0 0;
+}
+
+/* subtitle: the supporting teaser sentence, on-dark, slightly dimmed. */
+.st-01 .cv-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--type-h3);
+  line-height: 1.38;
+  color: var(--color-on-dark);
+  opacity: 0.92;
+  max-width: 150mm;
+  margin: var(--space-3) 0 0 0;
+  padding: var(--space-3) 0 0 0;
+  border-top: 0.3mm solid var(--color-accent);
+}
+
+/* teaser rail: "In diesem Report" + a tight bullet list. Small body type with a
+   hanging accent marker so the three (long, German) teaser lines stay compact and
+   never overflow the band. Pushed to the foot of the band. */
+.st-01 .cv-teaser {
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+.st-01 .cv-teaser-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.7;
+  margin: 0 0 var(--space-2) 0;
+}
+.st-01 .cv-teaser-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  column-count: 2;
+  column-gap: var(--space-5);
+}
+.st-01 .cv-teaser-item {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  line-height: 1.28;
+  color: var(--color-on-dark);
+  opacity: 0.88;
+  padding-left: var(--space-3);
+  margin: 0 0 var(--space-2) 0;
+  text-indent: calc(-1 * var(--space-3));
+  break-inside: avoid;
+}
+.st-01 .cv-teaser-item::before {
+  content: "—";
+  color: var(--color-accent);
+  font-weight: 700;
+  margin-right: var(--space-1);
+  text-indent: 0;
+}

@@ -1,0 +1,200 @@
+/* ST-03 - back-cover HARD CTA LAYOUT (Richard closing-skeleton redesign).
+ *
+ * Semantic design tokens ONLY (var(--…)) - NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the headline sizes off var(--font-display) (serif via the
+ * headline_type axis), the URL off var(--type-h2) (PROPORTIONATE - a contained
+ * CTA, NOT the page's biggest type). The geo-overlay + qr LOOK live in the `c-geo`
+ * / `c-qr` classes in styles/components.css (already in the shared head); this
+ * sheet paints the full-bleed dark ground + positions the lower-weighted cluster.
+ *
+ * Every rule is scoped under `.st-03` (the assembler's per-page section class).
+ *
+ * COMPOSITION (Richard's back covers - apex / NMR / boss): a LOWER-WEIGHTED
+ * cluster on a full-bleed dark authority ground. Deliberate textured dark space
+ * up top (the quiet geo motif); the content (serif headline + short body, a
+ * DESIGNED CTA cluster, a centered wordmark sign-off) clusters in the lower
+ * portion. This fills the page as a confident editorial closing - the opposite of
+ * a naked oversized URL floating in a void (the look this redesign removes).
+ *
+ * CTA cluster: a thin accent rule → an uppercase label → the PROPORTIONATE URL
+ * (the bare domain, scheme stripped in st_03.py) firing in --color-accent, with
+ * the QR (white box) beside it as one unit. Accent on the dark --color-ink ground
+ * is high-contrast for ANY brand (apex's LIGHT cyan accent pops on dark ink - the
+ * old saturated-primary ground was what made an accent URL wash out; the ink
+ * ground fixes that, so the URL fires in accent here).
+ *
+ * Full-bleed technique (WeasyPrint 68.1) - the SAME as the cover (ST-01) + the
+ * breathing page (ST-31): the back cover assigns itself the suppressed named
+ * `bleed` page (margin:0, header band + folio removed - declared in the shared
+ * head) via the `page:` property below. The CTA block is a BLOCK with an explicit
+ * min-height equal to the full A4 sheet (297mm) carrying the --color-ink ground
+ * (an absolutely-positioned inset:0 background child paints 0 ink in WeasyPrint;
+ * a block with real height does paint).
+ *
+ * Accent discipline (§3.7): accent fires on the thin CTA rule + the URL (the
+ * focal closing action) + the low-opacity geometric motif - measured, not loud.
+ */
+
+/* Route the back-cover section to the suppressed full-bleed named page (shared
+   with the breathing pages - margin:0, chrome suppressed). */
+.page.st-03 { page: bleed; }
+
+/* Cancel the default per-page content ground/min-height (the back cover paints
+   its own full-sheet saturated ground instead of sitting in the content box). */
+.st-03.page { min-height: 0; background: none; }
+
+/* ---- the full-bleed CTA block: SOLID DARK authority ground + full A4 ----
+   DNA §C3 (gap #4): the back-cover CTA is an AUTHORITY panel - a true dark block,
+   never a pale tint. Filled with --color-ink (the genuinely-dark neutral) so it
+   reads as a strong, confident closing page for ANY brand. (A saturated
+   --color-primary ground goes pale for a tonal brand whose primary is a mid/light
+   hue - e.g. APEX's mid-cyan - which is exactly the soft look this fix removes.)
+   The on-dark content (eyebrow / headline / oversized URL / wordmark / white QR)
+   already reads in --color-on-dark, so it stays high-contrast on the ink ground. */
+.st-03 .cta-bleed {
+  position: relative;
+  width: 100%;
+  /* EXPLICIT height, not min-height: in Chromium's fragmentation a min-height
+     block on the final sheet came up ~22mm short and a cream strip showed
+     under the "full-bleed" ground. */
+  height: 297mm;                            /* full A4 portrait (margin:0 page) */
+  box-sizing: border-box;
+  background-color: var(--color-ink);       /* the solid dark authority ground */
+  /* ATMOSPHERE ground (the reference closers): the brand's generated texture /
+     gradient asset under a duotone ink wash, so the upper field reads as
+     designed dark MATERIAL, not flat empty navy. Graceful: without the asset
+     the wash layers sit on the plain ink ground. */
+  background-image:
+    linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-ink) 64%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 86%, transparent) 55%,
+      color-mix(in srgb, var(--color-ink) 96%, transparent) 100%),
+    var(--cta-ground, none);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  overflow: hidden;
+}
+
+/* ---- content column: LOWER-WEIGHTED cluster (Richard's closing skeleton) ----
+   The head + CTA action + wordmark cluster in the LOWER portion of the sheet;
+   the upper portion is deliberate dark space carrying the quiet geo motif. This
+   fills the page as a confident editorial closing instead of a naked oversized
+   URL floating in a void. The cluster is anchored low via margin-top:auto on
+   the FIRST content child (.cta-head), NOT justify-content:flex-end: with
+   flex-end, overlong copy overflowed UPWARD and sliced the headline at the top
+   trim edge; with flex-start + the auto top margin, overflow consumes the
+   flexible top gap first and, when truly overlong, clips at the BOTTOM after
+   the wordmark. Identical visual for fitting copy. */
+.st-03 .cta-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;      /* fill the explicit-height bleed block */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 34mm 24mm 24mm 24mm;
+  box-sizing: border-box;
+  color: var(--color-on-dark);
+}
+
+/* head: a small uppercase eyebrow, a short serif headline, a supporting line.
+   margin-top:auto is the low-anchor (see the .cta-content note above). */
+.st-03 .cta-head {
+  flex: 0 0 auto;
+  margin-top: auto;
+  margin-bottom: var(--space-7);
+}
+.st-03 .cta-eyebrow {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.7;
+  margin: 0 0 var(--space-3) 0;
+}
+.st-03 .cta-headline {
+  font-family: var(--font-display);         /* serif via the headline_type axis */
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-on-dark);
+  margin: 0;
+  max-width: 150mm;
+  overflow-wrap: break-word;
+}
+.st-03 .cta-body {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.45;
+  color: var(--color-on-dark);
+  opacity: 0.85;
+  max-width: 140mm;
+  margin: var(--space-4) 0 0 0;
+}
+
+/* action: a thin accent rule, then the CTA cluster - an uppercase label + the
+   PROPORTIONATE accent URL on the left, the QR (white box) beside it on the
+   right, read as one CTA unit. The URL is the bare domain (scheme stripped in
+   st_03.py) at --type-h2 (a confident, CONTAINED CTA - NOT the page's biggest
+   type), firing in --color-accent for high contrast on the dark --color-ink
+   ground. */
+.st-03 .cta-action {
+  flex: 0 0 auto;
+  margin-bottom: var(--space-7);
+}
+.st-03 .cta-rule {
+  width: 100%;
+  height: 0.4mm;
+  background: var(--color-accent);
+  margin: 0 0 var(--space-4) 0;
+}
+.st-03 .cta-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+.st-03 .cta-action-text {
+  min-width: 0;          /* allow the URL to wrap rather than push the QR off */
+}
+.st-03 .cta-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.8;
+  margin: 0 0 var(--space-2) 0;
+}
+.st-03 .cta-url {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-h2);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--color-accent);
+  overflow-wrap: anywhere;
+}
+.st-03 .cta-qr {
+  flex: 0 0 auto;
+}
+
+/* wordmark sign-off: centered at the very bottom of the sheet (the closing
+   mark - the way Richard's back covers end on the logo). */
+.st-03 .cta-wordmark {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.95;
+  text-align: center;
+}

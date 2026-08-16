@@ -1,0 +1,270 @@
+/* ST-07B — theory / "Gegenseite" page LAYOUT (Plan B rebuild, P-7).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the headline sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif) — set against the sans var(--font-body) two-column prose, that serif/sans
+ * pairing is the §18 contrast. The key-insight callout LOOK (accent rule, tint
+ * fill, large italic body) is owned by the `c-key-insight` class in
+ * styles/components.css (already in the shared head); this sheet only positions it
+ * and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-07b` (the assembler's per-page section class)
+ * so it cannot leak. The theory page ranges from a short thesis to a dense 5-para
+ * argument (slot 10), so the prose flows two-up (column-count is robust for
+ * flowing TEXT in WeasyPrint 68.1 — unlike flexbox for full-page structural
+ * columns) over the full-width key-insight callout, with modest line-heights +
+ * --space-* rhythm so even the longest theory page fits the 261mm content box on
+ * one sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the eyebrow is
+ * muted; the key-insight rule + label are accent; the panel is a tint fill) and
+ * the optional compare-grid labels — never on body text.
+ */
+
+/* ---- header: small uppercase eyebrow → large serif headline ---- */
+.st-07b .th-header {
+  margin: 0 0 var(--space-3) 0;
+}
+.st-07b .th-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* ---- body: the argument prose flowed two-up. A thin column-rule in the gutter
+   reads as an editorial divider; the body sets in the sans body face (the
+   serif/sans contrast against the headline). The first paragraph (the thesis) is
+   set a touch larger + primary-inked as a lede, then balances into the columns. */
+.st-07b .th-body {
+  column-count: 2;
+  column-gap: var(--density-col-gap, var(--space-5));
+  column-rule: 0.2mm solid var(--color-muted);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--density-lead, 1.42);
+  color: var(--color-body);
+  margin: 0 0 var(--space-4) 0;
+}
+.st-07b .th-body p {
+  margin: 0 0 var(--density-para, var(--space-2)) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+.st-07b .th-body p:first-child {
+  margin-top: 0;
+  font-size: var(--type-h3);
+  line-height: 1.34;
+  color: var(--color-primary);
+  text-align: left;
+  break-after: avoid;       /* keep the thesis lede from orphaning at a column break */
+}
+.st-07b .th-body p:last-child { margin-bottom: 0; }
+.st-07b .th-body strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- optional before/after compare grid (OHNE / MIT): two fixed columns via a
+   table-layout (robust in WeasyPrint 68.1 for full-width structural columns). The
+   "ohne" column is a muted-bordered plate; the "mit" column is a tint plate so the
+   automated-future side reads as the accent answer. Emitted only when supplied. */
+.st-07b .th-compare {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--space-4) 0;
+  margin: 0 0 var(--space-4) 0;
+}
+.st-07b .th-col {
+  display: table-cell;
+  vertical-align: top;
+  width: 50%;
+  padding: var(--space-3) var(--space-4);
+  border: 0.2mm solid var(--color-muted);
+}
+.st-07b .th-col--mit {
+  background-color: var(--color-accent-tint);
+  border-color: var(--color-accent);
+}
+.st-07b .th-col-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.st-07b .th-col-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.st-07b .th-col-item {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  line-height: 1.34;
+  color: var(--color-body);
+  margin: 0 0 var(--space-2) 0;
+  padding-left: var(--space-3);
+  position: relative;
+}
+.st-07b .th-col-item:last-child { margin-bottom: 0; }
+
+/* ---- key-insight callout: the signature payoff, spanning full width below the
+   body. break-inside:avoid keeps the panel whole on the page. ---- */
+.st-07b .th-insight { margin: 0; }
+.st-07b .th-insight .c-key-insight { break-inside: avoid; }
+
+/* ======================================================================== *
+ * FILL VARIANT — the DARK authority-panel composition (DNA §C3; niklas p8 /
+ * boss p5).
+ *
+ * Selected per-page via layout_variant="fill". The sparse theory page (kicker +
+ * serif headline + a short 2-para body + a short key_insight; `compare` usually
+ * null) under-fills — the standard tint callout leaves the bottom ~60% of the
+ * sheet empty (an N08 dead-space band). Here the kicker + headline + body (+ the
+ * compare grid when present) flow in the UPPER portion, and the key_insight is
+ * reborn as a LARGE full-width DARK authority panel pinned to FILL the LOWER
+ * portion of the content box — an oversized italic closing statement, white/
+ * accent type on the dark ground. The dark panel filling the lower band is what
+ * removes the dead space.
+ *
+ * HOW the lower-band fill is guaranteed (WeasyPrint 68.1): .th-fill-root is a
+ * definite-height (= the A4 content box, 261mm) FLEX COLUMN. The upper block
+ * (.th-fill-top: kicker + headline + body + optional compare) takes its natural
+ * height; the dark panel is a flex child with `flex: 1` so it GROWS UPWARD to
+ * meet the bottom of the (short) body and stretches all the way down to the
+ * page bottom. Because the panel starts exactly where the body ends, there is
+ * NO white band between the body and the panel — the earlier fixed-height
+ * (185mm, bottom-pinned) panel left a visible mid-page white gap above it on
+ * the short apex theory page; growing the panel to fill the remaining column
+ * height closes that gap.
+ *
+ * Tokens ONLY — no hex / font / client literal. The dark ground is
+ * var(--color-ink); on-dark text is var(--color-on-dark); the label fires
+ * var(--color-accent). The oversized italic insight sets in var(--font-display)
+ * (the serif via the headline_type axis) for the §C1 oversized-quote feel. */
+
+/* the fill ROOT: a definite-height FLEX COLUMN. The definite height is
+   REQUIRED so the flex:1 dark panel has a concrete remaining height to expand
+   into down to the page bottom. The fill variant ships as a DARK BEAT
+   (page-mode routes the section to the margin-0 bleed sheet with 22/22/24/22
+   padding), so the available box is 297 - 22 - 24 = 251mm, NOT the chromed
+   261mm content box this was first sized to. At 261mm the section ran 307mm
+   tall: for weeks that overflow silently SHRANK the whole document to ~85
+   percent (Chromium scales everything when any fragment exceeds its sheet),
+   and at true print scale it spilled a tail sheet per theory page. */
+.st-07b .th-fill-root {
+  display: flex;
+  flex-direction: column;
+  height: 251mm;
+  box-sizing: border-box;
+}
+.st-07b .th-fill-top {
+  margin: 0;
+  flex: 0 0 auto;       /* upper block keeps its natural (short) height */
+}
+
+/* the DARK authority panel: a flex child that GROWS (flex: 1) to fill ALL the
+   vertical space the short upper block leaves — it begins right where the body
+   ends and extends to the page bottom, edge-to-edge horizontally. Because it
+   meets the body, there is no white band above it (the fill that removes the
+   dead bottom band AND closes the former mid-page gap). */
+.st-07b .th-insightfill {
+  flex: 1 1 auto;
+  margin: 0;
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  padding: var(--space-5) var(--space-5);
+  box-sizing: border-box;
+  /* center the label + oversized statement in the now-taller panel so the dark
+     block reads as a deliberate closing panel, not a top-anchored note. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.st-07b .th-insightfill-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-4) 0;
+}
+/* the oversized italic insight statement — §C1 oversized typographic quote, set
+   in the serif display face on the dark ground (white/on-dark ink). overflow-wrap
+   keeps a long German token from running past the panel edge. */
+.st-07b .th-insightfill-body {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  /* OVERSIZED §C1 statement (display-xl, not display): the fill panel grows tall
+     on a sparse theory page, so the closing statement must be big enough to OWN
+     that dark space rather than float as a small quote in a void. overflow-wrap +
+     the flex panel keep a longer statement from spilling (page-count verified). */
+  font-size: var(--type-display-xl);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  color: var(--color-on-dark);
+  margin: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+/* a LONG statement (>110 chars) steps down one display size: at true print
+   scale the xl cut ran 5+ lines and pushed the section past its sheet (the
+   template sets the modifier from the raw text length). */
+.st-07b .th-insightfill--long .th-insightfill-body {
+  font-size: var(--type-display);
+  line-height: 1.2;
+}
+.st-07b .th-insightfill-body p { margin: 0 0 var(--space-3) 0; }
+.st-07b .th-insightfill-body p:last-child { margin-bottom: 0; }
+
+/* ---- dark_divider page-mode: the WHOLE page is the dark essay ground, so the
+   fill authority panel sheds its own box (its --color-ink bg would otherwise
+   invert to light under the dark-page token reversal) and the oversized italic
+   statement sits DIRECTLY on the dark page as its SPINE — the pull-quote IS the
+   page (the apex/Richard dark-divider treatment), not a slab within it. Also lift
+   a hairline accent rule above it so it reads as a deliberate closing movement. */
+.st-07b[data-page-mode="dark_divider"] .th-insightfill,
+.st-07b[data-page-mode="data_dark"] .th-insightfill {
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-5);
+}
+
+/* ---- fill-variant DARK-GROUND legibility (2026-07-10) --------------------
+   The "fill" composition sits on the dark authority ground (the whole theory
+   page renders dark). The base .th-body / lede colors (color-body / color-
+   primary) are a light-ground choice and go invisible on the dark page (the
+   navy lede on navy was unreadable). Flip the fill variant's upper-block text +
+   column rule to on-dark. Scoped to .th-fill-top so the light "standard"
+   variant is untouched. Tokens only. */
+.st-07b .th-fill-top .th-headline { color: var(--color-on-dark); }
+.st-07b .th-fill-top .th-body { color: var(--color-on-dark); }
+.st-07b .th-fill-top .th-body p:first-child { color: var(--color-on-dark); }
+.st-07b .th-fill-top .th-body {
+  column-rule-color: color-mix(in srgb, var(--color-on-dark) 26%, transparent);
+}
+
+/* device band: the page's data-viz presets (e.g. the vorher_nachher A->B card)
+   centered between the prose and the insight panel. Tokens only. */
+.st-07b .th-viz {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-5) 0;
+}
+.st-07b .th-viz .c-viz { max-width: 168mm; }

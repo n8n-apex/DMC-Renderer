@@ -132,8 +132,11 @@
   line-height: 1.1;
   color: var(--color-on-accent);
   background-color: var(--color-accent);
-  border-radius: 999px;
-  padding: 1.1mm 3.2mm;
+  /* US-503: flat sharp step number — no pill. The audit called the rounded
+     SCHRITT pills "cheap SaaS template". The accent fill stays (a flat block),
+     radius and margin rhythm align to the grid. */
+  border-radius: 0;
+  padding: 1.1mm 0;
   margin: 0 0 var(--space-1) 0;
 }
 .st-06 .mx-step-cell .c-step-card__num::before { content: "Schritt "; }

@@ -1,0 +1,10 @@
+/* Density axis — value-driven content tightness. Brand-agnostic, axis-driven.
+   NOTE: --density-lead is defined for all three densities so that pattern CSS
+   files (st_08, st_22, st_07b, st_02, st_fazit) and _generic.py that still
+   reference var(--density-lead) get a meaningful value.  However the body
+   element's own line-height is now a FEST-absolute 14pt (set in assembler.py)
+   and is NOT driven by --density-lead. */
+:root { --density-col-gap: var(--space-5); --density-lead: 1.5; --density-para: var(--space-3); }
+[data-density="balanced"] { --density-col-gap: var(--space-5); --density-lead: 1.5; --density-para: var(--space-3); }
+[data-density="compact"]  { --density-col-gap: var(--space-3); --density-lead: 1.36; --density-para: var(--space-2); }
+[data-density="spacious"] { --density-col-gap: var(--space-6); --density-lead: 1.62; --density-para: var(--space-4); }
