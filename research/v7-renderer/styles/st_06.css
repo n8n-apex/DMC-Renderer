@@ -317,3 +317,17 @@
   flex: 0 0 auto;
   margin: var(--space-3) 0 0 0;
 }
+
+/* US-607: the continuation folio marker ('Seite 1 / 2') — a quiet caption
+   above the cue/recap so the reader knows the section spans pages. */
+.st-06 .mx-cont-folio {
+  flex: 0 0 auto;
+  margin: var(--space-3) 0 0 0;
+  text-align: right;
+}
+.st-06 .mx-cont-folio-text {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+}

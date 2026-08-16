@@ -98,4 +98,12 @@
   {{ dark_recap_panel(recap_label, recap_html) }}
 </div>
 {% endif %}
+{% if continuation_role %}
+{# US-607: continuation furniture — the section's physical-page marker
+   ('Seite 1 / 2' or 'Seite 2 / 2') so the reader knows the section spans
+   multiple pages. Renders only on continuation pages. #}
+<div class="mx-cont-folio">
+  <span class="mx-cont-folio-text">Seite {{ page_plan.continuation_index }} / {{ page_plan.section_page_count }}</span>
+</div>
+{% endif %}
 {% if continuation_role %}</div>{% endif %}

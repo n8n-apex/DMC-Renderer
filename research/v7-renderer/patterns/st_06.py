@@ -185,6 +185,15 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         recap_html=preprocess_body(ergebnis),
         viz=viz,
         continuation_role=continuation_role,
+        # US-607: the physical-page plan (page N of M) for continuation
+        # furniture — the template renders a 'Seite N / M' marker when the
+        # section spans multiple pages.
+        page_plan={
+            "page_id": page.get("page_id"),
+            "section_id": page.get("section_id"),
+            "continuation_index": page.get("continuation_index") or 1,
+            "section_page_count": page.get("section_page_count") or 1,
+        },
         # the page's diagram proof (plan_diagrams output — real data, e.g. the
         # stat_callout figure). Rendered on the RESULT continuation so the page
         # carries its full data payload (the vision audit flagged the dead band
