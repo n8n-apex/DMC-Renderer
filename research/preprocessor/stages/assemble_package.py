@@ -212,6 +212,20 @@ def _drive_slot_entry(
     return entry
 
 
+def _write_page_identity(page_dict: dict, pp) -> None:
+    """US-602: write the section/physical-page identity fields onto a page
+    dict ONLY when the plan set them (a section that expanded across physical
+    pages). Single-page sections carry none — back-compat with the flat
+    one-slot-one-sheet package (no key, no behaviour change)."""
+    for _key in (
+        "section_id", "page_id", "continuation_index",
+        "continuation_role", "section_page_count",
+    ):
+        _val = getattr(pp, _key, None)
+        if _val is not None:
+            page_dict[_key] = _val
+
+
 def _build_page_slot_dicts(
     page_slots: dict[int, list], page_slot: int, client_dir: Path, output_dir: Path,
 ) -> list[dict]:
@@ -332,6 +346,11 @@ def _build_manifest(
         # A3-designed → "a3"; everything else stays A4 (renderer default).
         if pp.page_format is not None:
             page_dict["page_format"] = pp.page_format
+        # ---- US-602 section/physical-page identity: written ONLY when the
+        # plan sets them (a section expanded to multiple physical pages). A
+        # single-page section carries none — exactly today's flat package
+        # (back-compat; no key, no behaviour change).
+        _write_page_identity(page_dict, pp)
         pages_manifest.append(page_dict)
 
     # Report-level assets (page_slot is None — e.g. background_texture /
@@ -506,9 +525,24 @@ async def assemble_package(
     # Validate-then-dump: a contract typo now fails loudly here.
     validated = ResolvedPackageManifest.model_validate(manifest)
 
+    # US-602: identity fields are optional — a single-page section must NOT
+    # carry null keys (back-compat with the flat package). The model accepts
+    # them; the dump strips the None identity keys so only genuinely expanded
+    # sections surface section_id/page_id/continuation_*.
+    _IDENTITY_KEYS = frozenset({
+        "section_id", "page_id", "continuation_index",
+        "continuation_role", "section_page_count",
+    })
+
+    def _strip_none_identity(page: dict) -> dict:
+        return {k: v for k, v in page.items() if k not in _IDENTITY_KEYS or v is not None}
+
+    dumped = validated.model_dump(mode="json")
+    dumped["pages"] = [_strip_none_identity(p) for p in dumped.get("pages", [])]
+
     package_path = output_dir / "resolved_package.json"
     package_path.write_text(
-        json.dumps(validated.model_dump(mode="json"), indent=2, ensure_ascii=False) + "\n",
+        json.dumps(dumped, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
 

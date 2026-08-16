@@ -97,7 +97,15 @@ _SPREAD_LAYOUT_VARIANTS: frozenset[str] = frozenset({"casestudy_hero"})
 
 @dataclass
 class PlannedPage:
-    """One page, enriched with rendering metadata + SVG components."""
+    """One page, enriched with rendering metadata + SVG components.
+
+    A logical report SECTION may own multiple physical pages (user directive:
+    "use as many pages as it requires"). When a section expands, each planned
+    page carries identity fields (section_id / page_id / continuation_index /
+    continuation_role / section_page_count). All default to None: a
+    single-page section stays exactly today's flat one-slot-one-page record
+    (back-compat — no identity is written to the package).
+    """
 
     slot: int
     st_type: str
@@ -113,6 +121,12 @@ class PlannedPage:
     # Per-page sheet format ("a3" for spread variants, else None → renderer
     # keeps its default A4). Written into the package when not None.
     page_format: Optional[str] = None
+    # ---- US-602 section/physical-page identity (all None = single page) ----
+    section_id: Optional[str] = None        # e.g. "section.16"
+    page_id: Optional[str] = None           # e.g. "section.16.page.2"
+    continuation_index: Optional[int] = None  # 1-based position in the section
+    continuation_role: Optional[str] = None   # intro|mechanism|proof|result|close
+    section_page_count: Optional[int] = None  # total physical pages the section owns
 
 
 @dataclass
