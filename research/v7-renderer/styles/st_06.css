@@ -45,11 +45,14 @@
 .st-06 .mx-intro-row { }
 .st-06 .mx-intro-stat {
   float: right;
-  /* US-504: the stat value ("30-50%") at the token size needs ~62mm of width;
-     42mm clipped it at the card edge (the audit's recurring p16 fault). The
-     intro is now measure-capped (120mm, US-502) so the wider stat fits beside
-     it without reflowing the page. */
-  width: 42mm;
+  /* US-601: the stat value ("30-50%") at the token size needs ~176px of text
+     + padding; 42mm clipped it (scrollWidth 176 vs clientWidth 113 — the
+     recurring p16 fault, now a HARD regression in test_st06_stat_fit.py).
+     The card is WIDENED to fit the real figure at the token size. If the
+     widened card + the rest of the section exceed one sheet, ST-06 expands
+     to a second physical page — that is the honest multi-page contract
+     (user directive), never a reason to squeeze the figure. */
+  width: 70mm;
   margin: 0 0 var(--space-2) var(--space-4);
 }
 .st-06 .mx-intro {
