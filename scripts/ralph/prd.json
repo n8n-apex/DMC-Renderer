@@ -330,8 +330,8 @@
       "id": "US-504",
       "description": "data-device grammar: 30-50% clip fix, German metric caps, prose->real devices",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: German metric caps + transform case; p16 stat clip is NOT CSS-fixable (4 attempts all break pagination) -> copy-fit task"
     },
     {
       "id": "US-505",
