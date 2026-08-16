@@ -109,6 +109,11 @@ def _build_parser():
         help="run the convergence loop deterministic-only (no vision calls)",
     )
     parser.add_argument(
+        "--no-visual-gate", action="store_true",
+        help="SKIP the blocking visual QA gate (NEVER for a delivery — the "
+             "gate is what stops ugly decks from shipping)",
+    )
+    parser.add_argument(
         "--package-dir", default=str(FIXTURES_APEX_DIR),
         help="package directory to rasterize (its resolved_package.json is the "
              "deck source); defaults to the apex fixture for back-compat",
@@ -175,6 +180,68 @@ def _run_qa_gate(out_dir: Path, html_path: Path | None = None) -> None:
     print("[qa] overlap gate: CLEAN")
 
 
+def _run_visual_qa_gate(out_dir: Path, *, threshold: int = 2) -> None:
+    """US-510: the VISUAL QA gate — the taste check the render must pass.
+
+    Every page PNG is scored by the vision reviewer against the rubric's
+    composition/device rows. Any page whose DEVICE-quality score is below
+    `threshold` fails the gate: the deck does NOT ship. This is the "why did
+    the Power BI abominations pass?" answer — they will not anymore. Requires
+    OPENROUTER_API_KEY (env or .env); without it the gate is skipped with a
+    LOUD warning (never a silent pass).
+    """
+    import os
+    import sys
+    # the vision client needs the preprocessor .env + its deps (httpx).
+    _env_path = HERE.parent / "preprocessor" / ".env"
+    if _env_path.exists():
+        for line in _env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k, v)
+    ql_root = (HERE.parent / "quality_loop").resolve()
+    research_root = HERE.parent
+    for _p in (str(research_root), str(ql_root)):
+        if _p not in sys.path:
+            sys.path.insert(0, _p)
+
+    try:
+        from quality_loop.vis_client import _read_env_file, VisionClient
+    except ImportError as exc:
+        print(f"[qa] vision client unavailable ({exc}) — VISUAL gate skipped")
+        return
+    key = _read_env_file("OPENROUTER_API_KEY")
+    if not key:
+        print("[qa] WARNING: no OPENROUTER_API_KEY — VISUAL gate skipped "
+              "(the deck ships UNREVIEWED)")
+        return
+
+    # the device-quality rows: P11 data-viz, P12 dense editorial, P07 social proof
+    device_rows = ["P11", "P12"]
+    client = VisionClient()
+    pngs = sorted(out_dir.glob("report-p*.png"))
+    failed: list[str] = []
+    for png in pngs:
+        try:
+            scores = client.score_page(str(png), [], device_rows)
+        except Exception as exc:  # noqa: BLE001 -- a reviewer outage must be loud
+            print(f"[qa] VISUAL gate reviewer error on {png.name}: {exc}")
+            failed.append(f"{png.name}: reviewer error")
+            continue
+        row = scores.get("P11") or {}
+        score = row.get("score", 0)
+        if isinstance(score, int) and score < threshold:
+            failed.append(f"{png.name}: device quality {score} < {threshold}")
+    if failed:
+        raise SystemExit(
+            f"[qa] VISUAL GATE FAILED ({len(failed)} pages): "
+            + "; ".join(failed[:6])
+            + " — the deck does NOT ship. Fix the devices, then re-render."
+        )
+    print(f"[qa] visual gate: CLEAN ({len(pngs)} pages, device threshold {threshold})")
+
+
 def main() -> int:
     args = _build_parser().parse_args()
     package_dir = Path(args.package_dir).resolve()
@@ -203,6 +270,12 @@ def main() -> int:
     # full). A deck whose content sits under an absolute panel (the p18
     # cost-block-inside-CTA fault) CANNOT ship — non-zero exit + clear error.
     _run_qa_gate(out_dir, html_path=result.html_path if hasattr(result, "html_path") else None)
+
+    # US-510 VISUAL GATE: the taste check — every page's device quality must
+    # clear the threshold or the deck does NOT ship. Opt-out only via
+    # --no-visual-gate (never for a delivery).
+    if not args.no_visual_gate:
+        _run_visual_qa_gate(out_dir)
 
     if args.fast:
         print("[render] --fast: skipping Stage 9 convergence.")
