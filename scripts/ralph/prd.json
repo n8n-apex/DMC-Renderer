@@ -323,8 +323,8 @@
       "id": "US-503",
       "description": "flat-design purge: no shadows, sharp corners, pills->flat, checkmarks->rules",
       "priority": "high",
-      "passes": "pending",
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: pills->flat labels, shadows/radius removed (logo chips, CTA, dash, testimonials, timeline nodes, geo circles), dense-spread lede gate"
     },
     {
       "id": "US-504",
