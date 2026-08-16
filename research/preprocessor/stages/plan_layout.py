@@ -284,13 +284,31 @@ def plan_layout(
             page_format=page_format,
         ))
 
+    # US-603: section pagination — a section whose copy exceeds its per-ST
+    # capacity expands into multiple physical-page plans at semantic
+    # boundaries (split_section). Each expanded page carries US-602 identity
+    # (section_id / continuation_index / continuation_role). Single-page
+    # sections are returned UNCHANGED (back-compat: the flat one-slot-one-
+    # sheet package). Imported lazily: plan_section_pages imports PlannedPage
+    # from THIS module, so a top-level import would be circular.
+    from stages.plan_section_pages import split_section
+
+    expanded: list[PlannedPage] = []
+    for pp in planned:
+        expanded.extend(split_section(pp))
+    planned = expanded
+
     page_count = len(planned)
 
-    # E: page-count alignment
+    # E: page-count alignment (physical pages vs the soft target). The target
+    # is a LOGICAL-section count; expanded sections (US-603) legitimately push
+    # the physical count above it — that is the user's multi-page directive,
+    # so the warning is informational, never a block.
     if page_count != page_count_target:
         warnings.append(
-            f"page count mismatch: {page_count} pages in array, "
-            f"target is {page_count_target}"
+            f"page count mismatch: {page_count} physical pages planned, "
+            f"target is {page_count_target} (a section may have expanded — "
+            f"allowed by the multi-page directive)"
         )
 
     # A: FIXED slots

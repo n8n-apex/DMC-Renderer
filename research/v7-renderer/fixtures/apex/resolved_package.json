@@ -1043,7 +1043,29 @@
           {
             "title": "AI-Agenten-Implementierung",
             "body": "Spezialisierte AI-Agenten werden direkt in deine bestehende Tool-Landschaft integriert. Kein Stack-Wechsel, keine monatelangen IT-Projekte. 61% der B2B-Firmen setzen bereits auf Agentic AI (KPMG, 2026)."
-          },
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "section_id": "section.16",
+      "page_id": "section.16.page.1",
+      "continuation_index": 1,
+      "continuation_role": "intro",
+      "section_page_count": 2
+    },
+    {
+      "slot": 16,
+      "st_type": "ST-06",
+      "css_template": "mechanism",
+      "has_cta": false,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
+        "steps": [
           {
             "title": "Onboarding- und Fulfillment-Automatisierung",
             "body": "Die zeitintensivsten Fulfillment-Prozesse – Kunden-Onboarding, Dokumentenverarbeitung, interne Abstimmungsschleifen – werden vollständig übernommen. Was 30 Minuten dauerte, dauert zwei."
@@ -1058,8 +1080,12 @@
           }
         ],
         "ergebnis": "Executives berichten, dass gezielt eingesetzte Automatisierung 30-50% operativer Effizienzgewinne liefert (PwC, 2026).",
-        "bars": [],
-        "metrics": []
+        "diagram": {
+          "kind": "stat_callout",
+          "figure": "30-50%",
+          "label": "im Schnitt",
+          "source": "plan_diagrams"
+        }
       },
       "charts": [],
       "social_proof": null,
@@ -1067,7 +1093,12 @@
       "assets": [],
       "components": [
         "components/16_component_0.svg"
-      ]
+      ],
+      "section_id": "section.16",
+      "page_id": "section.16.page.2",
+      "continuation_index": 2,
+      "continuation_role": "result",
+      "section_page_count": 2
     },
     {
       "slot": 17,
@@ -1625,11 +1656,12 @@
       }
     ],
     "layout_warnings": [
+      "page count mismatch: 21 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
       "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
       "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
     ],
     "cover_overall": null,
-    "total_warnings": 46
+    "total_warnings": 47
   },
   "asset_summary": {
     "total_required": 16,

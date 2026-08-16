@@ -139,18 +139,24 @@ def test_resolved_page_v2_accepts_identity_fields() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# 5. Existing default package has NO identity keys (no silent change)
+# 5. Package identity keys appear ONLY on expanded sections
 # --------------------------------------------------------------------------- #
 def test_default_package_pages_have_no_identity_keys() -> None:
+    """Only genuinely expanded sections (ST-06 is over capacity) carry identity;
+    every OTHER page has none (back-compat with the flat package)."""
     pkg = json.loads(
         (Path(__file__).resolve().parent.parent.parent
          / "v7-renderer" / "fixtures" / "apex" / "resolved_package.json")
         .read_text(encoding="utf-8")
     )
+    identity_slots = set()
     for page in pkg.get("pages", []):
-        for key in ("section_id", "page_id", "continuation_index",
-                    "continuation_role", "section_page_count"):
-            assert key not in page, (
-                f"default package page slot {page.get('slot')} must NOT carry "
-                f"{key} — back-compat (identity only when a section expands)"
-            )
+        if any(k in page for k in ("section_id", "page_id",
+                                   "continuation_index",
+                                   "continuation_role", "section_page_count")):
+            identity_slots.add(page.get("slot"))
+            assert page.get("continuation_index") is not None
+    # exactly the ST-06 section (slot 16) is expanded in the apex fixture
+    assert identity_slots == {16}, (
+        f"expected only slot 16 (ST-06) expanded; got {identity_slots}"
+    )

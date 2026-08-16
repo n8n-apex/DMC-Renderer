@@ -380,7 +380,12 @@ async def main(use_fal: bool = False) -> int:
 
     # ---- sanity assertions (FAIL LOUD if the package is wrong) ----
     st_types = [p["st_type"] for p in pkg["pages"]]
-    assert len(pkg["pages"]) == 20, f"expected 20 pages, got {len(pkg['pages'])}"
+    # US-603: the physical page count may EXCEED the logical 20 — ST-06's copy
+    # exceeds its per-page capacity and the section legitimately expands into
+    # a second physical page (user directive: sections may use as many pages
+    # as required). The count is only floor-checked; identity fields mark the
+    # continuation.
+    assert len(pkg["pages"]) >= 20, f"expected >=20 pages, got {len(pkg['pages'])}"
     assert st_types[0] == "ST-01" and st_types[-1] == "ST-03", st_types
     assert st_types.count("ST-07A") == 5, st_types
     # Case-study pages are the A3 casestudy_hero spreads; the other fill-default

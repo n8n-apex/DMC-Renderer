@@ -307,7 +307,19 @@ def _build_manifest(
     for pp in layout_plan.pages:
         page_assets = assets_by_slot.get(pp.slot, [])
         sp = structured_by_slot.get(pp.slot)
-        if sp is not None:
+        # US-603: a CONTINUATION page carries its own SLICED data (pp.data —
+        # the section-pagination split). The structured view is the FULL source
+        # section; using it on a continuation would duplicate the whole section
+        # on every physical page. Single-page sections keep the structured view
+        # exactly as before (back-compat).
+        is_continuation = (
+            pp.continuation_index is not None and pp.section_page_count is not None
+        )
+        if is_continuation:
+            data_block = dict(pp.data)
+            charts_block = []
+            social_block = None
+        elif sp is not None:
             data_block = sp.data.model_dump()
             charts_block = [c.model_dump() for c in sp.charts]
             social_block = sp.social_proof.model_dump() if sp.social_proof else None
@@ -328,7 +340,15 @@ def _build_manifest(
             "social_proof": social_block,
             "slots": slot_dicts,
             "assets": [_asset_manifest_entry(a, output_dir) for a in page_assets],
-            "components": component_rel_paths.get(pp.slot, []),
+            "components": (
+                # US-603: a section's chart/devices live on its RESULT page
+                # (the continuation carrying the outcome data); the intro page
+                # carries none (its data slice has no chart).
+                (component_rel_paths.get(pp.slot, [])
+                 if is_continuation and pp.continuation_role == "result"
+                 else ([] if is_continuation
+                       else component_rel_paths.get(pp.slot, [])))
+            ),
             "cover_validation": (
                 _cover_validation_to_dict(cover_validation)
                 if cover_validation and pp.st_type == "ST-01"
