@@ -393,5 +393,9 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         pullquote_attribution=pullquote.get("attribution", ""),
         stats=stats,
         sections=sections,
+        # US-510 copy-fit hint: dense spreads (long narrative) keep the caption
+        # body size so the 260mm sheet never overflows; roomier spreads render
+        # the narrative at the larger body size (fills the negative space).
+        dense_body=_narr_only > 1100,
     )
     return PageFragment(html=html, css=_CSS)

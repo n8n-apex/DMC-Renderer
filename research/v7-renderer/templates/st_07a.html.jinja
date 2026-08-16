@@ -312,18 +312,6 @@
         {% endif %}
       </div>
 
-      {% if _kpi_stats %}
-      <div class="csh-dash-rule" aria-hidden="true"></div>
-      <div class="csh-dash-kpis">
-        {% for s in _kpi_stats %}
-        <div class="csh-kpi">
-          <span class="csh-kpi-v">{{ s.value }}</span>
-          {% if s.label %}<span class="csh-kpi-l">{{ s.label }}</span>{% endif %}
-        </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-
     </div>
 
     {% if pullquote_text %}
