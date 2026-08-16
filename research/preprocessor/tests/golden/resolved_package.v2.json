@@ -354,7 +354,7 @@
           "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
           "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
           "path": null,
-          "prompt": "Abstract editorial visualization Case 1: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band Case 1: preserve the reference's editorial grammar; place interconnected parts working as one organized whole. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
           "slot_id": "case_scene",
           "status": "stub_not_generated"
         }
@@ -425,7 +425,7 @@
           "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
           "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
           "path": null,
-          "prompt": "Abstract editorial visualization Case 2: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band Case 2: preserve the reference's editorial grammar; place interconnected parts working as one organized whole. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
           "slot_id": "case_scene",
           "status": "stub_not_generated"
         }
@@ -496,7 +496,7 @@
           "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
           "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure",
           "path": null,
-          "prompt": "Abstract editorial visualization Case 3: a coherent system: interconnected parts working as one organized whole. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band Case 3: preserve the reference's editorial grammar; place interconnected parts working as one organized whole. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
           "slot_id": "case_scene",
           "status": "stub_not_generated"
         }
