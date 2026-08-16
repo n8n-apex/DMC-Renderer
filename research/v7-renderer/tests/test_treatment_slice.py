@@ -181,8 +181,8 @@ def test_full_deck_no_spill(full_deck):
     (incl. the A3 horizontal_process at the deck tail) fits its sheet in the
     real product."""
     res = full_deck["res"]
-    # US-604: apex is now 21 pages (ST-06 spans two continuation pages).
-    assert res.page_count == 21, f"apex deck is 21 pages; got {res.page_count}"
+    # US-604/605: apex is now 22 pages (ST-06 + FAZIT span continuations).
+    assert res.page_count == 22, f"apex deck is 22 pages; got {res.page_count}"
     assert len(res.png_paths) == res.page_count, (
         f"physical pages {len(res.png_paths)} != logical {res.page_count} "
         f"-- a section overflowed its sheet in the full deck"

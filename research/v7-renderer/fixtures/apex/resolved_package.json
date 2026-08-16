@@ -1135,14 +1135,50 @@
       "cover_validation": null,
       "data": {
         "title": "Dein Wachstum wartet nicht auf deine Entscheidung",
-        "body": "Du hast jetzt gesehen, was manuelle Prozesse kosten: 25-30% deiner Betriebskosten (BCG, 2025), Burnout bei jedem zweiten Wissensarbeiter (BCG, 2024), und ein Team, das mehr Zeit mit Verwaltung verbringt als mit Umsatz.\n\nMehr Mitarbeiter einzustellen löst das nicht. 77% der HR-Verantwortlichen planen genau das – und zahlen dabei mehr für Rehiring als für Ergebnisse (Hiring Lab, 2026).\n\nDie Firmen, die tatsächlich skalieren, tun das ohne proportionales Headcount-Wachstum: 58% der B2B-Unternehmen nutzen bereits autonome Systeme, 61% setzen agentic AI ein (KPMG, 2026).\n\nDie Frage ist nicht ob Automatisierung funktioniert. Die Frage ist, ob du zu den 40% gehörst, die echten Return sehen – oder zu den 60%, die trotz Investment nichts messen (BCG, 2026). Der Unterschied liegt nicht im Tool. Er liegt darin, ob jemand zuerst deine Prozesse versteht, bevor er sie automatisiert. APEX macht genau das.",
         "these": "Das ist kein Ressourcenproblem – es ist ein Systemfehler, und er kostet dich jeden Monat Wachstum, das du nie zurückbekommst.",
         "kosten_des_nichtstuns": "Jeder Monat ohne Automatisierung bedeutet: 25-30% deiner Betriebskosten verbrennen in manuellen Prozessen, qualifizierte Leads fallen durch überlastete Teams, und dein bester Mitarbeiter sucht bereits einen Job, bei dem er echte Arbeit leisten kann.",
         "cta_url": "https://apex-consulting.ai/",
         "author": {
           "name": "Jousef",
           "role": "Gründer, APEX Consulting"
-        },
+        }
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "founder_hero",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/18_founder.png",
+          "drive_key": "founder",
+          "index": null,
+          "expected": "founder",
+          "warnings": [],
+          "slot_id": "founder",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "section_id": "section.18",
+      "page_id": "section.18.page.1",
+      "continuation_index": 1,
+      "continuation_role": "close",
+      "section_page_count": 2,
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 18,
+      "st_type": "ST-FAZIT",
+      "css_template": "summary",
+      "has_cta": true,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
+        "body": "Du hast jetzt gesehen, was manuelle Prozesse kosten: 25-30% deiner Betriebskosten (BCG, 2025), Burnout bei jedem zweiten Wissensarbeiter (BCG, 2024), und ein Team, das mehr Zeit mit Verwaltung verbringt als mit Umsatz.\n\nMehr Mitarbeiter einzustellen löst das nicht. 77% der HR-Verantwortlichen planen genau das – und zahlen dabei mehr für Rehiring als für Ergebnisse (Hiring Lab, 2026).\n\nDie Firmen, die tatsächlich skalieren, tun das ohne proportionales Headcount-Wachstum: 58% der B2B-Unternehmen nutzen bereits autonome Systeme, 61% setzen agentic AI ein (KPMG, 2026).\n\nDie Frage ist nicht ob Automatisierung funktioniert. Die Frage ist, ob du zu den 40% gehörst, die echten Return sehen – oder zu den 60%, die trotz Investment nichts messen (BCG, 2026). Der Unterschied liegt nicht im Tool. Er liegt darin, ob jemand zuerst deine Prozesse versteht, bevor er sie automatisiert. APEX macht genau das.",
+        "cta_url": "https://apex-consulting.ai/",
         "viz": [
           {
             "preset": "radial_cluster",
@@ -1181,6 +1217,11 @@
       ],
       "assets": [],
       "components": [],
+      "section_id": "section.18",
+      "page_id": "section.18.page.2",
+      "continuation_index": 2,
+      "continuation_role": "result",
+      "section_page_count": 2,
       "layout_variant": "fill"
     },
     {
@@ -1273,10 +1314,10 @@
     }
   ],
   "slot_summary": {
-    "resolved": 6,
+    "resolved": 7,
     "missing_required": 4,
     "absent": 4,
-    "total": 14,
+    "total": 15,
     "missing": [
       {
         "page_slot": 7,
@@ -1656,7 +1697,7 @@
       }
     ],
     "layout_warnings": [
-      "page count mismatch: 21 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
+      "page count mismatch: 22 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
       "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
       "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
     ],

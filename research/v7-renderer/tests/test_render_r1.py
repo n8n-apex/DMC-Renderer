@@ -357,8 +357,8 @@ def test_render_package_apex(tmp_path) -> None:
     assert isinstance(result, RenderResult)
     assert result.pdf_path.exists()
     assert result.pdf_path.stat().st_size > 5000
-    # US-604: ST-06 spans two physical pages (intro + result continuation).
-    assert result.page_count == 21
+    # US-604/605: ST-06 (2) + FAZIT (2) continuations expand the deck.
+    assert result.page_count == 22
     assert len(result.png_paths) >= 20        # physical pages rasterized
     assert isinstance(result.overflow, list)
     assert isinstance(result.warnings, list)

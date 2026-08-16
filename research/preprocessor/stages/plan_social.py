@@ -344,6 +344,21 @@ def apply_social_plan(
     source_root = Path(source_root)
     pages_by_slot = {p.get("slot"): p for p in package.get("pages", [])}
 
+    # US-605: a section may span continuation pages (ST-06/ST-FAZIT). A
+    # slot-keyed binding (e.g. fazit_author) belongs to the section's LEAD
+    # page (continuation_index 1 / the first page) — the later continuations
+    # are the section's own slices, not independent pages.
+    for slot in {p.get("slot") for p in package.get("pages", [])}:
+        candidates = [p for p in package.get("pages", []) if p.get("slot") == slot]
+        if not candidates:
+            continue
+        lead = candidates[0]
+        for c in candidates:
+            if c.get("continuation_index") == 1:
+                lead = c
+                break
+        pages_by_slot[slot] = lead
+
     def stage(rel: str) -> Optional[str]:
         return _stage(rel, assets_dir=assets_dir, source_root=source_root)
 

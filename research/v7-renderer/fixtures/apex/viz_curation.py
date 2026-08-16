@@ -303,6 +303,19 @@ def apply_apex_viz(pkg: dict) -> None:
         specs = _viz_for_page(page)
         if not specs:
             continue
+        # US-605: a section may span continuation pages (ST-06/ST-FAZIT). The
+        # viz binds to the page whose data grounds its figures — a
+        # continuation page lacking the figure's source copy (e.g. the FAZIT
+        # close page without the recap body) is SKIPPED, not failed: the
+        # figure is displayed on the page that carries its source.
+        grounded_any = False
+        for spec in specs:
+            figs = [f for f in _spec_figures(spec) if f not in (None, "")]
+            if figs and not all(_figure_grounded(f, page) for f in figs):
+                continue
+            grounded_any = True
+        if not grounded_any:
+            continue
         for spec in specs:
             for fig in _spec_figures(spec):
                 if fig in (None, ""):

@@ -340,8 +340,8 @@ def test_audit_lines(pkg, ctx, assignments):
     """audit_lines returns one readable line per page (20 for apex), each naming
     the page index and its decision."""
     lines = audit_lines(assignments)
-    # US-604: the apex package now has 21 pages (ST-06 spans intro+result).
-    assert len(lines) == len(pkg.pages) == 21
+    # US-604/605: the apex package now has 22 pages (ST-06 + FAZIT continuations).
+    assert len(lines) == len(pkg.pages) == 22
     for idx, line in enumerate(lines):
         # each line names its page (folio-ish index) and st_type
         assert assignments[idx].st_type in line

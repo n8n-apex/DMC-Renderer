@@ -159,6 +159,48 @@ def _split_st07a(page: PlannedPage, budget: int) -> list[PlannedPage]:
     return [p1, p2]
 
 
+def _split_fazit(page: PlannedPage) -> list[PlannedPage]:
+    """ST-FAZIT: the closing page's recap is long (the FAZIT content measures
+    937px+CTA > the 986px sheet — verified US-605). Split at a SEMANTIC
+    boundary: page 1 = header + thesis + cost + CTA (the close); page 2 =
+    the recap body + the market-proof viz. Both pages keep the section
+    identity; the CTA stays on the LAST page of the section."""
+    data = page.data
+    sid = _section_id(page.slot)
+
+    page1_data = {
+        "title": data.get("title"),
+        "these": data.get("these"),
+        "kosten_des_nichtstuns": data.get("kosten_des_nichtstuns"),
+        "cta_url": data.get("cta_url"),
+        "author": data.get("author"),
+    }
+    # the market-proof viz rides with the BODY page: its figures ("58%",
+    # "61%") are grounded in the recap prose — the no-fabrication guard
+    # requires the figures on the same page that displays them.
+    page2_data = {
+        "body": data.get("body"),
+        "viz": data.get("viz"),
+        "cta_url": data.get("cta_url"),
+    }
+
+    def _mk(index: int, role: str, d: dict) -> PlannedPage:
+        return PlannedPage(
+            slot=page.slot, st_type=page.st_type, css_template=page.css_template,
+            components=list(page.components) if index == 1 else [],
+            has_cta=page.has_cta,
+            data={k: v for k, v in d.items() if v not in (None, "", [])},
+            page_numbers=page.page_numbers if index == 1 else None,
+            layout_variant=page.layout_variant,
+            page_format=page.page_format,
+            section_id=sid, page_id=_page_id(sid, index),
+            continuation_index=index, continuation_role=("close" if index == 1 else "result"),
+            section_page_count=2,
+        )
+
+    return [_mk(1, "close", page1_data), _mk(2, "result", page2_data)]
+
+
 def split_section(page: PlannedPage) -> list[PlannedPage]:
     """Split one source section into 1+ physical-page plans.
 
@@ -173,6 +215,16 @@ def split_section(page: PlannedPage) -> list[PlannedPage]:
         # Doppelseite). It is NOT split — see module note.
         return [page]
     total = _copy_len(page.data)
+    if page.st_type == "ST-FAZIT":
+        # US-605: the FAZIT's real layout (header + 900-char recap + thesis +
+        # market-proof viz + cost + CTA band) measures past the 261mm sheet
+        # (~1007px vs 986px verified) even though its copy is under the 1600-
+        # char heuristic budget. A FAZIT with a recap over ~700 chars splits
+        # at a semantic boundary: page 1 = the close (title/thesis/cost/CTA),
+        # page 2 = the recap + the market-proof viz.
+        if total > 700:
+            return _split_fazit(page)
+        return [page]
     if total <= budget:
         return [page]
 

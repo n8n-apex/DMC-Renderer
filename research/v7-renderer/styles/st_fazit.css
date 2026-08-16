@@ -83,14 +83,12 @@
 .st-fazit .fz-viz {
   /* a floating navy-stone island (chrome from .c-viz-island) narrower than the
      content width so cream frames it; the rings center inside. MUST opt out of
-     flex shrinking: as a child of .fz-fill-flow (justify-content:
-     space-between) the default flex-shrink:1 collapsed it to ~85px while its
-     radial cluster needed ~146px, and .c-viz-island's overflow:hidden clipped
-     the 58%/61% rings (US-401). flex:0 0 auto keeps the island at content
-     height so the full cluster is visible. */
+     flex shrinking (US-401). US-605: tightened margins so the FAZIT's full
+     content (header+body+thesis+viz+cost+CTA) fits ONE sheet — the earlier
+     spacing spilled the CTA band onto the ST-22 page. */
   flex: 0 0 auto;
-  margin: 0 auto var(--space-4) auto;
-  max-width: 132mm;
+  margin: 0 auto var(--space-2) auto;
+  max-width: 120mm;
   display: flex;
   justify-content: center;
   break-inside: avoid;
@@ -141,14 +139,16 @@
    resolve bottom:0 to the page bottom (verified WeasyPrint 68.1 behaviour).
    261mm = 297 - 16(top) - 20(bottom) margins, matching the shared .page box. */
 .st-fazit .fz-fill-root {
-  /* US-510: the root is a DEFINITE 261mm box — the flow distributes inside it
-     (space-between) so the CTA lands at the sheet bottom and the page is
-     genuinely FULL. If the content ever exceeds 261mm it flows onto a second
-     sheet naturally (multi-page is allowed). A definite height (not min) is
-     what makes the FAZIT a deliberate closing page instead of a half-filled
-     orphan with a blank follow-on. */
+  /* US-605: a FLEX column root (min-height, not definite) so the flow child
+     (flex:1) genuinely stretches to the sheet bottom and the CTA pins via
+     margin-top:auto. A definite root fragmented the signoff onto ST-22; a
+     plain min-height + percentage-height flow left the CTA mid-page (both
+     measured). Each FAZIT page is naturally short (close: title+thesis+cost;
+     result: recap+viz) and min-height gives the CTA a bottom anchor. */
   position: relative;
-  height: 261mm;
+  min-height: 245mm;
+  display: flex;
+  flex-direction: column;
 }
 
 /* the upper flow: header → body → thesis → big-number cost, DISTRIBUTED across
@@ -156,16 +156,19 @@
    bottom padding so the flow never runs under it). space-between spreads the
    blocks so the upper region is filled rather than top-clustered. */
 .st-fazit .fz-fill-flow {
-  /* US-510 (QA gate caught the p18 overlap): the CTA band is now a NORMAL
-     FLOW block after the cost — no absolute positioning, so overlap is
-     structurally impossible. The flow is a natural column; the CTA pins to
-     the root's bottom via margin-top:auto (no absolute, no overlap, and the
-     page fills). If the content exceeds the sheet it flows onto a second
-     page naturally (multi-page is allowed — the user's directive: never
-     cram content to avoid a spill). */
+  /* US-605: the flow stretches to the min-height root via flex:1 (a
+     percentage height does NOT resolve against a min-height parent in
+     Chromium — measured: flow stayed content-height, CTA sat mid-page).
+     The CTA band pins to the sheet bottom via margin-top:auto. Safe now
+     that the FAZIT content is SPLIT across two continuation pages (each
+     ~500px < the root). */
   position: static;
+  flex: 1;
   display: flex;
   flex-direction: column;
+  /* US-605: natural top flow (space-between spread the few blocks into
+     multiple big voids — measured worse). The CTA band (a sibling, pinned by
+     margin-top:auto) owns the sheet-bottom slack. */
 }
 
 /* the header band keeps the solid-primary anchor but no bottom margin (the flex
@@ -176,10 +179,10 @@
    A 4-paragraph recap (split at figure boundaries) gets REAL paragraph air:
    a taller leading + wider paragraph gap + a narrower measure, so the recap
    reads as four beats, not a wall (user: "there should be some breather"). */
-.st-fazit .fz-body--fill { margin: 0; max-width: 128mm; }  /* US-502 */
+.st-fazit .fz-body--fill { margin: 0; max-width: 150mm; }  /* US-605: widen the measure so the recap fits the sheet (the 128mm + 1.55 lede measured 937px+CTA > 986px — the p18->p19 fragmentation) */
 .st-fazit .fz-body--fill p {
-  line-height: 1.55;
-  margin: 0 0 var(--space-3) 0;
+  line-height: 1.45;
+  margin: 0 0 var(--space-2) 0;
 }
 .st-fazit .fz-body--fill p:last-child { margin-bottom: 0; }
 
@@ -187,7 +190,7 @@
    standard h2 to the display size so it reads as the editorial centerpiece of
    the closing page (the c-these component supplies the serif/accent-rule look;
    this only sizes it up for the fill composition). */
-.st-fazit .fz-these--fill { margin: 0 0 var(--space-2) 0; }  /* breathing minus the knife-edge (slack 1px) */
+.st-fazit .fz-these--fill { margin: 0; }  /* US-605: split pages have room — the thesis keeps its designed size */
 .st-fazit .fz-these--fill .c-these {
   font-size: var(--type-h2);
   line-height: 1.22;
@@ -241,9 +244,8 @@
   position: static;
   width: 100%;
   margin-top: auto;
-  padding-top: var(--space-4);
   background-color: var(--color-ink);
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-5);
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
