@@ -115,17 +115,14 @@ def _page_header(brand, eyebrow: str = "") -> str:
     # Booking CTA block (right side): the standard tagline + the brand URL. The
     # tagline is a content label; the URL is DATA. Rendered only when a URL is
     # present (graceful: no dangling "… unter:" with nothing after it).
-    booking_html = (
-        '<span class="ph-booking">'
-        f'<span class="ph-tagline">{_esc(_HEADER_BOOKING_TAGLINE)}</span>'
-        f'<span class="ph-url">{url}</span>'
-        "</span>"
-    ) if url else ""
+    # US-501 (Richard grammar): the booking CTA is REMOVED from the running
+    # header — editorial chrome = wordmark only (plus the optional per-pattern
+    # eyebrow). The direct-response ask lives only on the CTA pages.
     eyebrow_html = f'<span class="ph-eyebrow">{_esc(eyebrow)}</span>' if eyebrow else ""
     return (
         '<div class="page-header" style="position: running(pageheader);">'
         '<span class="ph-tick"></span>'
-        f'<span class="ph-wordmark">{wordmark}</span>{booking_html}{eyebrow_html}'
+        f'<span class="ph-wordmark">{wordmark}</span>{eyebrow_html}'
         "</div>"
     )
 
@@ -308,7 +305,6 @@ def shared_head_css(
     if engine == "chromium":
         _wm = (brand.company_name_short or "").replace("\\", "").replace("'", "\\'")
         _bk_url = (getattr(brand, "company_url_display", "") or "").replace("\\", "").replace("'", "\\'")
-        _bk = (_HEADER_BOOKING_TAGLINE.replace("'", "\\'") + "  " + _bk_url) if _bk_url else ""
         _page_chrome = f"""
   @top-left {{
     content: '{_wm}';
@@ -317,11 +313,14 @@ def shared_head_css(
     color: var(--color-primary);
     vertical-align: bottom; padding-bottom: 1.4mm;
   }}
+  /* US-501 (Richard grammar): the top-right header CTA ("Trage dich zu einem
+     kostenlosen Erstgespräch ein...") is REMOVED. Richard's decks keep the
+     running header as pure editorial chrome (wordmark only); the direct-
+     response CTA destroys the premium authority and reads as a low-tier
+     marketing funnel on every page. The booking ask lives ONLY on the CTA
+     pages (ST-03 / ST-FAZIT), never in the header. */
   @top-right {{
-    content: '{_bk}';
-    font-family: var(--font-head); font-weight: 500; font-size: 6.5pt;
-    color: var(--color-muted);
-    vertical-align: bottom; padding-bottom: 1.4mm;
+    content: none;
   }}
   /* designed FOOTER: one continuous hairline across the sheet foot (the
      border-top of all three bottom margin boxes) with the brand wordmark
@@ -586,21 +585,7 @@ body {{
    sentence-case (it reads as a quiet instruction, not a shout — so NOT
    uppercase/letterspaced like the wordmark); the URL carries a touch of weight +
    primary ink so the actionable part stands out without spending accent. */
-.page-header .ph-booking {{
-  white-space: nowrap;
-  font-size: var(--type-eyebrow);
-  letter-spacing: 0;
-  text-transform: none;
-}}
-.page-header .ph-booking .ph-tagline {{
-  font-weight: 400;
-  color: var(--color-muted);
-}}
-.page-header .ph-booking .ph-url {{
-  font-weight: 700;
-  color: var(--color-primary);
-  margin-left: 0.4em;
-}}
+/* US-501: .ph-booking removed — the header CTA is gone (Richard grammar). */
 .page-header .ph-eyebrow {{
   white-space: nowrap;
   font-weight: 600;
@@ -1111,7 +1096,7 @@ def render_package(package_dir: Path, output_dir: Path,
     _chrome = (
         pkg.brand.company_name_short or "",
         _burl,
-        (_HEADER_BOOKING_TAGLINE + "  " + _burl) if _burl else "",
+        "",  # US-501: no booking CTA in the header
     )
     sections_html = "".join(
         _section(page, frag, i, ghost_letter=_ghost,
