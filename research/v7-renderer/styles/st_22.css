@@ -229,7 +229,12 @@
   padding: var(--space-2) 0;
 }
 .st-22 .co-tl-step:not(:first-child) .co-tl-text {
+  /* US-507: the audit flagged the step rules "starting abruptly right of the
+     vertical line, creating trapped negative space". Span the rule from the
+     node's column: align it with the node centre by giving the text a left
+     offset equal to the node's radius + gap. */
   border-top: 0.2mm solid var(--color-border, var(--color-muted));
+  padding-left: 14mm;
 }
 .st-22 .co-tl-head {
   display: flex;

@@ -259,8 +259,11 @@
 .c-numbered-block__body strong { font-weight: 700; color: var(--color-ink); }
 /* reality sub-block: an accent left-rule sets the truth apart from the myth. */
 .c-numbered-block__reality {
+  /* US-507: the audit flagged the accent bars "misaligned with the myth
+     headers' left edge" (the inset padding broke the grid). The bar now
+     aligns flush with the block edge; the label carries the inset. */
   margin-top: var(--space-2);
-  padding-left: var(--space-3);
+  padding-left: 0;
   border-left: 0.8mm solid var(--color-accent);
 }
 .c-numbered-block__reality-label {
