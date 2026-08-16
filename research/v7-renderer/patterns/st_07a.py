@@ -263,6 +263,12 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         if not (label or value):
             continue
         value = str(value).strip()
+        # US-504 (German grammar): a metric that starts lowercase ("von bis zu
+        # 24 Stunden auf Minuten") reads as a sloppy typo in a KPI slot. The
+        # KPI displays the raw value, so sentence-case its first letter here
+        # (FORMAT only — never touches digits, % or unit content).
+        if value and value[0].islower():
+            value = value[0].upper() + value[1:]
         # keep a trailing currency glyph and a leading comparator hugging the
         # figure (non-breaking) so a wide value like "> 200.000 €" never strands
         # the "€" or ">" on its own line in the narrow rail. FORMAT spacing only.
@@ -290,6 +296,16 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         if sep:
             frm, _, to = value.partition(sep)
             frm, to = frm.strip(), to.strip()
+            # US-504 (German grammar): a lowercase-start phrase in a metric
+            # slot ("von bis zu 24 Stunden...", "von fragmentiert auf...")
+            # reads as a sloppy typo — the audit flagged p12/p15. Sentence-
+            # case the phrase side (FORMAT only: capitalizes the first letter,
+            # never touches the content). Digits/%/units are untouched.
+            def _de_case(s: str) -> str:
+                if s and s[0].islower():
+                    return s[0].upper() + s[1:]
+                return s
+            frm, to = _de_case(frm), _de_case(to)
             from_h, to_h = _transform_bar_heights(frm, to)
             stat.update({
                 "kind": "transform", "from": frm, "to": to,

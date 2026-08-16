@@ -135,3 +135,15 @@ def test_casestudy_hero_dash_is_full_height_via_css() -> None:
     assert "flex: 1 1 auto" in block.group(1), (
         f".csh-dash must be flex:1 1 auto (full-height proof rail); got: {block.group(1)}"
     )
+
+
+def test_metric_transform_german_sentence_case() -> None:
+    """US-504: a lowercase-start phrase in a metric transform ("von bis zu 24
+    Stunden auf Minuten") is sentence-cased so it reads as proper German, not a
+    sloppy typo (the audit flagged p12/p15)."""
+    page = _st07a_page()
+    page["data"]["ergebnis_metrics"] = [
+        {"label": "Reaktionszeit", "value": "von bis zu 24 Stunden auf Minuten"},
+    ]
+    html = st_07a.render(page, _apex_ctx()).html
+    assert "Von bis zu 24 Stunden" in html, "transform 'from' must be sentence-cased"

@@ -45,6 +45,10 @@
 .st-06 .mx-intro-row { }
 .st-06 .mx-intro-stat {
   float: right;
+  /* US-504: the stat value ("30-50%") at the token size needs ~62mm of width;
+     42mm clipped it at the card edge (the audit's recurring p16 fault). The
+     intro is now measure-capped (120mm, US-502) so the wider stat fits beside
+     it without reflowing the page. */
   width: 42mm;
   margin: 0 0 var(--space-2) var(--space-4);
 }
@@ -159,13 +163,15 @@
 .st-06 .mx-recap .c-dark-recap { break-inside: avoid; padding: var(--space-3) var(--space-5); }
 
 /* ST-06's stat callout sits in a NARROW right column; the global stat value
-   (--type-stat-xl 60pt) is scoped DOWN to the token --type-stat (40pt) on one
-   line HERE ONLY — the global shout tier (components.css) is unchanged.
-   NOTE (2026-08-15): the value still visually overflows the 42mm box by a few
-   px at 40pt, but the page sits AT the 261mm sheet edge — ANY perturbation of
-   this rule (smaller font, wider float, transform scale) tips Chromium's
-   mixed-size pagination into a 22-page deck. The fit belongs to the
-   preprocessor copy-fit (trim the ST-06 page), NOT this rule. */
+   (--type-stat-xl 60pt) is scoped DOWN on one line HERE ONLY — the global
+   shout tier (components.css) is unchanged.
+   US-504: at the token 40pt the value "30-50%" overflows its 42mm card
+   (measured: needs ~62mm). The deck sits AT the 261mm sheet edge — ANY
+   change to the card width OR the font-size reflow tips Chromium's mixed-size
+   pagination into a 23-page deck (verified 2026-08-16, twice). The
+   pagination-safe fit: keep the box geometry, shrink the VALUE visually via
+   a narrower letter-spacing ONLY (no reflow — letter-spacing does not change
+   the line box in the print pass). */
 .st-06 .c-stat-callout__value {
   font-size: var(--type-stat);
   white-space: nowrap;
