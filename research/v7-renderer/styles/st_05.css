@@ -241,3 +241,18 @@
   border-top: 0.2mm solid var(--color-muted);
 }
 .st-05 .ab-logos .c-logo-wall { break-inside: avoid; }
+
+/* US-609: the About continuation pages (identity/proof) fill the sheet — the
+   last band pins via margin-top:auto so the page resolves instead of leaving
+   a bottom void. */
+.st-05 .ab-cont-root {
+  min-height: 240mm;
+  display: flex;
+  flex-direction: column;
+}
+.st-05 .ab-cont-root .ab-logos,
+.st-05 .ab-cont-root .ab-proof,
+.st-05 .ab-cont-root .ab-testimonials,
+.st-05 .ab-cont-root .ab-stats {
+  margin-top: auto;
+}

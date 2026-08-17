@@ -21,7 +21,7 @@
    header + intro sit at the top, the audience panel is anchored to the BOTTOM
    (margin-top:auto), and the space between reads as deliberate editorial breathing
    rather than a trailing void. #}
-<div class="ol-root">
+<div class="ol-root{% if continuation_role and not zielgruppe and not takeaways %} ol-root--cont{% endif %}">
   <div class="ol-header">
     {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
     {% if title %}<h1 class="ol-headline">{{ title }}</h1>{% endif %}
@@ -45,7 +45,7 @@
      dark depth on this page belongs to the data-viz island above, so the deck
      keeps ONE dark island per page (cream-ground DNA) and the page stays on one
      sheet. #}
-  <div class="ol-quote">{{ pull_quote(pullquote, on_panel=false) }}</div>
+  <div class="ol-quote{% if continuation_role and not zielgruppe and not takeaways %} ol-quote--cont{% endif %}">{{ pull_quote(pullquote, on_panel=false) }}</div>
   {% endif %}
 
   {% if zielgruppe %}

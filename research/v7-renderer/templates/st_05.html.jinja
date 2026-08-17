@@ -25,6 +25,7 @@
 {% from 'logo_wall.jinja' import logo_wall %}
 {% from 'proof_gallery.jinja' import proof_gallery %}
 
+{% if continuation_role %}<div class="ab-cont-root">{% endif %}
 <div class="ab-header">
   {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
   {% if title %}<h1 class="ab-headline">{{ title }}</h1>{% endif %}
@@ -96,3 +97,4 @@
   {{ logo_wall(logos, names=partner_names) }}
 </div>
 {% endif %}
+{% if continuation_role %}</div>{% endif %}

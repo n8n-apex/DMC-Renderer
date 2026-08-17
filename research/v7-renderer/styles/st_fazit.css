@@ -166,9 +166,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* US-605: natural top flow (space-between spread the few blocks into
-     multiple big voids — measured worse). The CTA band (a sibling, pinned by
-     margin-top:auto) owns the sheet-bottom slack. */
+}
+/* US-609: the RESULT continuation (body + viz + CTA) DISTRIBUTES its blocks
+   (space-between) so the sheet fills — the natural top-flow left a mid void
+   between the viz and the CTA (the acceptance sweep flagged it). The CLOSE
+   page (few blocks) keeps the natural top flow (space-between spread its
+   blocks into multiple voids — measured worse). */
+.st-fazit .fz-fill-flow--result {
+  justify-content: space-between;
 }
 
 /* the header band keeps the solid-primary anchor but no bottom margin (the flex

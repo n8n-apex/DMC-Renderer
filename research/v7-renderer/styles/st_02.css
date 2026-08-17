@@ -116,3 +116,16 @@
   flex: 0 0 auto;
 }
 .st-02 .ol-zg .c-callout-panel { break-inside: avoid; }
+
+/* US-609: the ST-02 CONTEXT continuation page (title + body + quote, no
+   audience panel) pins the pullquote to the sheet bottom so the page
+   resolves instead of leaving a 60% mid-page void. */
+.st-02 .ol-quote--cont {
+  margin-top: auto;
+}
+/* US-609: the CONTEXT continuation distributes its blocks (space-between) so
+   the body/viz spread through the sheet — the quote pins the bottom and the
+   slack splits between the blocks instead of one big mid void. */
+.st-02 .ol-root--cont {
+  justify-content: space-between;
+}

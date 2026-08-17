@@ -105,5 +105,9 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         diagram=diagram,
         viz=viz,
         panel_texture_uri=panel_texture_uri,
+        # US-609: continuation-aware composition — the ST-02 CONTEXT page
+        # (title + body + quote) must pin the quote to the sheet bottom
+        # (margin-top:auto) instead of leaving a 60% mid-page void.
+        continuation_role=str(page.get("continuation_role") or ""),
     )
     return PageFragment(html=html, css=_CSS)

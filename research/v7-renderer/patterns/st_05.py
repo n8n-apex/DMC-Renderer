@@ -181,5 +181,8 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         logos=logos,
         partner_names=partner_names,
         logos_label=_LOGOS_LABEL if (logos or partner_names) else "",
+        # US-609: continuation-aware composition — the About's identity/proof
+        # pages fill the sheet (the last band pins via margin-top:auto).
+        continuation_role=str(page.get("continuation_role") or ""),
     )
     return PageFragment(html=html, css=_CSS)

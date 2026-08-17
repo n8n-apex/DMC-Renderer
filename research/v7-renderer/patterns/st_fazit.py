@@ -156,6 +156,9 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
             "section_page_count": page.get("section_page_count") or 1,
             "continuation_role": str(page.get("continuation_role") or ""),
         },
+        # US-609: the RESULT continuation (body + viz + CTA) distributes its
+        # blocks (space-between) so the sheet fills instead of a mid void.
+        continuation_role=str(page.get("continuation_role") or ""),
         body_html=preprocess_body(d.get("body", "")),
         these=(d.get("these") or "").strip(),
         founder_uri=founder_uri or "",
