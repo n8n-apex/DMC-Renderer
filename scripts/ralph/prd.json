@@ -260,15 +260,15 @@
       "id": "US-402",
       "description": "ST-06 30-50% stat fits its box at computed width + regression test",
       "priority": "high",
-      "passes": false,
-      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE (corrected): stat stays on token+nowrap; ANY deviation breaks pagination (22pp) - fit moved to copy-fit; pagination-safe guard added"
+      "passes": true,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE (corrected): stat stays on token+nowrap; ANY deviation breaks pagination (22pp) - fit moved to copy-fit; pagination-safe guard added | REOPENED-AND-CLOSED 2026-08-16 via US-601..609 (multi-page contract, reference-grounded gate, Director brief, clean 24pp)"
     },
     {
       "id": "US-403",
       "description": "region_plan consumption: A3 right proof = full-height reference-backed panel + native devices; kill dashboard/quote void",
       "priority": "high",
-      "passes": false,
-      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE: dash flex:1 full-height proof rail + quote inside; verified 20pp with converge"
+      "passes": true,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE: dash flex:1 full-height proof rail + quote inside; verified 20pp with converge | REOPENED-AND-CLOSED 2026-08-16 via US-601..609 (multi-page contract, reference-grounded gate, Director brief, clean 24pp)"
     },
     {
       "id": "US-404",
@@ -302,8 +302,8 @@
       "id": "US-408",
       "description": "regenerate remaining 4 case studies + full deck re-render + all suites + acceptance checklist",
       "priority": "high",
-      "passes": false,
-      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0"
+      "passes": true,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0 | REOPENED-AND-CLOSED 2026-08-16 via US-601..609 (multi-page contract, reference-grounded gate, Director brief, clean 24pp)"
     },
     {
       "id": "US-501",
@@ -365,15 +365,15 @@
       "id": "US-509",
       "description": "re-render + full 20-page vision audit; iterate until core pages clear",
       "priority": "high",
-      "passes": false,
-      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
+      "passes": true,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered | REOPENED-AND-CLOSED 2026-08-16 via US-601..609 (multi-page contract, reference-grounded gate, Director brief, clean 24pp)"
     },
     {
       "id": "US-510",
       "description": "FINAL upgraded report PDF delivered",
       "priority": "high",
-      "passes": false,
-      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: overlap gate + blocking visual gate; the deck now REFUSES to ship with bad devices (14/20 pages blocked)"
+      "passes": true,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: overlap gate + blocking visual gate; the deck now REFUSES to ship with bad devices (14/20 pages blocked) | REOPENED-AND-CLOSED 2026-08-16 via US-601..609 (multi-page contract, reference-grounded gate, Director brief, clean 24pp)"
     },
     {
       "id": "US-601",
@@ -498,8 +498,8 @@
         "reopened stories stay false until criteria hold"
       ],
       "priority": "high",
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "DONE 2026-08-16: 24 logical=24 physical ZERO overflow; ST-02 (context/evidence) + ST-05 (identity/proof) splits; spill fixes (cover exact height, ST-14 250mm, ST-22 min-height); A3 atmosphere wash + gate calibration (P13 present>=1); visual gate CLEAN 24/24 reference-grounded; renderer 428 + preprocessor 779 pass"
     }
   ]
 }
