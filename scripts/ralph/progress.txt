@@ -290,3 +290,19 @@ Started: 2026-08-13
   - The reviewer's whitespace verdicts are NOT stable across runs — never chase a single no on a breathing page; verify with the gate + structural facts.
   - Photo-internal text (logos on IG photos) is an ASSET gap — flag it, never "fix" it by cropping our layout around it.
 ---
+
+## 2026-08-17 - IDML export (InDesign editability)
+- User asked: can Richard edit the flat PDF in InDesign? Honest answer: NO (no text layer, CID fonts, flattened transparency).
+- Built research/postprocessor/export_idml.py: writes a REAL IDML package (InDesign's native interchange):
+  - 108 editable text STORIES (verbatim copy: headline/body/stats/quotes/steps) with paragraph styles
+  - 8 real images as LINKED graphics (copied to Links/ beside the IDML)
+  - 24 per-page spreads (A4/A3 geometry from the package)
+  - styles (headline/h3/body/stat/quote/caption) so Richard can restyle
+- render.py --export-idml writes resolved_package.idml + Links/ beside the PDF.
+- 8 contract tests (container/designmap/stories verbatim/linked images/spreads/well-formed/styles); all XML well-formed.
+- **Learnings:**
+  - IDML = ZIP of XML (container.xml -> designmap.xml -> Stories/Spreads/Resources).
+  - Graphics are LINKED (href="Links/<file>") — copy the binaries beside the IDML, not inside.
+  - Every XML must be well-formed or InDesign rejects the whole package; validate with ElementTree before shipping.
+  - Story text needs XML-escaping (copy contains &, <, >, quotes).
+---
