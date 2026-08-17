@@ -1,0 +1,42 @@
+{# viz_process — PROCESS family (phase timeline / step cascade) of the data-viz
+   PRESET layer. Brand-agnostic / token-only: every colour via var(--token).
+   Macros take (v, uid=0). Each phase/step title (and any duration) is shown
+   VERBATIM. Graceful: missing required fields → renders nothing. #}
+
+{# phase_timeline — a horizontal sequence of phases on a connecting spine; each
+   phase carries a title and an optional duration label (e.g. "Woche 1-2"), both
+   VERBATIM. Visualizes an ordered timeline (a rollout, an engagement). #}
+{% macro phase_timeline(v, uid=0) %}
+{%- if v and v.phases and (v.phases | selectattr('title') | list) -%}
+<figure class="c-viz c-viz-phase" role="img" aria-label="{% for ph in v.phases %}{{ ph.title }}{% if ph.duration %} ({{ ph.duration }}){% endif %}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-phase__title">{{ v.title }}</figcaption>{% endif -%}
+  <ol class="c-viz-phase__track">
+  {%- for ph in v.phases if ph.title -%}
+    <li class="c-viz-phase__step">
+      <span class="c-viz-phase__node">{{ loop.index }}</span>
+      {%- if ph.duration %}<span class="c-viz-phase__duration">{{ ph.duration }}</span>{% endif -%}
+      <span class="c-viz-phase__steptitle">{{ ph.title }}</span>
+    </li>
+  {%- endfor -%}
+  </ol>
+</figure>
+{%- endif -%}
+{% endmacro %}
+{# step_cascade — a vertical process flow: numbered accent nodes joined by a
+   connecting spine, each with its step title (verbatim). Visualizes an ordered
+   set (e.g. the workflows automated, a method's steps). Optional title label. #}
+{% macro step_cascade(v, uid=0) %}
+{%- if v and v.steps -%}
+<figure class="c-viz c-viz-cascade" role="img" aria-label="{% for s in v.steps %}{{ s.n | default(loop.index, true) }}. {{ s.title }}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-cascade__title">{{ v.title }}</figcaption>{% endif -%}
+  <ol class="c-viz-cascade__list">
+  {%- for s in v.steps -%}
+    <li class="c-viz-cascade__step">
+      <span class="c-viz-cascade__node">{{ s.n | default(loop.index, true) }}</span>
+      <span class="c-viz-cascade__steptitle">{{ s.title }}</span>
+    </li>
+  {%- endfor -%}
+  </ol>
+</figure>
+{%- endif -%}
+{% endmacro %}

@@ -1,0 +1,81 @@
+{# geo_shapes — a low-opacity geometric accent OVERLAY for the breathing /
+   atmospheric page (ST-31/ST-32). A quiet logo motif: a deterministic set of
+   translucent circles, diagonal bars and triangles laid over the full-bleed
+   atmospheric ground. Used edge-to-edge inside the breathing page's bleed block.
+
+   Token-only by construction: this macro emits ONLY geometry (absolute
+   position / size / rotation as inline styles — pure numbers, never colors).
+   The fill / opacity / token colors live in the `c-geo` classes in
+   styles/components.css, so the overlay stays brand-agnostic and the shapes are
+   always low-opacity (never solid). The `--dark` modifier on a shape tints it
+   toward the dark ink instead of the accent, so the motif reads over BOTH the
+   light and the saturated patches of an atmospheric ground (contrast variety).
+
+   Coordinates are ABSOLUTE LENGTHS in mm over the A4 sheet (210 × 297mm), NOT
+   percentages: an absolutely-positioned child's `top:%` resolves against the
+   containing block's HEIGHT, which is INDEFINITE here (the bleed block sizes by
+   min-height, not an explicit height) — so `%` offsets collapse toward 0 and the
+   shapes pile up at the top in WeasyPrint 68.1. mm offsets place each shape
+   exactly, spread across the full page height. Negative offsets bleed a shape off
+   the edge by design (the container clips with overflow:hidden).
+
+   variant  1 | 2 | 3 — selects a shape ARRANGEMENT so the three breathing pages
+            in a deck do not look identical (each page passes its own variant).
+            Any other value falls through to variant 1's arrangement.
+
+   Each shape entry: {kind, top, left, size, rot, tone} where
+     kind  circle | bar | tri      (a ring, a thin diagonal bar, a triangle)
+     top/left  mm offsets from the page top-left (may be negative to bleed off)
+     size  shape size in mm (circle diameter / bar length; tri is border-sized)
+     rot   rotation in degrees (bars/triangles)
+     tone  '' (accent) | 'dark' (dark ink) — picks the token via a c- modifier
+#}
+{% macro geo_shapes(variant=1) -%}
+{# Tone strategy: the DARK (ink) loops read reliably over BOTH the pale top AND
+   the saturated lower field of an atmospheric ground, so they LEAD the motif and
+   anchor the page top-to-bottom; the ACCENT loop is a single secondary highlight
+   per page (it sits high, over the palest area, where the light accent reads).
+   This keeps the motif legible for ANY ground brightness (a same-hue light accent
+   would wash out over a saturated same-hue ground). A large ring anchors the
+   lower third so the page is never top-heavy. The variants differ in lead shape. #}
+{% set arrangements = {
+  1: [
+    {'kind': 'circle', 'top': -26, 'left': 118, 'size': 124, 'rot': 0,   'tone': ''},
+    {'kind': 'bar',    'top': 60,  'left': -26, 'size': 162, 'rot': 26,  'tone': 'dark'},
+    {'kind': 'tri',    'top': 128, 'left': 152, 'size': 56,  'rot': 18,  'tone': 'dark'},
+    {'kind': 'circle', 'top': 166, 'left': 92,  'size': 152, 'rot': 0,   'tone': 'dark'},
+    {'kind': 'circle', 'top': 250, 'left': -36, 'size': 94,  'rot': 0,   'tone': 'dark'}
+  ],
+  2: [
+    {'kind': 'tri',    'top': 26,  'left': 24,  'size': 64,  'rot': -16, 'tone': ''},
+    {'kind': 'circle', 'top': 14,  'left': 122, 'size': 104, 'rot': 0,   'tone': 'dark'},
+    {'kind': 'bar',    'top': 152, 'left': 16,  'size': 172, 'rot': -24, 'tone': 'dark'},
+    {'kind': 'circle', 'top': 168, 'left': 108, 'size': 150, 'rot': 0,   'tone': 'dark'},
+    {'kind': 'tri',    'top': 256, 'left': 44,  'size': 62,  'rot': 28,  'tone': 'dark'}
+  ],
+  3: [
+    {'kind': 'bar',    'top': 18,  'left': 46,  'size': 170, 'rot': 58,  'tone': ''},
+    {'kind': 'circle', 'top': 40,  'left': -32, 'size': 100, 'rot': 0,   'tone': 'dark'},
+    {'kind': 'circle', 'top': 146, 'left': 104, 'size': 140, 'rot': 0,   'tone': 'dark'},
+    {'kind': 'tri',    'top': 220, 'left': 28,  'size': 64,  'rot': 20,  'tone': 'dark'},
+    {'kind': 'bar',    'top': 264, 'left': 76,  'size': 140, 'rot': 8,   'tone': 'dark'}
+  ]
+} %}
+{% set shapes = arrangements.get(variant, arrangements[1]) %}
+<div class="c-geo" aria-hidden="true">
+  {% for s in shapes %}
+  {# size mapping per kind: circles are square (w==h); bars take their LENGTH from
+     `size` (thin height is fixed in CSS); triangles draw from borders so they
+     ignore w/h and only carry position + rotation. #}
+  {%- if s.kind == 'circle' -%}
+  {%- set geom = 'width:' ~ s.size ~ 'mm;height:' ~ s.size ~ 'mm;' -%}
+  {%- elif s.kind == 'bar' -%}
+  {%- set geom = 'width:' ~ s.size ~ 'mm;' -%}
+  {%- else -%}
+  {%- set geom = '' -%}
+  {%- endif -%}
+  <span class="c-geo__shape c-geo__shape--{{ s.kind }}{% if s.tone == 'dark' %} c-geo__shape--dark{% endif %}"
+        style="top:{{ s.top }}mm;left:{{ s.left }}mm;{{ geom }}transform:rotate({{ s.rot }}deg);"></span>
+  {% endfor %}
+</div>
+{%- endmacro %}

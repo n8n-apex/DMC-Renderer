@@ -1,0 +1,27 @@
+{# proof_gallery — a framed CREDIBILITY photo row (DNA §C4 social-proof). A row
+   of full-COLOR human/deal photos (the ST-05 `proof` slots — real moments that
+   say "these are our clients/results"), each a fixed-aspect background-image
+   plate under a subtle 1-line frame. An OPTIONAL small uppercase label sits above
+   the row (e.g. "Referenzen" / "Bekannt aus"). All under the c-proof-gallery
+   namespace; the token-only look (frame, tile rhythm, full-color — NOT grayscale,
+   unlike the logo wall) lives in styles/components.css.
+
+   photos  list of resolved image URIs (the proof photos). When present, each
+           becomes a framed tile in a wrapping row.
+   label   OPTIONAL small uppercase content label above the row.
+
+   GRACEFUL: an empty `photos` list renders NOTHING (no label, no frame) — so a
+   client with no proof photos shows no empty band. Brand-agnostic: tokens ONLY,
+   no hex / font / client literal. #}
+{% macro proof_gallery(photos, label='') -%}
+{% if photos %}
+<div class="c-proof-gallery">
+  {% if label %}<div class="c-proof-gallery__label">{{ label }}</div>{% endif %}
+  <div class="c-proof-gallery__row">
+    {% for src in photos %}
+    <span class="c-proof-gallery__item" role="img" style="background-image:url('{{ src }}');"></span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{%- endmacro %}

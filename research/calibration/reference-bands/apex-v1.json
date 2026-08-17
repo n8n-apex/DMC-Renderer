@@ -1,0 +1,405 @@
+{
+  "schema_version": "1.0",
+  "source": "APEX - KI DMC Report v1 (1).pdf",
+  "measured_with": "quality_loop.gates.pixels_v3.measure_face_pixels @ policy 2.0.0, 1.2x raster",
+  "accent_note": "Apex true accent is BLUE (dominant saturated ~rgb(64-160,128-224,160-240)); the coral default does not appear in the reference.",
+  "corpus_bands": {
+    "ink_occupancy": {
+      "min": 0.0492,
+      "max": 0.4028,
+      "observed_min": 0.09,
+      "observed_max": 0.362
+    },
+    "whitespace_fraction": {
+      "min": 0.454,
+      "max": 0.8957,
+      "observed_min": 0.505,
+      "observed_max": 0.8447
+    },
+    "vertical_hierarchy": {
+      "min": 0.1118,
+      "max": 0.7395,
+      "observed_min": 0.1842,
+      "observed_max": 0.667
+    },
+    "type_rhythm_bands": {
+      "min": 0,
+      "max": 50.45,
+      "observed_min": 1,
+      "observed_max": 44
+    },
+    "image_coverage": {
+      "min": 0.007,
+      "max": 0.3305,
+      "observed_min": 0.0443,
+      "observed_max": 0.2932
+    }
+  },
+  "family_bands": {
+    "editorial_lead": {
+      "ink_occupancy": {
+        "min": 0.3018,
+        "max": 0.3205,
+        "observed_min": 0.3112,
+        "observed_max": 0.3112
+      },
+      "whitespace_fraction": {
+        "min": 0.6252,
+        "max": 0.6639,
+        "observed_min": 0.6445,
+        "observed_max": 0.6445
+      },
+      "vertical_hierarchy": {
+        "min": 0.1803,
+        "max": 0.1915,
+        "observed_min": 0.1859,
+        "observed_max": 0.1859
+      },
+      "type_rhythm_bands": {
+        "min": 27.16,
+        "max": 28.84,
+        "observed_min": 28,
+        "observed_max": 28
+      },
+      "image_coverage": {
+        "min": 0.043,
+        "max": 0.0456,
+        "observed_min": 0.0443,
+        "observed_max": 0.0443
+      }
+    },
+    "false_belief_stack": {
+      "ink_occupancy": {
+        "min": 0.2986,
+        "max": 0.3171,
+        "observed_min": 0.3078,
+        "observed_max": 0.3078
+      },
+      "whitespace_fraction": {
+        "min": 0.5961,
+        "max": 0.633,
+        "observed_min": 0.6145,
+        "observed_max": 0.6145
+      },
+      "vertical_hierarchy": {
+        "min": 0.647,
+        "max": 0.687,
+        "observed_min": 0.667,
+        "observed_max": 0.667
+      },
+      "type_rhythm_bands": {
+        "min": 29.1,
+        "max": 30.9,
+        "observed_min": 30,
+        "observed_max": 30
+      },
+      "image_coverage": {
+        "min": 0.0753,
+        "max": 0.08,
+        "observed_min": 0.0776,
+        "observed_max": 0.0776
+      }
+    },
+    "case_narrative": {
+      "ink_occupancy": {
+        "min": 0.1047,
+        "max": 0.1112,
+        "observed_min": 0.108,
+        "observed_max": 0.108
+      },
+      "whitespace_fraction": {
+        "min": 0.7992,
+        "max": 0.8486,
+        "observed_min": 0.8239,
+        "observed_max": 0.8239
+      },
+      "vertical_hierarchy": {
+        "min": 0.3868,
+        "max": 0.4108,
+        "observed_min": 0.3988,
+        "observed_max": 0.3988
+      },
+      "type_rhythm_bands": {
+        "min": 32.98,
+        "max": 35.02,
+        "observed_min": 34,
+        "observed_max": 34
+      },
+      "image_coverage": {
+        "min": 0.0661,
+        "max": 0.0701,
+        "observed_min": 0.0681,
+        "observed_max": 0.0681
+      }
+    },
+    "theory_interpretation": {
+      "ink_occupancy": {
+        "min": 0.0873,
+        "max": 0.0927,
+        "observed_min": 0.09,
+        "observed_max": 0.09
+      },
+      "whitespace_fraction": {
+        "min": 0.8194,
+        "max": 0.8701,
+        "observed_min": 0.8447,
+        "observed_max": 0.8447
+      },
+      "vertical_hierarchy": {
+        "min": 0.4666,
+        "max": 0.4955,
+        "observed_min": 0.481,
+        "observed_max": 0.481
+      },
+      "type_rhythm_bands": {
+        "min": 42.68,
+        "max": 45.32,
+        "observed_min": 44,
+        "observed_max": 44
+      },
+      "image_coverage": {
+        "min": 0.0633,
+        "max": 0.0672,
+        "observed_min": 0.0652,
+        "observed_max": 0.0652
+      }
+    },
+    "summary_synthesis": {
+      "ink_occupancy": {
+        "min": 0.3511,
+        "max": 0.3729,
+        "observed_min": 0.362,
+        "observed_max": 0.362
+      },
+      "whitespace_fraction": {
+        "min": 0.5488,
+        "max": 0.5827,
+        "observed_min": 0.5657,
+        "observed_max": 0.5657
+      },
+      "vertical_hierarchy": {
+        "min": 0.5082,
+        "max": 0.5397,
+        "observed_min": 0.5239,
+        "observed_max": 0.5239
+      },
+      "type_rhythm_bands": {
+        "min": 21.34,
+        "max": 22.66,
+        "observed_min": 22,
+        "observed_max": 22
+      },
+      "image_coverage": {
+        "min": 0.0701,
+        "max": 0.0744,
+        "observed_min": 0.0723,
+        "observed_max": 0.0723
+      }
+    },
+    "objection_response": {
+      "ink_occupancy": {
+        "min": 0.234,
+        "max": 0.2485,
+        "observed_min": 0.2413,
+        "observed_max": 0.2413
+      },
+      "whitespace_fraction": {
+        "min": 0.5425,
+        "max": 0.576,
+        "observed_min": 0.5593,
+        "observed_max": 0.5593
+      },
+      "vertical_hierarchy": {
+        "min": 0.6392,
+        "max": 0.6787,
+        "observed_min": 0.6589,
+        "observed_max": 0.6589
+      },
+      "type_rhythm_bands": {
+        "min": 0.97,
+        "max": 1.03,
+        "observed_min": 1,
+        "observed_max": 1
+      },
+      "image_coverage": {
+        "min": 0.1935,
+        "max": 0.2054,
+        "observed_min": 0.1995,
+        "observed_max": 0.1995
+      }
+    },
+    "collaboration_pathway": {
+      "ink_occupancy": {
+        "min": 0.33,
+        "max": 0.3504,
+        "observed_min": 0.3402,
+        "observed_max": 0.3402
+      },
+      "whitespace_fraction": {
+        "min": 0.531,
+        "max": 0.5638,
+        "observed_min": 0.5474,
+        "observed_max": 0.5474
+      },
+      "vertical_hierarchy": {
+        "min": 0.5204,
+        "max": 0.5526,
+        "observed_min": 0.5365,
+        "observed_max": 0.5365
+      },
+      "type_rhythm_bands": {
+        "min": 29.1,
+        "max": 30.9,
+        "observed_min": 30,
+        "observed_max": 30
+      },
+      "image_coverage": {
+        "min": 0.109,
+        "max": 0.1157,
+        "observed_min": 0.1124,
+        "observed_max": 0.1124
+      }
+    },
+    "closing_cta": {
+      "ink_occupancy": {
+        "min": 0.1268,
+        "max": 0.2116,
+        "observed_min": 0.1366,
+        "observed_max": 0.2018
+      },
+      "whitespace_fraction": {
+        "min": 0.4713,
+        "max": 0.7635,
+        "observed_min": 0.505,
+        "observed_max": 0.7298
+      },
+      "vertical_hierarchy": {
+        "min": 0.177,
+        "max": 0.2398,
+        "observed_min": 0.1842,
+        "observed_max": 0.2325
+      },
+      "type_rhythm_bands": {
+        "min": 13.58,
+        "max": 14.42,
+        "observed_min": 14,
+        "observed_max": 14
+      },
+      "image_coverage": {
+        "min": 0.1097,
+        "max": 0.3171,
+        "observed_min": 0.1336,
+        "observed_max": 0.2932
+      }
+    }
+  },
+  "per_face": [
+    {
+      "face_id": "apex-02",
+      "family_id": "editorial_lead",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.31116795801854397,
+      "vertical_hierarchy": 0.1858752261540712,
+      "whitespace_fraction": 0.6445473471840659,
+      "type_rhythm_bands": 28,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.044284694797390056
+    },
+    {
+      "face_id": "apex-05",
+      "family_id": "false_belief_stack",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.3078318166208791,
+      "vertical_hierarchy": 0.6670364521700944,
+      "whitespace_fraction": 0.6145220746050825,
+      "type_rhythm_bands": 30,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.07764610877403844
+    },
+    {
+      "face_id": "apex-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.10797722785027472,
+      "vertical_hierarchy": 0.3988117585555787,
+      "whitespace_fraction": 0.8239249763907966,
+      "type_rhythm_bands": 34,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.0680977957589286
+    },
+    {
+      "face_id": "apex-09",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.0900154532967033,
+      "vertical_hierarchy": 0.48103614627029473,
+      "whitespace_fraction": 0.8447426596840659,
+      "type_rhythm_bands": 44,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.06524188701923084
+    },
+    {
+      "face_id": "apex-14",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.36199884100274726,
+      "vertical_hierarchy": 0.5239344100863746,
+      "whitespace_fraction": 0.5657274854052198,
+      "type_rhythm_bands": 22,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.07227367359203296
+    },
+    {
+      "face_id": "apex-15",
+      "family_id": "objection_response",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.24128069196428573,
+      "vertical_hierarchy": 0.6589230886345759,
+      "whitespace_fraction": 0.5592658074347527,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.19945350060096156
+    },
+    {
+      "face_id": "apex-16",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 5.365728021978022e-06,
+      "ink_occupancy": 0.3402341067135989,
+      "vertical_hierarchy": 0.5364734525704654,
+      "whitespace_fraction": 0.5473927927541209,
+      "type_rhythm_bands": 30,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.11237310053228022
+    },
+    {
+      "face_id": "apex-18",
+      "family_id": "closing_cta",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.13658460679945056,
+      "vertical_hierarchy": 0.23252048553588747,
+      "whitespace_fraction": 0.7297980339972527,
+      "type_rhythm_bands": 14,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.13361735920329676
+    },
+    {
+      "face_id": "apex-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.2018318595467033,
+      "vertical_hierarchy": 0.18422140141051624,
+      "whitespace_fraction": 0.5049861027644231,
+      "type_rhythm_bands": 14,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.29318203768887363
+    }
+  ],
+  "word_density_reference": {
+    "apex_mean_words_per_face": 337.7,
+    "corpus_range": [
+      248.8,
+      345.0
+    ],
+    "source": "phase-zero OCR corpus measurement"
+  }
+}

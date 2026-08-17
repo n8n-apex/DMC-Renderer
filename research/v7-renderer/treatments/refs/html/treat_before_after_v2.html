@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SS4';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SS3';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--tan:#c3bcab;--tanface:#6b6557;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--cream);font-family:'SS3',sans-serif;color:#3a4a5a;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---------- HEADER ---------- */
+.toprule{position:absolute;top:30px;left:90px;right:90px;height:1px;background:var(--rule);}
+.header{position:absolute;top:62px;left:90px;right:90px;}
+.eyebrow{font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.42em;color:var(--teal);text-transform:uppercase;}
+.eyebrow .pg{color:#b3a998;margin-left:18px;letter-spacing:.2em;}
+.headline{font-family:'SS4';font-weight:540;font-size:46px;line-height:1.05;color:var(--ink);margin-top:16px;letter-spacing:-.01em;}
+.headline .teal{color:var(--teal);}
+
+/* ---------- COLUMN HEADERS ---------- */
+.colhead{position:absolute;top:228px;left:90px;right:90px;display:flex;}
+.colhead .h{width:50%;display:flex;flex-direction:column;}
+.colhead .h.l{align-items:flex-end;padding-right:64px;text-align:right;}
+.colhead .h.r{align-items:flex-start;padding-left:64px;}
+.tag{font-family:'SS3';font-weight:700;font-size:16px;letter-spacing:.34em;text-transform:uppercase;}
+.tag.v{color:#8c8676;}
+.tag.n{color:var(--teal);}
+.tagsub{font-size:14px;font-weight:400;margin-top:8px;}
+.tagsub.v{color:#9a9486;}
+.tagsub.n{color:#5a7a7b;}
+
+/* ---------- DIVERGING COMPARISON ROWS ---------- */
+.rows{position:absolute;top:320px;left:90px;right:90px;height:404px;}
+.axis{position:absolute;top:-8px;bottom:-8px;left:50%;width:2px;background:var(--teal);transform:translateX(-1px);}
+.axis .pivot{position:absolute;top:50%;left:50%;width:30px;height:30px;background:var(--teal);transform:translate(-50%,-50%) rotate(45deg);}
+.axis .pivot::after{content:'›';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);color:var(--cream);font-weight:700;font-size:20px;}
+
+.row{position:absolute;left:0;right:0;height:96px;}
+.row.r1{top:0;}
+.row.r2{top:148px;}
+.row.r3{top:296px;}
+
+.mlabel{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  font-family:'SS3';font-weight:700;font-size:13.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);
+  background:var(--cream);padding:0 18px;z-index:4;white-space:nowrap;}
+
+/* bars meet at the center axis; gap of 30px each side of center */
+.bar{position:absolute;top:26px;height:44px;display:flex;align-items:center;border-radius:3px;}
+.bar.v{right:calc(50% + 22px);background:var(--tan);justify-content:flex-start;flex-direction:row-reverse;}
+.bar.n{left:calc(50% + 22px);background:var(--teal);justify-content:flex-start;}
+.bval{font-family:'SS4';font-weight:600;font-size:27px;padding:0 18px;white-space:nowrap;display:flex;align-items:baseline;gap:5px;line-height:1;}
+.bar.v .bval{color:#4a463b;}
+.bar.n .bval{color:var(--cream);}
+.bunit{font-family:'SS3';font-weight:500;font-size:14px;}
+.bar.v .bunit{color:#7a7466;}
+.bar.n .bunit{color:#cfe6df;}
+.dchip{position:absolute;left:calc(50% + 22px);top:78px;font-family:'SS3';font-weight:700;font-size:14px;
+  letter-spacing:.03em;color:#0f3b35;background:#7FB7B3;border-radius:18px;padding:5px 13px;}
+.dchip.left{left:auto;right:calc(50% + 22px);background:none;color:#9a9486;padding:5px 0;}
+
+/* ---------- SHARED PROOF BAND ---------- */
+.proof{position:absolute;left:90px;right:90px;top:762px;height:250px;background:var(--ink);border-radius:4px;
+  display:flex;align-items:center;padding:0 56px;overflow:hidden;}
+.proof .seam{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal);}
+.pphoto{width:178px;height:178px;border:5px solid #41526a;border-radius:4px;overflow:hidden;flex-shrink:0;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png') center 28%/cover no-repeat;}
+.pquote{flex:1;padding:0 48px;}
+.pquote .qm{font-family:'SS4';font-weight:700;font-size:44px;color:var(--teal);line-height:.4;}
+.pquote .qt{font-family:'SS4';font-weight:400;font-style:italic;font-size:23px;line-height:1.4;color:#e9eef2;margin-top:10px;max-width:560px;}
+.pquote .qa{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#7FB7B3;margin-top:16px;}
+.psave{flex-shrink:0;width:280px;border-left:1px solid rgba(255,255,255,0.14);padding-left:46px;}
+.psave .s{margin-bottom:26px;}
+.psave .s:last-child{margin-bottom:0;}
+.psave .sv{font-family:'SS4';font-weight:600;font-size:42px;color:var(--cream);line-height:1;}
+.psave .sv em{font-style:normal;color:#7FB7B3;}
+.psave .sl{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#92a3b2;margin-top:9px;}
+
+/* ---------- FOOTER ---------- */
+.footrule{position:absolute;left:90px;right:90px;bottom:72px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;}
+.partners{font-family:'SS3';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:#6f7d8b;}
+.partners b{color:var(--ink);font-weight:600;}
+.brand{font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="toprule"></div>
+  <div class="header">
+    <div class="eyebrow">ÜBER UNS<span class="pg">/ 03</span></div>
+    <h1 class="headline">Vom Engpass zur Automatik.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  </div>
+
+  <div class="colhead">
+    <div class="h l"><span class="tag v">Vorher</span><span class="tagsub v">manuelle Prozesse</span></div>
+    <div class="h r"><span class="tag n">Nachher</span><span class="tagsub n">automatisiert · in 90 Tagen</span></div>
+  </div>
+
+  <div class="rows">
+    <div class="axis"><div class="pivot"></div></div>
+
+    <!-- Row 1: Onboarding 30 Min -> 2 Min -->
+    <div class="row r1">
+      <div class="mlabel">Onboarding</div>
+      <div class="bar v" style="width:540px"><span class="bval">30<span class="bunit">Min</span></span></div>
+      <div class="bar n" style="width:80px"><span class="bval">2<span class="bunit">Min</span></span></div>
+      <div class="dchip">−93 %</div>
+    </div>
+
+    <!-- Row 2: Reaktionszeit 24 Std -> Minuten -->
+    <div class="row r2">
+      <div class="mlabel">Reaktionszeit</div>
+      <div class="bar v" style="width:540px"><span class="bval">24<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:150px"><span class="bval">Minuten</span></div>
+      <div class="dchip">Std&nbsp;→&nbsp;Min</div>
+    </div>
+
+    <!-- Row 3: Gebundene Zeit 20+ Std/Woche -> freigesetzt -->
+    <div class="row r3">
+      <div class="mlabel">Gebundene Zeit / Woche</div>
+      <div class="bar v" style="width:540px"><span class="bval">20+<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:64px"><span class="bval">frei</span></div>
+      <div class="dchip">+20 Std / Woche</div>
+    </div>
+  </div>
+
+  <!-- ===== SHARED PROOF BAND (spans the axis) ===== -->
+  <div class="proof">
+    <div class="seam"></div>
+    <div class="pphoto"></div>
+    <div class="pquote">
+      <div class="qm">„</div>
+      <div class="qt">In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</div>
+      <div class="qa">Kundenstimme</div>
+    </div>
+    <div class="psave">
+      <div class="s"><div class="sv">€200k<em>+</em></div><div class="sl">Einsparung / Jahr</div></div>
+      <div class="s"><div class="sv">30–50<em>%</em></div><div class="sl">Betriebskosten · ohne Mehr-Headcount</div></div>
+    </div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

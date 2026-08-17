@@ -1,0 +1,299 @@
+/* ---- LAYER-B TREATMENT AXES ----
+   richard-grammar-v2.md §4.0 defines sixteen per-client axes. Four of them
+   (N belief-card, HC headline construction, G ground mode, X texture) had
+   no route to CSS at all, so every client rendered identically no matter
+   what its profile said. The body now carries each axis as an attribute
+   and this sheet is what those attributes DO. */
+
+/* ---- G: ground mode ---------------------------------------------------- */
+/* cream_textured and cool_light are light grounds that differ in warmth. */
+body[data-ground-mode="cream_textured"] { --ground: var(--paper); }
+body[data-ground-mode="cool_light"] {
+  --ground: color-mix(in srgb, var(--paper) 88%, #dfe6ec);
+}
+/* role_split: photo faces go dark, prose faces stay light. */
+body[data-ground-mode="role_split"] .face[data-anatomy="editorial_lead"],
+body[data-ground-mode="role_split"] .face[data-anatomy="closing_cta"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+/* tri: near-black, saturated and light all appear across the report. */
+body[data-ground-mode="tri"] .face[data-anatomy="editorial_lead"] {
+  background: #27262A;
+  color: var(--paper);
+}
+body[data-ground-mode="tri"] .face[data-anatomy="evidence_wall"] {
+  background: var(--accent);
+  color: var(--paper);
+}
+/* saturated_dark_light: saturated bands on a light sheet. */
+body[data-ground-mode="saturated_dark_light"] .region.anatomy-verdict {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm;
+}
+
+/* ---- X: texture -------------------------------------------------------- */
+/* A paper texture is a ground treatment, not decoration; it is drawn as a
+   repeating gradient so it costs no asset and cannot go missing. */
+body[data-texture="marble_paper"] .face::before,
+body[data-texture="crumpled_paper"] .face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.055;
+}
+body[data-texture="marble_paper"] .face::before {
+  background-image:
+    repeating-linear-gradient(118deg, transparent 0 3.1mm,
+      color-mix(in srgb, var(--ink) 60%, transparent) 3.1mm 3.24mm),
+    repeating-linear-gradient(63deg, transparent 0 5.7mm,
+      color-mix(in srgb, var(--ink) 40%, transparent) 5.7mm 5.86mm);
+}
+body[data-texture="crumpled_paper"] .face::before {
+  background-image:
+    repeating-linear-gradient(94deg, transparent 0 1.9mm,
+      color-mix(in srgb, var(--ink) 55%, transparent) 1.9mm 2.02mm),
+    repeating-linear-gradient(9deg, transparent 0 2.7mm,
+      color-mix(in srgb, var(--ink) 35%, transparent) 2.7mm 2.8mm);
+}
+body[data-texture="marble_paper"] .face > *,
+body[data-texture="crumpled_paper"] .face > * { position: relative; z-index: 1; }
+
+/* ---- H + HC: headline type and construction ---------------------------- */
+body[data-headline-type="serif"] .heading { font-family: var(--font-serif, Georgia, serif); }
+body[data-headline-type="sans"] .heading { font-family: var(--font-sans-head); }
+body[data-headline-type="sans_allcaps"] .heading {
+  font-family: var(--font-sans-head);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+/* HC single_colour: the whole headline is one ink. */
+body[data-headline-construction="single_colour"] .heading { color: var(--ink); }
+/* HC accent_word: the LAST word carries the accent. The renderer wraps it;
+   until it does, the rule is inert rather than wrong. */
+body[data-headline-construction="accent_word"] .heading .hl-accent { color: var(--accent); }
+body[data-headline-construction="tonal_accent_word"] .heading .hl-accent {
+  color: color-mix(in srgb, var(--ink) 45%, var(--paper));
+}
+/* HC two_tone_two_weight: two inks and two weights inside one headline. */
+body[data-headline-construction="two_tone_two_weight"] .heading { font-weight: 400; }
+body[data-headline-construction="two_tone_two_weight"] .heading .hl-accent {
+  font-weight: 800;
+  color: var(--accent);
+}
+/* sans_allcaps profiles rule their headline (alex: tan underline). */
+body[data-headline-type="sans_allcaps"][data-headline-construction="single_colour"] .heading {
+  border-bottom: 1.2mm solid var(--accent);
+  padding-bottom: 3mm;
+}
+
+/* ---- N: belief-card treatment ------------------------------------------ */
+/* The false-belief page is one of the four structural patterns and its card
+   treatment is a named per-client axis. All four are drawn here. */
+/* The belief list must own its numbering before any treatment can style it.
+   With the browser's default <ol> markers the counter below never appears,
+   so all four treatments were inert even once the region emitted a list. */
+.face[data-anatomy="false_belief_stack"] .process {
+  list-style: none;
+  counter-reset: belief;
+  margin: 0;
+  padding: 0;
+}
+.face[data-anatomy="false_belief_stack"] .process li {
+  counter-increment: belief;
+  position: relative;
+  list-style: none;
+  /* The numeral is absolutely placed, so the item must reserve its gutter
+     HERE. Leaving that to the treatments meant a build with no client
+     profile printed the numeral straight through the first word. */
+  padding: 0 0 5mm 16mm;
+}
+.face[data-anatomy="false_belief_stack"] .process li::before {
+  content: counter(belief, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12mm;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+body[data-belief-treatment="dark_box"] .face[data-anatomy="false_belief_stack"] .process li {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6mm 6mm 6mm 18mm;
+  border: 0;
+  margin-bottom: 4mm;
+}
+body[data-belief-treatment="dark_box"] .face[data-anatomy="false_belief_stack"] .process li::before {
+  color: var(--accent);
+  left: 6mm;
+}
+body[data-belief-treatment="ghost_numeral"] .face[data-anatomy="false_belief_stack"] .process li {
+  border: 0;
+  padding: 4mm 0 4mm 26mm;
+  position: relative;
+}
+body[data-belief-treatment="ghost_numeral"] .face[data-anatomy="false_belief_stack"] .process li::before {
+  font-size: 46pt;
+  font-weight: 800;
+  line-height: 0.8;
+  color: color-mix(in srgb, var(--accent) 22%, transparent);
+  left: 0;
+  top: 1mm;
+}
+body[data-belief-treatment="connector_spine"] .face[data-anatomy="false_belief_stack"] .process {
+  position: relative;
+  padding-left: 10mm;
+}
+body[data-belief-treatment="connector_spine"] .face[data-anatomy="false_belief_stack"] .process::before {
+  content: "";
+  position: absolute;
+  left: 3.4mm;
+  top: 4mm;
+  bottom: 4mm;
+  width: 0.6mm;
+  background: var(--accent);
+}
+body[data-belief-treatment="connector_spine"] .face[data-anatomy="false_belief_stack"] .process li {
+  border: 0;
+  padding: 3mm 0 3mm 6mm;
+}
+body[data-belief-treatment="plain_numbered"] .face[data-anatomy="false_belief_stack"] .process li {
+  border: 0;
+  border-top: 0.4mm solid var(--rule);
+  padding: 4mm 0 4mm 14mm;
+}
+
+/* ---- M: accent mechanic ------------------------------------------------ */
+/* A tonal profile (buch) must never introduce a second hue; a contrasting
+   one is allowed its second accent. */
+body[data-accent-mechanic="tonal_same_hue"] {
+  --accent-2: color-mix(in srgb, var(--accent) 55%, var(--paper));
+}
+body[data-accent-mechanic="contrasting_hue"] {
+  --accent-2: var(--accent);
+}
+
+/* ---- I: image modes ----------------------------------------------------
+   The grammar lists which image treatments a client uses. A profile that
+   never uses full-bleed (aerz: "NO full-bleed") must not get one, and one
+   that uses duotone must actually see duotone. The body carries the set;
+   these rules are what each mode DOES. */
+body[data-image-modes~="framed_rect"] .el.image {
+  border: 0.6mm solid var(--rule);
+  padding: 2mm;
+  background: var(--paper);
+}
+body[data-image-modes~="full_bleed_photo"] .face[data-anatomy="editorial_lead"] .el.image,
+body[data-image-modes~="cutout_bleed"] .face[data-anatomy="editorial_lead"] .el.image {
+  border: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* duotone: the client's two inks replace the photo's own range. */
+body[data-image-modes~="duotone"] .face[data-anatomy="theory_interpretation"] .el.image {
+  filter: grayscale(1) contrast(1.15);
+  mix-blend-mode: multiply;
+}
+body[data-image-modes~="round_portrait"] .el.image.anatomy-identity {
+  border-radius: 50%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 0.8mm solid var(--accent);
+  padding: 0;
+}
+/* device_mockup and product_shot sit on a plinth rather than a frame. */
+body[data-image-modes~="device_mockup"] .el.image,
+body[data-image-modes~="product_shot"] .el.image {
+  background: color-mix(in srgb, var(--rule) 18%, var(--paper));
+  padding: 5mm;
+  border: 0;
+}
+/* A profile that does NOT list full_bleed keeps every image inside the
+   type area, which is the rule aerz states explicitly. */
+body:not([data-image-modes~="full_bleed_photo"]):not([data-image-modes~="cutout_bleed"]) .el.image {
+  max-width: 100%;
+}
+
+/* ---- CG: case-study geometry -------------------------------------------
+   Four named geometries for the case page. They change WHERE the evidence
+   rail sits, which is the difference between four clients' case spreads. */
+/* RRW: right rail, wide. */
+body[data-case-geometry="RRW"] .face[data-anatomy="case_narrative"] {
+  grid-template-columns: minmax(0, 1fr) 62mm;
+  grid-template-areas: "story rail";
+}
+/* LRP: left rail, portrait-led. */
+body[data-case-geometry="LRP"] .face[data-anatomy="case_narrative"] {
+  grid-template-columns: 62mm minmax(0, 1fr);
+  grid-template-areas: "rail story";
+}
+/* NR: no rail. The evidence runs inline under the story. */
+body[data-case-geometry="NR"] .face[data-anatomy="case_narrative"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "story" "rail";
+  grid-template-rows: auto auto;
+}
+body[data-case-geometry="NR"] .face[data-anatomy="case_narrative"] .region-evidence_rail {
+  background: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5mm;
+  padding: 6mm 0 0;
+  border-top: 0.5mm solid var(--rule);
+}
+/* BAND: a full-width header band carries the result, story runs beneath. */
+body[data-case-geometry="BAND"] .face[data-anatomy="case_narrative"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "rail" "story";
+  grid-template-rows: auto minmax(0, 1fr);
+}
+body[data-case-geometry="BAND"] .face[data-anatomy="case_narrative"] .region-evidence_rail {
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6mm;
+  padding: 7mm 8mm;
+}
+
+/* ---- motif: the per-client decorative device ---------------------------
+   Three of the five profiles name a motif. They are drawn, not imported,
+   so a missing asset can never silently drop a client's signature. */
+body[data-motif="ribbon"] .face:not([data-anatomy="editorial_lead"])::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 6mm;
+  background: linear-gradient(96deg,
+    transparent 0 6%,
+    var(--accent) 12% 44%,
+    color-mix(in srgb, var(--accent) 60%, var(--paper)) 52% 88%,
+    transparent 94%);
+  opacity: 0.85;
+}
+body[data-motif="corner_tab"] .face:not([data-anatomy="editorial_lead"])::after {
+  content: "";
+  position: absolute;
+  right: 0; top: 0;
+  width: 22mm; height: 22mm;
+  background: var(--accent);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+body[data-motif="swoosh"] .face:not([data-anatomy="editorial_lead"])::after {
+  content: "";
+  position: absolute;
+  right: 6mm; bottom: 6mm;
+  width: 34mm; height: 34mm;
+  border-right: 0.8mm solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-bottom: 0.8mm solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 0 0 34mm 0;
+}

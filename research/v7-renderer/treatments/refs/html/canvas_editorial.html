@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:'SourceSerif';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SourceSans';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');
+  font-weight:200 900;
+}
+:root{
+  --cream:#F6F3ED;
+  --ink:#2E3E50;
+  --teal:#4A7C7E;
+  --body:#3a4a5a;
+  --rule:#cdc7ba;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:var(--cream);
+  font-family:'SourceSans',sans-serif;
+  color:var(--body);
+  position:relative;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---- PHOTO: anchored full-edge right, native ar 1.562 ---- */
+/* photo box width 642 -> height = 642/1.562 = 411. We want a tall column,
+   so we crop horizontally is NOT allowed (faces). Instead place the native
+   landscape photo as a framed plate inside the right column, bottom-anchored. */
+.photo-col{
+  position:absolute;
+  top:0; right:0;
+  width:600px; height:1188px;
+  background:var(--ink);
+  overflow:hidden;
+}
+/* thin teal seam where the navy field meets the cream */
+.photo-col .seam{
+  position:absolute; top:0; bottom:0; left:0;
+  width:4px; background:var(--teal);
+}
+/* large faint serif glyph anchors the upper navy void */
+.photo-col .glyph{
+  position:absolute;
+  top:96px; left:54px;
+  font-family:'SourceSerif',serif;
+  font-size:300px; line-height:0.7;
+  color:rgba(255,255,255,0.045);
+  font-weight:500; user-select:none;
+}
+.photo-plate{
+  position:absolute;
+  left:0; right:0;
+  /* native ar 1.562: width 600 -> height 384 */
+  bottom:128px;
+  width:600px; height:384px;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png') center/cover no-repeat;
+}
+/* hairline above the plate to seat it */
+.photo-plate-rule{
+  position:absolute;
+  left:54px; right:54px;
+  bottom:540px; height:1px;
+  background:rgba(255,255,255,0.16);
+}
+.photo-caption{
+  position:absolute;
+  left:54px; bottom:60px;
+  color:var(--cream);
+  font-family:'SourceSans',sans-serif;
+}
+.photo-caption .name{
+  font-size:22px; font-weight:600; letter-spacing:.01em;
+}
+.photo-caption .role{
+  font-size:13px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; color:#94a6b5; margin-top:7px;
+}
+.photo-eyebrow{
+  position:absolute;
+  right:40px; top:90px;
+  color:#94a6b5;
+  font-size:13px; font-weight:600; letter-spacing:.34em;
+  writing-mode:vertical-rl; text-orientation:mixed;
+}
+
+/* ---- LEFT EDITORIAL FIELD ---- */
+.stage{
+  position:absolute;
+  left:90px; top:90px;
+  width:920px; height:1008px;
+}
+.eyebrow{
+  display:flex; align-items:center; gap:18px;
+  color:var(--teal);
+  font-size:15px; font-weight:600; letter-spacing:.34em;
+  text-transform:uppercase;
+}
+.eyebrow .tick{ width:46px; height:2px; background:var(--teal); }
+
+.headline{
+  font-family:'SourceSerif',serif;
+  color:var(--ink);
+  font-weight:430;
+  font-size:78px;
+  line-height:1.04;
+  letter-spacing:-0.012em;
+  margin-top:40px;
+  max-width:900px;
+}
+.headline .teal{ color:var(--teal); }
+
+.thesis{
+  margin-top:40px;
+  max-width:680px;
+  font-size:21px;
+  line-height:1.6;
+  color:var(--body);
+  font-weight:400;
+}
+.thesis .lead{ color:var(--ink); font-weight:600; }
+
+.hairline{
+  width:680px; height:1px; background:var(--rule);
+  margin-top:46px;
+}
+
+/* ---- DATA-VIZ ROW ---- */
+.viz{
+  position:absolute;
+  left:90px; top:632px;
+  width:920px;
+  display:flex;
+  align-items:stretch;
+  gap:40px;
+}
+
+/* donut */
+.donut-wrap{
+  display:flex; flex-direction:column; align-items:flex-start;
+}
+.donut-cap{
+  font-size:13px; font-weight:600; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--body); margin-bottom:14px;
+}
+.donut{ position:relative; width:208px; height:208px; }
+.donut .center{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.donut .num{
+  font-family:'SourceSerif',serif;
+  font-size:42px; font-weight:500; color:var(--ink);
+  letter-spacing:-0.01em; line-height:1;
+}
+.donut .sub{
+  font-size:12.5px; font-weight:500; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--teal); margin-top:7px;
+}
+
+/* KPI stack */
+.kpis{
+  flex:1;
+  display:flex; flex-direction:column;
+  justify-content:center;
+  gap:16px;
+}
+.kpi{
+  background:rgba(46,62,80,0.045);
+  border-left:3px solid var(--teal);
+  padding:18px 24px;
+  display:flex; align-items:baseline; gap:18px;
+}
+.kpi .v{
+  font-family:'SourceSerif',serif;
+  font-size:46px; font-weight:500; color:var(--ink);
+  line-height:1; letter-spacing:-0.01em;
+  min-width:170px;
+}
+.kpi .l{
+  font-size:16px; font-weight:400; color:var(--body);
+  letter-spacing:.01em;
+}
+
+/* before / after micro-bar */
+.delta{
+  position:absolute;
+  left:90px; top:888px;
+  width:496px;
+}
+.delta .cap{
+  font-size:13px; font-weight:600; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--body); margin-bottom:14px;
+  display:flex; justify-content:space-between;
+}
+.delta .cap .acc{ color:var(--teal); }
+.bar{
+  position:relative; height:14px;
+  background:rgba(46,62,80,0.10);
+  border-radius:7px; overflow:hidden;
+}
+.bar .fill{
+  position:absolute; left:0; top:0; bottom:0;
+  width:6.6%;
+  background:var(--teal);
+  border-radius:7px;
+}
+.bar-labels{
+  display:flex; justify-content:space-between;
+  margin-top:10px;
+  font-size:14px; color:var(--body);
+}
+.bar-labels b{ color:var(--ink); font-weight:600; }
+
+/* ---- QUOTE ---- */
+.quote{
+  position:absolute;
+  left:90px; top:1004px;
+  width:560px;
+}
+.quote .mark{
+  font-family:'SourceSerif',serif;
+  font-size:64px; color:var(--teal); line-height:0.6;
+  height:30px;
+}
+.quote p{
+  font-family:'SourceSerif',serif;
+  font-size:23px; line-height:1.42; color:var(--ink);
+  font-weight:420; font-style:italic;
+  margin-top:6px;
+}
+.quote .attr{
+  margin-top:14px;
+  font-size:13px; font-weight:600; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--teal);
+}
+
+/* ---- FOOTER ---- */
+.footer{
+  position:absolute;
+  left:90px; bottom:54px;
+  width:920px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.partners{
+  font-size:14.5px; letter-spacing:.04em; color:var(--body);
+}
+.partners .lbl{
+  color:var(--teal); font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; font-size:12px; margin-right:14px;
+}
+.pageno{
+  font-family:'SourceSerif',serif;
+  font-size:16px; color:var(--ink); font-weight:500;
+}
+</style>
+</head>
+<body>
+
+  <!-- LEFT FIELD -->
+  <div class="stage">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+
+    <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+
+    <div class="hairline"></div>
+  </div>
+
+  <!-- DATA VIZ -->
+  <div class="viz">
+    <div class="donut-wrap">
+      <div class="donut-cap">Betriebskosten</div>
+      <div class="donut">
+        <svg width="208" height="208" viewBox="0 0 208 208">
+          <circle cx="104" cy="104" r="86" fill="none" stroke="#2E3E50" stroke-opacity="0.10" stroke-width="20"/>
+          <!-- 30-50% -> draw 40% arc, circumference = 2*pi*86 = 540.35 ; 40% = 216.1 -->
+          <circle cx="104" cy="104" r="86" fill="none" stroke="#4A7C7E" stroke-width="20"
+                  stroke-linecap="round" stroke-dasharray="216.1 540.35"
+                  transform="rotate(-90 104 104)"/>
+        </svg>
+        <div class="center">
+          <div class="num">30&ndash;50%</div>
+          <div class="sub">weniger</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span class="v">100+</span><span class="l">realisierte AI-Projekte</span></div>
+      <div class="kpi"><span class="v">€200k+</span><span class="l">Einsparung pro Jahr</span></div>
+    </div>
+  </div>
+
+  <!-- BEFORE / AFTER -->
+  <div class="delta">
+    <div class="cap"><span>Onboarding-Zeit</span><span class="acc">−93%</span></div>
+    <div class="bar"><div class="fill"></div></div>
+    <div class="bar-labels"><span>vorher <b>30 Min</b></span><span>nachher <b>2 Min</b></span></div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote">
+    <div class="mark">&ldquo;</div>
+    <p>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</p>
+    <div class="attr">Kundenstimme</div>
+  </div>
+
+  <!-- PHOTO COLUMN -->
+  <div class="photo-col">
+    <div class="seam"></div>
+    <div class="glyph">A</div>
+    <div class="photo-eyebrow">GRÜNDER</div>
+    <div class="photo-plate-rule"></div>
+    <div class="photo-plate"></div>
+    <div class="photo-caption">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="partners"><span class="lbl">Partner</span>Frese Recruiting&nbsp;&nbsp;·&nbsp;&nbsp;Conesso GmbH&nbsp;&nbsp;·&nbsp;&nbsp;Pure Media Marketing</div>
+    <div class="pageno">03</div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+{# ST-07B — theory / "Gegenseite" page (Plan B rebuild, grammar P-7). DATA comes
+   pre-shaped from patterns/st_07b.py; this template only COMPOSES the macro
+   library on the token-themed .st-07b layout (styles/st_07b.css). Fragment only —
+   no <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a small uppercase eyebrow, a large serif headline (var(--font-display)
+   — the §18 serif/sans contrast against the sans body), body prose, an OPTIONAL
+   before/after compare grid (OHNE / MIT), and the signature key-insight callout —
+   a distinct accent-ruled tint panel with a LARGER italic insight line
+   (key_insight, checklist #6 tint panel + #17 pull-quote/callout treatment). The
+   compare grid and the callout are each emitted only when their data is present
+   (graceful). #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'key_insight.jinja' import key_insight %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{% if layout_variant == 'fill' %}
+{# ---- FILL variant (DNA §C3 DARK authority panel — niklas p8 / boss p5) ----
+   The sparse theory page (kicker + headline + 2-para body + a short key_insight,
+   `compare` usually null) under-fills the sheet. Here the kicker + headline +
+   body (+ the compare grid when present) flow in the UPPER portion, and the
+   key_insight is reborn as a LARGE full-width DARK authority panel pinned to
+   FILL the LOWER portion of the content box — an oversized italic closing
+   statement (white/accent on the dark ground). The dark panel is pinned to
+   fill the lower band REGARDLESS of how short the body is, which is what removes
+   the dead bottom band. The full height is carried by .th-fill-root (a definite-
+   height relative box) so the absolutely-positioned dark panel can resolve its
+   bottom:0 against it (WeasyPrint 68.1 won't stretch an abs box against a
+   min-height container — only a definite height). Tokens only — no brand
+   literal; the dark ground / on-dark / accent all resolve from the token layer. #}
+<div class="th-fill-root" data-th-variant="fill">
+  <div class="th-fill-top">
+    <div class="th-header">
+      {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+      {% if title %}<h1 class="th-headline">{{ title }}</h1>{% endif %}
+    </div>
+
+    {% if body_html %}
+    <div class="th-body">{{ body_html }}</div>
+    {% endif %}
+
+    {% if compare %}
+    <div class="th-compare">
+      {% for col in compare %}
+      <div class="th-col th-col--{{ col.tone }}">
+        <div class="th-col-label">{{ col.label }}</div>
+        <ul class="th-col-list">
+          {% for item in col['items'] %}
+          <li class="th-col-item">{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# HOST SLOT: the page's data-viz presets (e.g. the vorher_nachher A->B
+       card) as a device band between the prose and the dark insight panel. #}
+    {% if viz %}
+    <div class="th-viz">{{ render_viz(viz) }}</div>
+    {% endif %}
+  </div>
+
+  {% if insight_html %}
+  {# LENGTH-BUCKETED statement size: at TRUE print scale (the silent global
+     Chromium shrink is gone) a long Kernaussage at display-xl runs 5+ lines
+     and pushes the section past its sheet. Short statements keep the
+     oversized cut; longer ones step down one display size so the panel
+     always fits. Threshold on the RAW text length (markup stripped). #}
+  {% set _ins_len = insight_html | striptags | length %}
+  <figure class="th-insightfill{{ ' th-insightfill--long' if _ins_len > 110 else '' }}">
+    {% if insight_label %}<div class="th-insightfill-label">{{ insight_label }}</div>{% endif %}
+    <blockquote class="th-insightfill-body">{{ insight_html }}</blockquote>
+  </figure>
+  {% endif %}
+</div>
+{% else %}
+<div class="th-header">
+  {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+  {% if title %}<h1 class="th-headline">{{ title }}</h1>{% endif %}
+</div>
+
+{% if body_html %}
+<div class="th-body">{{ body_html }}</div>
+{% endif %}
+
+{% if compare %}
+<div class="th-compare">
+  {% for col in compare %}
+  <div class="th-col th-col--{{ col.tone }}">
+    <div class="th-col-label">{{ col.label }}</div>
+    <ul class="th-col-list">
+      {% for item in col['items'] %}
+      <li class="th-col-item">{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if viz %}
+<div class="th-viz">{{ render_viz(viz) }}</div>
+{% endif %}
+
+{% if insight_html %}
+<div class="th-insight">
+  {{ key_insight(insight_html, label=insight_label) }}
+</div>
+{% endif %}
+{% endif %}

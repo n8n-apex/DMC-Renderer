@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "manifest_version": "1.0.0",
+  "authorities": [
+    {
+      "authority_id": "copy-law",
+      "kind": "copy_policy",
+      "status": "missing",
+      "expected_source": "Owner Google Drive export previously downloaded on 2026-07-16",
+      "last_known_filename": "Wichtig für Copy (KI-Floskeln).docx",
+      "why_it_matters": "It is the primary authority for German copy prohibitions and replacements now transcribed into writer prompt v5.",
+      "recovered_path": null,
+      "sha256": null,
+      "comparison_targets": ["docs/writer-prompt-v5.md", "CODEX-HANDOFF.md"]
+    },
+    {
+      "authority_id": "luka-martic-reference",
+      "kind": "reference_pdf",
+      "status": "missing",
+      "expected_source": "Owner Google Drive reference export previously downloaded on 2026-07-16",
+      "last_known_filename": "DMC Report Luka Martic.pdf",
+      "why_it_matters": "It expands the observed device vocabulary and publication-layout evidence beyond the frozen 120-face atlas.",
+      "recovered_path": null,
+      "sha256": null,
+      "comparison_targets": ["research/reference-atlas/reference-atlas.json"]
+    },
+    {
+      "authority_id": "frese-recruiting-v2-reference",
+      "kind": "reference_pdf",
+      "status": "missing",
+      "expected_source": "Owner Google Drive reference export previously downloaded on 2026-07-16",
+      "last_known_filename": "InDesign Frese Recruiting Report v2.pdf",
+      "why_it_matters": "It is the strongest newer evidence for icon-stat rows, column charts, formula ladders, grouped bars, stacked bars, and entity comparisons.",
+      "recovered_path": null,
+      "sha256": null,
+      "comparison_targets": ["research/reference-atlas/reference-atlas.json"]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ===== top header row ===== */
+.head{position:absolute;left:64px;right:64px;top:64px;display:flex;align-items:center;justify-content:space-between;}
+.eyebrow{display:flex;align-items:center;gap:16px;color:var(--teal);font-size:14px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:40px;height:2px;background:var(--teal);}
+.idx{font-family:'SourceSerif',serif;font-size:15px;font-weight:500;letter-spacing:.06em;color:var(--ink);}
+
+/* ===== hero portrait plate ===== */
+/* native ar 0.821 -> box 492 x 600, face intact, centered */
+.hero{position:absolute;top:128px;left:174px;width:492px;height:600px;}
+/* navy plate sits behind, framing the photo with a thin reveal at left/bottom */
+.hero .plate{position:absolute;top:14px;left:-14px;width:492px;height:600px;background:var(--ink);}
+.hero .teal-edge{position:absolute;top:14px;left:-14px;width:4px;height:600px;background:var(--teal);}
+.portrait{position:absolute;top:0;left:0;width:492px;height:600px;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 16%/cover no-repeat;}
+.portrait::after{content:'';position:absolute;left:0;right:0;bottom:0;height:190px;
+  background:linear-gradient(to bottom,rgba(46,62,80,0) 0%,rgba(46,62,80,0.90) 100%);}
+.pcap{position:absolute;left:34px;bottom:30px;z-index:3;color:var(--cream);}
+.pcap .name{font-family:'SourceSerif',serif;font-size:34px;font-weight:560;letter-spacing:.005em;line-height:1;}
+.pcap .role{font-size:12.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--teal-light);margin-top:12px;}
+
+/* ===== credential strip ===== */
+.creds{position:absolute;left:64px;right:64px;top:782px;}
+.creds .lbl{display:flex;align-items:center;gap:14px;color:var(--teal);font-size:13px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;}
+.creds .lbl .tick{width:32px;height:2px;background:var(--teal);}
+.creds .row{margin-top:22px;display:flex;align-items:stretch;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.creds .pt{flex:1;padding:20px 26px;text-align:center;}
+.creds .pt + .pt{border-left:1px solid var(--rule);}
+.creds .pt .nm{font-family:'SourceSerif',serif;font-size:21px;font-weight:480;color:var(--ink);letter-spacing:.004em;line-height:1.12;}
+.creds .pt .ds{font-family:'SourceSans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--body);margin-top:9px;}
+
+/* ===== 2-metric row ===== */
+.metrics{position:absolute;left:64px;right:64px;top:962px;display:flex;gap:32px;}
+.metric{flex:1;background:rgba(46,62,80,0.045);border-left:3px solid var(--teal);padding:26px 28px;}
+.metric .v{font-family:'SourceSerif',serif;font-size:52px;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-0.015em;}
+.metric .l{font-size:15px;font-weight:400;color:var(--body);letter-spacing:.01em;margin-top:14px;line-height:1.35;}
+
+/* ===== footer ===== */
+.footer{position:absolute;left:64px;right:64px;bottom:54px;display:flex;align-items:center;justify-content:space-between;}
+.footer::before{content:'';position:absolute;left:0;right:0;top:-22px;height:1px;background:var(--rule);}
+.brandmark{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.36em;color:var(--ink);}
+.pageno{font-family:'SourceSerif',serif;font-size:15px;color:var(--ink);font-weight:500;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+    <div class="idx">03</div>
+  </div>
+
+  <div class="hero">
+    <div class="plate"></div>
+    <div class="teal-edge"></div>
+    <div class="portrait"></div>
+    <div class="pcap">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+  </div>
+
+  <div class="creds">
+    <div class="lbl"><span class="tick"></span>Vertrauen von</div>
+    <div class="row">
+      <div class="pt"><div class="nm">Frese Recruiting</div><div class="ds">Personalberatung</div></div>
+      <div class="pt"><div class="nm">Conesso GmbH</div><div class="ds">B2B-Vertrieb</div></div>
+      <div class="pt"><div class="nm">Pure Media Marketing</div><div class="ds">Agentur</div></div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric"><div class="v">100+</div><div class="l">realisierte AI-Projekte</div></div>
+    <div class="metric"><div class="v">€200k+</div><div class="l">Einsparung pro Jahr</div></div>
+  </div>
+
+  <div class="footer">
+    <div class="brandmark">APEX</div>
+    <div class="pageno">03</div>
+  </div>
+</body>
+</html>

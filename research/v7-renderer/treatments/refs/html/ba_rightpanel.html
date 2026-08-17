@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SS4';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SS3';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--tan:#c3bcab;--rule:#cdc7ba;--body:#3a4a5a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--cream);font-family:'SS3',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* left field spans x90..x1070 -> width 980, center axis at x=580 */
+/* ---------- HEADER ---------- */
+.toprule{position:absolute;top:30px;left:90px;width:980px;height:1px;background:var(--rule);}
+.eyebrow{position:absolute;top:60px;left:90px;display:flex;align-items:center;gap:18px;
+  color:var(--teal);font-family:'SS3';font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:46px;height:2px;background:var(--teal);}
+.eyebrow .pg{color:#b3a998;letter-spacing:.2em;margin-left:6px;}
+.headline{position:absolute;top:96px;left:90px;width:980px;
+  font-family:'SS4';font-weight:480;font-size:50px;line-height:1.06;color:var(--ink);letter-spacing:-.012em;}
+.headline .teal{color:var(--teal);}
+
+/* ---------- COLUMN HEADERS (centered on axis x=580 i.e. 490 from left edge) ---------- */
+.colhead{position:absolute;top:244px;left:90px;width:980px;display:flex;}
+.colhead .h{width:50%;display:flex;flex-direction:column;}
+.colhead .h.l{align-items:flex-end;padding-right:54px;text-align:right;}
+.colhead .h.r{align-items:flex-start;padding-left:54px;}
+.tag{font-family:'SS3';font-weight:700;font-size:15px;letter-spacing:.32em;text-transform:uppercase;}
+.tag.v{color:#8c8676;}
+.tag.n{color:var(--teal);}
+.tagsub{font-size:13px;font-weight:400;margin-top:7px;}
+.tagsub.v{color:#9a9486;}
+.tagsub.n{color:#5a7a7b;}
+
+/* ---------- DIVERGING COMPARISON ROWS ---------- */
+.rows{position:absolute;top:336px;left:90px;width:980px;height:372px;}
+.axis{position:absolute;top:-6px;bottom:-6px;left:490px;width:2px;background:var(--teal);transform:translateX(-1px);}
+.axis .pivot{position:absolute;top:50%;left:50%;width:28px;height:28px;background:var(--teal);
+  transform:translate(-50%,-50%) rotate(45deg);}
+.axis .pivot::after{content:'\203A';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  transform:rotate(-45deg);color:var(--cream);font-weight:700;font-size:19px;}
+
+.row{position:absolute;left:0;right:0;height:90px;}
+.row.r1{top:0;}
+.row.r2{top:138px;}
+.row.r3{top:276px;}
+
+.mlabel{position:absolute;top:-28px;left:490px;transform:translateX(-50%);
+  font-family:'SS3';font-weight:700;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);
+  background:var(--cream);padding:0 16px;z-index:4;white-space:nowrap;}
+
+/* bars meet at center axis (490px from left), 22px gap each side */
+.bar{position:absolute;top:24px;height:42px;display:flex;align-items:center;border-radius:3px;}
+.bar.v{right:512px;background:var(--tan);flex-direction:row-reverse;}
+.bar.n{left:512px;background:var(--teal);}
+.bval{font-family:'SS4';font-weight:600;font-size:25px;padding:0 17px;white-space:nowrap;display:flex;align-items:baseline;gap:5px;line-height:1;}
+.bar.v .bval{color:#4a463b;}
+.bar.n .bval{color:var(--cream);}
+.bunit{font-family:'SS3';font-weight:500;font-size:13px;}
+.bar.v .bunit{color:#7a7466;}
+.bar.n .bunit{color:#cfe6df;}
+.dchip{position:absolute;left:512px;top:74px;font-family:'SS3';font-weight:700;font-size:13px;
+  letter-spacing:.03em;color:#0f3b35;background:#7FB7B3;border-radius:16px;padding:5px 13px;}
+.dchip.left{left:auto;right:512px;background:none;color:#9a9486;padding:5px 0;}
+
+/* ---------- SAVINGS CHIPS (beneath comparison, left) ---------- */
+.saves{position:absolute;top:760px;left:90px;width:980px;display:flex;gap:22px;}
+.schip{flex:1;background:rgba(46,62,80,0.045);border-left:3px solid var(--teal);
+  padding:22px 28px;display:flex;flex-direction:column;}
+.schip .sv{font-family:'SS4';font-weight:600;font-size:44px;color:var(--ink);line-height:1;letter-spacing:-.01em;}
+.schip .sv em{font-style:normal;color:var(--teal);}
+.schip .sl{font-family:'SS3';font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--body);margin-top:12px;}
+
+/* ---------- THESIS (calm closing line, left) ---------- */
+.thesis{position:absolute;top:902px;left:90px;width:830px;
+  font-family:'SS4';font-weight:400;font-size:21px;line-height:1.55;color:var(--body);}
+.thesis .lead{color:var(--ink);font-weight:600;}
+
+/* ---------- RIGHT NAVY IMAGE PANEL  x1110..1590 (480 wide) ---------- */
+.rpanel{position:absolute;top:0;left:1110px;width:480px;height:1188px;background:var(--ink);overflow:hidden;}
+.rpanel .seam{position:absolute;top:0;bottom:0;left:0;width:4px;background:var(--teal);}
+/* founder portrait 1_founder.jpg native ar 0.821 -> width 476 (panel-seam) => height 580 fills top full-bleed */
+.portrait{position:absolute;top:0;left:4px;width:476px;height:870px;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 16%/cover no-repeat;}
+.portrait::after{content:'';position:absolute;left:0;right:0;bottom:0;height:420px;
+  background:linear-gradient(to bottom,rgba(46,62,80,0) 0%,rgba(46,62,80,0.55) 42%,rgba(46,62,80,0.97) 100%);}
+/* founder caption seats over the portrait foot */
+.fcap{position:absolute;left:48px;top:632px;z-index:3;color:var(--cream);}
+.fcap .name{font-family:'SS4';font-size:30px;font-weight:560;letter-spacing:.005em;}
+.fcap .role{font-family:'SS3';font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#9db0bd;margin-top:9px;}
+
+/* customer quote in lower navy band over scrim */
+.rquote{position:absolute;left:48px;right:42px;top:752px;z-index:3;}
+.rquote .qm{font-family:'SS4';font-weight:700;font-size:52px;color:var(--teal);line-height:.45;height:26px;}
+.rquote .qt{font-family:'SS4';font-weight:400;font-style:italic;font-size:23px;line-height:1.45;color:#e9eef2;margin-top:14px;}
+.rquote .qa{display:flex;align-items:center;gap:14px;font-family:'SS3';font-weight:600;font-size:12.5px;
+  letter-spacing:.24em;text-transform:uppercase;color:#7FB7B3;margin-top:24px;}
+.rquote .qa .tick{width:30px;height:2px;background:#7FB7B3;}
+
+/* ---------- FOOTER (left field) ---------- */
+.footrule{position:absolute;left:90px;width:980px;bottom:74px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;width:980px;bottom:40px;display:flex;justify-content:space-between;align-items:center;}
+.partners{font-family:'SS3';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:#6f7d8b;}
+.partners .lbl{letter-spacing:.18em;text-transform:uppercase;font-size:12px;color:#9a9486;margin-right:6px;}
+.partners b{color:var(--ink);font-weight:600;}
+.fmeta{display:flex;align-items:center;gap:26px;}
+.brand{font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:var(--ink);}
+.pageno{font-family:'SS4';font-weight:500;font-size:15px;color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="toprule"></div>
+  <div class="eyebrow"><span class="tick"></span>ÜBER UNS<span class="pg">/ 03</span></div>
+  <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+
+  <div class="colhead">
+    <div class="h l"><span class="tag v">Vorher</span><span class="tagsub v">manuelle Prozesse</span></div>
+    <div class="h r"><span class="tag n">Nachher</span><span class="tagsub n">automatisiert · in 90 Tagen</span></div>
+  </div>
+
+  <div class="rows">
+    <div class="axis"><div class="pivot"></div></div>
+
+    <!-- Row 1: Onboarding 30 Min -> 2 Min  (-93%) -->
+    <div class="row r1">
+      <div class="mlabel">Onboarding</div>
+      <div class="bar v" style="width:420px"><span class="bval">30<span class="bunit">Min</span></span></div>
+      <div class="bar n" style="width:62px"><span class="bval">2<span class="bunit">Min</span></span></div>
+      <div class="dchip">−93 %</div>
+    </div>
+
+    <!-- Row 2: Reaktionszeit 24 Std -> Minuten -->
+    <div class="row r2">
+      <div class="mlabel">Reaktionszeit</div>
+      <div class="bar v" style="width:420px"><span class="bval">24<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:128px"><span class="bval">Minuten</span></div>
+      <div class="dchip">Std&nbsp;→&nbsp;Min</div>
+    </div>
+
+    <!-- Row 3: Gebundene Zeit / Woche  20+ Std -> frei -->
+    <div class="row r3">
+      <div class="mlabel">Gebundene Zeit / Woche</div>
+      <div class="bar v" style="width:420px"><span class="bval">20+<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:84px"><span class="bval">frei</span></div>
+      <div class="dchip">+20 Std / Woche</div>
+    </div>
+  </div>
+
+  <!-- savings chips beneath comparison -->
+  <div class="saves">
+    <div class="schip"><div class="sv">€200k<em>+</em></div><div class="sl">Einsparung pro Jahr</div></div>
+    <div class="schip"><div class="sv">30–50<em>%</em></div><div class="sl">weniger Betriebskosten · ohne Mehr-Headcount</div></div>
+  </div>
+
+  <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+
+  <!-- ===== RIGHT NAVY IMAGE PANEL ===== -->
+  <div class="rpanel">
+    <div class="seam"></div>
+    <div class="portrait"></div>
+    <div class="fcap">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+    <div class="rquote">
+      <div class="qm">„</div>
+      <div class="qt">In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</div>
+      <div class="qa"><span class="tick"></span>Kundenstimme</div>
+    </div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners"><span class="lbl">Vertrauen von</span> <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="fmeta"><div class="brand">APEX</div><div class="pageno">03</div></div>
+  </div>
+</body>
+</html>

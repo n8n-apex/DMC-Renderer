@@ -1,0 +1,29 @@
+{# ST-08 — FAQ page (Plan B rebuild, Master S19). DATA comes pre-shaped from
+   patterns/st_08.py; this template only COMPOSES the macro library on the
+   token-themed .st-08 layout (styles/st_08.css). Fragment only — no
+   <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a small uppercase eyebrow, a serif heading (var(--font-display) —
+   the §18 serif/sans contrast against the sans Q&A body), an optional intro
+   lede, and a two-column Q&A stack where each item is an accent question above a
+   body answer (qa_item). The two columns are inline-block cells (robust in
+   WeasyPrint 68.1, which flows them 2-up and wraps to new rows), each kept whole
+   with break-inside:avoid. The list is emitted only when faqs are present. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'qa_item.jinja' import qa_item %}
+
+<div class="faq-header">
+  {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+  {% if title %}<h1 class="faq-headline">{{ title }}</h1>{% endif %}
+  {% if intro_html %}<div class="faq-intro">{{ intro_html }}</div>{% endif %}
+</div>
+
+{% if faqs %}
+<div class="faq-list">
+  {% for f in faqs %}
+  <div class="faq-cell">
+    {{ qa_item(f.question, f.answer_html) }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

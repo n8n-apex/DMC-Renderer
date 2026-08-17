@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "inspection_date": "2026-08-03",
+  "inspection_kind": "nonhuman_readiness_audit",
+  "candidate": {
+    "fixture_id": "calibration.apex-synthetic",
+    "pdf_path": "calibration.apex-synthetic/build/report.raw.pdf",
+    "physical_pdf_objects": 19,
+    "physical_faces": 20,
+    "extracted_words": 219,
+    "mean_words_per_pdf_object": 11.5,
+    "mean_words_per_face": 10.9,
+    "inspected_raster_pages": [1, 6, 8, 14]
+  },
+  "reference_corpus_words_per_face": {
+    "apex": 337.7,
+    "buchagentur": 345.0,
+    "alexander": 318.1,
+    "werkzeug": 248.8,
+    "niklas": 256.7,
+    "aerzte": 271.1
+  },
+  "cross_profile_pdf_hashes": {
+    "calibration.apex-synthetic": "3dcf5bf6bce76032e22481b417068e945caa5f4a61d8ef7694e984d5f19b82b3",
+    "calibration.service-business": "3dcf5bf6bce76032e22481b417068e945caa5f4a61d8ef7694e984d5f19b82b3",
+    "calibration.product-business": "3dcf5bf6bce76032e22481b417068e945caa5f4a61d8ef7694e984d5f19b82b3"
+  },
+  "observations": [
+    "The candidate is structurally valid but visually sparse.",
+    "Repeated generic headings and body lines dominate the complete report.",
+    "Synthetic image assets appear as large neutral placeholder blocks.",
+    "The A3 theory spread duplicates the same mechanism on both faces and leaves large unused fields.",
+    "The three valid client profiles produce byte-identical PDFs, so profile tone and visual brand are not connected to rendered decisions.",
+    "The candidate does not demonstrate Richard-level editorial density, data visualization, proof treatment, imagery, or brand variation."
+  ],
+  "blind_human_calibration": {
+    "completed": false,
+    "rating_count": 0,
+    "required_covered_raters": 2,
+    "recommended_threshold": null
+  },
+  "readiness_effect": "hard_migration_blocker"
+}

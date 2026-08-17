@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "registry_id": "dmc-print",
+  "version": "1.0.0",
+  "policies": [
+    {
+      "policy_id": "hierarchy.one-dominant-mechanism",
+      "version": "1.0.0",
+      "kind": "planner_feature",
+      "print_translation": "Each physical face declares one dominant reading mechanism. Supporting devices may reinforce it but cannot compete for first attention.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "ui-design/skills/visual-hierarchy/SKILL.md", "rationale": "Defines one primary emphasis and ordered hierarchy."},
+        {"source_id": "designer-skills", "upstream_path": "visual-critique/skills/critique-composition/SKILL.md", "rationale": "Defines balance, rhythm, and competing-weight failure modes."}
+      ],
+      "atlas_face_ids": ["apex-01", "apex-09", "buchagentur-08"],
+      "enforcement_owner": "composition_planner",
+      "confidence": "high",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["A deliberate A3 comparison may contain two equal panels when the comparison itself is the single mechanism."]
+    },
+    {
+      "policy_id": "density.capacity-before-composition",
+      "version": "1.0.0",
+      "kind": "deterministic_validator",
+      "print_translation": "A family is selectable only after every required region fits real German copy, item count, image ratio, font, and line limits.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "visual-critique/skills/critique-information-density/SKILL.md", "rationale": "Separates primary content from noise and identifies over-compression."},
+        {"source_id": "designer-skills", "upstream_path": "design-ops/skills/handoff-spec/SKILL.md", "rationale": "Requires minimum and maximum content scenarios and character limits."}
+      ],
+      "atlas_face_ids": ["apex-02", "apex-04", "apex-06"],
+      "enforcement_owner": "composition_planner",
+      "confidence": "high",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["Display-only faces use element-specific capacity rather than body-copy word limits."]
+    },
+    {
+      "policy_id": "tokens.no-arbitrary-values",
+      "version": "1.0.0",
+      "kind": "invariant",
+      "print_translation": "Color, spacing, typography, rules, and recurring geometry come from versioned print tokens. Family CSS cannot introduce unexplained one-off values.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "design-systems/skills/design-token/SKILL.md", "rationale": "Requires semantic token layers and forbids raw component values."},
+        {"source_id": "typeui", "upstream_path": "skills/fundamentals/ui-principles.md", "rationale": "Provides structural hierarchy and consistency principles."}
+      ],
+      "atlas_face_ids": ["apex-03", "buchagentur-02", "niklas-02"],
+      "enforcement_owner": "renderer",
+      "confidence": "high",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["A new value may enter only through a versioned token proposal with atlas or client evidence."]
+    },
+    {
+      "policy_id": "typography.readable-measure",
+      "version": "1.0.0",
+      "kind": "family_guidance",
+      "print_translation": "Sustained body columns target 45 to 75 characters per line, adjusted for the actual typeface and point size, while labels and display lines are exempt.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "ui-design/skills/readable-measure/SKILL.md", "rationale": "Defines the measurable body-copy range and exemptions."},
+        {"source_id": "typeui", "upstream_path": "skills/fundamentals/typography-principles.md", "rationale": "Adds typeface-aware measure and reading rhythm."}
+      ],
+      "atlas_face_ids": ["apex-02", "apex-04", "buchagentur-11"],
+      "enforcement_owner": "composition_registry",
+      "confidence": "medium",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["Narrow evidence rails, captions, tables, and short display statements use their own role-specific measures."]
+    },
+    {
+      "policy_id": "rhythm.spacing-scale",
+      "version": "1.0.0",
+      "kind": "family_guidance",
+      "print_translation": "Internal, related, sectional, and page-edge spacing use named tiers. Repeated elements share gaps, while larger separation signals a new semantic group.",
+      "source_references": [
+        {"source_id": "typeui", "upstream_path": "skills/fundamentals/spacing-principles.md", "rationale": "Defines proximity, inner versus outer spacing, and vertical rhythm."},
+        {"source_id": "designer-skills", "upstream_path": "ui-design/skills/spacing-system/SKILL.md", "rationale": "Defines named spacing tiers and density modes."}
+      ],
+      "atlas_face_ids": ["apex-05", "apex-06", "aerzte-07"],
+      "enforcement_owner": "composition_registry",
+      "confidence": "high",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["Intentional grid-breaking emphasis still aligns to a documented anchor and cannot create accidental orphan spacing."]
+    },
+    {
+      "policy_id": "dataviz.truthful-static-encoding",
+      "version": "1.0.0",
+      "kind": "deterministic_validator",
+      "print_translation": "Static charts use the simplest form that matches the relationship, preserve zero baselines for bars, label values directly, and never rely on color alone.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "ui-design/skills/data-visualization/SKILL.md", "rationale": "Defines chart choice, zero baselines, direct labels, and color-safe encoding."},
+        {"source_id": "designer-skills", "upstream_path": "visual-critique/skills/critique-color/SKILL.md", "rationale": "Requires measured contrast and redundant semantic cues."}
+      ],
+      "atlas_face_ids": ["apex-01", "apex-06", "niklas-08"],
+      "enforcement_owner": "contract_materializer",
+      "confidence": "high",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["A decorative numeric statement with no encoded quantitative comparison is not treated as a chart."]
+    },
+    {
+      "policy_id": "review.observation-problem-fix",
+      "version": "1.0.0",
+      "kind": "human_rubric",
+      "print_translation": "Every visual-review finding states an observable page fact, the reader-facing failure, and an owner-addressed remediation rather than an aesthetic adjective alone.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "visual-critique/skills/critique-composition/SKILL.md", "rationale": "Defines observation, problem, and fix critique structure."},
+        {"source_id": "designer-skills", "upstream_path": "design-ops/skills/design-review-process/SKILL.md", "rationale": "Defines documented review gates and objective checklists."}
+      ],
+      "atlas_face_ids": ["apex-01", "apex-02", "apex-03"],
+      "enforcement_owner": "visual_review",
+      "confidence": "medium",
+      "status": "validated",
+      "promotion_state": "corpus_tested",
+      "known_exceptions": ["Blind preference scores may be recorded without remediation, but cannot alone create a deterministic failure."]
+    },
+    {
+      "policy_id": "composition.asymmetric-balance-score",
+      "version": "0.1.0",
+      "kind": "human_rubric",
+      "print_translation": "Reviewers assess whether dark mass, imagery, dense copy, and whitespace form an intentional center of gravity on each face.",
+      "source_references": [
+        {"source_id": "designer-skills", "upstream_path": "visual-critique/skills/critique-composition/SKILL.md", "rationale": "Names visual mass, center of gravity, whitespace, and rhythm."},
+        {"source_id": "typeui-public-registry", "upstream_path": "skills/editorial/SKILL.md", "rationale": "Supplies general editorial grid and hierarchy guidance."}
+      ],
+      "atlas_face_ids": ["apex-01", "apex-08", "buchagentur-08"],
+      "enforcement_owner": "visual_review",
+      "confidence": "medium",
+      "status": "experimental",
+      "promotion_state": "experimental",
+      "known_exceptions": ["No numeric mass threshold is calibrated yet, so this remains a blind human score."]
+    }
+  ]
+}

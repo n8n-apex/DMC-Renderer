@@ -1,0 +1,44 @@
+{# concept_diagram — a token-only, brand-agnostic conceptual diagram.
+
+   Richard's reference decks lean on CONCEPTUAL DIAGRAMS (Venn / overlap /
+   convergence figures) to make an argument visual instead of textual. This
+   macro draws one from DATA only — no client literals, no hex, no font family;
+   colours arrive via the `c-` token classes (styles/components.css), so it is
+   brand-agnostic by construction and re-themes with the brand.
+
+   kind == "convergence" (a 3-lobe Venn, mirroring the apex reference deck's
+   myths-page figure): three soft overlapping discs, each labelled INSIDE its
+   outer lobe, share ONE centre — the synthesis/root truth printed in the triple
+   overlap. Used on the false-beliefs page (three Irrglauben → one Antwort).
+
+   DATA CONTRACT (diagram dict):
+     kind        : "convergence" (unknown kinds render nothing)
+     nodes       : list of EXACTLY 3 short lobe labels (one per disc)
+     center_lead : the centre's emphasised (bold) word — the payoff
+     center      : optional rest of the centre phrase (after the bold lead)
+     caption     : optional one-line caption under the figure
+
+   No fabrication: every label is supplied by the preprocessor/data. With fewer
+   than 3 nodes or no centre the macro renders nothing (graceful omit). #}
+{% macro concept_diagram(diagram) %}
+{%- if diagram and diagram.kind == 'convergence' and (diagram.nodes | length) >= 3 and (diagram.center_lead or diagram.center) -%}
+<figure class="c-venn" role="img"
+        aria-label="Konvergenz-Diagramm: {{ diagram.nodes[:3] | join(', ') }} → {{ diagram.center_lead }} {{ diagram.center }}">
+  <div class="c-venn__stage">
+    <span class="c-venn__lobe c-venn__lobe--a"><span class="c-venn__fill"></span></span>
+    <span class="c-venn__lobe c-venn__lobe--b"><span class="c-venn__fill"></span></span>
+    <span class="c-venn__lobe c-venn__lobe--c"><span class="c-venn__fill"></span></span>
+    <span class="c-venn__label c-venn__label--a">{{ diagram.nodes[0] }}</span>
+    <span class="c-venn__label c-venn__label--b">{{ diagram.nodes[1] }}</span>
+    <span class="c-venn__label c-venn__label--c">{{ diagram.nodes[2] }}</span>
+    <span class="c-venn__core">
+      {%- if diagram.center_lead %}<strong>{{ diagram.center_lead }}</strong>{% endif -%}
+      {%- if diagram.center %} {{ diagram.center }}{% endif -%}
+    </span>
+  </div>
+  {%- if diagram.caption %}
+  <figcaption class="c-venn__caption">{{ diagram.caption }}</figcaption>
+  {%- endif %}
+</figure>
+{%- endif -%}
+{% endmacro %}

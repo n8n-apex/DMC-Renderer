@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face{
+    font-family:'SourceSerif';
+    src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');
+    font-weight:200 900;
+  }
+  @font-face{
+    font-family:'SourceSans';
+    src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');
+    font-weight:200 900;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:1680px;height:1188px;}
+  body{
+    background:#F6F3ED;
+    font-family:'SourceSans',sans-serif;
+    color:#3a4a5a;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  .page{
+    position:absolute;
+    top:0;left:0;
+    width:1680px;height:1188px;
+    padding:90px;
+  }
+  /* ===== GRID ===== */
+  .grid{
+    position:relative;
+    width:1500px;height:1008px;
+    display:grid;
+    grid-template-columns:600px 1fr;
+    grid-template-rows:auto;
+    column-gap:84px;
+  }
+
+  /* ===== LEFT COLUMN ===== */
+  .left{display:flex;flex-direction:column;height:1008px;}
+  .eyebrow{
+    font-family:'SourceSans',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.34em;
+    color:#4A7C7E;
+    text-transform:uppercase;
+    margin-bottom:30px;
+  }
+  .headline{
+    font-family:'SourceSerif',serif;
+    font-weight:560;
+    font-size:55px;
+    line-height:1.08;
+    letter-spacing:-0.012em;
+    color:#2E3E50;
+    margin-bottom:34px;
+  }
+  .headline .teal{color:#4A7C7E;}
+  .thesis{
+    font-family:'SourceSans',sans-serif;
+    font-weight:400;
+    font-size:20px;
+    line-height:1.55;
+    color:#3a4a5a;
+    max-width:540px;
+    padding-left:20px;
+    border-left:2px solid #4A7C7E;
+    margin-bottom:42px;
+  }
+  .photo-wrap{
+    width:600px;height:384px;
+    overflow:hidden;
+    border-radius:4px;
+    box-shadow:0 18px 40px -22px rgba(46,62,80,0.45);
+    margin-top:auto;
+  }
+  .photo-wrap img{width:600px;height:384px;display:block;object-fit:cover;}
+  .photo-cap{
+    display:flex;align-items:baseline;gap:14px;
+    margin-top:18px;
+  }
+  .photo-cap .name{
+    font-family:'SourceSerif',serif;
+    font-weight:600;font-size:18px;color:#2E3E50;
+  }
+  .photo-cap .role{
+    font-family:'SourceSans',sans-serif;
+    font-weight:400;font-size:14px;color:#8a8478;
+    letter-spacing:0.02em;
+  }
+
+  /* ===== RIGHT COLUMN : DASHBOARD ===== */
+  .right{display:flex;flex-direction:column;height:1008px;}
+  .dash-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    border-bottom:1px solid #cdc7ba;
+    padding-bottom:14px;margin-bottom:26px;
+  }
+  .dash-head .t{
+    font-family:'SourceSans',sans-serif;
+    font-weight:600;font-size:13px;letter-spacing:0.26em;
+    text-transform:uppercase;color:#2E3E50;
+  }
+  .dash-head .live{
+    display:flex;align-items:center;gap:8px;
+    font-family:'SourceSans',sans-serif;
+    font-weight:500;font-size:12px;letter-spacing:0.14em;
+    text-transform:uppercase;color:#8a8478;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:#4A7C7E;display:inline-block;}
+
+  /* top row: donut tile + mega numeral tile */
+  .row-top{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+  .tile{
+    background:#2E3E50;
+    border-radius:12px;
+    padding:30px 32px;
+    color:#F6F3ED;
+    position:relative;
+  }
+  .tile.light{
+    background:#fff;
+    border:1px solid #e4ddcf;
+    color:#2E3E50;
+    box-shadow:0 10px 26px -20px rgba(46,62,80,0.5);
+  }
+  .tile .kpi-lab{
+    font-family:'SourceSans',sans-serif;
+    font-weight:600;font-size:12px;letter-spacing:0.2em;
+    text-transform:uppercase;opacity:0.62;margin-bottom:6px;
+  }
+  .tile.light .kpi-lab{color:#8a8478;opacity:1;}
+
+  /* donut tile */
+  .donut-tile{display:flex;align-items:center;gap:26px;}
+  .donut-txt{display:flex;flex-direction:column;}
+  .donut-txt .big{
+    font-family:'SourceSerif',serif;
+    font-weight:560;font-size:40px;line-height:1;color:#F6F3ED;
+    letter-spacing:-0.01em;
+  }
+  .donut-txt .sub{
+    font-family:'SourceSans',sans-serif;
+    font-weight:400;font-size:14px;color:#cdd4dc;margin-top:8px;line-height:1.35;
+    max-width:150px;
+  }
+
+  /* mega numeral tile */
+  .mega-tile{display:flex;flex-direction:column;justify-content:center;}
+  .mega-num{
+    font-family:'SourceSerif',serif;
+    font-weight:540;font-size:120px;line-height:0.86;
+    color:#2E3E50;letter-spacing:-0.02em;
+  }
+  .mega-num .plus{color:#4A7C7E;}
+  .mega-sub{
+    font-family:'SourceSans',sans-serif;
+    font-weight:500;font-size:16px;color:#3a4a5a;
+    margin-top:14px;letter-spacing:0.02em;
+  }
+
+  /* money bar tile */
+  .bar-tile{margin-bottom:24px;}
+  .bar-tile .head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;}
+  .bar-tile .money{
+    font-family:'SourceSerif',serif;
+    font-weight:560;font-size:46px;line-height:1;color:#F6F3ED;letter-spacing:-0.01em;
+  }
+  .bar-tile .money .plus{color:#7FB0B0;}
+  .bar-tile .head .lab{
+    font-family:'SourceSans',sans-serif;
+    font-weight:500;font-size:14px;color:#aeb8c2;letter-spacing:0.04em;text-align:right;
+  }
+  .track{height:18px;border-radius:9px;background:rgba(246,243,237,0.14);overflow:hidden;position:relative;}
+  .fill-bar{height:18px;border-radius:9px;background:#4A7C7E;width:82%;}
+  .scale{display:flex;justify-content:space-between;margin-top:10px;
+    font-family:'SourceSans',sans-serif;font-size:11px;color:#8b97a3;letter-spacing:0.08em;}
+
+  /* before/after tile */
+  .ba-tile{}
+  .ba-tile .kpi-lab{margin-bottom:18px;}
+  .ba-row{display:flex;align-items:flex-end;gap:20px;}
+  .ba-col{flex:1;display:flex;flex-direction:column;align-items:flex-start;}
+  .ba-barwrap{width:100%;height:96px;display:flex;align-items:flex-end;}
+  .ba-bar{width:100%;border-radius:6px 6px 0 0;}
+  .ba-bar.before{height:96px;background:#d8d2c4;}
+  .ba-bar.after{height:6.4px;background:#4A7C7E;}
+  .ba-val{
+    font-family:'SourceSerif',serif;font-weight:560;font-size:26px;color:#2E3E50;
+    margin-bottom:8px;
+  }
+  .ba-val.aft{color:#4A7C7E;}
+  .ba-lab{font-family:'SourceSans',sans-serif;font-weight:500;font-size:12px;
+    letter-spacing:0.14em;text-transform:uppercase;color:#8a8478;margin-top:10px;}
+  .ba-arrow{
+    align-self:center;font-family:'SourceSans',sans-serif;font-weight:600;
+    font-size:13px;color:#4A7C7E;letter-spacing:0.06em;padding-bottom:38px;
+  }
+
+  /* quote */
+  .quote{
+    margin-top:24px;
+    padding:28px 32px;
+    background:#efe9dd;
+    border-radius:12px;
+    border-left:3px solid #4A7C7E;
+  }
+  .quote .q{
+    font-family:'SourceSerif',serif;
+    font-weight:420;font-style:italic;font-size:21px;line-height:1.45;
+    color:#2E3E50;
+  }
+  .quote .attr{
+    font-family:'SourceSans',sans-serif;
+    font-weight:600;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;
+    color:#4A7C7E;margin-top:14px;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer{
+    position:absolute;
+    left:90px;right:90px;bottom:42px;
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid #cdc7ba;
+    padding-top:16px;
+  }
+  .partners{
+    font-family:'SourceSans',sans-serif;
+    font-weight:500;font-size:13px;letter-spacing:0.04em;color:#8a8478;
+  }
+  .partners b{color:#2E3E50;font-weight:600;}
+  .pageno{
+    font-family:'SourceSerif',serif;
+    font-weight:600;font-size:14px;color:#2E3E50;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="grid">
+
+      <!-- LEFT -->
+      <div class="left">
+        <div class="eyebrow">Über uns</div>
+        <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+        <p class="thesis">Wachstumsprobleme in B2B sind selten Umsatzprobleme. Sie sind Automatisierungsprobleme.</p>
+        <div class="photo-wrap">
+          <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png" alt="Gründer">
+        </div>
+        <div class="photo-cap">
+          <span class="name">Jousef Murad</span>
+          <span class="role">Gründer · APEX</span>
+        </div>
+      </div>
+
+      <!-- RIGHT : DASHBOARD -->
+      <div class="right">
+        <div class="dash-head">
+          <span class="t">Wirkung in Zahlen</span>
+          <span class="live"><span class="dot"></span>Live-Kennzahlen</span>
+        </div>
+
+        <!-- top row -->
+        <div class="row-top">
+          <div class="tile donut-tile">
+            <svg width="132" height="132" viewBox="0 0 132 132">
+              <circle cx="66" cy="66" r="52" fill="none" stroke="rgba(246,243,237,0.16)" stroke-width="16"/>
+              <circle cx="66" cy="66" r="52" fill="none" stroke="#4A7C7E" stroke-width="16"
+                      stroke-linecap="round"
+                      stroke-dasharray="326.7" stroke-dashoffset="143.7"
+                      transform="rotate(-90 66 66)"/>
+              <circle cx="66" cy="66" r="52" fill="none" stroke="#7FB0B0" stroke-width="16"
+                      stroke-linecap="round"
+                      stroke-dasharray="326.7" stroke-dashoffset="228.7"
+                      transform="rotate(-90 66 66)" opacity="0.55"/>
+            </svg>
+            <div class="donut-txt">
+              <div class="kpi-lab">Betriebskosten</div>
+              <div class="big">30&ndash;50%</div>
+              <div class="sub">weniger laufende Kosten nach Automatisierung</div>
+            </div>
+          </div>
+
+          <div class="tile light mega-tile">
+            <div class="kpi-lab">AI-Projekte ausgeliefert</div>
+            <div class="mega-num">100<span class="plus">+</span></div>
+            <div class="mega-sub">in Produktion bei B2B-Teams</div>
+          </div>
+        </div>
+
+        <!-- money bar -->
+        <div class="tile bar-tile">
+          <div class="head">
+            <div>
+              <div class="kpi-lab">Einsparung pro Jahr</div>
+              <div class="money">€200k<span class="plus">+</span></div>
+            </div>
+            <div class="lab">je automatisiertem<br>Workflow</div>
+          </div>
+          <div class="track"><div class="fill-bar"></div></div>
+          <div class="scale"><span>€0</span><span>€100k</span><span>€200k+</span></div>
+        </div>
+
+        <!-- before / after -->
+        <div class="tile light ba-tile">
+          <div class="kpi-lab">Onboarding-Zeit pro Kunde</div>
+          <div class="ba-row">
+            <div class="ba-col">
+              <div class="ba-val">30 Min</div>
+              <div class="ba-barwrap"><div class="ba-bar before"></div></div>
+              <div class="ba-lab">Vorher</div>
+            </div>
+            <div class="ba-arrow">&rarr;</div>
+            <div class="ba-col">
+              <div class="ba-val aft">2 Min</div>
+              <div class="ba-barwrap"><div class="ba-bar after"></div></div>
+              <div class="ba-lab">Nachher</div>
+            </div>
+            <div class="ba-col" style="flex:1.1;align-items:flex-end;">
+              <div class="ba-val aft" style="font-size:34px;">&minus;93%</div>
+              <div class="ba-lab" style="text-align:right;">Zeitaufwand</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- quote -->
+        <div class="quote">
+          <div class="q">&bdquo;In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.&ldquo;</div>
+          <div class="attr">Kundenstimme</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="partners"><b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+      <div class="pageno">03</div>
+    </div>
+  </div>
+</body>
+</html>

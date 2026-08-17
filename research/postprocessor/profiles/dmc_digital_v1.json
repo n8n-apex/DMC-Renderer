@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "dmc_digital_v1",
+  "version": "1.0.0",
+  "pdf_standard_target": "preserve_source",
+  "minimum_text_preservation_ratio": 0.99,
+  "preserve_links": true,
+  "preserve_page_sizes": true,
+  "preserve_metadata": true,
+  "preserve_font_references": true,
+  "metadata_normalization": {
+    "strip_creation_date": false,
+    "strip_modification_date": false,
+    "normalize_producer": false
+  },
+  "production_allowed": true
+}

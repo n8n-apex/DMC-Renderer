@@ -34,18 +34,43 @@ from patterns.base import RenderContext  # noqa: E402
 from patterns import st_07a  # noqa: E402
 
 APEX = CHASSIS_ROOT / "fixtures" / "apex"
-CASE_STUDY_INDEX = 6  # pages[6] is the apex ST-07A with the portrait ABSENT
-# pages[11] is the OTHER apex ST-07A whose ergebnis_metrics values are PROSE
-# sentences (not crisp numerals). At the big --type-display-xl size these
-# OVERFLOW the ~64mm dark fill panel and CLIP at its right edge — the bug under
-# test here. It renders as report-p12.png.
-PROSE_CASE_STUDY_INDEX = 11
-PROSE_CASE_STUDY_PNG = "report-p12.png"
-NUMERAL_CASE_STUDY_PNG = "report-p7.png"  # pages[6] → report-p7
-# pages[11] (slot 12, Frese) is the case study the Social Layout Planner binds a
-# client-matched social post onto (data.social_post). ST-07A renders a COMPACT
-# phone_mockup in the portrait slot, REPLACING the static portrait (gap-fix C).
-SOCIAL_POST_CASE_STUDY_INDEX = 11
+
+
+def _idx_of(pkg, st_type: str, role=None) -> int:
+    """Index of the page with `st_type`; when `role` is given it must also match
+    continuation_role (US-604: ST-02/ST-05/ST-06/ST-FAZIT span continuation
+    pages). With role=None a NON-continuation page is preferred."""
+    for i, pg in enumerate(pkg.pages):
+        if str(pg.get("st_type")) != st_type:
+            continue
+        if role is None:
+            if not pg.get("continuation_index"):
+                return i
+        elif pg.get("continuation_role") == role:
+            return i
+    raise AssertionError(f"no {st_type} page (role={role!r}) in the apex fixture")
+
+
+_FIXTURE_PKG = load_package(APEX)
+# The first apex ST-07A (idx 8 since US-604 added ST-02/ST-05 continuation
+# pages) is the case study with the portrait ABSENT and crisp numeral metrics.
+CASE_STUDY_INDEX = _idx_of(_FIXTURE_PKG, "ST-07A")
+# The Frese case study (idx 13) is the OTHER apex ST-07A whose ergebnis_metrics
+# values are PROSE sentences (not crisp numerals). At the big --type-display-xl
+# size these OVERFLOW the ~64mm dark fill panel and CLIP at its right edge —
+# the bug under test here.
+SOCIAL_POST_CASE_STUDY_INDEX = next(
+    i for i, pg in enumerate(_FIXTURE_PKG.pages)
+    if str(pg.get("st_type")) == "ST-07A"
+    and bool((pg.get("data") or {}).get("social_post"))
+)
+PROSE_CASE_STUDY_INDEX = SOCIAL_POST_CASE_STUDY_INDEX  # the prose-metrics Frese page
+PROSE_CASE_STUDY_PNG = f"report-p{PROSE_CASE_STUDY_INDEX + 1}.png"
+NUMERAL_CASE_STUDY_PNG = f"report-p{CASE_STUDY_INDEX + 1}.png"
+# The Frese case study (idx 13) is the case study the Social Layout Planner
+# binds a client-matched social post onto (data.social_post). ST-07A renders a
+# COMPACT phone_mockup in the portrait slot, REPLACING the static portrait
+# (gap-fix C).
 
 
 def _render_fill_page(page_index: int, out_dir: Path) -> Path:
@@ -195,7 +220,8 @@ def _apex_ctx() -> RenderContext:
 
 
 def _apex_case_study_page() -> dict:
-    """A deep COPY of the real apex case-study page (pages[6]).
+    """A deep COPY of the real apex case-study page (the first ST-07A,
+    CASE_STUDY_INDEX — portrait absent, numeral metrics).
 
     Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
     package (and never the on-disk fixture).
@@ -207,8 +233,8 @@ def _apex_case_study_page() -> dict:
 
 
 def _apex_case_study_page_without_portrait() -> dict:
-    """The real pages[6] copy with the case_study_portrait slot stripped, so a
-    test can exercise the portrait-absent graceful path (the fixture now
+    """The real CASE_STUDY_INDEX copy with the case_study_portrait slot stripped,
+    so a test can exercise the portrait-absent graceful path (the fixture now
     resolves cs_*.png portraits on every case study)."""
     page = _apex_case_study_page()
     page["slots"] = [
@@ -272,7 +298,7 @@ def test_fill_variant_reduces_dead_space():
             data["pages"][CASE_STUDY_INDEX]["layout_variant"] = variant
         jpath.write_text(json.dumps(data, ensure_ascii=False))
         render_package(patched, out_dir)
-        return dead_space_fraction(out_dir / "report-p7.png")
+        return dead_space_fraction(out_dir / NUMERAL_CASE_STUDY_PNG)
 
     with tempfile.TemporaryDirectory() as t:
         base = Path(t)
@@ -364,14 +390,14 @@ def test_fill_stat_prose_value_does_not_clip():
 
 
 # --------------------------------------------------------------------------- #
-# 6. NUMERAL values (pages[6]) must KEEP the big treatment (no --long modifier)
+# 6. NUMERAL values (CASE_STUDY_INDEX) must KEEP the big treatment (no --long modifier)
 # --------------------------------------------------------------------------- #
 def test_fill_stat_numeral_value_stays_big():
-    """pages[6] has crisp numeral values ("4", "> 200.000 €", "24 Std. →
+    """CASE_STUDY_INDEX has crisp numeral values ("4", "> 200.000 €", "24 Std. →
     Minuten") that FIT at the big size. The fix must NOT shrink them: the
     rendered fragment must carry NO long-modifier class on those stat values.
     """
-    page = _apex_case_study_page()  # pages[6]: numeral metrics
+    page = _apex_case_study_page()  # CASE_STUDY_INDEX: numeral metrics
     page["layout_variant"] = "fill"
     html = st_07a.render(page, _apex_ctx()).html
 
@@ -389,12 +415,13 @@ def test_fill_stat_numeral_value_stays_big():
 # --------------------------------------------------------------------------- #
 def test_fill_variant_still_one_page():
     # Per-page overflow check for BOTH case studies under their REAL rendered
-    # geometry. pages[6] renders the FILL variant on A4 (it is the one page the
-    # fixture still fits in fill); pages[11] renders the casestudy_hero A3
-    # spread, so its standalone check must stamp format-a3 (the treatment's
-    # real sheet) or WeasyPrint would mis-measure the A3 layout on an A4 box.
-    # The ship path is Chromium (physical==logical at the deck level); these
-    # standalone checks are the fast per-page regression guard.
+    # geometry. CASE_STUDY_INDEX renders the FILL variant on A4 (it is the one
+    # page the fixture still fits in fill); PROSE_CASE_STUDY_INDEX renders the
+    # casestudy_hero A3 spread, so its standalone check must stamp format-a3
+    # (the treatment's real sheet) or WeasyPrint would mis-measure the A3
+    # layout on an A4 box. The ship path is Chromium (physical==logical at the
+    # deck level); these standalone checks are the fast per-page regression
+    # guard.
     from validators.overflow import count_pages
     from assembler import shared_head_css, _section
 
@@ -428,10 +455,10 @@ def test_fill_lede_modifier_in_html():
     can size it up to --type-lede (12pt) for visual hierarchy in the wider left
     column. The STANDARD branch lede must NOT carry the modifier.
 
-    Uses the real apex case-study page (pages[6]) which has a populated
+    Uses the real apex case-study page (CASE_STUDY_INDEX) which has a populated
     ``kurzportraet`` field — the data key that the pattern maps to ``lede_html``.
     """
-    # The real apex pages[6] has kurzportraet populated, so lede_html renders.
+    # The real apex CASE_STUDY_INDEX has kurzportraet populated, so lede_html renders.
     page_fill = _apex_case_study_page()
     page_fill["layout_variant"] = "fill"
     html_fill = st_07a.render(page_fill, _apex_ctx()).html
@@ -496,25 +523,27 @@ def test_cta_page_st03_keeps_its_qr():
 
 # --------------------------------------------------------------------------- #
 # 10. GAP C — client-matched social post renders a COMPACT phone, REPLACING the
-#     static portrait (never both). The bound case study is pages[11] (slot 12,
-#     Frese); the planner wrote data.social_post {photo, avatar, handle}.
+#     static portrait (never both). The bound case study is
+#     SOCIAL_POST_CASE_STUDY_INDEX (slot 12, Frese); the planner wrote
+#     data.social_post {photo, avatar, handle}.
 # --------------------------------------------------------------------------- #
 def _social_post_page() -> dict:
-    """A deep COPY of the apex Frese case study (pages[11]) which the planner
-    bound a client-matched social_post onto.
+    """A deep COPY of the apex Frese case study (SOCIAL_POST_CASE_STUDY_INDEX)
+    which the planner bound a client-matched social_post onto.
 
     The current pattern rule: a REAL resolved portrait is the authority photo
     and always wins the rail, so the social_post phone only renders when no
-    portrait is present. pages[11] now resolves cs_frese.png, so this helper
-    strips the portrait to exercise the phone path (the scenario the tests
-    below are written for). It also pins the FILL variant: pages[11] is
-    casestudy_hero in the fixture, and the cs-socialpost phone host lives in
-    the fill and standard layouts."""
+    portrait is present. SOCIAL_POST_CASE_STUDY_INDEX now resolves cs_frese.png,
+    so this helper strips the portrait to exercise the phone path (the scenario
+    the tests below are written for). It also pins the FILL variant: the Frese
+    page is casestudy_hero in the fixture, and the cs-socialpost phone host
+    lives in the fill and standard layouts."""
     pkg = load_package(APEX)
     page = copy.deepcopy(pkg.pages[SOCIAL_POST_CASE_STUDY_INDEX])
     assert str(page.get("st_type")) == "ST-07A"
     assert (page.get("data") or {}).get("social_post"), (
-        "fixture pages[11] must carry data.social_post (run build_package first)"
+        "fixture SOCIAL_POST_CASE_STUDY_INDEX must carry data.social_post "
+        "(run build_package first)"
     )
     page["layout_variant"] = "fill"
     page["slots"] = [
@@ -589,8 +618,8 @@ def test_fill_transform_renders_before_after_bars():
     text-arrow glyph.
 
     The current apex fixture's case-study metrics are plain figures (no arrow),
-    so this test injects the transform metric into a deep copy of pages[6] to
-    exercise the device."""
+    so this test injects the transform metric into a deep copy of
+    CASE_STUDY_INDEX to exercise the device."""
     page = _apex_case_study_page()
     page["data"] = dict(page.get("data") or {})
     page["data"]["ergebnis_metrics"] = [
@@ -609,13 +638,13 @@ def test_fill_transform_renders_before_after_bars():
 
 def test_social_post_case_study_stays_one_page():
     """GAP C verify: the case study the planner bound the social post onto
-    (pages[11], slot 12, Frese) MUST still render on exactly ONE physical page —
-    the compact phone (sized to the rail in styles/st_07a.css) must NOT push the
-    page into overflow.
+    (SOCIAL_POST_CASE_STUDY_INDEX, slot 12, Frese) MUST still render on exactly
+    ONE physical page — the compact phone (sized to the rail in
+    styles/st_07a.css) must NOT push the page into overflow.
 
-    pages[11] renders the casestudy_hero A3 spread, so the standalone check
-    stamps format-a3 (its real sheet) — WeasyPrint would mis-measure the A3
-    layout on the default A4 box."""
+    SOCIAL_POST_CASE_STUDY_INDEX renders the casestudy_hero A3 spread, so the
+    standalone check stamps format-a3 (its real sheet) — WeasyPrint would
+    mis-measure the A3 layout on the default A4 box."""
     from validators.overflow import count_pages
     from assembler import shared_head_css, _section
 

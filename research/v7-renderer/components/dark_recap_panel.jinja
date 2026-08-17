@@ -1,0 +1,15 @@
+{# Dark recap panel: a SOLID dark panel (filled with --color-ink in CSS — the
+   genuinely-dark neutral, so it reads as a true dark panel for ANY brand, even a
+   light/tonal accent) carrying a heading + body in on-dark ink. The "Das
+   Ergebnis" payoff block on ST-06 (mechanism). All under the c-dark-recap
+   namespace; the token-only look lives in styles/components.css.
+
+   heading    the uppercase/label heading (e.g. "Das Ergebnis")
+   body_html  pre-rendered body HTML (markdown → HTML by the pattern)
+#}
+{% macro dark_recap_panel(heading, body_html) -%}
+<div class="c-dark-recap">
+  {% if heading %}<div class="c-dark-recap__heading">{{ heading }}</div>{% endif %}
+  {% if body_html %}<div class="c-dark-recap__body">{{ body_html }}</div>{% endif %}
+</div>
+{%- endmacro %}

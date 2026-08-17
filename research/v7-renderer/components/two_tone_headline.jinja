@@ -1,0 +1,33 @@
+{# two_tone_headline — the SIGNATURE Richard display headline (DNA §C1).
+
+   A two-tone display headline: a NEUTRAL serif run (the calm setup) followed by
+   a BOLD-UPPERCASE ACCENT run (the punch), e.g. "Ein kurzer AUSBLICK",
+   "KI-Automatisierungs REPORT 2026", "Die WAHRHEIT". The serif comes from
+   var(--font-display) (the headline_type axis — serif for serif brands, the
+   sans-head face otherwise); the accent run fires var(--color-accent) and is
+   forced uppercase + heavier. Brand-agnostic: tokens ONLY, no hex / font / client
+   literal — styling lives in styles/components.css (.c-two-tone).
+
+   STRUCTURED INPUT (the caller splits the title — its call, documented in the
+   pattern): pass `lead` (the neutral run) and `accent` (the punch run). Either
+   may be empty.
+
+   GRACEFUL DEGRADE: if only ONE run is present (just `lead`, or just `accent`),
+   it renders as a PLAIN single-tone headline — the neutral serif run if `lead`
+   is given, else the accent run alone (still in display serif so a one-word
+   title never loses the face). So a title that can't be split never breaks.
+
+   `tag` controls the heading element (default h1 — the cover). A trailing space
+   is emitted between the two runs only when BOTH are present (no stray space on
+   a one-run headline). #}
+{% macro two_tone_headline(lead='', accent='', tag='h1') -%}
+{% set lead_s = (lead or '') | string | trim %}
+{% set accent_s = (accent or '') | string | trim %}
+{% if lead_s and accent_s %}
+<{{ tag }} class="c-two-tone"><span class="c-two-tone__lead">{{ lead_s }}</span> <span class="c-two-tone__accent">{{ accent_s }}</span></{{ tag }}>
+{% elif lead_s %}
+<{{ tag }} class="c-two-tone c-two-tone--solo"><span class="c-two-tone__lead">{{ lead_s }}</span></{{ tag }}>
+{% elif accent_s %}
+<{{ tag }} class="c-two-tone c-two-tone--solo"><span class="c-two-tone__accent">{{ accent_s }}</span></{{ tag }}>
+{% endif %}
+{%- endmacro %}

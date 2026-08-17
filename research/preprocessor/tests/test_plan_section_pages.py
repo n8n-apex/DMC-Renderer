@@ -147,6 +147,32 @@ def test_case_study_split_keeps_blocks_whole() -> None:
 # --------------------------------------------------------------------------- #
 # 8. plan_layout wiring: a heavy section expands in the plan
 # --------------------------------------------------------------------------- #
+def test_st05_splits_identity_and_proof() -> None:
+    """US-609: the About's identity+proof exceed one sheet; the split keeps
+    every block whole and exactly once."""
+    from stages.plan_layout import plan_layout
+
+    heavy = {
+        "slot": 3, "type": "ST-05",
+        "data": {
+            "title": "Über APEX",
+            "body": "B " * 500,
+            "stats": [{"value": "100+", "label": "AI-Projekte"}],
+            "partners": ["Frese", "Conesso"],
+            "testimonials": [{"value": "x"}],
+            "credibility_points": ["p1", "p2"],
+        },
+    }
+    plan = plan_layout([heavy], components={}, page_count_target=1)
+    assert plan.page_count == 2, f"expected 2 pages; got {plan.page_count}"
+    roles = [p.continuation_role for p in plan.pages]
+    assert roles == ["identity", "proof"], roles
+    # every block appears exactly once across the two pages
+    all_fields = [f for p in plan.pages for f in p.data]
+    assert all_fields.count("body") == 1
+    assert all_fields.count("testimonials") == 1
+
+
 def test_plan_layout_expands_heavy_section() -> None:
     from stages.plan_layout import plan_layout
 

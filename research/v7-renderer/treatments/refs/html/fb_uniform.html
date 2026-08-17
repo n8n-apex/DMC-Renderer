@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SS4';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SS4i';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4-Italic%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;font-style:italic;}
+@font-face{font-family:'SS3';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{
+  --cream:#F6F3ED; --ink:#2E3E50; --teal:#4A7C7E; --teal-light:#7FB7B3;
+  --rule:rgba(255,255,255,0.16);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{font-family:'SS3',sans-serif;color:#e9eef2;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---------- FULL-BLEED PHOTO ---------- */
+.photo{position:absolute;inset:0;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png') center 30%/cover no-repeat;}
+/* Uniform atmospheric navy wash: darker top + bottom, slightly lighter mid so the photo breathes */
+.scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(22,30,41,0.90) 0%,
+    rgba(22,30,41,0.74) 45%,
+    rgba(22,30,41,0.88) 100%);}
+/* faint side vignette so edges sit calm and text gutters stay clean */
+.vignette{position:absolute;inset:0;
+  background:radial-gradient(130% 100% at 50% 42%, rgba(22,30,41,0) 52%, rgba(18,25,35,0.42) 100%);}
+
+/* ---------- HEADER ---------- */
+.toprule{position:absolute;top:46px;left:90px;right:90px;height:1px;background:var(--rule);}
+.header{position:absolute;top:76px;left:90px;right:90px;}
+.eyebrow{font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.42em;color:var(--teal-light);text-transform:uppercase;}
+.eyebrow .pg{color:rgba(255,255,255,0.5);margin-left:18px;letter-spacing:.2em;}
+.headline{font-family:'SS4';font-weight:560;font-size:48px;line-height:1.05;color:#ffffff;margin-top:16px;letter-spacing:-.01em;
+  text-shadow:0 2px 18px rgba(10,15,22,0.55);}
+.headline .teal{color:var(--teal-light);}
+
+/* ---------- COLUMN HEADERS ---------- */
+.colhead{position:absolute;top:498px;left:90px;right:90px;display:flex;}
+.colhead .h{width:50%;display:flex;flex-direction:column;}
+.colhead .h.l{align-items:flex-end;padding-right:64px;text-align:right;}
+.colhead .h.r{align-items:flex-start;padding-left:64px;}
+.tag{font-family:'SS3';font-weight:700;font-size:16px;letter-spacing:.34em;text-transform:uppercase;}
+.tag.v{color:rgba(255,255,255,0.82);}
+.tag.n{color:var(--teal-light);}
+.tagsub{font-size:14px;font-weight:500;margin-top:8px;}
+.tagsub.v{color:rgba(255,255,255,0.55);}
+.tagsub.n{color:#9fd0cb;}
+
+/* ---------- DIVERGING COMPARISON ROWS ---------- */
+.rows{position:absolute;top:572px;left:90px;right:90px;height:300px;}
+.axis{position:absolute;top:-8px;bottom:-8px;left:50%;width:2px;background:rgba(255,255,255,0.5);transform:translateX(-1px);}
+.axis .pivot{position:absolute;top:50%;left:50%;width:30px;height:30px;background:var(--teal);transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 0 6px rgba(74,124,126,0.22);}
+.axis .pivot::after{content:'›';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);color:var(--cream);font-weight:700;font-size:20px;}
+
+.row{position:absolute;left:0;right:0;height:44px;}
+.row.r1{top:0;}
+.row.r2{top:104px;}
+.row.r3{top:208px;}
+
+.mlabel{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  font-family:'SS3';font-weight:700;font-size:13.5px;letter-spacing:.22em;text-transform:uppercase;color:#ffffff;
+  background:rgba(22,30,41,0.55);padding:3px 16px;border-radius:13px;z-index:4;white-space:nowrap;}
+
+.bar{position:absolute;top:0;height:44px;display:flex;align-items:center;border-radius:3px;box-shadow:0 2px 10px rgba(10,15,22,0.35);}
+.bar.v{right:calc(50% + 22px);background:rgba(246,243,237,0.90);justify-content:flex-start;flex-direction:row-reverse;}
+.bar.n{left:calc(50% + 22px);background:var(--teal);justify-content:flex-start;}
+.bval{font-family:'SS4';font-weight:600;font-size:27px;padding:0 18px;white-space:nowrap;display:flex;align-items:baseline;gap:5px;line-height:1;}
+.bar.v .bval{color:var(--ink);}
+.bar.n .bval{color:var(--cream);}
+.bunit{font-family:'SS3';font-weight:500;font-size:14px;}
+.bar.v .bunit{color:#5b6b7a;}
+.bar.n .bunit{color:#d6ece6;}
+.dchip{position:absolute;left:calc(50% + 22px);top:50px;font-family:'SS3';font-weight:700;font-size:14px;
+  letter-spacing:.03em;color:#0f3b35;background:var(--teal-light);border-radius:18px;padding:5px 13px;}
+.dchip.left{left:auto;right:calc(50% + 22px);background:none;color:rgba(255,255,255,0.55);padding:5px 0;}
+
+/* ---------- BOTTOM BAND (directly on scrim, no panel) ---------- */
+.band{position:absolute;left:90px;right:90px;top:946px;display:flex;align-items:center;}
+.bquote{flex:1;padding-right:60px;}
+.bquote .qm{font-family:'SS4';font-weight:700;font-size:52px;color:var(--teal-light);line-height:.4;}
+.bquote .qt{font-family:'SS4i';font-weight:400;font-style:italic;font-size:26px;line-height:1.42;color:#ffffff;margin-top:14px;max-width:660px;
+  text-shadow:0 2px 14px rgba(10,15,22,0.5);}
+.bquote .qa{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-light);margin-top:20px;}
+.vrule{width:1px;align-self:stretch;background:rgba(255,255,255,0.18);margin:6px 0;}
+.bsave{flex-shrink:0;width:360px;padding-left:56px;display:flex;flex-direction:column;justify-content:center;}
+.bsave .s{margin-bottom:32px;}
+.bsave .s:last-child{margin-bottom:0;}
+.bsave .sv{font-family:'SS4';font-weight:600;font-size:50px;color:#ffffff;line-height:1;letter-spacing:-.01em;
+  text-shadow:0 2px 14px rgba(10,15,22,0.5);}
+.bsave .sv em{font-style:normal;color:var(--teal-light);}
+.bsave .sl{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.62);margin-top:11px;}
+
+/* ---------- FOOTER ---------- */
+.footrule{position:absolute;left:90px;right:90px;bottom:74px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;right:90px;bottom:42px;display:flex;justify-content:space-between;align-items:center;}
+.partners{font-family:'SS3';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:rgba(255,255,255,0.62);}
+.partners b{color:#ffffff;font-weight:600;}
+.brand{font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:#ffffff;}
+</style>
+</head>
+<body>
+  <div class="photo"></div>
+  <div class="scrim"></div>
+  <div class="vignette"></div>
+
+  <div class="toprule"></div>
+  <div class="header">
+    <div class="eyebrow">ÜBER UNS<span class="pg">/ 03</span></div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  </div>
+
+  <div class="colhead">
+    <div class="h l"><span class="tag v">Vorher</span><span class="tagsub v">manuelle Prozesse</span></div>
+    <div class="h r"><span class="tag n">Nachher</span><span class="tagsub n">automatisiert · in 90 Tagen</span></div>
+  </div>
+
+  <div class="rows">
+    <div class="axis"><div class="pivot"></div></div>
+
+    <!-- Row 1: Onboarding 30 Min -> 2 Min -->
+    <div class="row r1">
+      <div class="mlabel">Onboarding</div>
+      <div class="bar v" style="width:540px"><span class="bval">30<span class="bunit">Min</span></span></div>
+      <div class="bar n" style="width:80px"><span class="bval">2<span class="bunit">Min</span></span></div>
+      <div class="dchip">−93 %</div>
+    </div>
+
+    <!-- Row 2: Reaktionszeit 24 Std -> Minuten -->
+    <div class="row r2">
+      <div class="mlabel">Reaktionszeit</div>
+      <div class="bar v" style="width:540px"><span class="bval">24<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:150px"><span class="bval">Minuten</span></div>
+      <div class="dchip">Std&nbsp;→&nbsp;Min</div>
+    </div>
+
+    <!-- Row 3: Gebundene Zeit 20+ Std/Woche -> freigesetzt -->
+    <div class="row r3">
+      <div class="mlabel">Gebundene Zeit / Woche</div>
+      <div class="bar v" style="width:540px"><span class="bval">20+<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:64px"><span class="bval">frei</span></div>
+      <div class="dchip">+20 Std / Woche</div>
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM BAND (on scrim) ===== -->
+  <div class="band">
+    <div class="bquote">
+      <div class="qm">„</div>
+      <div class="qt">In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</div>
+      <div class="qa">Kundenstimme</div>
+    </div>
+    <div class="vrule"></div>
+    <div class="bsave">
+      <div class="s"><div class="sv">€200k<em>+</em></div><div class="sl">Einsparung / Jahr</div></div>
+      <div class="s"><div class="sv">30–50<em>%</em></div><div class="sl">Betriebskosten · ohne Mehr-Headcount</div></div>
+    </div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

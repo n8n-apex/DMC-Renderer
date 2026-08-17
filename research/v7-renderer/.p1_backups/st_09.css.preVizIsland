@@ -1,0 +1,98 @@
+/* ST-09 — status-quo page LAYOUT (Plan B rebuild, P-4).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the heading sizes off var(--font-display), which resolves to
+ * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
+ * serif). The device LOOK (numbered_block / callout_panel / media_figure) is
+ * owned by the `c-` classes in styles/components.css (already in the shared
+ * head); this sheet only positions them and styles the page-local chrome.
+ *
+ * Every rule is scoped under `.st-09` (the assembler's per-page section class)
+ * so it cannot leak. The status-quo page is DENSE (6 symptom blocks + an intro +
+ * a banner + a closing panel), so the symptoms run in a fixed two-column table
+ * grid (flexbox is weak for full-page columns in WeasyPrint 68.1) with modest
+ * line-heights + --space-* gaps so the whole page fits the 261mm content box on
+ * one physical sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (numerals, the
+ * tint panel fill, labels) — never on body text.
+ */
+
+/* ---- header: eyebrow → serif display heading → intro lede ---- */
+/* Phase-B reflow: margin-bottom tightened --space-3→--space-2 (gap-audit gap #4:
+   marginal fit needs this extra ~1mm headroom). */
+.st-09 .sq-header {
+  margin: 0 0 var(--space-2) 0;
+}
+.st-09 .sq-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display-xl);     /* section-opener focal headline (DNA §C1) */
+  font-weight: 700;
+  line-height: 0.99;                     /* tight display leading so the bigger
+                                            headline keeps this dense page on one
+                                            physical sheet */
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-2) 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.st-09 .sq-intro {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.34;
+  color: var(--color-body);
+  max-width: 170mm;
+}
+.st-09 .sq-intro p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.st-09 .sq-intro p:last-child { margin-bottom: 0; }
+.st-09 .sq-intro strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- status-quo scene banner: a wide cinematic plate. WeasyPrint 68.1 does
+   NOT size a box from aspect-ratio alone, AND a `height` on the background-image
+   child collapses unless its ancestor box has a height too — so set the height
+   on BOTH the banner wrapper (min-height) and the image div. Full content width
+   (~177mm) → a slim band that anchors the page without eating the symptom grid.
+   The figure itself is told to fill the wrapper. ---- */
+.st-09 .sq-banner { margin: 0 0 var(--space-3) 0; min-height: 30mm; }
+.st-09 .sq-banner .c-media { height: 30mm; }
+.st-09 .sq-banner .c-media-img { height: 30mm; aspect-ratio: auto; }
+
+/* ---- symptom grid: two columns via inline-block cells (robust in WeasyPrint
+   68.1, which flows them 2-up and wraps to new rows automatically). Each cell
+   carries one numbered_block; row rhythm comes from the cell's bottom padding so
+   the 6 blocks pack tight but legible. The font-size:0 on the grid kills the
+   inline-block whitespace gap; cells reset it. ---- */
+.st-09 .sq-grid {
+  font-size: 0;             /* collapse inter-cell whitespace */
+}
+.st-09 .sq-cell {
+  display: inline-block;
+  width: 47.5%;
+  box-sizing: border-box;
+  vertical-align: top;
+  padding: 0 0 var(--space-1) 0;
+  margin-right: 5%;
+  break-inside: avoid;             /* never split a symptom across pages */
+}
+.st-09 .sq-cell:nth-child(2n) { margin-right: 0; }
+/* trim the big numeral + title scale a touch in the two-column context so dense
+   symptom copy fits (page-local override of the shared component). */
+.st-09 .sq-cell .c-numbered-block { gap: var(--space-3); }
+.st-09 .sq-cell .c-numbered-block__num {
+  font-size: var(--type-h2);
+  min-width: 9mm;
+  line-height: 1;
+}
+.st-09 .sq-cell .c-numbered-block__title { font-size: var(--type-body); }
+.st-09 .sq-cell .c-numbered-block__body { font-size: var(--type-label); line-height: 1.3; }
+
+/* ---- closing insight panel: the tint callout spanning full width ---- */
+/* Phase-B reflow: tighten callout margin (--space-2→--space-1) and reduce padding
+   (scoped override of the global --space-4 callout padding). */
+.st-09 .sq-callout { margin: var(--space-1) 0 0 0; }
+.st-09 .sq-callout .c-callout-panel {
+  break-inside: avoid;
+  padding: var(--space-3);
+}

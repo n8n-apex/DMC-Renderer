@@ -1,0 +1,102 @@
+{# ST-FAZIT — summary / Zusammenfassung page (Plan B rebuild). DATA comes
+   pre-shaped from patterns/st_fazit.py; this template only COMPOSES the macro
+   library on the token-themed .st-fazit layout (styles/st_fazit.css). It emits a
+   fragment only — no <html>/<head>/<style>/@page/@font-face/:root (those live in
+   the head).
+
+   Structure: a serif "Zusammenfassung" header band (an eyebrow kicker over the
+   big serif summary title), the recap body prose, a large These pull-statement
+   (the report's thesis — these_statement), a cost block framing the cost of
+   inaction (cost_block), and a full-width accent URL band closing the page with
+   the giant URL CTA (url_band). A NORMAL (non-bleed) content page. Checklist hits:
+   These statement, cost block, giant URL band (#15). #}
+{% from 'these_statement.jinja' import these_statement %}
+{% from 'cost_block.jinja' import cost_block %}
+{% from 'url_band.jinja' import url_band %}
+{% from 'viz.jinja' import viz as render_viz %}
+{% if layout_variant == 'fill' %}
+{# ---- FILL variant (closing-page composition, DNA §C3) ----
+   The summary/closing page composed to FILL the sheet. A definite-height root
+   (.fz-fill-root = the A4 content box) reserves the bottom strip for a
+   FULL-WIDTH DARK CTA band that is absolutely PINNED to the bottom — carrying
+   the cta_url as the single biggest element (white/accent on the dark ground),
+   ending the report on a strong note and filling the lower portion (the dead
+   band the standard layout leaves). Above it, the upper column distributes the
+   header band, recap body, the These thesis as a large accent-ruled
+   pull-statement, and the cost-of-inaction as an OVERSIZED big-number stat —
+   spread to fill the full content height. The full-height fill is carried by
+   .fz-fill-root (a definite-height relative box) so the absolutely-positioned
+   dark band can resolve bottom:0 against it (WeasyPrint won't stretch an abs
+   box against a min-height container — only a definite height). #}
+<div class="fz-fill-root" data-fz-variant="fill">
+  <div class="fz-fill-flow">
+    <div class="fz-header fz-header--fill">
+      <div class="fz-eyebrow">{{ eyebrow }}</div>
+      {% if title %}<h1 class="fz-title">{{ title }}</h1>{% endif %}
+    </div>
+    {% if body_html %}
+    <div class="fz-body fz-body--fill">{{ body_html }}</div>
+    {% endif %}
+    {% if these %}
+    <div class="fz-these fz-these--fill">{{ these_statement(these) }}</div>
+    {% endif %}
+    {% if viz %}
+    <div class="fz-viz">{{ render_viz(viz) }}</div>
+    {% endif %}
+    {% if kosten_value or kosten_note %}
+    {# the cost-of-inaction as an OVERSIZED big-number stat: the lead figure is
+       the hero numeral, the label + note are the supporting copy. #}
+    <div class="fz-cost fz-cost--fill">
+      <div class="fz-bignum">
+        {% if kosten_label %}<div class="fz-bignum-label">{{ kosten_label }}</div>{% endif %}
+        {% if kosten_value %}<div class="fz-bignum-value">{{ kosten_value }}</div>{% endif %}
+        {% if kosten_note %}<div class="fz-bignum-note">{{ kosten_note }}</div>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% if url or founder_uri %}
+  {# the FULL-WIDTH DARK closing strip pinned to the bottom: a SIGNED close — the
+     founder's face + byline on the left (the human anchor, DNA §C2), the CTA URL
+     on the right. Graceful: no founder → CTA alone; no url → sign-off alone. #}
+  <div class="fz-cta fz-cta-band">
+    {% if founder_uri %}
+    <div class="fz-signoff">
+      <span class="fz-signoff__avatar" role="img" style="background-image:url('{{ founder_uri }}');"></span>
+      <div class="fz-signoff__id">
+        {% if author_name %}<div class="fz-signoff__name">{{ author_name }}</div>{% endif %}
+        {% if author_role or wordmark %}<div class="fz-signoff__role">{{ author_role or wordmark }}</div>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if url %}<div class="fz-cta-cluster">{{ url_band(url, label=cta_label, on_ground=true) }}</div>{% endif %}
+  </div>
+  {% endif %}
+</div>
+{% else %}
+
+<div class="fz-header">
+  <div class="fz-eyebrow">{{ eyebrow }}</div>
+  {% if title %}<h1 class="fz-title">{{ title }}</h1>{% endif %}
+</div>
+
+{% if body_html %}
+<div class="fz-body">{{ body_html }}</div>
+{% endif %}
+
+{% if these %}
+<div class="fz-these">{{ these_statement(these) }}</div>
+{% endif %}
+
+{% if viz %}
+<div class="fz-viz">{{ render_viz(viz) }}</div>
+{% endif %}
+
+{% if kosten_value or kosten_note %}
+<div class="fz-cost">{{ cost_block(kosten_label, kosten_value, note=kosten_note) }}</div>
+{% endif %}
+
+{% if url %}
+<div class="fz-cta">{{ url_band(url, label=cta_label) }}</div>
+{% endif %}
+{% endif -%}

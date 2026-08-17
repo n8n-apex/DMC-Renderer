@@ -76,11 +76,16 @@ def _well_formed_20_page_plan() -> list[dict]:
 
 
 def test_1_valid_20_page_plan_no_warnings() -> None:
-    """A well-formed 20-page report → no structural warnings."""
+    """A well-formed 20-page report → no STRUCTURAL warnings.
+
+    US-609: sections may expand (ST-02/ST-05/ST-06/ST-FAZIT split) — the
+    physical page count legitimately exceeds the logical target, so the
+    page-count mismatch is informational, not a structural warning."""
     pages = _well_formed_20_page_plan()
     plan = plan_layout(pages, components={}, page_count_target=20)
-    assert plan.warnings == [], f"expected no warnings, got: {plan.warnings}"
-    assert plan.page_count == 20
+    structural = [w for w in plan.warnings if "page count mismatch" not in w]
+    assert structural == [], f"expected no structural warnings, got: {structural}"
+    assert plan.page_count == len(plan.pages)
     assert plan.page_count_target == 20
 
 

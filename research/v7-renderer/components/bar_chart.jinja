@@ -1,0 +1,51 @@
+{# Bar chart: the renderer draws its OWN token-colored horizontal bars FROM DATA
+   (no external SVG). Each bar: a label, a value-colored fill whose WIDTH is the
+   numeric magnitude of `value` scaled against the largest magnitude in the set,
+   and the value text. Used by ST-06 (mechanism) for a before/after style metric.
+   All under the c-bar-chart namespace; the token-only look lives in
+   styles/components.css.
+
+   bars  list of dicts {label, value}. The leading numeric magnitude of `value`
+         (e.g. "30 Min" → 30, "2,5x" → 2.5) drives the fill width; non-numeric
+         values fall back to a small floor so the row still reads.
+
+   Magnitude parse is pure-Jinja (no Python, no custom filter): keep the leading
+   run of digits / separators off the value string, normalise the decimal comma,
+   then scale every fill to a percentage of the set maximum (min 8% so a tiny
+   value is still a visible nub). The bar TRACK is a tint; the FILL is accent.
+#}
+{%- macro _magnitude(value) -%}
+{%- set ns = namespace(num='', done=false) -%}
+{%- for ch in (value | string) -%}
+  {%- if not ns.done -%}
+    {%- if ch in '0123456789' -%}{%- set ns.num = ns.num ~ ch -%}
+    {%- elif ch in '.,' and ns.num -%}{%- set ns.num = ns.num ~ '.' -%}
+    {%- elif ns.num -%}{%- set ns.done = true -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{{ (ns.num | float(0.0)) if ns.num else 0.0 }}
+{%- endmacro -%}
+{%- macro bar_chart(bars) -%}
+{%- if bars -%}
+{%- set ns = namespace(mx=0.0) -%}
+{%- for b in bars -%}
+  {%- set m = _magnitude(b.value) | float(0.0) -%}
+  {%- if m > ns.mx -%}{%- set ns.mx = m -%}{%- endif -%}
+{%- endfor -%}
+{%- set mx = ns.mx if ns.mx > 0 else 1.0 -%}
+<div class="c-bar-chart">
+  {% for b in bars %}
+  {%- set m = _magnitude(b.value) | float(0.0) -%}
+  {%- set pct = (8.0 + 92.0 * m / mx) if m > 0 else 8.0 -%}
+  <div class="c-bar-chart__row">
+    <div class="c-bar-chart__label">{{ b.label }}</div>
+    <div class="c-bar-chart__track">
+      <div class="c-bar-chart__fill" style="width:{{ '%.1f' | format(pct) }}%;"></div>
+    </div>
+    <div class="c-bar-chart__value">{{ b.value }}</div>
+  </div>
+  {% endfor %}
+</div>
+{%- endif -%}
+{%- endmacro -%}

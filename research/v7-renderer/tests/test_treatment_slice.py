@@ -1,34 +1,36 @@
-"""TS-1.5 integration proof: render a 3-page MIXED-format treatment slice through
+"""TS-1.5 integration proof: render a 4-page MIXED-format treatment slice through
 the REAL production Chromium path and assert on the gs-flattened output.
 
 A3 RULE (2026-07-14): mid-deck A3 breaks Chromium's mixed-size A4 print
 (bisect-proven), so the stylist suspends the About A3 hero outright and
 tail-gates every non-hero A3 promotion to the FINAL quarter of the deck
-(index >= 3*len(pages)//4). The About page therefore renders A4 via
-a4_editorial_fill; the framework flow (deck tail) keeps its A3.
+(index >= 3*len(pages)//4). US-604: ST-02/ST-05/ST-06/ST-FAZIT now span
+continuation pages, so the About hero + the framework flow are continuation-
+bypassed; the deck carries NO A3 page.
 
 The slice (reusing the real apex assets so the About founder portrait resolves
 via the founder-identity fallback):
-  logical p0  page index 0   ST-01 cover (bypass)  -> A4 portrait, untreated
-  logical p1  page index 2   ST-05 About           -> a4_editorial_fill, A4 portrait
-  logical p2  page index 15  ST-06 framework       -> horizontal_process, A3 landscape
+  logical p0  page index ST-01 cover (bypass)   -> A4 portrait, untreated
+  logical p1  page index ST-09 Status-Quo       -> a4_editorial_fill, A4 portrait
+  logical p2  page index ST-06 intro (continuation, US-604)
+  logical p3  page index ST-06 result (continuation)
 
 Assertions:
-  - res.page_count == 3 (three LOGICAL pages, one section each),
-  - the three EXPECTED physical page sizes appear IN ORDER among the flattened
-    report.pdf pages: A4-portrait (cover), A4-portrait (About fill),
-    A3-landscape (framework). (A short Chromium slice can emit an extra trailing
-    artifact page for the full-bleed cover; the SIZE-in-order check ignores that
-    harness-only artifact, while the FULL-deck no-spill check below is the
-    authoritative content-fit gate.),
-  - report.html stamps treatment-a4_editorial_fill + format-a4 AND
-    treatment-horizontal_process + format-a3 (the assembler stamped the treatment
-    + format classes for the two treated pages),
+  - res.page_count == 4 (four LOGICAL pages, one section each),
+  - the four EXPECTED physical page sizes appear IN ORDER among the flattened
+    report.pdf pages: A4-portrait (cover), A4-portrait (ST-09 fill), A4-portrait
+    (ST-06 intro), A4-portrait (ST-06 result). (A short Chromium slice can emit
+    an extra trailing artifact page for the full-bleed cover; the SIZE-in-order
+    check ignores that harness-only artifact, while the FULL-deck no-spill check
+    below is the authoritative content-fit gate.),
+  - report.html stamps treatment-a4_editorial_fill + format-a4 (the assembler
+    stamped the treatment + format classes for the treated ST-09 page), while
+    the ST-06 continuation pages carry NO horizontal_process treatment,
   - the FULL apex deck renders with physical pages == logical pages and NO
     overflow spill (the authoritative product contract: every section is exactly
     one sheet in the real deck).
 
-This is a REAL render (a few seconds for 3 pages via Playwright + Ghostscript),
+This is a REAL render (a few seconds for 4 pages via Playwright + Ghostscript),
 exercised exactly as render_package builds the production document.
 
 Run ONLY this file:
@@ -58,16 +60,46 @@ A4_PORT_W = 210.0 * PT_PER_MM   # ~ 595.28 pt
 A4_PORT_H = 297.0 * PT_PER_MM   # ~ 841.89 pt
 TOL = 3.0
 
-# Slice page indices in the real apex package (pinned):
-#   0  -> ST-01 cover (bypass)  : A4 portrait, untreated
-#   2  -> ST-05 About           : a4_editorial_fill, A4 portrait (A3 hero
-#         suspended; non-hero A3 is tail-gated to the final deck quarter)
-#   15 -> ST-06 intro continuation (US-604: the section spans two A4 pages)
-#   16 -> ST-06 result continuation
-SLICE_INDICES = [0, 2, 15, 16]
+
+def _manifest() -> list:
+    return json.loads(
+        (ROOT / "fixtures" / "apex" / "resolved_package.json")
+        .read_text(encoding="utf-8")
+    )["pages"]
+
+
+def _idx_of(st_type: str, role=None) -> int:
+    """Type-based page index (US-604 added continuation pages, so fixed indices
+    are stale). With role=None a NON-continuation page is preferred."""
+    pages = _manifest()
+    for i, pg in enumerate(pages):
+        if pg.get("st_type") != st_type:
+            continue
+        if role is None:
+            if not pg.get("continuation_index"):
+                return i
+        elif pg.get("continuation_role") == role:
+            return i
+    for i, pg in enumerate(pages):
+        if pg.get("st_type") == st_type:
+            return i
+    raise AssertionError(f"no {st_type} page (role={role!r}) in the apex fixture")
+
+
+# Slice page indices in the real apex package (derived by type):
+#   ST-01 cover (bypass)               : A4 portrait, untreated
+#   ST-09 Status-Quo                   : a4_editorial_fill, A4 portrait
+#   ST-06 intro continuation (US-604)  : the section spans two A4 pages
+#   ST-06 result continuation
+SLICE_INDICES = [
+    _idx_of("ST-01"),
+    _idx_of("ST-09"),
+    _idx_of("ST-06", "intro"),
+    _idx_of("ST-06", "result"),
+]
 
 # The four EXPECTED physical page sizes, IN ORDER (the logical pages):
-#   (A4 cover, A4 About fill, A4 ST-06 intro, A4 ST-06 result). No A3 page
+#   (A4 cover, A4 ST-09 fill, A4 ST-06 intro, A4 ST-06 result). No A3 page
 #   remains — the framework's horizontal_process A3 promotion is gone (the
 #   section is two A4 continuation pages).
 EXPECTED_SIZES = [
@@ -118,7 +150,7 @@ def _size_matches(rect, size, tol: float = TOL) -> bool:
 
 
 def test_page_count_is_four(rendered):
-    """Four LOGICAL pages (one section each): cover + editorial + ST-06 intro +
+    """Four LOGICAL pages (one section each): cover + ST-09 + ST-06 intro +
     ST-06 result continuation (US-604: the framework section spans two pages)."""
     assert rendered["res"].page_count == 4
 
@@ -156,14 +188,14 @@ def test_expected_page_sizes_in_order(rendered):
 
 
 def test_report_html_stamps_treatment_and_format_classes(rendered):
-    # US-604: the About page renders A4 via a4_editorial_fill; the ST-06
+    # US-604: the ST-09 page renders A4 via a4_editorial_fill; the ST-06
     # continuation pages are NOT treated (they belong to the section — the
     # section's own pattern renders them). No A3 page remains.
     html = (rendered["out"] / "report.html").read_text(encoding="utf-8")
     assert "treatment-a4_editorial_fill" in html, (
-        "a4_editorial_fill treatment class not stamped on the About page"
+        "a4_editorial_fill treatment class not stamped on the ST-09 page"
     )
-    assert "format-a4" in html, "A4 format class not stamped on the About page"
+    assert "format-a4" in html, "A4 format class not stamped on the treated page"
     assert "treatment-horizontal_process" not in html, (
         "horizontal_process must not be stamped (ST-06 is continuation-bypassed)"
     )
@@ -177,12 +209,11 @@ def test_report_html_stamps_treatment_and_format_classes(rendered):
 
 def test_full_deck_no_spill(full_deck):
     """AUTHORITATIVE content-fit gate: the FULL apex deck renders with one
-    physical sheet per logical page and no overflow spill. Every treated page
-    (incl. the A3 horizontal_process at the deck tail) fits its sheet in the
-    real product."""
+    physical sheet per logical page and no overflow spill. Every page (incl.
+    the continuation sections) fits its sheet in the real product."""
     res = full_deck["res"]
-    # US-604/605: apex is now 22 pages (ST-06 + FAZIT span continuations).
-    assert res.page_count == 22, f"apex deck is 22 pages; got {res.page_count}"
+    # US-604/605: apex is now 24 pages (ST-02/ST-05/ST-06/FAZIT continuations).
+    assert res.page_count == 24, f"apex deck is 24 pages; got {res.page_count}"
     assert len(res.png_paths) == res.page_count, (
         f"physical pages {len(res.png_paths)} != logical {res.page_count} "
         f"-- a section overflowed its sheet in the full deck"
@@ -193,13 +224,13 @@ def test_full_deck_no_spill(full_deck):
 
 
 def test_full_deck_a3_pages(full_deck):
-    """In the full deck exactly the framework page (idx 15) is A3-landscape;
-    everything else is A4-portrait.
+    """In the full deck NO page is A3-landscape; everything is A4-portrait.
 
     A3 rule (2026-07-14): mid-deck A3 breaks Chromium's mixed-size A4 print, so
     the About hero A3 is suspended and non-hero A3 promotions are tail-gated to
-    the final quarter of the deck (index >= 3*len(pages)//4 = 15 for 20 pages).
-    Idx 15 is exactly the first tail slot, the empirically-safe zone."""
+    the final quarter of the deck. US-604: ST-02/ST-05/ST-06/ST-FAZIT span
+    continuation pages (continuation-bypassed), so the deck carries no A3 page
+    at all."""
     import fitz
 
     pdf = full_deck["out"] / "report.pdf"
@@ -207,5 +238,5 @@ def test_full_deck_a3_pages(full_deck):
     a3 = [i for i in range(doc.page_count)
           if _approx(doc[i].rect.width, A3_LAND_W) and _approx(doc[i].rect.height, A3_LAND_H)]
     doc.close()
-    # US-604: no A3 pages remain (ST-06 spans two A4 continuations)
+    # US-604: no A3 pages remain (the framework section spans two A4 continuations)
     assert a3 == [], f"expected no A3 pages; got {a3}"

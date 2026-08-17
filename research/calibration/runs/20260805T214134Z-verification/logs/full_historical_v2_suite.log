@@ -1,0 +1,649 @@
+........................................................................ [ 17%]
+.............................................................F.......... [ 35%]
+F......................................................................F [ 53%]
+..F..............FxFF.FFF.F.FF..FF..x......x...x........................ [ 71%]
+............................................x........................... [ 89%]
+.........................................s                               [100%]
+=================================== FAILURES ===================================
+__________ test_st01_cover_composes_founder_hero_scrim_title_and_rail __________
+
+    def test_st01_cover_composes_founder_hero_scrim_title_and_rail() -> None:
+        """The Phase-4b cover (ST-01) anchors on the FOUNDER PORTRAIT (DNA §C2): the
+        resolved founder slot (slot_id 'founder') is the hero background, with a dark
+        scrim, a two-tone display title, a kicker pill row, and a vertical stat rail —
+        composed from the macro library on the token-themed .st-01 layout. Loads the
+        REAL apex cover (slot 1), whose slots[] carries the resolved founder photo.
+        """
+        from patterns import st_01
+        page = _load_fixture_page("ST-01")
+        frag = st_01.render(page, _ctx(APEX_FIXTURE))
+        assert isinstance(frag, PageFragment)
+        _no_head_css(frag)
+        assert ".st-01" in frag.css, "fragment CSS must be scoped to .st-01"
+    
+        # Signature cover devices.
+        assert "c-pill" in frag.html, "kicker pill macro missing"
+        assert "c-stat-rail" in frag.html, "vertical stat rail missing"
+        assert "cv-hero" in frag.html, "full-bleed hero block missing"
+        assert "cv-hero--portrait" in frag.html, "founder hero must mark the portrait variant"
+        assert "cv-scrim" in frag.html, "dark scrim overlay missing"
+        assert "c-two-tone" in frag.html, "two-tone display title missing"
+    
+        # The FOUNDER portrait is the hero — NOT the generated cover_hero scene.
+>       assert "1_founder.png" in frag.html, "founder portrait must be the cover hero"
+E       AssertionError: founder portrait must be the cover hero
+E       assert '1_founder.png' in '\n<div class="cv">\n  <div class="cv-hero cv-hero--portrait" style="background-image:url(\'file:///Users/utkarsh/Proj... Kapazität verbrennen – und wie du sie in unter 30 Tagen automatisierst.</li>      </ul>\n    </div>\n  </div>\n</div>'
+E        +  where '\n<div class="cv">\n  <div class="cv-hero cv-hero--portrait" style="background-image:url(\'file:///Users/utkarsh/Proj... Kapazität verbrennen – und wie du sie in unter 30 Tagen automatisierst.</li>      </ul>\n    </div>\n  </div>\n</div>' = PageFragment(html='\n<div class="cv">\n  <div class="cv-hero cv-hero--portrait" style="background-image:url(\'file:///...nt: "—";\n  color: var(--color-accent);\n  font-weight: 700;\n  margin-right: var(--space-1);\n  text-indent: 0;\n}\n').html
+
+tests/test_render_r2.py:250: AssertionError
+__________________ test_st07a_flagship_composes_macro_devices __________________
+
+    def test_st07a_flagship_composes_macro_devices() -> None:
+        """The rebuilt ST-07A composes the macro library on a token-themed layout.
+    
+        Asserts the flagship case-study page renders its signature devices (kicker
+        pill, serif display headline, two-column + sidebar, accent stat numbers,
+        uppercase section labels, sidebar pull-quote) by checking the macros' `c-`
+        classes are present. NOTE: the client PORTRAIT is now conditional on a resolved
+        case_study_portrait slot (the first fixture case study has none, so c-media is
+        NOT asserted here — its resolved/absent behaviour is covered by the dedicated
+        ST-07A portrait tests in test_render_r1.py). NOTE: case studies render NO QR
+        (a mid-case-study scannable code reads as clutter); the single designed QR
+        lives on the ST-03 back-cover CTA. So c-qr is asserted ABSENT here.
+        """
+        from patterns import st_07a
+        page = _load_fixture_page("ST-07A")
+        # This test asserts the STANDARD layout's macro composition (the
+        # c-stat-strip sidebar etc.). The fixture now defaults to layout_variant=
+        # "fill" (a distinct full-height-panel composition with cs-statstack), so we
+        # pin the standard variant here. The fill composition is covered by
+        # tests/test_st07a_fill_variant.py.
+        page = {**page, "layout_variant": "standard"}
+        frag = st_07a.render(page, _ctx(APEX_FIXTURE))
+        assert isinstance(frag, PageFragment)
+        _no_head_css(frag)
+        assert ".st-07a" in frag.css, "fragment CSS must be scoped to .st-07a"
+    
+        # Macro library devices (each macro stamps its own c- class). The portrait is
+        # conditional (this fixture case study has no resolved photo) so it is excluded.
+        for cls in ("c-pill", "c-stat-strip", "c-pull-quote",
+                    "c-section-label"):
+            assert cls in frag.html, f"missing macro device {cls} in ST-07A html"
+        # Case studies render NO QR (clutter); the one designed QR is on ST-03.
+        assert "c-qr" not in frag.html, "case studies (ST-07A) must render no QR"
+    
+        # Real case-study content from the fixture flows through.
+>       assert "Martina Ammon" in frag.html               # kunde.name
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert 'Martina Ammon' in '\n<div class="cs-header">\n  <div class="cs-ghost"><span class="c-ghost-num" aria-hidden="true">1</span></div>\n  <di...v><div></div>\n  </div><figcaption class="c-viz-barc__source">APEX Fallstudie GoldmanTax</figcaption></figure></div>\n'
+E        +  where '\n<div class="cs-header">\n  <div class="cs-ghost"><span class="c-ghost-num" aria-hidden="true">1</span></div>\n  <di...v><div></div>\n  </div><figcaption class="c-viz-barc__source">APEX Fallstudie GoldmanTax</figcaption></figure></div>\n' = PageFragment(html='\n<div class="cs-header">\n  <div class="cs-ghost"><span class="c-ghost-num" aria-hidden="true">1</... 0.06em; text-transform: uppercase; color: var(--color-muted);\n  margin-top: var(--space-2); padding-left: 8mm;\n}\n').html
+
+tests/test_render_r2.py:483: AssertionError
+_________________ test_st07a_embeds_chart_svg_in_chart_region __________________
+
+tmp_path = PosixPath('/private/var/folders/vw/j79jzbcj6m70160v48vn3t9c0000gn/T/pytest-of-utkarsh/pytest-794/test_st07a_embeds_chart_svg_in0')
+
+    def test_st07a_embeds_chart_svg_in_chart_region(tmp_path) -> None:
+        """ST-07A: a results page carrying page['charts'] embeds the chart SVG into
+        the main column's chart region."""
+        from patterns import st_07a
+        # start from the real fixture page, then attach a chart component + spec
+        page = dict(_load_fixture_page("ST-07A"))
+        rel = _write_component(tmp_path, "cs_component_0.svg", _CHART_SVG)
+        page["components"] = list(page.get("components") or []) + [rel]
+        page["charts"] = [{"chart_type": "before_after_bars"}]
+        frag = st_07a.render(page, _ctx(tmp_path))
+        _no_head_css(frag)
+>       assert "cs-chart-svg" in frag.html
+E       assert 'cs-chart-svg' in '\n<div class="csh">\n  <div class="csh-left">\n    <div class="csh-kicker"><span class="c-pill c-pill--solid">FALLSTU... class="csh-quote-attr">Soufian El Morabiti, Geschäftsführer, GoldmanTax</figcaption>    </figure>\n  </div>\n</div>\n'
+E        +  where '\n<div class="csh">\n  <div class="csh-left">\n    <div class="csh-kicker"><span class="c-pill c-pill--solid">FALLSTU... class="csh-quote-attr">Soufian El Morabiti, Geschäftsführer, GoldmanTax</figcaption>    </figure>\n  </div>\n</div>\n' = PageFragment(html='\n<div class="csh">\n  <div class="csh-left">\n    <div class="csh-kicker"><span class="c-pill c-pi... 0.06em; text-transform: uppercase; color: var(--color-muted);\n  margin-top: var(--space-2); padding-left: 8mm;\n}\n').html
+
+tests/test_render_r2.py:1904: AssertionError
+_______________ test_light_page_ground_is_color_ground_not_wash ________________
+
+    def test_light_page_ground_is_color_ground_not_wash() -> None:
+        """The [data-ground-mode="light"]/[cool_light] .page rule must use
+        var(--color-ground) — the perceptible neutral — NOT var(--color-ground-wash)
+        (the near-invisible 5%-accent wash).
+    
+        The @page folio-band gradient STILL consumes var(--color-ground-wash), so
+        the full head CSS must still contain --color-ground-wash somewhere (the folio
+        band is preserved untouched).
+        """
+        from assembler import shared_head_css
+        from brand_tokens import parse_brand_tokens
+        from tokens.compile_tokens import BrandAxes
+        head = shared_head_css(parse_brand_tokens(SAMPLE_BRAND), CHASSIS_ROOT / "fonts", BrandAxes())
+    
+        # Isolate the [data-ground-mode="light"] rule block.
+        assert '[data-ground-mode="light"]' in head, (
+            "[data-ground-mode=\"light\"] selector missing from shared head CSS"
+        )
+        block_start = head.index('[data-ground-mode="light"]')
+        block_end = head.index("}", block_start) + 1
+        light_block = head[block_start:block_end]
+    
+        # The content ground must use the PERCEPTIBLE neutral token.
+>       assert "var(--color-ground)" in light_block, (
+            "light page ground must use var(--color-ground), not var(--color-ground-wash)"
+        )
+E       AssertionError: light page ground must use var(--color-ground), not var(--color-ground-wash)
+E       assert 'var(--color-ground)' in '[data-ground-mode="light"] .page,\n[data-ground-mode="cool_light"] .page {\n  background: transparent;\n}'
+
+tests/test_render_r2.py:1975: AssertionError
+______________________ test_fill_variant_renders_one_page ______________________
+
+    def test_fill_variant_renders_one_page():
+        from validators.overflow import count_pages
+    
+>       page = _apex_case_study_page()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:221: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+_____________________ test_fill_variant_no_empty_photo_box _____________________
+
+    def test_fill_variant_no_empty_photo_box():
+>       page = _apex_case_study_page()  # portrait ABSENT
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:281: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+_______________________ test_standard_variant_unchanged ________________________
+
+    def test_standard_variant_unchanged():
+        ctx = _apex_ctx()
+    
+        # The fixture page now carries layout_variant="fill" (the preprocessor's
+        # ST-07A default). To exercise the renderer's KEY-ABSENT back-compat path we
+        # remove the key; the renderer must then fall back to "standard".
+>       page_absent = _apex_case_study_page()
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:299: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+____________________ test_fill_stat_numeral_value_stays_big ____________________
+
+    def test_fill_stat_numeral_value_stays_big():
+        """pages[6] has crisp numeral values ("4", "> 200.000 €", "24 Std. →
+        Minuten") that FIT at the big size. The fix must NOT shrink them: the
+        rendered fragment must carry NO long-modifier class on those stat values.
+        """
+>       page = _apex_case_study_page()  # pages[6]: numeral metrics
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:358: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+_______________________ test_fill_variant_still_one_page _______________________
+
+    def test_fill_variant_still_one_page():
+        # Per-page standalone overflow check (fast, mirrors the assembler) for BOTH
+        # the numeral case study (pages[6] → p7) and the prose case study
+        # (pages[11] → p12). Neither may spill onto a 2nd physical page.
+        from validators.overflow import count_pages
+        from assembler import shared_head_css, _section
+    
+        for idx in (CASE_STUDY_INDEX, PROSE_CASE_STUDY_INDEX):
+            pkg = load_package(APEX)
+            pg = copy.deepcopy(pkg.pages[idx])
+            pg["layout_variant"] = "fill"
+            frag = st_07a.render(pg, _apex_ctx())
+            head = shared_head_css(pkg.brand, CHASSIS_ROOT / "fonts", pkg.axes)
+            one_doc = (
+                '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">'
+                f"<style>{head}{frag.css}</style></head>"
+                f"<body>{_section(pg, frag, idx)}</body></html>"
+            )
+            n = count_pages(one_doc, base_url=str(CHASSIS_ROOT))
+>           assert n == 1, f"pages[{idx}] fill render must be 1 page; got {n}"
+E           AssertionError: pages[11] fill render must be 1 page; got 2
+E           assert 2 == 1
+
+tests/test_st07a_fill_variant.py:393: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  tokens.compile_tokens:compile_tokens.py:69 brand font-family 'Gestura Headline' is not a bundled face ['Inter', 'Montserrat', 'Playfair Display', 'Source Sans 3', 'Source Sans Pro', 'Source Serif 4', 'Source Serif Pro']; no TTF will load for it yet: falling back to 'Source Sans 3'. Bundle its file to render it.
+WARNING  weasyprint:__init__.py:188 Ignored `background-blend-mode: multiply` at 383:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 4 / 3` at 544:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 1 / 1` at 545:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 546:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 547:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `filter: grayscale(1)` at 1149:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 12%, transparent)` at 1172:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1325:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1386:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 42%, transparent)` at 1420:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `word-break: break-word` at 1443:3, invalid value.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: none` at 1453:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 7mm color-mix(in srgb, var(--color-neutral-dark) 30%, transparent)` at 1572:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 1576:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1628:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 18%, transparent)` at 1657:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 7mm color-mix(in srgb, var(--color-neutral-dark) 16%, transparent)` at 1661:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 1664:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 4mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1670:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 26%, transparent),
+              0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1694:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 5mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1705:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 8mm color-mix(in srgb, var(--color-neutral-dark) 14%, transparent)` at 1731:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 1797:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-on-dark)` at 1804:40, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 62%, var(--color-on-dark))` at 1805:37, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 1806:39, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 26%, transparent)` at 1952:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 1953:20, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 1958:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2045:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2052:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2101:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2102:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2105:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2109:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2120:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2121:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2122:92, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-accent) 85%, var(--color-primary))` at 2139:42, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 32%, transparent)` at 2140:41, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface))` at 2480:19, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-accent)` at 2481:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-ink)` at 2487:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2489:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2491:52, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-ink) 22%, transparent)` at 2494:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke-width: 0.7` at 2494:66, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3045:51, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 3388:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3446:57, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 3642:16, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm -7mm color-mix(in srgb, var(--color-ink) 52%, transparent)` at 3644:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 3669:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 3712:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark))` at 3713:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 3715:23, unknown property.
+WARNING  weasyprint:tokens.py:92 Ignored `border-top: 0.3mm solid color-mix(in srgb, #4A7C7E 70%, transparent)` at 3494:15, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `background-image: radial-gradient(circle at 80% 2%,
+      color-mix(in srgb, #4A7C7E 14%, transparent), transparent 45%) , linear-gradient(170deg, transparent 25%,
+      color-mix(in srgb, #4A7C7E 38%, transparent) 130%)` at 3384:5, invalid value.
+WARNING  tokens.compile_tokens:compile_tokens.py:69 brand font-family 'Gestura Headline' is not a bundled face ['Inter', 'Montserrat', 'Playfair Display', 'Source Sans 3', 'Source Sans Pro', 'Source Serif 4', 'Source Serif Pro']; no TTF will load for it yet: falling back to 'Source Sans 3'. Bundle its file to render it.
+WARNING  weasyprint:__init__.py:188 Ignored `background-blend-mode: multiply` at 383:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 4 / 3` at 544:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 1 / 1` at 545:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 546:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 547:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `filter: grayscale(1)` at 1149:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 12%, transparent)` at 1172:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1325:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1386:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 42%, transparent)` at 1420:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `word-break: break-word` at 1443:3, invalid value.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: none` at 1453:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 7mm color-mix(in srgb, var(--color-neutral-dark) 30%, transparent)` at 1572:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 1576:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1628:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 18%, transparent)` at 1657:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 7mm color-mix(in srgb, var(--color-neutral-dark) 16%, transparent)` at 1661:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 1664:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 4mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1670:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 26%, transparent),
+              0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1694:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 5mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1705:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 8mm color-mix(in srgb, var(--color-neutral-dark) 14%, transparent)` at 1731:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 1797:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-on-dark)` at 1804:40, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 62%, var(--color-on-dark))` at 1805:37, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 1806:39, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 26%, transparent)` at 1952:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 1953:20, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 1958:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2045:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2052:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2101:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2102:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2105:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2109:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2120:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2121:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2122:92, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-accent) 85%, var(--color-primary))` at 2139:42, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 32%, transparent)` at 2140:41, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface))` at 2480:19, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-accent)` at 2481:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-ink)` at 2487:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2489:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2491:52, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-ink) 22%, transparent)` at 2494:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke-width: 0.7` at 2494:66, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3045:51, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 3388:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3446:57, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 3642:16, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm -7mm color-mix(in srgb, var(--color-ink) 52%, transparent)` at 3644:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 3669:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 3712:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark))` at 3713:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 3715:23, unknown property.
+WARNING  weasyprint:tokens.py:92 Ignored `border-top: 0.3mm solid color-mix(in srgb, #4A7C7E 70%, transparent)` at 3494:15, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `background-image: radial-gradient(circle at 80% 2%,
+      color-mix(in srgb, #4A7C7E 14%, transparent), transparent 45%) , linear-gradient(170deg, transparent 25%,
+      color-mix(in srgb, #4A7C7E 38%, transparent) 130%)` at 3384:5, invalid value.
+_______________________ test_fill_lede_modifier_in_html ________________________
+
+    def test_fill_lede_modifier_in_html():
+        """The FILL branch lede must carry the cs-lede--fill modifier so the CSS
+        can size it up to --type-lede (12pt) for visual hierarchy in the wider left
+        column. The STANDARD branch lede must NOT carry the modifier.
+    
+        Uses the real apex case-study page (pages[6]) which has a populated
+        ``kurzportraet`` field — the data key that the pattern maps to ``lede_html``.
+        """
+        # The real apex pages[6] has kurzportraet populated, so lede_html renders.
+>       page_fill = _apex_case_study_page()
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:408: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+_________________ test_case_study_renders_no_qr_both_variants __________________
+
+    def test_case_study_renders_no_qr_both_variants():
+        """ST-07A must render NO QR in EITHER variant. The `.cs-panel-qr` wrapper
+        only appears when the pattern feeds a non-empty qr_svg; the pattern now feeds
+        "" so the wrapper (and the inner qr macro) never render.
+        """
+        ctx = _apex_ctx()
+        for variant in ("fill", "standard"):
+>           page = _apex_case_study_page()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:449: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+____________________ test_social_post_renders_phone_mockup _____________________
+
+    def test_social_post_renders_phone_mockup():
+        """When data.social_post is present, ST-07A renders the renderer-drawn phone
+        (the .c-phone device chrome inside a .cs-socialpost host)."""
+        page = _social_post_page()  # fill variant in the fixture
+        html = st_07a.render(page, _apex_ctx()).html
+>       assert "cs-socialpost" in html, "social post host must render"
+E       AssertionError: social post host must render
+E       assert 'cs-socialpost' in '\n<div class="csh">\n  <div class="csh-left">\n    <div class="csh-kicker"><span class="c-pill c-pill--solid">FALLSTU...figcaption class="csh-quote-attr">Tobias Frese, CEO von Frese Recruiting</figcaption>    </figure>\n  </div>\n</div>\n'
+
+tests/test_st07a_fill_variant.py:492: AssertionError
+_____________ test_social_post_replaces_static_portrait_not_added ______________
+
+    def test_social_post_replaces_static_portrait_not_added():
+        """The phone REPLACES the static portrait — the page must NOT render BOTH a
+        cs-portrait media frame AND the phone (two stacked photos would overflow the
+        narrow rail). With social_post present, the cs-portrait block is suppressed.
+        """
+        page = _social_post_page()
+        html = st_07a.render(page, _apex_ctx()).html
+>       assert "cs-socialpost" in html
+E       assert 'cs-socialpost' in '\n<div class="csh">\n  <div class="csh-left">\n    <div class="csh-kicker"><span class="c-pill c-pill--solid">FALLSTU...figcaption class="csh-quote-attr">Tobias Frese, CEO von Frese Recruiting</figcaption>    </figure>\n  </div>\n</div>\n'
+
+tests/test_st07a_fill_variant.py:504: AssertionError
+________________ test_fill_transform_renders_before_after_bars _________________
+
+    def test_fill_transform_renders_before_after_bars():
+        """pages[6] metric "24 Std. → Minuten" renders the before/after BAR device
+        (gray before, accent after) — never a text-arrow glyph."""
+>       page = _apex_case_study_page()  # pages[6]: carries the transform metric
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_st07a_fill_variant.py:543: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _apex_case_study_page() -> dict:
+        """A deep COPY of the real apex case-study page (pages[6]); portrait absent.
+    
+        Deep-copied so a test can set layout_variant WITHOUT mutating the loaded
+        package (and never the on-disk fixture).
+        """
+        pkg = load_package(APEX)
+        page = copy.deepcopy(pkg.pages[CASE_STUDY_INDEX])
+        assert str(page.get("st_type")) == "ST-07A"
+        # portrait must be ABSENT for this page (the apex reality we design for)
+>       assert st_07a_portrait_uri(page) == ""
+E       AssertionError: assert 'file:///User...oldmantax.png' == ''
+E         
+E         + file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/cs_goldmantax.png
+
+tests/test_st07a_fill_variant.py:207: AssertionError
+__________________ test_social_post_case_study_stays_one_page __________________
+
+    def test_social_post_case_study_stays_one_page():
+        """GAP C verify: the case study the planner bound the social post onto
+        (pages[11], slot 12, Frese) MUST still render on exactly ONE physical page —
+        the compact phone (sized to the rail in styles/st_07a.css) must NOT push the
+        page into overflow.
+        """
+        from validators.overflow import count_pages
+        from assembler import shared_head_css, _section
+    
+        idx = SOCIAL_POST_CASE_STUDY_INDEX
+        pkg = load_package(APEX)
+        pg = copy.deepcopy(pkg.pages[idx])
+        frag = st_07a.render(pg, _apex_ctx())
+        head = shared_head_css(pkg.brand, CHASSIS_ROOT / "fonts", pkg.axes)
+        one_doc = (
+            '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8">'
+            f"<style>{head}{frag.css}</style></head>"
+            f"<body>{_section(pg, frag, idx)}</body></html>"
+        )
+        n = count_pages(one_doc, base_url=str(CHASSIS_ROOT))
+>       assert n == 1, f"Frese case study (pages[{idx}]) with social post must be 1 page; got {n}"
+E       AssertionError: Frese case study (pages[11]) with social post must be 1 page; got 2
+E       assert 2 == 1
+
+tests/test_st07a_fill_variant.py:575: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  tokens.compile_tokens:compile_tokens.py:69 brand font-family 'Gestura Headline' is not a bundled face ['Inter', 'Montserrat', 'Playfair Display', 'Source Sans 3', 'Source Sans Pro', 'Source Serif 4', 'Source Serif Pro']; no TTF will load for it yet: falling back to 'Source Sans 3'. Bundle its file to render it.
+WARNING  weasyprint:__init__.py:188 Ignored `background-blend-mode: multiply` at 383:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 4 / 3` at 544:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 1 / 1` at 545:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 546:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 547:31, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `filter: grayscale(1)` at 1149:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 12%, transparent)` at 1172:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1325:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-wrap: balance` at 1386:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 42%, transparent)` at 1420:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `word-break: break-word` at 1443:3, invalid value.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: none` at 1453:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 7mm color-mix(in srgb, var(--color-neutral-dark) 30%, transparent)` at 1572:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 1576:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1628:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 18%, transparent)` at 1657:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 7mm color-mix(in srgb, var(--color-neutral-dark) 16%, transparent)` at 1661:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 1664:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 4mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1670:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 26%, transparent),
+              0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent)` at 1694:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `text-shadow: 0 0 5mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent)` at 1705:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 2mm 8mm color-mix(in srgb, var(--color-neutral-dark) 14%, transparent)` at 1731:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 1797:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-on-dark)` at 1804:40, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 62%, var(--color-on-dark))` at 1805:37, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 1806:39, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 26%, transparent)` at 1952:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 1953:20, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 1958:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2045:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2052:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2101:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2102:22, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2105:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2109:30, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-muted) 22%, transparent)` at 2120:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: var(--color-accent)` at 2121:23, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2122:92, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-accent) 85%, var(--color-primary))` at 2139:42, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 32%, transparent)` at 2140:41, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface))` at 2480:19, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-accent)` at 2481:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-ink)` at 2487:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-primary)` at 2489:25, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `fill: var(--color-muted)` at 2491:52, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-ink) 22%, transparent)` at 2494:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke-width: 0.7` at 2494:66, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3045:51, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent)` at 3388:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: auto` at 3446:57, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `aspect-ratio: 16 / 9` at 3642:16, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 4mm 12mm -7mm color-mix(in srgb, var(--color-ink) 52%, transparent)` at 3644:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `box-shadow: 0 7mm 20mm -10mm color-mix(in srgb, var(--color-ink) 64%, transparent)` at 3669:3, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-on-dark) 15%, transparent)` at 3712:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `stroke: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark))` at 3713:28, unknown property.
+WARNING  weasyprint:__init__.py:188 Ignored `inset: 0` at 3715:23, unknown property.
+WARNING  weasyprint:tokens.py:92 Ignored `border-left: 0.3mm solid color-mix(in srgb, #5E5E58 34%, transparent)` at 3630:16, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `border-bottom: 0.3mm solid color-mix(in srgb, #FFFFFF 16%, transparent)` at 3678:18, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `background: color-mix(in srgb, #4A7C7E 72%, #FFFFFF)` at 3692:15, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `background: color-mix(in srgb, #FFFFFF 16%, transparent)` at 3777:30, invalid value.
+WARNING  weasyprint:tokens.py:92 Ignored `background-image: linear-gradient(150deg, color-mix(in srgb, #2E3E50 14%, transparent), color-mix(in srgb, #2E3E50 40%, transparent)) , url("file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/report_navy_stone.png")` at 1:19, invalid value.
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:241
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:241
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+tests/test_axes.py::test_v1_brand_axes_only_loads_with_new_field_defaults
+  /Users/utkarsh/Projects/richard/research/v7-renderer/tests/test_axes.py:81: UserWarning: resolved_package.json carries legacy 'brand_axes' (4 fields) but no v2.0 'axes' (7 fields): palette/qr_enabled/density are defaulting and may not match the brand. Re-build so the package emits top-level 'axes'.
+    pkg = load_package(tmp_path)
+
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+  /Users/utkarsh/Projects/richard/research/v7-renderer/tests/test_treatment_pagesize.py:268: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+    lumas = [_luma(p) for p in center.getdata()]
+
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+tests/test_treatment_pagesize.py::test_chrome_present_on_a3_and_a4
+  /Users/utkarsh/Projects/richard/research/v7-renderer/tests/test_treatment_pagesize.py:243: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+    return sum(1 for px in crop.getdata() if _luma(px) < thresh)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_render_r2.py::test_st01_cover_composes_founder_hero_scrim_title_and_rail
+FAILED tests/test_render_r2.py::test_st07a_flagship_composes_macro_devices - ...
+FAILED tests/test_render_r2.py::test_st07a_embeds_chart_svg_in_chart_region
+FAILED tests/test_render_r2.py::test_light_page_ground_is_color_ground_not_wash
+FAILED tests/test_st07a_fill_variant.py::test_fill_variant_renders_one_page
+FAILED tests/test_st07a_fill_variant.py::test_fill_variant_no_empty_photo_box
+FAILED tests/test_st07a_fill_variant.py::test_standard_variant_unchanged - As...
+FAILED tests/test_st07a_fill_variant.py::test_fill_stat_numeral_value_stays_big
+FAILED tests/test_st07a_fill_variant.py::test_fill_variant_still_one_page - A...
+FAILED tests/test_st07a_fill_variant.py::test_fill_lede_modifier_in_html - As...
+FAILED tests/test_st07a_fill_variant.py::test_case_study_renders_no_qr_both_variants
+FAILED tests/test_st07a_fill_variant.py::test_social_post_renders_phone_mockup
+FAILED tests/test_st07a_fill_variant.py::test_social_post_replaces_static_portrait_not_added
+FAILED tests/test_st07a_fill_variant.py::test_fill_transform_renders_before_after_bars
+FAILED tests/test_st07a_fill_variant.py::test_social_post_case_study_stays_one_page
+15 failed, 381 passed, 1 skipped, 5 xfailed, 12 warnings in 503.59s (0:08:23)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

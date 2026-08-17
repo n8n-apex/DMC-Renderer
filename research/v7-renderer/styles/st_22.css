@@ -134,7 +134,12 @@
 /* the fill root: a definite-height column that fills the A4 content box. 261mm
    = 297 - 16(top) - 20(bottom) margins, matching the shared .page content box. */
 .st-22 .co-fill-root {
-  height: 261mm;
+  /* US-609: min-height (not a definite 261mm — that crossed Chromium's
+     fragmentation boundary and spilled the section). The min-height gives
+     the timeline rows room to distribute (space-between) so the page
+     resolves to the sheet bottom instead of packing at the top with a 50%
+     void (the audit's finding). The content genuinely fits one sheet. */
+  min-height: 240mm;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

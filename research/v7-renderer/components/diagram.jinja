@@ -1,0 +1,24 @@
+{# diagram — the single dispatch entry point for the diagram PROOF LAYER. A host
+   pattern that carries page.data.diagram calls `diagram(d)` once; this switches
+   on d.kind and delegates to the right component macro. Keeps every pattern thin
+   and the kind→macro mapping in ONE place. Unknown/empty kind → renders nothing
+   (graceful), so adding a diagram to a page never risks a broken render.
+
+   Kinds: convergence (3-lobe Venn) · stat_callout (corner figure card) ·
+   process_flow (step band) · before_after (twin comparison) · q_a (objection
+   ladder). The preprocessor `plan_diagrams` stage decides which kind (if any)
+   lands on each page; the renderer just draws what it's given. #}
+{% from 'concept_diagram.jinja' import concept_diagram %}
+{% from 'stat_callout.jinja' import stat_callout %}
+{% from 'before_after.jinja' import before_after %}
+{% from 'q_a_ladder.jinja' import q_a_ladder %}
+
+{% macro diagram(d) %}
+{%- if d and d.kind -%}
+  {%- if d.kind == 'convergence' -%}{{ concept_diagram(d) }}
+  {%- elif d.kind == 'stat_callout' -%}{{ stat_callout(d) }}
+  {%- elif d.kind == 'before_after' -%}{{ before_after(d) }}
+  {%- elif d.kind == 'q_a' or d.kind == 'q_a_ladder' -%}{{ q_a_ladder(d) }}
+  {%- endif -%}
+{%- endif -%}
+{% endmacro %}

@@ -1,0 +1,1113 @@
+/* Family anatomy: visible per-family and per-variant layout, token-only.
+   No client literals; every color is a token from tokens.css. */
+
+/* ---- shared anatomy vocabulary ---- */
+.anatomy-face { grid-auto-flow: dense; }
+.region[data-anatomy-role] { position: relative; }
+.anatomy-verdict .heading { font-size: 34pt; letter-spacing: -0.03em; }
+.anatomy-result_band { border-top: 1.4mm solid var(--accent); padding-top: 4mm; }
+.anatomy-figure strong { color: var(--accent); }
+.anatomy-voice { font-style: italic; }
+
+/* ---- editorial_lead ---- */
+.face[data-family-id="editorial_lead"] {
+  grid-template-columns: 1fr 58mm;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "verdict verdict"
+    "argument proof";
+}
+.face[data-family-id="editorial_lead"] .region-headline { grid-area: verdict; }
+.face[data-family-id="editorial_lead"] .region-narrative { grid-area: argument; }
+.face[data-family-id="editorial_lead"] .region-anchor { grid-area: proof; }
+/* The text-led rail still carries a visual anchor: Richard's dense text
+   pages keep a dark proof rail beside the prose, never a bare margin. */
+.face[data-family-id="editorial_lead"][data-variant-id="proof_rail"] .region-anchor {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 7mm 6mm;
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+}
+.face[data-family-id="editorial_lead"][data-variant-id="proof_rail"] .region-anchor .image {
+  /* The rail is a column of ink; its image should occupy that column, not
+     sit as a stamp at the top of it. Growing to the available height keeps
+     the dark field earning its area when the rail carries one element. */
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 150mm;
+  width: 100%;
+  object-fit: cover;
+}
+.face[data-family-id="editorial_lead"][data-variant-id="proof_rail"] .region-anchor .stat strong {
+  color: var(--paper);
+  font-size: 34pt;
+}
+.face[data-family-id="editorial_lead"][data-variant-id="proof_rail"] .region-anchor .stat figcaption {
+  color: var(--rule);
+}
+.face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] {
+  grid-template-columns: 1fr;
+  grid-template-rows: 102mm auto 1fr;
+  grid-template-areas:
+    "proof"
+    "verdict"
+    "argument";
+}
+/* The photo field stays inside the face box: the materialization gate
+   forbids element geometry outside the owning face, so the "bleed" is an
+   in-bounds full-width ink field, never negative margins. */
+.face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] .region-anchor {
+  padding: 10mm;
+  background: var(--ink);
+  color: var(--paper);
+}
+.face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] .region-anchor .image {
+  max-height: 82mm;
+  width: 100%;
+  object-fit: cover;
+}
+.face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] .region-anchor .stat strong {
+  font-size: 48pt;
+  color: var(--paper);
+}
+.face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] .region-anchor .stat figcaption {
+  color: var(--rule);
+}
+
+/* ---- case_narrative: identity / before-turn-after / proof / result ---- */
+.face[data-family-id="case_narrative"] {
+  grid-template-columns: 1fr 62mm;
+  grid-template-rows: 1fr;
+  grid-template-areas: "story rail";
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] {
+  grid-template-columns: 62mm 1fr;
+  grid-template-areas: "rail story";
+}
+.face[data-family-id="case_narrative"] .region-case_story { grid-area: story; }
+.face[data-family-id="case_narrative"] .region-evidence_rail {
+  grid-area: rail;
+  background: color-mix(in srgb, var(--rule) 24%, var(--paper));
+  padding: 8mm 6mm;
+  display: flex;
+  flex-direction: column;
+  gap: 6mm;
+}
+/* A rail taller than its evidence used to show the difference as a void.
+   The device takes the slack up to a bound, so the chart reads at the size
+   the sheet can afford instead of floating in grey. */
+.face[data-family-id="case_narrative"] .region-evidence_rail > .device {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 105mm;
+}
+.face[data-family-id="case_narrative"] .anatomy-identity {
+  font-size: 24pt;
+  padding-bottom: 3mm;
+  border-bottom: 1mm solid var(--ink);
+  margin-bottom: 5mm;
+}
+.face[data-family-id="case_narrative"] .anatomy-before-after {
+  margin: 5mm 0;
+  padding: 4mm 5mm;
+  border: 0.4mm solid var(--rule);
+  background: var(--paper);
+}
+.face[data-family-id="case_narrative"] .anatomy-before-after ul:first-child {
+  color: var(--muted);
+}
+.face[data-family-id="case_narrative"] .anatomy-before-after ul:last-child {
+  font-weight: 640;
+}
+.face[data-family-id="case_narrative"] .anatomy-proof {
+  border-left: 1.2mm solid var(--accent);
+  padding-left: 4mm;
+  font-size: 12pt;
+}
+.face[data-family-id="case_narrative"] .anatomy-result {
+  border-top: 1.4mm solid var(--accent);
+  /* Keeps the result in the family's proof band, which the pixel gate
+     measures as accent ink in the lower face. The 106mm void that used to
+     sit in front of it is gone because the evidence device above now grows
+     into the rail's slack instead of leaving it empty. */
+  margin-top: auto;
+}
+.face[data-family-id="case_narrative"] .anatomy-result strong {
+  font-size: 26pt;
+  color: var(--accent);
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+/* left_rail: the dark evidence field. The reference case pages carry their
+   proof on saturated blocks, so this variant sets every rail element as an
+   in-bounds ink card with reversed type; the tinted rail stays visible in
+   the card gaps (which also preserves the face's type rhythm), and the
+   default right rail keeps the light tinted treatment for the airier case. */
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail > .el:not(.device) {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 5mm;
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail figcaption {
+  color: var(--rule);
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail .bar {
+  background: var(--rule);
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail .bar-row.bar-result .bar,
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail .grouped-comparison .bar-row:last-of-type .bar {
+  background: var(--accent);
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .region-evidence_rail .comparison-delta {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+.face[data-family-id="case_narrative"][data-variant-id="left_rail"] .anatomy-result strong {
+  color: var(--paper);
+}
+
+/* ---- evidence_wall ---- */
+.face[data-family-id="evidence_wall"] {
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "verdict"
+    "wall";
+}
+/* The trust header is a dark band: reversed verdict plus display-scale
+   trust numerals on one ink field (the reference trust walls open dark). */
+.face[data-family-id="evidence_wall"] .region-trust_header {
+  grid-area: verdict;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10mm 8mm;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5mm;
+  align-items: start;
+}
+.face[data-family-id="evidence_wall"] .region-trust_header .heading {
+  grid-column: 1 / -1;
+  font-size: 30pt;
+  margin-bottom: 2mm;
+}
+.face[data-family-id="evidence_wall"] .region-trust_header .stat {
+  border-top: 0.5mm solid var(--rule);
+  padding: 3mm 0 0;
+  /* A grid child defaults to min-content width, so a long German compound
+     pushes its own track wider and shoves the next stat into it. */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.face[data-family-id="evidence_wall"] .region-trust_header .stat strong {
+  font-size: 26pt;
+  color: var(--paper);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.face[data-family-id="evidence_wall"] .region-trust_header .stat figcaption {
+  color: var(--rule);
+  /* Captions share one baseline even when values wrap to different heights. */
+  margin-top: auto;
+  padding-top: 2mm;
+}
+.face[data-family-id="evidence_wall"] .region-proof_wall {
+  grid-area: wall;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5mm;
+  align-content: start;
+}
+.face[data-family-id="evidence_wall"][data-variant-id="review_wall"] .region-proof_wall {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.face[data-family-id="evidence_wall"] .region-proof_wall .el:not(.device) {
+  border: 0.4mm solid var(--rule);
+  padding: 4mm;
+  margin: 0;
+}
+
+/* ---- mechanism_spread / collaboration_pathway / theory mechanism:
+        ordered path vocabulary ---- */
+.anatomy-process_path .process,
+.anatomy-mechanism_field .process {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+.anatomy-process_path .process li,
+.anatomy-mechanism_field .process li {
+  counter-increment: step;
+  position: relative;
+  padding: 3mm 0 3mm 14mm;
+  border-bottom: 0.3mm solid var(--rule);
+}
+.anatomy-process_path .process li::before,
+.anatomy-mechanism_field .process li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 2.5mm;
+  font-weight: 760;
+  font-size: 14pt;
+  color: var(--accent);
+}
+
+/* ---- objection_response / false_belief_stack: objection ladder ---- */
+.anatomy-objection_ladder .quote,
+.anatomy-objection_ladder .body:first-child {
+  background: color-mix(in srgb, var(--rule) 30%, var(--paper));
+  border-left: 1.2mm solid var(--muted);
+  padding: 4mm 5mm;
+  font-style: italic;
+}
+.anatomy-resolution .body { font-weight: 560; }
+
+/* ---- closing_cta ---- */
+/* The close carries its statement high, the way the reference CTA pages do:
+   dead-centering empties the top band entirely and reads as an afterthought. */
+.face[data-family-id="closing_cta"] {
+  align-content: start;
+  padding-top: 34mm;
+  text-align: center;
+}
+/* The close is a dark panel: the reference reports end on saturated fields
+   with reversed display type. The panel is an in-bounds region field. */
+.face[data-family-id="closing_cta"] .region-closing_statement {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14mm;
+  min-height: 80mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.face[data-family-id="closing_cta"] .region-closing_statement .heading {
+  font-size: 44pt;
+  margin: 0;
+}
+.face[data-family-id="closing_cta"] .anatomy-result_band {
+  border-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5mm;
+}
+
+/* ---- semantic data-visualization devices (token-only) ---- */
+.grouped-comparison, .formula-ladder, .time-series, .distribution,
+.composition-breakdown { margin: 0; padding: 4mm 0; }
+.bar-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3mm; margin-bottom: 2.5mm; }
+.bar { display: block; height: 7mm; background: var(--muted); min-width: 2mm; }
+.bar-row.bar-result .bar, .grouped-comparison .bar-row:last-of-type .bar { background: var(--accent); }
+.bar-value { font-size: 12pt; font-weight: 680; white-space: nowrap; }
+.comparison-delta { display: inline-block; margin: 1mm 0 2mm; padding: 1mm 3mm; border: 0.4mm solid var(--accent); color: var(--accent); font-weight: 720; font-size: 11pt; }
+.grouped-comparison figcaption, .formula-ladder figcaption, .time-series figcaption,
+.distribution figcaption, .composition-breakdown figcaption,
+.evidence-gallery figcaption { font-size: 8pt; color: var(--muted); }
+.formula-ladder .ladder-rung { padding: 2mm 0 2mm 6mm; border-left: 0.5mm solid var(--rule); font-size: 12pt; position: relative; }
+.formula-ladder .ladder-rung::before { content: ""; position: absolute; left: -1.1mm; top: 50%; width: 1.8mm; height: 1.8mm; background: var(--muted); border-radius: 50%; }
+.formula-ladder .ladder-result { margin-top: 2mm; padding: 3mm 0 0 6mm; border-left: 0.5mm solid var(--accent); border-top: 0.8mm solid var(--accent); font-size: 20pt; font-weight: 760; color: var(--accent); }
+.evidence-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4mm; }
+.evidence-gallery .gallery-cell { margin: 0; border: 0.4mm solid var(--rule); padding: 2mm; }
+.evidence-gallery img { width: 100%; height: auto; display: block; }
+.logo-wall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4mm; align-items: center; }
+.logo-wall .wall-label { grid-column: 1 / -1; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.logo-wall .logo-cell { width: 100%; height: auto; max-height: 16mm; object-fit: contain; filter: grayscale(1); }
+.proof-wall { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4mm; }
+.proof-wall .proof-cell { margin: 0; border: 0.4mm solid var(--rule); padding: 4mm; font-size: 9.5pt; line-height: 1.3; font-style: italic; }
+
+/* ---- theory_interpretation: principle column + one explanatory mechanism ----
+   Atlas grounding apex-09, buchagentur-11, alexander-13, werkzeug-11,
+   niklas-11, aerzte-11: a theory body beside ONE explanatory device
+   (maturity ladder, Venn, matrix, loop, before-after bars) in its own
+   framed field, labels adjacent to their marks. */
+.face[data-family-id="theory_interpretation"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "principle mechanism";
+}
+.face[data-family-id="theory_interpretation"] .region-principle { grid-area: principle; }
+.face[data-family-id="theory_interpretation"] .region-mechanism { grid-area: mechanism; }
+.face[data-family-id="theory_interpretation"] .region-principle .heading {
+  font-size: 26pt;
+  padding-bottom: 4mm;
+  border-bottom: 1mm solid var(--ink);
+  margin-bottom: 6mm;
+}
+.face[data-family-id="theory_interpretation"] .anatomy-mechanism_field {
+  border: 0.5mm solid var(--rule);
+  background: color-mix(in srgb, var(--rule) 16%, var(--paper));
+  padding: 8mm 6mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6mm;
+}
+.face[data-family-id="theory_interpretation"] .region-mechanism {
+  /* A framed field must be the size of what it frames. Stretching it to the
+     grid row painted a border and tint around 76% empty space. */
+  align-self: start;
+}
+.face[data-family-id="theory_interpretation"] .anatomy-mechanism_field .stat {
+  border-top: 1.4mm solid var(--accent);
+  padding: 4mm 0 0;
+}
+.face[data-family-id="theory_interpretation"] .anatomy-mechanism_field .stat strong {
+  font-size: 34pt;
+  color: var(--accent);
+}
+/* comparison_band: contrast carries the explanation - top principle with a
+   full-width lower device band (niklas-11 before-after bars). */
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "principle"
+    "mechanism";
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field {
+  flex-direction: row;
+  align-items: center;
+  gap: 10mm;
+  border: 0;
+  border-top: 1.4mm solid var(--accent);
+  background: var(--paper);
+  padding: 8mm 0 0;
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field > .el {
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* The band opens on a dark label bar: the first process entry is the
+   device's verdict line and carries an ink field with reversed type. */
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field .process li:first-child {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 0;
+  padding: 6mm 6mm 6mm 16mm;
+  font-size: 15pt;
+  font-weight: 720;
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field .process li:first-child::before {
+  color: var(--paper);
+  left: 5mm;
+  top: 6mm;
+  font-size: 18pt;
+}
+
+/* ---- mechanism_spread: method frame + ordered stage path ----
+   Atlas grounding buchagentur-13, alexander-14, werkzeug-16, niklas-14,
+   aerzte-13: three-to-six numbered stage cards beside or below a dark
+   method thesis frame, strict grid, one shared baseline. */
+.face[data-family-id="mechanism_spread"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "frame"
+    "steps";
+}
+.face[data-family-id="mechanism_spread"] .region-method_frame {
+  grid-area: frame;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm;
+}
+.face[data-family-id="mechanism_spread"] .region-steps { grid-area: steps; }
+.face[data-family-id="mechanism_spread"] .region-method_frame .heading {
+  font-size: 24pt;
+  margin-bottom: 3mm;
+}
+.face[data-family-id="mechanism_spread"] .region-method_frame .stat {
+  border-top: 0.5mm solid var(--rule);
+  padding: 4mm 0 0;
+}
+.face[data-family-id="mechanism_spread"] .region-method_frame .stat strong {
+  color: var(--paper);
+}
+.face[data-family-id="mechanism_spread"] .region-method_frame .stat figcaption {
+  color: var(--rule);
+}
+/* stacked_path: A4 vertical sequence, alternating step field. */
+.face[data-family-id="mechanism_spread"][data-variant-id="stacked_path"] .region-steps .process li {
+  padding-right: 4mm;
+}
+.face[data-family-id="mechanism_spread"][data-variant-id="stacked_path"] .region-steps .process li:nth-child(even) {
+  background: color-mix(in srgb, var(--rule) 20%, var(--paper));
+}
+/* horizontal_spread: the complete journey reads at once - dark method rail
+   on the left, stages as parallel columns sharing one baseline. */
+.face[data-family-id="mechanism_spread"][data-variant-id="horizontal_spread"] {
+  grid-template-columns: 64mm minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "frame steps";
+}
+.face[data-family-id="mechanism_spread"][data-variant-id="horizontal_spread"] .region-steps .process {
+  display: grid;
+  /* One implicit column per step gave 14mm tracks and a six-character
+     measure. A minimum track width lets the steps wrap to a second row
+     and hold a readable German measure instead. */
+  grid-template-columns: repeat(auto-fit, minmax(48mm, 1fr));
+  grid-auto-flow: row;
+  gap: 4mm 5mm;
+  align-content: start;
+}
+.face[data-family-id="mechanism_spread"][data-variant-id="horizontal_spread"] .region-steps .process li {
+  border-bottom: 0;
+  border-top: 1.2mm solid var(--accent);
+  padding: 10mm 2mm 3mm 0;
+  min-width: 0;
+  font-size: 9pt;
+  hyphens: auto;
+}
+.face[data-family-id="mechanism_spread"][data-variant-id="horizontal_spread"] .region-steps .process li::before {
+  top: 2mm;
+  font-size: 16pt;
+}
+
+/* ---- summary_synthesis: consolidated thesis + one remembered payoff ----
+   Atlas grounding apex-14, buchagentur-15, alexander-16, werkzeug-18,
+   niklas-16, aerzte-16: long-form synthesis prose plus one payoff device -
+   a high-contrast rail (P-9a dark divider) or a lower comparison dashboard. */
+.face[data-family-id="summary_synthesis"] {
+  grid-template-columns: minmax(0, 1fr) 56mm;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "synthesis payoff";
+}
+.face[data-family-id="summary_synthesis"] .region-synthesis { grid-area: synthesis; }
+.face[data-family-id="summary_synthesis"] .region-payoff { grid-area: payoff; }
+.face[data-family-id="summary_synthesis"] .region-synthesis .heading {
+  font-size: 28pt;
+  padding-bottom: 4mm;
+  border-bottom: 0.4mm solid var(--rule);
+  margin-bottom: 6mm;
+}
+/* proof_rail: one remembered proof anchors the close on a dark rail. */
+.face[data-family-id="summary_synthesis"][data-variant-id="proof_rail"] .region-payoff {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm 6mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5mm;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="proof_rail"] .region-payoff .stat {
+  border-top: 1.4mm solid var(--accent);
+  padding: 4mm 0 0;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="proof_rail"] .region-payoff .stat strong {
+  font-size: 34pt;
+  color: var(--paper);
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="proof_rail"] .region-payoff .stat figcaption {
+  color: var(--rule);
+}
+/* comparison_dashboard: economic contrast carries the conclusion in a
+   full-width lower band. */
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "synthesis"
+    "payoff";
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff {
+  border-top: 1.4mm solid var(--ink);
+  padding-top: 6mm;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6mm;
+  align-items: start;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff .stat {
+  border-top: 0;
+  padding: 0;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff .stat strong {
+  font-size: 40pt;
+  color: var(--accent);
+}
+/* Dark dashboard treatment: the synthesis verdict and the payoff band both
+   sit on ink fields with reversed type, matching the reference summary's
+   heavy top verdict plus heavy lower payoff. Both fields stay in bounds. */
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-synthesis .heading {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm;
+  border-bottom: 0;
+  font-size: 30pt;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 0;
+  padding: 10mm 8mm;
+  min-height: 88mm;
+  align-content: center;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff .stat strong {
+  color: var(--paper);
+  font-size: 44pt;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff .comparison li:first-child {
+  font-size: 18pt;
+  font-weight: 740;
+  line-height: 1.05;
+  margin-bottom: 3mm;
+}
+.face[data-family-id="summary_synthesis"][data-variant-id="comparison_dashboard"] .region-payoff figcaption {
+  color: var(--rule);
+}
+
+/* ---- objection_response: decision frame + objection/response pairs ----
+   Atlas grounding apex-15, buchagentur-17, alexander-15, werkzeug-15,
+   niklas-17, aerzte-17: numbered objections with concise rebuttals,
+   each response attached to its objection, equal entry hierarchy. */
+.face[data-family-id="objection_response"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "frame"
+    "ladder";
+}
+.face[data-family-id="objection_response"] .region-objection_frame {
+  grid-area: frame;
+  border-bottom: 1mm solid var(--ink);
+  padding-bottom: 4mm;
+}
+.face[data-family-id="objection_response"] .region-objection_frame .heading {
+  font-size: 28pt;
+}
+.face[data-family-id="objection_response"] .region-responses {
+  grid-area: ladder;
+  counter-reset: objection;
+  align-content: start;
+}
+.face[data-family-id="objection_response"] .region-responses .heading {
+  counter-increment: objection;
+  margin: 0;
+  font-size: 13pt;
+}
+/* numbered_ladder: sequential reassurance - a single vertical ladder with
+   accent index numerals and italic objection voice. */
+.face[data-family-id="objection_response"][data-variant-id="numbered_ladder"] .region-responses .heading {
+  position: relative;
+  border-top: 0.3mm solid var(--rule);
+  padding: 4mm 0 1.5mm 15mm;
+  font-style: italic;
+  color: var(--muted);
+}
+.face[data-family-id="objection_response"][data-variant-id="numbered_ladder"] .region-responses .heading::before {
+  content: counter(objection, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 3.5mm;
+  font-style: normal;
+  font-weight: 760;
+  font-size: 14pt;
+  color: var(--accent);
+}
+.face[data-family-id="objection_response"][data-variant-id="numbered_ladder"] .region-responses .body {
+  margin: 0 0 5mm;
+  padding-left: 15mm;
+}
+/* response_grid: rapid scanning - paired rows, objection card left,
+   response right (niklas-17 horizontal objection cards). */
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-responses {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 4mm 5mm;
+  align-content: start;
+}
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-objection_frame {
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 0;
+  padding: 10mm 8mm;
+  min-height: 66mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4mm;
+}
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-objection_frame .heading {
+  font-size: 32pt;
+}
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-responses .heading {
+  background: var(--ink);
+  color: var(--paper);
+  border-left: 1.2mm solid var(--accent);
+  padding: 4mm;
+  font-style: italic;
+}
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-responses .heading::before {
+  content: counter(objection, decimal-leading-zero) "  ";
+  font-style: normal;
+  font-weight: 760;
+  color: var(--accent);
+}
+.face[data-family-id="objection_response"][data-variant-id="response_grid"] .region-responses .body {
+  margin: 0;
+  align-self: center;
+}
+
+/* ---- collaboration_pathway: commitment rail + ordered stages ----
+   Atlas grounding apex-16, buchagentur-18, alexander-17, werkzeug-19,
+   niklas-18, aerzte-18: five or six numbered stage cards with a
+   partnership commitment rail that never interrupts the pathway. */
+.face[data-family-id="collaboration_pathway"] {
+  grid-template-columns: 60mm minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: "commitment pathway";
+}
+.face[data-family-id="collaboration_pathway"] .region-commitment {
+  grid-area: commitment;
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+}
+.face[data-family-id="collaboration_pathway"] .region-pathway { grid-area: pathway; }
+.face[data-family-id="collaboration_pathway"] .region-commitment .heading {
+  font-size: 22pt;
+  margin: 0;
+}
+.face[data-family-id="collaboration_pathway"] .region-commitment .stat {
+  margin-top: auto;
+  border-top: 1.4mm solid var(--accent);
+  padding: 4mm 0 0;
+}
+.face[data-family-id="collaboration_pathway"] .region-commitment .stat strong {
+  font-size: 30pt;
+  color: var(--accent);
+}
+/* step_cards: each commitment receives equal weight - repeated dark cards
+   in two columns (alexander-17 six navy cards in two columns). The cards
+   are ink fields with reversed type and display-scale index numerals. */
+.face[data-family-id="collaboration_pathway"][data-variant-id="step_cards"] .region-pathway .process {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 5mm;
+  align-content: stretch;
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="step_cards"] .region-pathway .process li {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-bottom: 0;
+  padding: 14mm 5mm 5mm;
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="step_cards"] .region-pathway .process li::before {
+  left: 5mm;
+  top: 4mm;
+  font-size: 20pt;
+}
+/* guided_path: journey continuity - one connected accent path with the
+   commitment rail moved to the outcome side, set dark. */
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] {
+  grid-template-columns: minmax(0, 1fr) 60mm;
+  grid-template-areas: "pathway commitment";
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] .region-commitment {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm 6mm;
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] .region-commitment .stat strong {
+  color: var(--paper);
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] .region-commitment .stat figcaption {
+  color: var(--rule);
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] .region-pathway .process li {
+  border-bottom: 0;
+  border-left: 1mm solid var(--accent);
+  padding: 3mm 0 7mm 13mm;
+}
+.face[data-family-id="collaboration_pathway"][data-variant-id="guided_path"] .region-pathway .process li::before {
+  left: 4mm;
+}
+
+/* ---- false_belief_stack: belief-system frame + numbered belief units ----
+   Atlas grounding apex-05, alexander-05, niklas-06, aerzte-07: an opening
+   frame over repeated misconception units - large accent numerals
+   (niklas-06) or dark belief cards (alexander-05, aerzte-07). */
+.face[data-family-id="false_belief_stack"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "opening"
+    "beliefs";
+}
+.face[data-family-id="false_belief_stack"] .region-opening { grid-area: opening; }
+.face[data-family-id="false_belief_stack"] .region-opening .heading {
+  font-size: 30pt;
+}
+.face[data-family-id="false_belief_stack"] .region-beliefs {
+  grid-area: beliefs;
+  counter-reset: belief;
+  align-content: start;
+}
+.face[data-family-id="false_belief_stack"] .region-beliefs .heading {
+  counter-increment: belief;
+  margin: 0;
+  font-size: 13.5pt;
+}
+/* numbered_rows: editorial reading first - a single stacked column with
+   large accent numerals in the gutter. */
+.face[data-family-id="false_belief_stack"][data-variant-id="numbered_rows"] .region-beliefs .heading {
+  position: relative;
+  border-top: 0.3mm solid var(--rule);
+  padding: 5mm 0 1.5mm 22mm;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="numbered_rows"] .region-beliefs .heading::before {
+  content: counter(belief);
+  position: absolute;
+  left: 0;
+  top: 3mm;
+  font-size: 30pt;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="numbered_rows"] .region-beliefs .body {
+  margin: 0 0 5mm;
+  padding-left: 22mm;
+}
+/* card_grid: scan comparison first - paired rows of dark belief cards with
+   their rebuttals beside them. The opening verdict sits on its own dark
+   field (the reference belief pages open on a heavy reversed band), which
+   also keeps the family's top-band hierarchy above its pixel floor while
+   the belief cards add body ink. */
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-opening {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8mm 8mm;
+  min-height: 70mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-opening .heading {
+  font-size: 34pt;
+  margin: 0;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-beliefs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3.5mm;
+  align-content: start;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-beliefs .heading {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 3.5mm 4mm;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-beliefs .heading::before {
+  content: counter(belief) "  ";
+  color: var(--accent);
+  font-weight: 800;
+}
+.face[data-family-id="false_belief_stack"][data-variant-id="card_grid"] .region-beliefs .body {
+  margin: 0;
+  padding: 1mm 0;
+  align-self: center;
+}
+
+/* ---- display voice: Richard-weight headline setting (weights/tracking only
+   in shared rules; sizes stay family-scoped for the type-bound budget) ---- */
+.anatomy-verdict .heading { font-weight: 830; letter-spacing: -0.04em; }
+.el.heading { font-weight: 780; letter-spacing: -0.03em; }
+.stat strong, .ladder-result, .bar-value { font-weight: 840; }
+
+/* ---- cover statement: the first face is the report's declaration.
+   Sized to coexist with reference-density body copy; the geometry gate
+   rejected the taller field + 48pt title (element_clipped on face.01). ---- */
+.fragment:first-child .face[data-family-id="editorial_lead"] .region-headline .heading {
+  font-size: 40pt;
+  font-weight: 870;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  border-bottom: 1.4mm solid var(--accent);
+  padding-bottom: 3mm;
+}
+.fragment:first-child .face[data-family-id="editorial_lead"][data-variant-id="photo_bleed"] .region-anchor .stat strong {
+  font-size: 48pt;
+  letter-spacing: -0.03em;
+}
+
+/* ---- A3 theory spread: asymmetric halves (reference spreads pair one
+   statement half with one dense working half, never two equal pages) ---- */
+.fragment.a3 .face[data-family-id="theory_interpretation"]:first-child {
+  background: color-mix(in srgb, var(--rule) 30%, var(--paper));
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"]:first-child .region-principle .heading {
+  font-size: 44pt;
+  font-weight: 860;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"]:first-child .region-principle .body:first-of-type {
+  font-size: 13pt;
+  line-height: 1.4;
+  font-weight: 560;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"]:last-child .region-principle .heading {
+  font-size: 20pt;
+}
+/* theory ink refinement: the dark device label bar sits slightly above the
+   family's own reference band; thin it toward the measured 0.09 */
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .region-mechanism .process li:first-child {
+  padding-top: 2mm;
+  padding-bottom: 2mm;
+}
+
+/* ================================================================
+   VISUAL DEFECT FIXES (owner eye-test 2026-08-07)
+   1. The device label bar is a verdict line, not a numbered step: it
+      carries no numeral and does not consume the counter, so the real
+      steps read 01..n instead of colliding with the band.
+   2. Dense text regions set in ONE wide column produced 100+ character
+      measures and stranded devices in a dead page middle. Richard's
+      pages are multi-column. Text regions now flow in two columns with
+      a rule between, which fixes measure, fills the page, and removes
+      the void. Paragraphs never split across columns, so element
+      geometry stays one box per element for the materialization gate.
+   ================================================================ */
+.anatomy-mechanism_field .process li:first-child,
+.anatomy-process_path .process li:first-child.verdict-row {
+  counter-increment: none;
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field .process li:first-child {
+  padding-left: 6mm;
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field .process li:first-child::before {
+  content: none;
+}
+
+/* The device sizes to its content instead of floating in a stretched
+   region: the band sits directly under the prose it explains. */
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.face[data-family-id="theory_interpretation"][data-variant-id="comparison_band"] .anatomy-mechanism_field {
+  align-items: flex-start;
+}
+
+
+/* ================================================================
+   LAYER OWNERSHIP (2026-08-07)
+   The family layer owns page anatomy: which region sits where, how the
+   face is divided, what is dark and what is light. The component
+   library owns every device's own design. A family rule must never
+   repaint a device, or the device's contrast rules collide with the
+   region's (dark delta on a dark card, invisible bars). Devices get
+   spacing and width from the family, styling from the library.
+   ================================================================ */
+.el.device {
+  background: none;
+  color: inherit;
+  padding: 0;
+  border: 0;
+  margin: 0 0 5mm;
+  max-width: 100%;
+}
+.el.device > * { max-width: 100%; }
+.region-evidence_rail .el.device,
+.anatomy-mechanism_field .el.device { margin-bottom: 0; }
+
+/* A device in a narrow rail keeps its design but not its display type scale:
+   the rail is ~62mm, where stat-xl numerals overflow the column. Scoped to
+   the container, so the same device drawn in a wide band stays full scale. */
+.region-evidence_rail .el.device {
+  --type-stat-xl: 26pt;
+  --type-stat: 20pt;
+  --type-h2: 13pt;
+  --type-h3: 11pt;
+  --type-lede: 10pt;
+  font-size: 9pt;
+}
+.region-evidence_rail .el.device .c-viz-ba__num { font-size: 15pt; }
+.region-evidence_rail .el.device figcaption { font-size: 7.5pt; }
+
+/* A spread half carries the same copy in a shorter measure than a lone A4
+   page, so theory prose tightens rather than overflowing the face box. */
+.fragment.a3 .face[data-family-id="theory_interpretation"] .region-principle .body {
+  /* 9.2pt is the contract's declared minimum for this region; the space is
+     taken from the device band's padding instead of from legibility. */
+  font-size: 9.2pt;
+  line-height: 1.22;
+  margin-bottom: 1.6mm;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"] .anatomy-mechanism_field {
+  padding-top: 4mm;
+  gap: 5mm;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"] .anatomy-mechanism_field .process li {
+  padding-top: 1.6mm;
+  padding-bottom: 1.6mm;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"] .region-principle .heading {
+  font-size: 22pt;
+  margin-bottom: 4mm;
+}
+
+
+/* The theory spread half divides its face explicitly: prose column takes the
+   remaining height, the device band takes only what it needs. Without the
+   min-height:0 the prose row cannot shrink and its last paragraph overflows
+   the face box (element_clipped on face.07). */
+.fragment.a3 .face[data-family-id="theory_interpretation"] {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"] .region-principle {
+  min-height: 0;
+  overflow: hidden;
+}
+
+
+/* Theory on a spread half: both columns bounded so neither can push its last
+   paragraph past the face edge (element_clipped, face.07). */
+.fragment.a3 .face[data-family-id="theory_interpretation"] .region-principle,
+.fragment.a3 .face[data-family-id="theory_interpretation"] .region-mechanism {
+  min-height: 0;
+  overflow: hidden;
+}
+.fragment.a3 .face[data-family-id="theory_interpretation"][data-variant-id="diagram_split"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+/* An inlined chart SVG has a fixed viewBox; without this it draws at its
+   intrinsic size and floats small inside whatever column it was given. */
+.el.device-svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+/* ---- AIRY VARIANTS ----
+   Three families had a FLAT ladder (every variant at the same envelope_scale)
+   so the conductor could not step them at all. Each gains one variant built
+   for its sparsest third, measured from the reference atlas. A variant with
+   no geometry is just a name, so each is drawn here. */
+
+/* case_narrative / story_column (0.71): no rail. A thin case reads as one
+   column with its evidence as a band, instead of a wide empty grey rail. */
+.face[data-family-id="case_narrative"][data-variant-id="story_column"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: "story" "rail";
+}
+.face[data-family-id="case_narrative"][data-variant-id="story_column"] .region-case_story {
+  column-count: 2;
+  column-gap: 10mm;
+  column-rule: 0.4mm solid var(--rule);
+}
+.face[data-family-id="case_narrative"][data-variant-id="story_column"] .region-evidence_rail {
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 8mm;
+  padding: 8mm 10mm;
+}
+.face[data-family-id="case_narrative"][data-variant-id="story_column"] .anatomy-result {
+  margin-top: 0;
+  border-top: 0;
+}
+.face[data-family-id="case_narrative"][data-variant-id="story_column"] .region-evidence_rail .image {
+  max-height: 42mm;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* evidence_wall / stacked_proof (0.27): a page with two reviews and four
+   marks should not be a sparse grid. One column, large cards, header inline. */
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas: "verdict" "proof";
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .region-trust_header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6mm 10mm;
+  padding: 8mm;
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .region-trust_header .heading {
+  flex: 1 1 100%;
+  font-size: 26pt;
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .region-proof_wall {
+  display: flex;
+  flex-direction: column;
+  gap: 6mm;
+  padding: 8mm 0 0;
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .proof-wall {
+  grid-template-columns: minmax(0, 1fr);
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .proof-wall .proof-cell {
+  font-size: 13pt;
+  line-height: 1.36;
+  padding: 8mm;
+  border-left: 1.4mm solid var(--accent);
+  border-top: 0; border-right: 0; border-bottom: 0;
+}
+.face[data-family-id="evidence_wall"][data-variant-id="stacked_proof"] .logo-wall {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6mm;
+}
+
+/* closing_cta / single_statement (0.24): 35 words on an A4 is not a layout
+   problem to be padded, it is a close. One centred statement, identity as a
+   footer rule beneath it. */
+.face[data-family-id="closing_cta"][data-variant-id="single_statement"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: "statement" "identity";
+  background: var(--ink);
+  color: var(--paper);
+}
+.face[data-family-id="closing_cta"][data-variant-id="single_statement"] .region-closing_statement {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 22mm;
+}
+.face[data-family-id="closing_cta"][data-variant-id="single_statement"] .region-closing_statement .heading {
+  font-size: 34pt;
+  line-height: 1.12;
+  max-width: 130mm;
+}
+.face[data-family-id="closing_cta"][data-variant-id="single_statement"] .region-identity_close {
+  border-top: 0.6mm solid color-mix(in srgb, var(--paper) 40%, transparent);
+  padding: 8mm 16mm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8mm;
+}
+
+/* Every image is cropped to the subject its own pixels point at, via an
+   inline object-position the renderer measures. `cover` without that just
+   keeps the middle of the frame, which is how a face gets cut in half. */
+.face .el.image {
+  object-fit: cover;
+}

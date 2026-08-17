@@ -1,0 +1,1513 @@
+{
+  "version": "2.0",
+  "generated_at": "2026-06-17T13:23:21.118877Z",
+  "record_id": "APEX-R1",
+  "brand": {
+    "brand_primary": "#4A7C7E",
+    "brand_accent": "#4A7C7E",
+    "brand_neutral_dark": "#2E3E50",
+    "brand_neutral_mid": "#5E5E58",
+    "brand_neutral_light": "#F6F3ED",
+    "font_heading": "Gestura Headline",
+    "font_body": "Source Sans 3",
+    "qr_target_url": "https://apex-consulting.ai",
+    "company_name_short": "APEX Consulting",
+    "company_url_display": "apex-consulting.ai"
+  },
+  "axes": {
+    "headline_type": "serif",
+    "palette": "mono_tonal",
+    "accent_mechanic": "tonal_same_hue",
+    "texture": "smooth",
+    "qr_enabled": false,
+    "density": "compact",
+    "ground_mode": "light"
+  },
+  "brand_axes": {
+    "headline_type": "serif",
+    "ground_mode": "light",
+    "texture": "smooth",
+    "accent_mechanic": "tonal_same_hue"
+  },
+  "provenance": {
+    "headline_type": "brand_profile",
+    "texture": "brand_profile",
+    "density": "brand_profile",
+    "ground_mode": "default",
+    "accent_mechanic": "brand_profile",
+    "palette": "derived",
+    "qr_enabled": "default"
+  },
+  "fonts": {
+    "heading": {
+      "name": "Gestura Headline",
+      "path": null,
+      "source": "customer_upload_needed"
+    },
+    "body": {
+      "name": "Source Sans 3",
+      "path": "fonts/SourceSans3[wght].ttf",
+      "source": "customer_upload_needed"
+    }
+  },
+  "report_assets": [
+    {
+      "slot_id": "background_texture",
+      "image_type": "texture",
+      "path": "assets/report_background_texture.png",
+      "status": "generated",
+      "message": "reused apex fixture image (R1 generator)",
+      "prompt": null,
+      "negative_prompt": null
+    },
+    {
+      "slot_id": "panel_texture",
+      "image_type": "panel_texture",
+      "path": "assets/report_navy_stone.png",
+      "status": "generated",
+      "message": "code-generated navy marble (panel_marble.py)",
+      "prompt": null,
+      "negative_prompt": null
+    }
+  ],
+  "pages": [
+    {
+      "slot": 1,
+      "st_type": "ST-01",
+      "css_template": "cover",
+      "has_cta": false,
+      "page_numbers": "1",
+      "cover_validation": null,
+      "data": {
+        "title": "Dein Wachstum frisst dich selbst auf",
+        "subtitle": "Wie manuelle Prozesse und fehlendes Automatisierungssystem B2B-Geschäftsführer zum Flaschenhals ihrer eigenen Firma machen.",
+        "kicker_pills": [
+          "PROZESSAUTOMATISIERUNG",
+          "AI-AGENTEN",
+          "B2B-SKALIERUNG"
+        ],
+        "proof_stats": [
+          {
+            "value": "100+",
+            "label": "AI-Projekte"
+          },
+          {
+            "value": "30-50%",
+            "label": "Kostensenkung"
+          }
+        ],
+        "author": {
+          "name": "Jousef",
+          "role": "Gründer, APEX Consulting"
+        },
+        "title_accent": "frisst dich selbst auf",
+        "audience": "Für Agenturen, KMU & B2B-Dienstleister",
+        "intro": "Dein Unternehmen wächst. Neue Kunden kommen rein, das Team ist beschäftigt, der Umsatz steigt. Und trotzdem schläfst du schlecht. Dieser Report zeigt, warum mehr Mitarbeiter das Problem nicht lösen – und wie AI-Agenten repetitive Kernprozesse vollständig übernehmen, 30-50% der Betriebskosten eliminieren und dein Unternehmen skalierbar machen.",
+        "teaser_bullets": [
+          "Warum 60% aller AI-Investitionen keinen messbaren Wert liefern – und welche 3 Bedingungen den Unterschied machen (BCG, 2026).",
+          "Wie B2B-Firmen Umsatz skalieren, ohne einen einzigen neuen Mitarbeiter einzustellen.",
+          "Welche 5 Prozesse in deinem Unternehmen gerade still Kapazität verbrennen – und wie du sie in unter 30 Tagen automatisierst."
+        ],
+        "inclusions": [
+          "3 reale B2B-Fallstudien mit messbaren Ergebnissen",
+          "Das Done-For-You AI Automation Framework Schritt für Schritt",
+          "Die 5 Prozesse, die still deine Kapazität verbrennen"
+        ],
+        "teaser_items": [
+          "Warum 60% aller AI-Investitionen keinen messbaren Wert liefern – und welche 3 Bedingungen den Unterschied machen (BCG, 2026).",
+          "Wie B2B-Firmen Umsatz skalieren, ohne einen einzigen neuen Mitarbeiter einzustellen.",
+          "Welche 5 Prozesse in deinem Unternehmen gerade still Kapazität verbrennen – und wie du sie in unter 30 Tagen automatisierst."
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "founder_hero",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/1_founder.jpg",
+          "drive_key": "founder",
+          "index": null,
+          "expected": "founder",
+          "warnings": [],
+          "slot_id": "founder",
+          "image_type": "portrait",
+          "aspect_ratio": "3x4"
+        }
+      ],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 2,
+      "st_type": "ST-02",
+      "css_template": "outlook",
+      "has_cta": false,
+      "page_numbers": "2",
+      "cover_validation": null,
+      "data": {
+        "title": "Dein Wachstum scheitert nicht am Markt",
+        "body": "Dein Unternehmen läuft. Du gewinnst Kunden, dein Team liefert, der Umsatz steigt. Trotzdem lässt du jeden Monat Geld auf dem Tisch – weil jeder neue Auftrag mehr manuelle Arbeit bedeutet, nicht mehr Gewinn.\n\nManuelle Prozesse fressen in B2B-Unternehmen bis zu 30 % der gesamten Betriebskosten – allein in der deutschen Beratungsbranche €700 bis €800 Millionen jährlich (BCG, 2025). Das ist kein Randproblem. Das ist struktureller Gewinnverlust, versteckt in jeder Excel-Liste, jedem manuellen Onboarding, jeder Statusrunde.\n\nDas eigentliche Problem ist nicht zu wenig Umsatz. Das Problem: Dein Betrieb ist so gebaut, dass mehr Umsatz automatisch mehr Overhead bedeutet. Jeder neue Kunde erhöht die Last auf deinem Team. Jede Anfrage landet als manuelle Aufgabe auf einem Schreibtisch. Du wächst – aber deine Marge schrumpft.\n\nDieser Report zeigt, warum 60 % der Unternehmen trotz erheblicher Investitionen keinen messbaren Wert aus AI-Initiativen ziehen (BCG, 2026) – und was die 40 % anders machen. Konkret: Wie B2B-Unternehmen mit 10 bis 50 Mitarbeitern ihre operativen Kernprozesse durch spezialisierte AI-Agenten vollständig automatisieren und dabei 30 bis 50 % ihrer Betriebskosten eliminieren, ohne ihre bestehende Tool-Umgebung aufzugeben oder ein einziges IT-Projekt zu stemmen.\n\nKeine generischen KI-Ratschläge. Du wirst sehen, wo genau der Flaschenhals entsteht, was er dich pro Monat kostet – und welcher Mechanismus ihn dauerhaft beseitigt.",
+        "zielgruppe": [
+          "B2B-Unternehmen mit 10 bis 50 Mitarbeitern",
+          "€500.000 bis €3 Millionen Jahresumsatz",
+          "Geschäftsführer, bei denen jeder neue Kunde mehr Overhead erzeugt als Marge",
+          "Teams, die in der Phase stecken, in der manuelles Wachstum aufhört zu funktionieren"
+        ],
+        "pullquote": "Nicht zu wenig Umsatz ist das Problem – sondern ein Betrieb, in dem jeder neue Kunde mehr Overhead bringt als Marge.",
+        "viz": [
+          {
+            "preset": "radial_cluster",
+            "rings": [
+              {
+                "percent": 30,
+                "figure": "30 %",
+                "label": "der Betriebskosten gehen für manuelle Prozesse drauf"
+              },
+              {
+                "percent": 60,
+                "figure": "60 %",
+                "label": "der Firmen ziehen keinen messbaren AI-Return"
+              },
+              {
+                "percent": 50,
+                "figure": "30-50 %",
+                "label": "der Betriebskosten sind eliminierbar"
+              }
+            ],
+            "source": "BCG 2025 · BCG 2026 · PwC 2026"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 3,
+      "st_type": "ST-05",
+      "css_template": "about",
+      "has_cta": false,
+      "page_numbers": "3",
+      "cover_validation": null,
+      "data": {
+        "title": "Über 100 AI-Projekte. Ein Ergebnis: Betrieb ohne Flaschenhals.",
+        "body": "APEX Consulting hat über 100 B2B-Unternehmen dabei begleitet, repetitive Kernprozesse vollständig aus dem Tagesgeschäft zu eliminieren. Kunden wie Frese Recruiting, Conesso GmbH und Pure Media Marketing haben Antwortzeiten von 24 Stunden auf Minuten reduziert und Onboarding-Prozesse von 30 Minuten auf 2 verkürzt.\n\nJousef gründete APEX Consulting mit einer präzisen These: Wachstumsprobleme in B2B-Unternehmen sind selten Umsatzprobleme. Sie sind Automatisierungsprobleme. Jede Stunde, die ein Team mit manueller CRM-Pflege, Excel-Konsolidierung oder repetitivem Onboarding verbringt, ist eine Stunde, die nicht für Strategie, Kundenarbeit oder Umsatz genutzt wird. Manuelle Prozesse fressen in deutschen B2B-Unternehmen bis zu 30% der Betriebskosten (BCG, 2025) – und die meisten Geschäftsführer wissen es, ohne den Hebel zu kennen.",
+        "stats": [
+          {
+            "value": "100+",
+            "label": "AI-Projekte"
+          },
+          {
+            "value": "€200k+",
+            "label": "Einsparung/Jahr"
+          },
+          {
+            "value": "30-50%",
+            "label": "Betriebskosten"
+          }
+        ],
+        "partners": [
+          "Frese Recruiting",
+          "Conesso GmbH",
+          "Pure Media Marketing"
+        ],
+        "credibility_points": [
+          "Abgeschlossene AI-Projekte: 100+",
+          "Betriebskosteneinsparung: 30–50 %",
+          "Onboarding-Reduktion: von 30 Min. auf 2 Min.",
+          "Support-Kosteneinsparung: über €200.000 / Jahr",
+          "Betreute Branchen: Agenturen, Consulting, Recruiting"
+        ],
+        "testimonials": [
+          "assets/ig_jousefmrd_DM__cn-IgiY_3.jpg",
+          "assets/ig_jousefmrd_DQXmnfZjKnp_2.jpg"
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "team",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "team",
+          "index": null,
+          "expected": "team",
+          "warnings": [],
+          "slot_id": "about_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "4x3"
+        },
+        {
+          "slot_kind": "press_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "press-logo-*",
+          "index": null,
+          "expected": "press-logo-*",
+          "warnings": [],
+          "slot_id": "press_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "client_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "client-logo-*",
+          "index": null,
+          "expected": "client-logo-*",
+          "warnings": [],
+          "slot_id": "client_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_0.png",
+          "drive_key": "proof-*",
+          "index": 0,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_1.png",
+          "drive_key": "proof-*",
+          "index": 1,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_2.png",
+          "drive_key": "proof-*",
+          "index": 2,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "logo",
+          "index": null,
+          "expected": "logo",
+          "warnings": [],
+          "slot_id": "about_logo",
+          "image_type": "logo",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 4,
+      "st_type": "ST-09",
+      "css_template": "status_quo",
+      "has_cta": false,
+      "page_numbers": "4",
+      "cover_validation": null,
+      "data": {
+        "title": "Dein Unternehmen wächst. Deine Prozesse nicht.",
+        "body": "Du hast Kunden, ein Team, Umsatz – und trotzdem läuft jeden Montag dasselbe Programm: manuelle Listen, offene Tickets, unbeantwortete Anfragen. Manuelle Prozesse fressen in deutschen B2B-Beratungen 25–30 % der gesamten Betriebskosten (BCG, 2025). Das ist kein Disziplin- oder Personalmanagement-Problem. Es ist ein Strukturproblem. Dein Unternehmen wurde gebaut für die Größe, die es hatte, nicht für die, die es haben will. Jeder neue Kunde erhöht nicht nur den Umsatz, sondern auch den manuellen Overhead. Jede neue Anfrage landet bei jemandem, der bereits ausgelastet ist. Die Folge: Burnout betrifft heute rund 50 % aller Wissensarbeiter (BCG, 2024). Was du täglich siehst, sind Symptome dieses Strukturfehlers. Sie sind kein Zufall – sie haben eine gemeinsame Ursache, und die lässt sich beheben, ohne dein Team zu ersetzen oder dein System neu zu bauen.",
+        "symptoms": [
+          {
+            "title": "Montagmorgen kostet drei Stunden Überblick",
+            "body": "Du öffnest fünf verschiedene Tools, kopierst Daten in eine Excel-Tabelle und versuchst zu rekonstruieren, welcher Kunde in welchem Status ist. Ohne diesen manuellen Aufwand weißt du schlicht nicht, wo dein Unternehmen gerade steht."
+          },
+          {
+            "title": "CRM voller Duplikate, Deals fallen durch",
+            "body": "Dein Sales-Team sucht länger nach dem richtigen Kontakt als es verkauft. Doppelte Einträge, veraltete Notizen, leere Felder. Vielversprechende Leads verschwinden im System, weil niemand den Überblick hat."
+          },
+          {
+            "title": "Kundenanfragen warten 12 bis 24 Stunden",
+            "body": "WhatsApp, E-Mail, Ticket-System: alles läuft parallel, alles landet manuell beim Team. Die Antwortzeit beträgt einen halben bis ganzen Tag. Kunden werden ungeduldig, Founder springen ein und löschen Brände statt Strategie zu machen."
+          },
+          {
+            "title": "Onboarding dauert 30 Minuten pro Kunde",
+            "body": "Jeder neue Kunde bedeutet: Daten per Hand übertragen, Zugänge einzeln anlegen, Briefings in Dokumente kopieren. Hohe Fehlerquote inklusive. Diese 30 Minuten multiplizieren sich mit jedem neuen Kunden."
+          },
+          {
+            "title": "Jede Entscheidung läuft über dich",
+            "body": "Kein Lead wird qualifiziert, keine Anfrage beantwortet, kein Problem gelöst, ohne dass du involviert bist. Urlaub ist faktisch unmöglich. Das Unternehmen skaliert nicht, weil du der einzige Engpass bist."
+          },
+          {
+            "title": "Marketing-Pipeline ist chronisch leer",
+            "body": "Jedes Asset, jede E-Mail, jeder Post wird manuell produziert. Eine Stunde pro Stück. Das Team kommt nicht hinterher, Kampagnen verzögern sich um Wochen, und qualifizierte Inbound-Leads bleiben aus."
+          }
+        ],
+        "viz": [
+          {
+            "preset": "mega_numeral",
+            "value": "50 %",
+            "label": "der Wissensarbeiter sind heute von Burnout betroffen"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 5,
+      "st_type": "ST-14",
+      "css_template": "false_beliefs",
+      "has_cta": false,
+      "page_numbers": "5",
+      "cover_validation": null,
+      "data": {
+        "title": "Drei Lügen, die dein Wachstum blockieren",
+        "body": "Drei Gedanken kosten dich jeden Monat bares Geld – und keiner davon stimmt.",
+        "beliefs": [
+          {
+            "irrglaube": "„„Mehr Mitarbeiter einstellen ist der einzige Weg, um mehr Kunden zu betreuen.\"",
+            "realitaet": "Skalierung entsteht durch Systeme, nicht durch Köpfe.\n\nJede Stelle kostet Recruiting, Einarbeitung, Overhead – Automatisierung liefert 30–50 % mehr Effizienz ohne einen neuen Arbeitsvertrag.",
+            "quelle": "PwC 2026 · Hiring Lab 2026"
+          },
+          {
+            "irrglaube": "„„Unser CRM und unsere Prozesse sind gut genug – wir brauchen einfach mehr Leute.\"",
+            "realitaet": "Ein kaputtes System skaliert nur sein eigenes Chaos.\n\nWer defekte Prozesse automatisiert, zementiert ihre Ineffizienz – sauber implementiert senkt CRM-Automatisierung den manuellen Aufwand um 40–45 %.",
+            "quelle": "PwC 2025 · KPMG 2025"
+          },
+          {
+            "irrglaube": "„„KI ist nur für große Konzerne mit riesigen Budgets und IT-Abteilungen.\"",
+            "realitaet": "90 % der CEOs setzen KI bereits zur Kostensenkung ein.\n\n58 % der B2B-Unternehmen nutzen autonome Systeme – auch Agenturen mit 10–50 Mitarbeitern. Während du wartest, automatisieren deine Wettbewerber.",
+            "quelle": "BCG 2025 · KPMG 2026"
+          }
+        ],
+        "diagram": {
+          "kind": "convergence",
+          "nodes": [
+            "Mehr Mitarbeiter",
+            "Bessere Tools",
+            "Nur für Konzerne"
+          ],
+          "center_lead": "Systeme",
+          "center": "statt Ressourcen",
+          "source": "plan_diagrams"
+        }
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 6,
+      "st_type": "ST-31",
+      "css_template": "atemseite",
+      "has_cta": false,
+      "page_numbers": "6",
+      "cover_validation": null,
+      "data": {
+        "phrase": "Wachstum ist kein Personalproblem. Es ist ein Systemproblem."
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [
+        {
+          "slot_id": "breathing_bg_1",
+          "image_type": "scene",
+          "path": "assets/ig_jousefmrd_DX2kDuvDL40_8.jpg",
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
+      "components": []
+    },
+    {
+      "slot": 7,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "7",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Martina Ammon führt parallel eine Anwaltskanzlei und ein Coaching-Business. Zwei Unternehmen, eine Gründerin, ein Team – und ein Kundenstamm, der schneller wuchs als die Kapazität, ihn zu betreuen.",
+        "ausgangsproblem": "Rapides Wachstum klingt nach Erfolg. Für Martina Ammon bedeutete es: täglich neue Anfragen, die manuell beantwortet werden mussten. Jede Kundenaufnahme lief über handgeschriebene Formulare und Copy-Paste-Prozesse. Die Gründerin verbrachte mehr Zeit mit operativer Brandbekämpfung als mit strategischer Arbeit.",
+        "ziel": "Der Wendepunkt kam, als Martina Ammon erkannte, dass kein weiterer Mitarbeiter das Grundproblem lösen würde: Ohne automatisierte Betriebsebene würde jede neue Kapazität sofort von manuellen Prozessen aufgefressen.",
+        "loesung": "APEX Consulting implementierte Custom AI-Agenten direkt in die bestehende Tool-Umgebung – ohne Migration, ohne monatelanges IT-Projekt. Ein automatisierter Kundenaufnahme-Prozess ersetzte die manuellen Formulare. Ein Dokumentenverarbeitungs-Agent übernahm repetitive Dateioperationen. Ein 24/7-Support-Tool beantwortete Standardanfragen ohne menschliches Eingreifen.",
+        "ergebnis_text": "Die operative Belastung wurde systematisch eliminiert. Kundenanfragen wurden in Minuten statt Stunden beantwortet. Zum ersten Mal konnte die Gründerin wachsendes Volumen bewältigen, ohne proportional mehr Zeit zu investieren.",
+        "ergebnis_headline": "Von operativem Chaos zu skalierbarer KI-Infrastruktur",
+        "fallstudie_number": 1,
+        "ergebnis_metrics": [
+          {
+            "value": "24 Std. → Minuten",
+            "label": "Support-Reaktionszeit"
+          },
+          {
+            "value": "> 200.000 €",
+            "label": "Support-Einsparung / Jahr"
+          },
+          {
+            "value": "4",
+            "label": "Automatisierte Kernprozesse"
+          }
+        ],
+        "kunde": {
+          "name": "Martina Ammon",
+          "funktion": "Gründerin, Anwaltskanzlei & Coaching-Business",
+          "company_url": "apex-consulting.ai"
+        },
+        "pullquote": {
+          "text": "APEX hat unsere Antwortzeiten von bis zu 24 Stunden auf wenige Minuten reduziert und uns geholfen, über 200.000 € pro Jahr an Support-Kosten einzusparen.",
+          "attribution": "Martina Ammon"
+        },
+        "viz": [
+          {
+            "preset": "transform_arrow",
+            "from": {
+              "value": "24 Std.",
+              "label": "Antwortzeit"
+            },
+            "to": {
+              "value": "Minuten",
+              "label": "automatisiert"
+            }
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 1,
+          "expected": "case-study-1",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 8,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "8",
+      "cover_validation": null,
+      "data": {
+        "title": "Wachstum entsteht nicht durch mehr Köpfe",
+        "body": "Wer skaliert, ohne Prozesse zu automatisieren, kauft sich Overhead — kein Wachstum.\n\nDas Muster ist immer dasselbe. Ein Unternehmen wächst. Die erste Reaktion: neue Mitarbeiter einstellen. Das Problem verschwindet nicht — es wird teurer. Denn das eigentliche Engpass-Problem liegt nicht im Headcount, sondern in den Prozessen, die jeder neue Mitarbeiter zusätzlich bedienen muss.",
+        "key_insight": "Operative Engpässe durch manuelle Prozesse deckelten die Kapazität — nicht fehlende Nachfrage oder fehlendes Personal.",
+        "compare": null
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 9,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "9",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Cordes Consulting ist eine B2B-Beratung, die nicht mit fehlendem Umsatz, sondern mit fehlender Kapazität konfrontiert war. Das Unternehmen beschäftigt ein kleines, spezialisiertes Team und betreut anspruchsvolle Unternehmenskunden.",
+        "ausgangsproblem": "Sechs manuelle Kern-Fulfillment-Prozesse bestimmten den Betriebsrhythmus. Jeder war wissensabhängig: Fiel eine Person aus, stockte der gesamte Ablauf. Die Output-Qualität schwankte je nach Tagesform und Auslastung. Die operative Kapazität war nicht durch Marktnachfrage begrenzt, sondern durch Headcount. Jeder neue Kunde bedeutete mehr manuelle Arbeit – nicht mehr Umsatz pro Stunde.",
+        "ziel": "",
+        "loesung": "APEX analysierte die sechs zeitintensivsten Fulfillment-Prozesse und implementierte gezielte AI-Automatisierungen direkt in die bestehende Tool-Umgebung – ohne Migration, ohne IT-Projekt, ohne Umschulung. Parallel wurden interne AI-Fähigkeiten aufgebaut, sodass Cordes Consulting nach dem Projekt eigenständig skalieren konnte.",
+        "ergebnis_text": "Alle sechs Bottleneck-Prozesse wurden automatisiert. Die Kapazitätsgrenze verschob sich vom Headcount zur Marktnachfrage – neue Kunden konnten ohne zusätzliches Personal angenommen werden. Wissensabhängigkeit und Output-Inkonsistenz wurden strukturell beseitigt.",
+        "ergebnis_headline": "6 manuelle Prozesse automatisiert, Kapazität verdoppelt",
+        "fallstudie_number": 2,
+        "ergebnis_metrics": [
+          {
+            "value": "6 von 6",
+            "label": "Automatisierte Kernprozesse"
+          },
+          {
+            "value": "von Headcount auf Marktnachfrage verschoben",
+            "label": "Kapazitätslimit"
+          },
+          {
+            "value": "0",
+            "label": "Tool-Migrationen notwendig"
+          }
+        ],
+        "kunde": {
+          "name": "Cordes Consulting",
+          "funktion": "Geschäftsführung, Cordes Consulting",
+          "company_url": "apex-consulting.ai"
+        },
+        "pullquote": {
+          "text": "APEX hat unsere sechs kritischsten Prozesse automatisiert – ohne dass wir ein einziges Tool wechseln mussten.",
+          "attribution": "Cordes Consulting"
+        },
+        "viz": [
+          {
+            "preset": "completion_ring",
+            "percent": 100,
+            "center": "6 von 6",
+            "label": "Kernprozesse automatisiert"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 2,
+          "expected": "case-study-2",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 10,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "10",
+      "cover_validation": null,
+      "data": {
+        "title": "Kapazität entsteht nicht durch Köpfe, sondern durch Systeme",
+        "body": "Wer operative Engpässe mit Headcount löst, kauft sich Zeit – aber keinen Vorsprung.\n\nCordes Consulting hatte kein Nachfrageproblem. Der Markt war da. Die Kunden wollten kaufen. Das Wachstum stockte trotzdem – weil sechs manuelle Kernprozesse jeden neuen Auftrag in Mehrarbeit verwandelten. Die operative Kapazität war nicht durch Marktgrenzen limitiert, sondern durch Wissensabhängigkeit und inkonsistente Ausführung.\n\nDie Wahrheit lautet: Jedes Unternehmen, das Wachstum mit Headcount beantwortet, löst das falsche Problem. Mehr Mitarbeiter erhöhen den Overhead, multiplizieren Koordinationsaufwand und konservieren die Fehlerquellen, die schon vorher existierten. Laut BCG (2025) berichten bereits mehr als 40 % der großen Unternehmen, dass sie agentische KI-Implementierungen skalieren – nicht weil es ein Trend ist, sondern weil manuell ausgeführte Prozesse strukturell nicht skalieren.\n\nDas Prinzip dahinter ist einfach: Wenn ein Prozess von Wissen einer einzelnen Person abhängt, ist er kein Prozess – er ist ein Risiko. Fällt die Person aus, stockt die Lieferkette. Wächst das Volumen, wächst die Belastung linear mit. Automatisierung bricht diese Linearität. Sie entkoppelt Kapazität von Köpfen.\n\nWas Cordes Consulting demonstriert: Die Engpässe lagen nicht im Markt und nicht im Team – sie lagen in der Architektur der Abläufe. Wer diese Architektur verändert, ohne den bestehenden Tool-Stack aufzugeben, gewinnt Kapazität, ohne Komplexität hinzuzufügen.",
+        "key_insight": "Operative Kapazität ist keine Frage des Headcounts – sie ist eine Frage der Prozessarchitektur.",
+        "compare": null
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 11,
+      "st_type": "ST-31",
+      "css_template": "atemseite",
+      "has_cta": false,
+      "page_numbers": "11",
+      "cover_validation": null,
+      "data": {
+        "phrase": "Echte Ergebnisse entstehen in echter Zusammenarbeit."
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [
+        {
+          "slot_id": "breathing_bg_2",
+          "image_type": "scene",
+          "path": "assets/ig_jousefmrd_DVOLEK-DKKz_1.jpg",
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
+      "components": []
+    },
+    {
+      "slot": 12,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "12",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Frese Recruiting ist ein spezialisiertes Recruiting-Unternehmen, das Kandidaten und Auftraggeber über mehrere Kanäle gleichzeitig betreut – bei wachsendem Anfragevolumen und steigender Kommunikationskomplexität.",
+        "ausgangsproblem": "Anfragen stapelten sich über WhatsApp, E-Mail und Support-Tickets. Jede Nachricht wurde manuell gesichtet, priorisiert und beantwortet – ein Prozess, der das Team systematisch überforderte. Die Antwortzeit lag bei 12 bis 24 Stunden. Kandidaten ohne Rückmeldung in diesem Zeitfenster sprangen ab. Das Unternehmen verlor nicht wegen fehlendem Angebot – sondern wegen operativer Trägheit. Skalierung war strukturell ausgeschlossen: Mehr Anfragen bedeuteten proportional mehr manuelle Arbeit, nicht mehr Umsatz.",
+        "ziel": "",
+        "loesung": "APEX implementierte ein intelligentes Ticketing-System und KI-gesteuerte Automationen, die tausende WhatsApp-Konversationen parallel verarbeiten. Eingehende Nachrichten werden automatisch kategorisiert, priorisiert und beantwortet – ohne manuellen Eingriff für Standardfälle. Das bestehende Tool-Setup blieb unverändert. Kein IT-Projekt, keine Migration, keine Schulungswochen. Das Team wurde von repetitiver Kommunikationsarbeit entlastet und konnte Kapazität auf wertschöpfende Recruiting-Arbeit verlagern.",
+        "ergebnis_text": "Nach der Implementierung sank die Reaktionszeit von bis zu 24 Stunden auf wenige Minuten. Tausende WhatsApp-Konversationen werden seitdem ohne zusätzliche Headcount bewältigt. Frese Recruiting kann heute mehr Anfragen aufnehmen, ohne den operativen Overhead proportional zu erhöhen.",
+        "ergebnis_headline": "Von 24-Stunden-Reaktionszeit zu Minuten",
+        "fallstudie_number": 3,
+        "ergebnis_metrics": [
+          {
+            "value": "von bis zu 24 Stunden auf Minuten",
+            "label": "Reaktionszeit"
+          },
+          {
+            "value": "tausende WhatsApp-Chats automatisiert",
+            "label": "Bewältigte Konversationen"
+          },
+          {
+            "value": "0 neue Mitarbeiter",
+            "label": "Zusätzlicher Headcount"
+          }
+        ],
+        "kunde": {
+          "name": "Frese Recruiting",
+          "funktion": "Recruiting-Unternehmen",
+          "company_url": "apex-consulting.ai"
+        },
+        "pullquote": {
+          "text": "APEX hat unsere Antwortzeiten von bis zu 24 Stunden auf wenige Minuten reduziert – ohne dass wir ein einziges neues Tool lernen mussten.",
+          "attribution": "Frese Recruiting"
+        },
+        "social_post": {
+          "photo": "assets/ig_jousefmrd_DYiL0zNI3go_4.jpg",
+          "handle": "jousefmrd",
+          "avatar": "assets/ig_jousefmrd_avatar.jpg"
+        },
+        "viz": [
+          {
+            "preset": "transform_arrow",
+            "from": {
+              "value": "24 Stunden",
+              "label": "Reaktionszeit"
+            },
+            "to": {
+              "value": "Minuten",
+              "label": "automatisiert"
+            }
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/12_case_study_portrait_3.png",
+          "drive_key": "case-study-{n}",
+          "index": 3,
+          "expected": "case-study-3",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 13,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "13",
+      "cover_validation": null,
+      "data": {
+        "title": "Kommunikation skaliert nicht durch Köpfe",
+        "body": "Wer Antwortzeiten durch Personalaufbau lösen will, kauft sich ein strukturelles Problem auf Zeit.\n\nFrese Recruiting hatte kein Nachfrageproblem. Die Anfragen kamen. Das Problem war, dass jede einzelne davon manuell bearbeitet wurde. WhatsApp, E-Mail, Support-Ticket — drei Kanäle, ein Team, keine Systematik. Das Ergebnis: 24 Stunden Antwortzeit, ein überlastetes Team und eine Skalierungsgrenze, die nicht durch Marktgröße, sondern durch operative Kapazität gesetzt wurde. Das ist kein Ausnahmefall. 58 % der B2B-Unternehmen setzen bereits auf autonome Systeme, weil sie erkannt haben, dass Headcount das falsche Werkzeug für Kommunikationsvolumen ist (KPMG, 2026). Die Wahrheit lautet: Jede neue Stelle, die du zur Bewältigung von Anfragen schaffst, erhöht deinen Fixkostenblock — ohne das strukturelle Problem zu lösen. Wächst das Volumen weiter, brauchst du die nächste Stelle. Und die übernächste. Der eigentliche Hebel liegt nicht im Wer, sondern im Wie: Welche Prozesse laufen automatisch ab, bevor ein Mensch überhaupt eingreifen muss? Unternehmen, die diese Frage systematisch beantworten, erzielen Umsatzwachstum bei gleichbleibendem Personalstand — nicht als Ausnahme, sondern als reproduzierbares Muster.",
+        "key_insight": "Kommunikationsvolumen durch Personal zu lösen ist teuer und temporär — Systeme skalieren, Menschen nicht.",
+        "compare": null
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 14,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "14",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Conesso GmbH ist eine Performance-Agentur, die mit manuellen Fulfillment-Workflows arbeitete. Das Team betreute wachsende Kundenzahlen, ohne dass operative Prozesse mitwuchsen – bis der Founder selbst zum täglichen Engpass wurde.",
+        "ausgangsproblem": "Jeder neue Kunde bedeutete mehr manuelle Arbeit: Onboarding dauerte 30 Minuten pro Vorgang, Copy-Assets erforderten über eine Stunde manueller Bearbeitung, und zweiwöchentliche Check-ins wurden ohne strukturierte Vorbereitung durchgeführt. Das Ergebnis: operative Engpässe, die direkt beim Founder landeten. Kein Prozess lief ohne sein Zutun. Urlaub war faktisch unmöglich.",
+        "ziel": "",
+        "loesung": "APEX implementierte AI-gesteuerte Automationen für drei kritische Workflows: Kunden-Onboarding, Copy-Generierung und Check-in-Vorbereitung. Kein neues Tool-Stack, keine Migration. Die Agenten wurden direkt in die bestehende Umgebung integriert und übernahmen repetitive Schritte vollständig – von der Dateneingabe bis zur Inhaltsgenerierung.",
+        "ergebnis_text": "Nach der Implementierung sank die Onboarding-Zeit von 30 Minuten auf 2 Minuten pro Kunde. Der Copywriting-Workflow fiel von über einer Stunde auf 5 Minuten. Der Founder konnte operative Kapazität zurückgewinnen und das Team auf wertschöpfende Arbeit fokussieren, statt auf administrative Schleifen.",
+        "ergebnis_headline": "Onboarding von 30 Minuten auf 2 Minuten",
+        "fallstudie_number": 4,
+        "ergebnis_metrics": [
+          {
+            "value": "von 30 auf 2 Minuten",
+            "label": "Onboarding-Zeit"
+          },
+          {
+            "value": "von 60 auf 5 Minuten",
+            "label": "Copywriting pro Asset"
+          },
+          {
+            "value": "3 kritische Workflows eliminiert",
+            "label": "Operative Engpässe"
+          }
+        ],
+        "kunde": {
+          "name": "Conesso GmbH",
+          "funktion": "Performance-Agentur",
+          "company_url": "apex-consulting.ai"
+        },
+        "pullquote": {
+          "text": "Onboarding, das früher 30 Minuten dauerte, braucht jetzt nur noch 2 – und unser Copywriting-Workflow fiel von einer Stunde auf 5 Minuten.",
+          "attribution": "Conesso GmbH"
+        },
+        "viz": [
+          {
+            "preset": "ba_bars",
+            "unit": "Min",
+            "pairs": [
+              {
+                "label": "Onboarding pro Kunde",
+                "before": {
+                  "value": "30"
+                },
+                "after": {
+                  "value": "2"
+                },
+                "delta": "−93 %"
+              },
+              {
+                "label": "Copywriting pro Asset",
+                "before": {
+                  "value": "60"
+                },
+                "after": {
+                  "value": "5"
+                },
+                "delta": "−92 %"
+              }
+            ]
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 4,
+          "expected": "case-study-4",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 15,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "15",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Hanisch & Klein ist eine B2B-Beratung, die trotz wachsender Kundennachfrage an operativen Engpässen stagnierte. Mehrere nicht verbundene Tools und manuelle Prozesse fraßen Kapazität, statt sie freizusetzen.",
+        "ausgangsproblem": "Hanisch & Klein hatte ein klassisches Skalierungsproblem: Jedes neue Mandat bedeutete mehr manuelle Koordination zwischen Tools, die nicht miteinander sprachen. Leads wurden manuell priorisiert, operative Entscheidungen landeten beim Gründer. Das Team arbeitete an der Kapazitätsgrenze – nicht weil Kunden fehlten, sondern weil jeder neue Kunde das System weiter belastete.",
+        "ziel": "Mehr Mitarbeiter hätten das Problem nicht gelöst – sie hätten dieselben fragmentierten Prozesse nur repliziert. Die Engpässe lagen im System, nicht im Team.",
+        "loesung": "APEX analysierte die kritischsten Bottlenecks und implementierte gezielte AI-Automationen direkt in die bestehende Tool-Umgebung – ohne Migration, ohne IT-Projekt. Automatisierte Lead-Priorisierung ersetzte manuelle Sortierung; Workflows wurden vereinheitlicht, sodass Informationen ohne manuelles Eingreifen zwischen Tools flossen. Ergebnis: ein stabiler End-to-End-Prozess.",
+        "ergebnis_text": "Nach der Implementierung konnte Hanisch & Klein neue Mandate annehmen, ohne den operativen Overhead proportional zu erhöhen. Die Kapazitätsgrenze verschob sich – nicht durch Einstellungen, sondern durch Systeme. Der Gründer konnte sich auf strategische Arbeit konzentrieren statt auf operative Koordination.",
+        "ergebnis_headline": "Von fragmentierten Tools zu skalierbarem End-to-End-Prozess",
+        "fallstudie_number": 5,
+        "ergebnis_metrics": [
+          {
+            "value": "von fragmentiert auf unified End-to-End",
+            "label": "Manuelle Koordinationsschritte"
+          },
+          {
+            "value": "100 % automatisiert",
+            "label": "Lead-Priorisierung"
+          },
+          {
+            "value": "skalierbar ohne Headcount-Erhöhung",
+            "label": "Operative Kapazität"
+          }
+        ],
+        "kunde": {
+          "name": "Hanisch & Klein",
+          "funktion": "Geschäftsführung, Hanisch & Klein Consulting",
+          "company_url": "apex-consulting.ai"
+        },
+        "pullquote": {
+          "text": "Wir hatten die Nachfrage. Was uns fehlte, war ein System, das damit umgehen kann – ohne dass alles durch mich laufen muss.",
+          "attribution": "Hanisch & Klein"
+        },
+        "viz": [
+          {
+            "preset": "completion_ring",
+            "percent": 100,
+            "center": "100 %",
+            "label": "Lead-Priorisierung automatisiert"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 5,
+          "expected": "case-study-5",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 16,
+      "st_type": "ST-06",
+      "css_template": "mechanism",
+      "has_cta": false,
+      "page_numbers": "16",
+      "cover_validation": null,
+      "data": {
+        "title": "Das Done-For-You AI Automation Framework",
+        "body": "Die meisten Unternehmen automatisieren falsch: Sie greifen ein Tool, verbinden es mit einem anderen, und wundern sich, warum nichts besser wird. Das Done-For-You AI Automation Framework funktioniert anders. Es beginnt nicht mit Technologie, sondern mit Diagnose. APEX identifiziert zuerst, welche Prozesse tatsächlich Zeit und Geld vernichten, bereinigt dann die Datenbasis, und implementiert erst danach spezialisierte AI-Agenten direkt in deine bestehende Tool-Umgebung. Kein neues System. Keine IT-Migration. Keine Lernkurve für dein Team. Executives berichten, dass gezielt eingesetzte Automatisierung 30-50% operativer Effizienzgewinne liefert (PwC, 2026). Der Unterschied liegt nicht im Tool, sondern in der Reihenfolge.",
+        "steps": [
+          {
+            "title": "Workflow-Audit und Engpass-Diagnose",
+            "body": "Bevor eine einzige Zeile Code geschrieben wird, analysiert APEX deine tatsächlichen Workflows, nicht die, die du glaubst zu haben. Zeitaufwand pro Prozess wird gemessen, Bottlenecks werden priorisiert nach Kosten und Häufigkeit. Das Ergebnis: eine klare Rangliste, welche drei bis fünf Prozesse den größten Return liefern, wenn sie automatisiert werden. Ohne diese Grundlage automatisiert man Chaos, nicht Effizienz."
+          },
+          {
+            "title": "CRM-Bereinigung und Datenstruktur",
+            "body": "Ein AI-Agent ist nur so gut wie die Daten, auf denen er operiert. Doppelte Kontakte, inkonsistente Felder, veraltete Notizen – all das wird systematisch bereinigt, bevor Automatisierung ansetzt."
+          },
+          {
+            "title": "AI-Agenten-Implementierung",
+            "body": "Spezialisierte AI-Agenten werden direkt in deine bestehende Tool-Landschaft integriert. Kein Stack-Wechsel, keine monatelangen IT-Projekte. 61% der B2B-Firmen setzen bereits auf Agentic AI (KPMG, 2026)."
+          },
+          {
+            "title": "Onboarding- und Fulfillment-Automatisierung",
+            "body": "Die zeitintensivsten Fulfillment-Prozesse – Kunden-Onboarding, Dokumentenverarbeitung, interne Abstimmungsschleifen – werden vollständig übernommen. Was 30 Minuten dauerte, dauert zwei."
+          },
+          {
+            "title": "Kommunikations- und Support-Automatisierung",
+            "body": "Eingehende Anfragen über E-Mail, WhatsApp und Ticket-Systeme werden priorisiert, kategorisiert und beantwortet – ohne dass dein Team eingreift. Antwortzeiten fallen von Stunden auf Minuten."
+          },
+          {
+            "title": "Kontinuierliche Optimierung und Reporting",
+            "body": "Nach der Implementierung laufen die Agenten nicht einfach weiter – sie werden anhand realer Output-Daten kontinuierlich verfeinert. Du siehst jederzeit, was automatisiert wurde und was es gespart hat."
+          }
+        ],
+        "ergebnis": "Executives berichten, dass gezielt eingesetzte Automatisierung 30-50% operativer Effizienzgewinne liefert (PwC, 2026).",
+        "bars": [],
+        "metrics": []
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [
+        "components/16_component_0.svg"
+      ]
+    },
+    {
+      "slot": 17,
+      "st_type": "ST-31",
+      "css_template": "atemseite",
+      "has_cta": false,
+      "page_numbers": "17",
+      "cover_validation": null,
+      "data": {
+        "phrase": "Der Hebel ist nicht mehr Aufwand – sondern ein besseres System."
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [
+        {
+          "slot_id": "breathing_bg_3",
+          "image_type": "scene",
+          "path": "assets/ig_jousefmrd_DYhZxkqjD6G_5.jpg",
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
+      "components": []
+    },
+    {
+      "slot": 18,
+      "st_type": "ST-FAZIT",
+      "css_template": "summary",
+      "has_cta": true,
+      "page_numbers": "18",
+      "cover_validation": null,
+      "data": {
+        "title": "Dein Wachstum wartet nicht auf deine Entscheidung",
+        "body": "Du hast gesehen, was manuelle Prozesse kosten: 25-30% deiner Betriebskosten (BCG, 2025), Burnout bei jedem zweiten Wissensarbeiter (BCG, 2024), und ein Team, das mehr Zeit mit Verwaltung verbringt als mit Umsatz. Das ist kein Ressourcenproblem – es ist ein Systemfehler, der dich jeden Monat Wachstum kostet, das du nie zurückbekommst. Mehr Mitarbeiter lösen das nicht. 77% der HR-Verantwortlichen planen genau das – und zahlen mehr für Rehiring als für Ergebnisse (Hiring Lab, 2026). Firmen, die tatsächlich skalieren, tun das ohne proportionales Headcount-Wachstum: 58% der B2B-Unternehmen nutzen bereits autonome Systeme, 61% setzen agentic AI ein (KPMG, 2026). Die Frage ist nicht ob Automatisierung funktioniert. Die Frage ist, ob du zu den 40% gehörst, die echten Return sehen – oder zu den 60%, die trotz Investment nichts messen (BCG, 2026). Der Unterschied liegt nicht im Tool – sondern darin, ob jemand zuerst deine Prozesse versteht, bevor er sie automatisiert. APEX macht genau das.",
+        "these": "Das ist kein Ressourcenproblem – es ist ein Systemfehler, der dich jeden Monat Wachstum kostet, das du nie zurückbekommst.",
+        "kosten_des_nichtstuns": "Jeder Monat ohne Automatisierung bedeutet: 25-30% deiner Betriebskosten verbrennen in manuellen Prozessen, qualifizierte Leads fallen durch überlastete Teams, und dein bester Mitarbeiter sucht bereits einen Job, bei dem er echte Arbeit leisten kann.",
+        "cta_url": "https://apex-consulting.ai/",
+        "author": {
+          "name": "Jousef",
+          "role": "Gründer, APEX Consulting"
+        },
+        "viz": [
+          {
+            "preset": "radial_cluster",
+            "source": "KPMG 2026",
+            "rings": [
+              {
+                "percent": 58,
+                "figure": "58%",
+                "label": "B2B auf autonomen Systemen"
+              },
+              {
+                "percent": 61,
+                "figure": "61%",
+                "label": "B2B skaliert agentic AI"
+              }
+            ]
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "founder_hero",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/18_founder.jpg",
+          "drive_key": "founder",
+          "index": null,
+          "expected": "founder",
+          "warnings": [],
+          "slot_id": "founder",
+          "image_type": "portrait",
+          "aspect_ratio": "3x4"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 19,
+      "st_type": "ST-22",
+      "css_template": "collaboration",
+      "has_cta": true,
+      "page_numbers": "19",
+      "cover_validation": null,
+      "data": {
+        "title": "Von Erstgespräch zu laufendem AI-System in Wochen",
+        "body": "Kein monatelanges IT-Projekt. Kein Umbau deiner Tool-Landschaft. APEX arbeitet nach einem strukturierten Prozess, der innerhalb weniger Wochen vom ersten Gespräch zu produktiv laufenden AI-Agenten führt – ohne dein Team zu belasten.",
+        "steps": [
+          {
+            "n": 1,
+            "title": "Strategiegespräch & Fit-Check",
+            "body": "In 45 Minuten analysieren wir gemeinsam deine größten operativen Engpässe. Kein Verkaufsgespräch – ein ehrlicher Abgleich, ob und wo Automatisierung bei dir den größten Hebel hat.",
+            "dauer": "1 Tag"
+          },
+          {
+            "n": 2,
+            "title": "Workflow-Audit & Priorisierung",
+            "body": "APEX auditiert deine bestehenden Prozesse, identifiziert die drei zeitintensivsten Bottlenecks und berechnet das konkrete Einsparpotenzial – bevor eine einzige Zeile Code geschrieben wird.",
+            "dauer": "3-5 Tage"
+          },
+          {
+            "n": 3,
+            "title": "Architektur & Projektplan",
+            "body": "Du erhältst einen klaren Implementierungsplan: welche AI-Agenten gebaut werden, in welche Tools sie integrieren und was das Ergebnis in messbaren KPIs bedeutet.",
+            "dauer": "2-3 Tage"
+          },
+          {
+            "n": 4,
+            "title": "Implementierung & Integration",
+            "body": "APEX baut die AI-Agenten direkt in deine bestehende Tool-Umgebung ein. Kein Systemwechsel, keine Migration – dein Team arbeitet weiter wie gewohnt, nur ohne die manuellen Schleifen.",
+            "dauer": "1-3 Wochen"
+          },
+          {
+            "n": 5,
+            "title": "Übergabe & Ergebnismessung",
+            "body": "Nach der Implementierung übergeben wir vollständig dokumentierte Systeme und messen gemeinsam die ersten Ergebnisse gegen die definierten KPIs. Du siehst den ROI, bevor die erste Rechnung fällig ist.",
+            "dauer": "2-3 Tage"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 20,
+      "st_type": "ST-03",
+      "css_template": "cta_hard",
+      "has_cta": true,
+      "page_numbers": "20",
+      "cover_validation": null,
+      "data": {
+        "title": "Buche jetzt dein kostenloses Erstgespräch mit APEX",
+        "body": "Dein Team verbrennt täglich Stunden mit manuellen Prozessen, die morgen automatisiert sein könnten. Buch jetzt dein Erstgespräch – APEX analysiert deine drei größten Bottlenecks und zeigt dir konkret, welche Prozesse sofort automatisiert werden können. Kein IT-Projekt. Kein Risiko.",
+        "cta_url": "https://apex-consulting.ai/",
+        "cta_text": "Jetzt Erstgespräch buchen"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    }
+  ],
+  "slot_summary": {
+    "resolved": 6,
+    "missing_required": 4,
+    "absent": 4,
+    "total": 14,
+    "missing": [
+      {
+        "page_slot": 7,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-1"
+      },
+      {
+        "page_slot": 9,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-2"
+      },
+      {
+        "page_slot": 14,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-4"
+      },
+      {
+        "page_slot": 15,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-5"
+      }
+    ]
+  },
+  "validation": {
+    "copy_warnings": [
+      {
+        "page_slot": 3,
+        "page_type": "ST-05",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #2 in report) — max 1 per report; offending text: 'nicht mit Beratungsfolien, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde gebaut' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #3 in report) — max 1 per report; offending text: 'nicht nur den Umsatz, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "symptoms[4].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird qualifiziert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "symptoms[5].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird manuell produziert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 7,
+        "page_type": "ST-07A",
+        "field_name": "ziel",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'würde' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 7,
+        "page_type": "ST-07A",
+        "field_name": "ziel",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'würde' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 7,
+        "page_type": "ST-07A",
+        "field_name": "ergebnis_text",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde systematisch eliminiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 8,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #4 in report) — max 1 per report; offending text: 'nicht im Headcount, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 9,
+        "page_type": "ST-07A",
+        "field_name": "kurzportraet",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #5 in report) — max 1 per report; offending text: 'nicht mit fehlendem Umsatz, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 9,
+        "page_type": "ST-07A",
+        "field_name": "ausgangsproblem",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #6 in report) — max 1 per report; offending text: 'nicht durch Marktnachfrage begrenzt, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 9,
+        "page_type": "ST-07A",
+        "field_name": "ergebnis_text",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurden automatisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 10,
+        "page_type": "ST-07B",
+        "field_name": "title",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #7 in report) — max 1 per report; offending text: 'nicht durch Köpfe, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 10,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #8 in report) — max 1 per report; offending text: 'nicht durch Marktgrenzen limitiert, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 10,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #9 in report) — max 1 per report; offending text: 'nicht weil es ein Trend ist, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 12,
+        "page_type": "ST-07A",
+        "field_name": "ausgangsproblem",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde manuell gesichtet, priorisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 12,
+        "page_type": "ST-07A",
+        "field_name": "ausgangsproblem",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #10 in report) — max 1 per report; offending text: 'nicht wegen fehlendem Angebot – sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 12,
+        "page_type": "ST-07A",
+        "field_name": "loesung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'werden automatisch kategorisiert, priorisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 13,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #11 in report) — max 1 per report; offending text: 'nicht durch Marktgröße, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 13,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #12 in report) — max 1 per report; offending text: 'nicht im Wer, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 13,
+        "page_type": "ST-07B",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #13 in report) — max 1 per report; offending text: 'nicht als Ausnahme, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-07A",
+        "field_name": "loesung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurden direkt in die bestehende Umgebung integriert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "kurzportraet",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #14 in report) — max 1 per report; offending text: 'nicht wegen fehlendem Markt, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "ausgangsproblem",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurden manuell priorisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "ausgangsproblem",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #15 in report) — max 1 per report; offending text: 'nicht weil Kunden fehlten, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "ziel",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'hätten' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "ziel",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'hätten' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "ergebnis_text",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #16 in report) — max 1 per report; offending text: 'nicht durch Einstellungen, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #17 in report) — max 1 per report; offending text: 'nicht mit Technologie, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "body",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #18 in report) — max 1 per report; offending text: 'nicht im Tool, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "steps[0].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird gemessen, Bottlenecks werden priorisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "steps[2].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'werden direkt in deine bestehende Tool-Landschaft integriert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "steps[4].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'werden priorisiert, kategorisiert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "steps[5].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde und was es gespart' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 17,
+        "page_type": "ST-31",
+        "field_name": "phrase",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #19 in report) — max 1 per report; offending text: 'nicht mehr Aufwand – sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 20,
+        "page_type": "ST-03",
+        "field_name": "body",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'könnten' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 1,
+        "page_type": "ST-01",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1500 chars exceeds the ~500-char capacity estimate for ST-01 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 2,
+        "page_type": "ST-02",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1936 chars exceeds the ~1600-char capacity estimate for ST-02 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 3,
+        "page_type": "ST-05",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~2268 chars exceeds the ~1600-char capacity estimate for ST-05 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~2478 chars exceeds the ~1400-char capacity estimate for ST-09 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 9,
+        "page_type": "ST-07A",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1820 chars exceeds the ~1800-char capacity estimate for ST-07A — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 12,
+        "page_type": "ST-07A",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1980 chars exceeds the ~1800-char capacity estimate for ST-07A — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-07A",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1905 chars exceeds the ~1800-char capacity estimate for ST-07A — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 16,
+        "page_type": "ST-06",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~2491 chars exceeds the ~1400-char capacity estimate for ST-06 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      }
+    ],
+    "layout_warnings": [
+      "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
+      "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
+    ],
+    "cover_overall": null,
+    "total_warnings": 46
+  },
+  "asset_summary": {
+    "total_required": 10,
+    "total_downloaded": 0,
+    "total_stubbed": 0,
+    "total_client_upload_needed": 0,
+    "total_failed": 0,
+    "total_generated": 10
+  },
+  "asset_warnings": []
+}

@@ -1,0 +1,19 @@
+{# Key-insight callout: the ST-07B payoff treatment — a distinct accent-ruled
+   TINT panel carrying a LARGER italic insight line. A heavier, more editorial
+   cousin of callout_panel: an accent left-rule sets the insight apart, the body
+   sets in a large italic display-adjacent size, and the panel is a tint fill.
+   Under the c-key-insight namespace; the token-only look (accent rule, tint fill,
+   large italic) lives in styles/components.css.
+
+   text   the insight line (plain or pre-rendered trusted HTML).
+   label  OPTIONAL small uppercase label above the insight (e.g. "Kernaussage").
+
+   GRACEFUL: an empty/blank text renders NOTHING. #}
+{% macro key_insight(text, label='') -%}
+{% if text %}
+<figure class="c-key-insight">
+  {% if label %}<div class="c-key-insight__label">{{ label }}</div>{% endif %}
+  <blockquote class="c-key-insight__body">{{ text }}</blockquote>
+</figure>
+{% endif %}
+{%- endmacro %}

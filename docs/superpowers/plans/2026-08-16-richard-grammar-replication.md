@@ -64,3 +64,45 @@ real photography. The fal abstract waves violate his core rule.
 8. **US-508** — typography: ALL-CAPS bold sans headline treatment, selective bolding, hyphenation control, pull-quote dedup
 9. **US-509** — re-render + full 20-page vision audit; iterate until ≥5 pages clear and no rejects on the core pages
 10. **US-510** — FINAL upgraded PDF delivered to the user
+
+---
+
+## 5. EVIDENCE CORRECTION — 2026-08-16 (US-501..510 are REOPENED)
+
+The completion summary above (US-501..US-510 marked done) is **reopened**. The
+latest full-page visual inspection (OpenRouter vision, `/tmp/vision_audit_20.json`)
+returns **verdict=no on 20/20 pages**. The grammar pass changed local CSS and
+devices without changing the ownership model; the visible defects remain.
+
+### Confirmed failures in the delivered artifact
+
+- **p16 ST-06:** `30-50%` clipped — DOM `clientWidth=111px`, `scrollWidth=176px`.
+  The vision read: "'30-50' is visibly cut off — the '%' is clipped by the box."
+  The earlier "pixel verified" notes for this figure were wrong.
+- **p18/p19:** FAZIT founder headshot + name/title block bleeds INTO the ST-22
+  banner ("contamination"), and ST-22's banner text is obscured by it.
+- **p15 ST-07A:** 'ohne Headco…' hard-clipped at the right page edge.
+- **p12 ST-07A:** the arrow device shows 'MIT APEX → Minuten' with **no number**
+  on the destination side — a broken data device.
+- **p7 ST-07A:** the same two KPIs ('> 200.000 €', '4 automatisierte
+  Kernprozesse') render **twice** in the right column.
+- **p5 ST-14:** the Venn diagram overprints/cuts the third myth's text.
+- **p8/p10/p13:** dark theory pages still read as empty lower-half fields.
+- **p20:** lower half ~45% empty; the ghost '20' is clipped at the page edges.
+
+### Root cause (why "done" was wrong)
+
+1. Page templates decide composition before the Director sees the reference.
+2. The Director emits no page-level region/continuation plan.
+3. Reference selection is not consumed by the renderer.
+4. The final visual gate passes zero references and does not inspect the final
+   post-convergence PDF; intrinsic clipping is invisible to it.
+5. One-page and 20-page assumptions remain embedded in the package, templates,
+   tests, and overflow checks.
+
+### Status change (Ralph)
+
+Reopen: **US-402, US-403, US-408, US-509, US-510** (passes → false). New repair
+stories US-601..US-609 are defined in
+`docs/superpowers/plans/2026-08-16-ralph-director-pagination-repair.md`. The
+next work is the Director→pagination contract, NOT another CSS sweep.

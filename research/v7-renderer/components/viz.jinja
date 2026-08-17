@@ -1,0 +1,50 @@
+{# viz — the single dispatch entry point for the data-viz PRESET layer (mirrors
+   diagram.jinja). A host pattern that carries page.data.viz (a LIST of specs)
+   calls `viz(specs)` once; this loops the list and switches on each spec's
+   `preset`, delegating to the matching family macro. `loop.index` is threaded as
+   the `uid` so SVG-bearing macros (rings/donuts/gauges) get page-unique gradient
+   ids — two equal-valued figures never collide. Unknown/empty preset → renders
+   nothing (graceful), so adding a viz to a page can never break a render.
+
+   Families: viz_transform (ba_bars · transform_arrow · completion_ring) ·
+   viz_proportion (donut · split_bar · gauge · radial_cluster · icon_array) ·
+   viz_magnitude (stat_strip · money_bar · mega_numeral · kpi_card · ranked_bars) ·
+   viz_process (phase_timeline · step_cascade). The preprocessor/fixture decides
+   which presets (if any) each page carries; the renderer just draws what it's
+   given, verbatim. #}
+{% from 'viz_transform.jinja' import ba_bars, transform_arrow, completion_ring, bar_compare %}
+{% from 'viz_proportion.jinja' import donut, split_bar, gauge, radial_cluster, icon_array %}
+{% from 'viz_magnitude.jinja' import stat_strip, money_bar, mega_numeral, kpi_card, ranked_bars %}
+{% from 'viz_process.jinja' import phase_timeline, step_cascade %}
+{% from 'viz_compare.jinja' import formula_ladder, grouped_bars, stacked_bar_100, entity_bars %}
+{% from 'viz_facts.jinja' import icon_stat_row, column_chart %}
+
+{% macro viz(specs) %}
+{%- if specs -%}
+  {%- for v in specs if v and v.preset -%}
+    {%- if   v.preset == 'ba_bars'         -%}{{ ba_bars(v, loop.index) }}
+    {%- elif v.preset == 'bar_compare'     -%}{{ bar_compare(v, loop.index) }}
+    {%- elif v.preset == 'transform_arrow' -%}{{ transform_arrow(v, loop.index) }}
+    {%- elif v.preset == 'completion_ring' -%}{{ completion_ring(v, loop.index) }}
+    {%- elif v.preset == 'donut'           -%}{{ donut(v, loop.index) }}
+    {%- elif v.preset == 'split_bar'       -%}{{ split_bar(v, loop.index) }}
+    {%- elif v.preset == 'gauge'           -%}{{ gauge(v, loop.index) }}
+    {%- elif v.preset == 'radial_cluster'  -%}{{ radial_cluster(v, loop.index) }}
+    {%- elif v.preset == 'icon_array'      -%}{{ icon_array(v, loop.index) }}
+    {%- elif v.preset == 'stat_strip'      -%}{{ stat_strip(v, loop.index) }}
+    {%- elif v.preset == 'money_bar'       -%}{{ money_bar(v, loop.index) }}
+    {%- elif v.preset == 'mega_numeral'    -%}{{ mega_numeral(v, loop.index) }}
+    {%- elif v.preset == 'kpi_card'        -%}{{ kpi_card(v, loop.index) }}
+    {%- elif v.preset == 'ranked_bars'     -%}{{ ranked_bars(v, loop.index) }}
+    {%- elif v.preset == 'phase_timeline'  -%}{{ phase_timeline(v, loop.index) }}
+    {%- elif v.preset == 'step_cascade'    -%}{{ step_cascade(v, loop.index) }}
+    {%- elif v.preset == 'icon_stat_row'   -%}{{ icon_stat_row(v, loop.index) }}
+    {%- elif v.preset == 'column_chart'    -%}{{ column_chart(v, loop.index) }}
+    {%- elif v.preset == 'formula_ladder'  -%}{{ formula_ladder(v, loop.index) }}
+    {%- elif v.preset == 'grouped_bars'    -%}{{ grouped_bars(v, loop.index) }}
+    {%- elif v.preset == 'stacked_bar_100' -%}{{ stacked_bar_100(v, loop.index) }}
+    {%- elif v.preset == 'entity_bars'     -%}{{ entity_bars(v, loop.index) }}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{% endmacro %}

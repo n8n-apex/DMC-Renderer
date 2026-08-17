@@ -1,0 +1,5 @@
+{# Wraps a pre-built inline SVG QR (the pattern generates it via the qrcode lib
+   and passes the markup in) in a square .c-qr box. Styling: .c-qr. #}
+{% macro qr(svg) -%}
+<div class="c-qr">{{ svg }}</div>
+{%- endmacro %}

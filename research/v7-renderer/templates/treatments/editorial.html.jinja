@@ -1,0 +1,187 @@
+{# editorial treatment (A3-landscape hero, archetype "editorial").
+
+   Reworked to render the ABOUT page (ST-05), where its rich editorial data fits:
+   the 30-50% figure, the 100+ / €200k+ figures, and the partner wall. Driven
+   ENTIRELY by TreatmentData (`td`).
+
+     LEFT  cream field (~62%): a TOP / MIDDLE / BOTTOM distributed stack that
+                               FILLS the full A3 height (no dead band, top OR
+                               bottom):
+       TOP    : eyebrow ("Über uns") + two-tone serif headline + a lede (the
+                About thesis, td.body[0]).
+       MIDDLE : the VISUAL HEART, a METRICS ZONE. A teal proportion DONUT (reused
+                from components/viz_proportion.jinja via the viz dispatch) shows
+                the PROPORTION stat verbatim (e.g. "30-50%" with its label) NEXT
+                TO the other stats as big serif KPI callouts (100+ / AI-Projekte,
+                €200k+ / Einsparung/Jahr). The proportion stat is the one whose
+                value carries a "%"; it drives the donut and is NOT repeated as a
+                KPI (one proof device per metric). When no stat carries a "%", all
+                stats render as KPIs and the donut is omitted (graceful).
+       BOTTOM : a CLOSING paragraph block anchored at the foot of the field. It
+                renders the REMAINING body paragraphs (td.body[1:]) so the About
+                thesis (the founder's closing story) closes the field at the bottom
+                edge, filling the band the metrics zone left open. When the body
+                has only ONE paragraph, the bottom is anchored instead by a
+                compact credibility line drawn from td.list_items (graceful: when
+                neither is present, the metrics zone simply absorbs the slack).
+
+     RIGHT navy column (~38%): a full-bleed portrait from td.image (painted via a
+                               CSS background, face-safe cover), a scrim caption =
+                               founder name + role (td.caption), and a "Vertrauen
+                               von" credential wall from td.credentials (the 3
+                               partners), stacked with thin on-dark dividers.
+
+   Reference: treatments/refs/{html,png}/treat_editorial_v2. The mockup's
+   hardcoded apex strings + hex + font names are DEMO content; this template reads
+   only `td` and the page-scoped CSS uses semantic tokens ONLY (styles/
+   treatments/editorial.css). Every block graceful-omits when its data is absent.
+
+   The founder portrait + name + role on the About page arrive via the
+   founder-identity fallback (the assembler injects a resolved `founder` slot +
+   an `author` onto the About page before rendering, since ST-05 has no portrait
+   of its own); adapt() then resolves td.image + td.caption from them. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{# ---- METRICS ZONE split: the PROPORTION stat (value carries a "%") drives the
+   donut; the rest become KPI callouts. The figure is shown VERBATIM in the ring,
+   so a range like "30-50%" reads exactly as authored. The arc uses a fixed,
+   sensible ~40% sweep (a range has no single percent), so the ring reads as a
+   proportion device without implying a precise value. ---- #}
+{% set ns = namespace(donut_stat=none, kpis=[]) %}
+{% for s in (td.stats or []) %}
+  {% if ns.donut_stat is none and (s.value and '%' in (s.value | string)) %}
+    {% set ns.donut_stat = s %}
+  {% else %}
+    {% set _ = ns.kpis.append(s) %}
+  {% endif %}
+{% endfor %}
+{% set donut_specs = [] %}
+{% if ns.donut_stat %}
+  {% set _ = donut_specs.append({
+      'preset': 'donut',
+      'figure': ns.donut_stat.value,
+      'percent': 40,
+      'label': ns.donut_stat.label or ''
+  }) %}
+{% else %}
+  {# %-figures now arrive as READY donut specs on td.viz (the writer-v4
+     kennzahlen/anteil routing moved them OUT of stats) - without this
+     fallback the hero's proportion ring silently disappeared. #}
+  {% for v in (td.viz or []) %}
+    {% if not donut_specs and v.preset == 'donut' %}
+      {% set _ = donut_specs.append(v) %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{# the navy MARBLE panel texture (a package report asset), resolved to a file://
+   URI via the context and exposed as a CSS custom property so the page-scoped CSS
+   can paint it on the curved footer band + the dark portrait column WITHOUT a path
+   literal in the CSS (brand-agnostic). Graceful: when absent, the CSS falls back to
+   the flat var(--color-ink) ground. #}
+{% set _marble = ctx.resolve_report_asset(("panel_texture",), ("panel_texture",)) %}
+
+<div class="ed-grid"{% if _marble %} style="--panel-marble: url('{{ _marble }}');"{% endif %}>
+
+  {# ---- the CURVED MARBLE FOOTER sweeping the page bottom (replaces the rejected
+     sine wave). A full-width navy-marble band with ONE graceful curved top edge +
+     a double teal hairline, painted FIRST so the absolute navy column lands on top
+     of it on the right (the band + column read as one connected navy mass at the
+     foot, like the reference). The marble fill is masked to the curve; the hairline
+     SVG is a separate, un-clipped layer tracing the same sweep. The closing thesis
+     sits ABOVE the band (the cream field reserves bottom room for it). #}
+  <div class="ed-footer" aria-hidden="true">
+    <div class="ed-footer-fill"></div>
+    <svg class="ed-footer-edge" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path class="ed-edge-lo" d="M0 107 C 175 43 345 27 515 37 C 770 52 985 73 1200 81" fill="none"/>
+      <path class="ed-edge-hi" d="M0 104 C 175 40 345 24 515 34 C 770 49 985 70 1200 78" fill="none"/>
+    </svg>
+  </div>
+
+  {# ---- LEFT: the cream editorial field (distributed stack) ---- #}
+  <div class="ed-field">
+
+    {# TOP: eyebrow + headline + lede #}
+    <div class="ed-field-head">
+      {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+      {% if td.headline %}
+        {{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}
+      {% endif %}
+      {% if td.body and td.body[0] %}<p class="ed-lede">{{ td.body[0] }}</p>{% endif %}
+    </div>
+
+    {# MIDDLE: the metrics zone -- the donut + KPI callouts (the visual heart).
+       Rendered only when there is a donut OR at least one KPI. #}
+    {% if donut_specs or ns.kpis %}
+    <div class="ed-field-mid">
+      <div class="ed-metrics-cap">In Zahlen</div>
+      <div class="ed-metrics">
+        {% if donut_specs %}
+        <div class="ed-donut" aria-label="Proportionsdiagramm">
+          {{ render_viz(donut_specs) }}
+        </div>
+        {% endif %}
+        {% if ns.kpis %}
+        <div class="ed-kpis">
+          {% for s in ns.kpis %}
+          <div class="ed-kpi">
+            {% if s.value %}<span class="ed-kpi-value">{{ s.value }}</span>{% endif %}
+            {% if s.label %}<span class="ed-kpi-label">{{ s.label }}</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {# BOTTOM: the closing block, anchored at the FOOT of the cream field so the
+       left column fills top-to-bottom. Prefers the remaining body paragraphs
+       (td.body[1:], the founding thesis); when the body is a single paragraph it
+       falls back to a compact credibility line from td.list_items. Graceful: when
+       neither is present nothing renders and the metrics zone absorbs the slack. #}
+    {% set closing = td.body[1:] if (td.body and td.body | length > 1) else [] %}
+    {% if closing %}
+    <div class="ed-field-foot">
+      <span class="ed-foot-rule" aria-hidden="true"></span>
+      {% for para in closing %}<p class="ed-foot-para">{{ para }}</p>{% endfor %}
+    </div>
+    {% elif td.list_items %}
+    <div class="ed-field-foot">
+      <span class="ed-foot-rule" aria-hidden="true"></span>
+      <ul class="ed-foot-points">
+        {% for item in td.list_items %}<li class="ed-foot-point">{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+  </div>
+
+  {# ---- RIGHT: the dark portrait column (founder identity) ---- #}
+  <div class="ed-column">
+    {% if td.image %}
+    <div class="ed-portrait" style="background-image:url('{{ td.image }}');">
+      {% if td.caption and (td.caption.name or td.caption.role) %}
+      <figcaption class="ed-caption">
+        {% if td.caption.name %}<span class="ed-caption-name">{{ td.caption.name }}</span>{% endif %}
+        {% if td.caption.role %}<span class="ed-caption-role">{{ td.caption.role }}</span>{% endif %}
+      </figcaption>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if td.credentials %}
+    <div class="ed-creds">
+      {{ eyebrow('Vertrauen von') }}
+      <ul class="ed-creds-list">
+        {% for name in td.credentials %}
+        <li class="ed-creds-item">{{ name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+
+</div>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{
+  --cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--body:#3a4a5a;--rule:#cdc7ba;
+  --teal-light:#7FB7B3;--muted:#92a3b2;--muted2:#9db0bd;
+  --panel:#374a60;        /* dark-glass card, slightly lighter navy */
+  --tile:#33455a;         /* small on-dark tiles */
+  --hair-dark:rgba(255,255,255,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--ink);font-family:'SourceSans',sans-serif;color:var(--cream);
+  position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ambient depth — soft radial glow seated behind the hero card, top-right */
+.ambient{position:absolute;top:-180px;right:-160px;width:980px;height:980px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(74,124,126,0.28) 0%,rgba(74,124,126,0.10) 38%,rgba(46,62,80,0) 70%);
+  pointer-events:none;}
+
+/* ===================== HEADER ===================== */
+.eyebrow{position:absolute;left:90px;top:96px;display:flex;align-items:center;gap:18px;
+  color:var(--teal-light);font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:46px;height:2px;background:var(--teal-light);}
+.eyebrow .pg{color:var(--muted);letter-spacing:.2em;margin-left:6px;}
+
+.headline{position:absolute;left:90px;top:150px;font-family:'SourceSerif',serif;
+  color:var(--cream);font-weight:430;font-size:72px;line-height:1.05;letter-spacing:-0.012em;}
+.headline .teal{color:var(--teal-light);}
+
+.thesis{position:absolute;left:90px;top:340px;max-width:640px;font-size:20px;line-height:1.6;
+  color:var(--muted2);font-weight:400;}
+.thesis .lead{color:var(--cream);font-weight:600;}
+
+/* ===================== HERO DARK-GLASS CARD ===================== */
+.card{position:absolute;left:90px;top:470px;width:780px;height:470px;
+  background:linear-gradient(155deg,#3d5169 0%,#33455a 100%);
+  border-radius:8px;
+  box-shadow:0 40px 80px -28px rgba(0,0,0,0.55),0 2px 0 rgba(255,255,255,0.05) inset;
+  overflow:hidden;}
+.card .seam{position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);}
+/* card-local glow, top-right */
+.card .glow{position:absolute;top:-200px;right:-160px;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(127,183,179,0.30) 0%,rgba(74,124,126,0.10) 45%,rgba(0,0,0,0) 72%);
+  pointer-events:none;}
+.card .clabel{position:absolute;left:58px;top:64px;font-size:13px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--teal-light);}
+.card .num{position:absolute;left:54px;top:96px;font-family:'SourceSerif',serif;
+  font-size:172px;font-weight:430;line-height:0.9;letter-spacing:-0.02em;color:var(--cream);}
+.card .nlabel{position:absolute;left:60px;top:316px;font-family:'SourceSerif',serif;
+  font-size:32px;font-weight:480;color:var(--cream);letter-spacing:0.002em;}
+.card .ctx{position:absolute;left:60px;top:368px;max-width:560px;font-size:16px;line-height:1.55;
+  font-weight:400;color:var(--muted2);}
+.card .chair{position:absolute;left:60px;right:58px;top:296px;height:1px;background:var(--hair-dark);}
+
+/* ===================== SUPPORTING METRIC TILES ===================== */
+.tiles{position:absolute;left:90px;top:962px;width:780px;display:flex;gap:24px;}
+.tile{flex:1;background:var(--tile);border-radius:6px;padding:24px 28px;
+  border-top:2px solid rgba(127,183,179,0.55);
+  box-shadow:0 18px 40px -24px rgba(0,0,0,0.5);}
+.tile .v{font-family:'SourceSerif',serif;font-size:46px;font-weight:500;color:var(--cream);
+  line-height:1;letter-spacing:-0.01em;}
+.tile .v em{font-style:normal;color:var(--teal-light);}
+.tile .l{font-size:13px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-top:14px;}
+
+/* ===================== FOUNDER PORTRAIT (native 0.821) ===================== */
+/* box height 700 -> width = round(700*0.821)=575 */
+.portrait{position:absolute;right:90px;top:96px;width:575px;height:700px;border-radius:8px;overflow:hidden;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 18%/cover no-repeat;
+  box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);}
+.portrait::after{content:'';position:absolute;left:0;right:0;bottom:0;height:230px;
+  background:linear-gradient(to bottom,rgba(46,62,80,0) 0%,rgba(40,55,72,0.94) 100%);}
+.portrait .pseam{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--teal);z-index:2;}
+.pcap{position:absolute;right:90px;top:706px;width:575px;z-index:3;}
+.pcap .name{font-family:'SourceSerif',serif;font-size:30px;font-weight:560;color:var(--cream);letter-spacing:.004em;}
+.pcap .role{font-size:13px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted2);margin-top:9px;}
+
+/* a small quote seats under the caption to fill the right column gracefully */
+.rquote{position:absolute;right:90px;top:806px;width:575px;}
+.rquote .qm{font-family:'SourceSerif',serif;font-size:58px;color:var(--teal-light);line-height:0.5;height:26px;}
+.rquote p{font-family:'SourceSerif',serif;font-size:21px;line-height:1.44;color:var(--cream);
+  font-weight:420;font-style:italic;margin-top:6px;}
+.rquote .attr{margin-top:14px;font-size:12.5px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--teal-light);}
+
+/* ===================== FOOTER ===================== */
+.footrule{position:absolute;left:90px;right:90px;bottom:74px;height:1px;background:var(--hair-dark);}
+.footer{position:absolute;left:90px;right:90px;bottom:42px;display:flex;justify-content:space-between;align-items:center;}
+.partners{font-size:13.5px;font-weight:500;letter-spacing:.04em;color:var(--muted);}
+.partners b{color:var(--cream);font-weight:600;}
+.brand{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.36em;color:var(--cream);}
+</style>
+</head>
+<body>
+  <div class="ambient"></div>
+
+  <div class="eyebrow"><span class="tick"></span>ÜBER UNS<span class="pg">/ 03</span></div>
+  <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+
+  <!-- HERO DARK-GLASS CARD -->
+  <div class="card">
+    <div class="seam"></div>
+    <div class="glow"></div>
+    <div class="clabel">Realisiert</div>
+    <div class="num">100+</div>
+    <div class="chair"></div>
+    <div class="nlabel">realisierte AI-Projekte</div>
+    <div class="ctx">20+ Stunden pro Woche zurückgewonnen — Onboarding von 30 Min auf 2 Min, Reaktionszeit von 24 Std auf Minuten.</div>
+  </div>
+
+  <!-- SUPPORTING METRIC TILES -->
+  <div class="tiles">
+    <div class="tile">
+      <div class="v">€200k<em>+</em></div>
+      <div class="l">Einsparung / Jahr</div>
+    </div>
+    <div class="tile">
+      <div class="v">30–50<em>%</em></div>
+      <div class="l">weniger Betriebskosten</div>
+    </div>
+  </div>
+
+  <!-- FOUNDER PORTRAIT -->
+  <div class="portrait">
+    <div class="pseam"></div>
+  </div>
+  <div class="pcap">
+    <div class="name">Jousef Murad</div>
+    <div class="role">Gründer · APEX</div>
+  </div>
+  <div class="rquote">
+    <div class="qm">„</div>
+    <p>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</p>
+    <div class="attr">Kundenstimme</div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+
+==================================== ERRORS ====================================
+_______ ERROR collecting dmc-renderer/tests/test_calibration_fixtures.py _______
+ImportError while importing test module '/Users/utkarsh/Projects/richard/dmc-renderer/tests/test_calibration_fixtures.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+../../.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+dmc-renderer/tests/test_calibration_fixtures.py:17: in <module>
+    from render_fixtures import run_calibration_fixtures  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research/calibration/render_fixtures.py:18: in <module>
+    from build_v3 import build_and_render_v3  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+dmc-renderer/build_v3.py:13: in <module>
+    import fitz
+E   ModuleNotFoundError: No module named 'fitz'
+=========================== short test summary info ============================
+ERROR dmc-renderer/tests/test_calibration_fixtures.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.15s

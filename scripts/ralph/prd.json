@@ -260,15 +260,15 @@
       "id": "US-402",
       "description": "ST-06 30-50% stat fits its box at computed width + regression test",
       "priority": "high",
-      "passes": true,
-      "notes": "DONE (corrected): stat stays on token+nowrap; ANY deviation breaks pagination (22pp) - fit moved to copy-fit; pagination-safe guard added"
+      "passes": false,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE (corrected): stat stays on token+nowrap; ANY deviation breaks pagination (22pp) - fit moved to copy-fit; pagination-safe guard added"
     },
     {
       "id": "US-403",
       "description": "region_plan consumption: A3 right proof = full-height reference-backed panel + native devices; kill dashboard/quote void",
       "priority": "high",
-      "passes": true,
-      "notes": "DONE: dash flex:1 full-height proof rail + quote inside; verified 20pp with converge"
+      "passes": false,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE: dash flex:1 full-height proof rail + quote inside; verified 20pp with converge"
     },
     {
       "id": "US-404",
@@ -302,8 +302,8 @@
       "id": "US-408",
       "description": "regenerate remaining 4 case studies + full deck re-render + all suites + acceptance checklist",
       "priority": "high",
-      "passes": true,
-      "notes": "DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0"
+      "passes": false,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-15: 4 remaining scenes via edit endpoint; 20pp, A3 correct, no voids, full-height proof; renderer 406/0"
     },
     {
       "id": "US-501",
@@ -365,15 +365,141 @@
       "id": "US-509",
       "description": "re-render + full 20-page vision audit; iterate until core pages clear",
       "priority": "high",
-      "passes": true,
-      "notes": "DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
+      "passes": false,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: structural redesign landed (flat islands, venn, timeline, scrim); final render 20pp delivered"
     },
     {
       "id": "US-510",
       "description": "FINAL upgraded report PDF delivered",
       "priority": "high",
+      "passes": false,
+      "notes": "REOPENED 2026-08-16: full-page vision inspection rejects 20/20 pages; DONE 2026-08-16: overlap gate + blocking visual gate; the deck now REFUSES to ship with bad devices (14/20 pages blocked)"
+    },
+    {
+      "id": "US-601",
+      "title": "Make the 30-50% clip a hard regression",
+      "description": "p16 stat value node must satisfy scrollWidth<=clientWidth; no letter-spacing shrink; region or extra page instead of squeeze.",
+      "acceptanceCriteria": [
+        "p16 value node scrollWidth<=clientWidth",
+        "no font/letter-spacing shrink to hide the clip",
+        "ST-06 may expand to 2 physical pages; value stays whole",
+        "report-p16.png visually verified"
+      ],
+      "priority": "high",
       "passes": true,
-      "notes": "DONE 2026-08-16: overlap gate + blocking visual gate; the deck now REFUSES to ship with bad devices (14/20 pages blocked)"
+      "notes": "DONE 2026-08-16: card 42->70mm; scrollWidth 176<=clientWidth now; 4 tests (clip/no-squeeze/token-size/card-width); vision p16: \"30-50%\" + % visible, verdict yes; full renderer 413 pass; deck still 20pp"
+    },
+    {
+      "id": "US-602",
+      "title": "Logical-section and physical-page identity",
+      "description": "Add section_id/continuation fields to emitted physical pages; page_count_target is metadata not a truncation bound.",
+      "acceptanceCriteria": [
+        "each page carries {page_id,section_id,source_slot,continuation_index,continuation_role,section_page_count,page_format}",
+        "pages[] no longer implies 1 section=1 sheet",
+        "preprocessor + renderer suites green"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: PlannedPage + ResolvedPageV2 identity fields (section_id/page_id/continuation_index/continuation_role/section_page_count); assembler writes only when set; None stripped at dump (golden unchanged); 7 identity tests + preprocessor 765 pass; fixture re-baked clean (no identity keys)"
+    },
+    {
+      "id": "US-603",
+      "title": "Section pagination planner (semantic split)",
+      "description": "plan_section_pages expands sections at semantic boundaries; short=1 page, heavy=2+; blocks appear exactly once; no interleaving.",
+      "acceptanceCriteria": [
+        "short section -> 1 page",
+        "heavy section -> 2+ pages with roles",
+        "source blocks appear exactly once",
+        "continuations never interleave"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: plan_section_pages.split_section (semantic split; ST-06 6 steps -> 3+3 at whole-step boundary; A3 spreads exempt); plan_layout wires expansion; assembler uses sliced data + result-page components for continuations; 8 planner tests + 773 preprocessor pass; deck 21pp (ST-06 2-page), overlap CLEAN"
+    },
+    {
+      "id": "US-604",
+      "title": "ST-06 two-page pilot",
+      "description": "Planner may produce clean 2-page ST-06; 30-50% complete and intentional; section ends before next.",
+      "acceptanceCriteria": [
+        "2-page ST-06 renders clean when content requires",
+        "30-50% complete",
+        "ST-06 ends before next section",
+        "PNG pair verified"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: ST-06 spans intro (3 steps + Fortsetzung cue) + result (3 steps + 30-50% diagram + recap); continuation pages fit 1 sheet each (255/256mm root, body-size cards); diagram replaces floated card (no dup figure); stylist bypasses continuations; renderer 418 + preprocessor 773 pass; deck 21pp overlap CLEAN"
+    },
+    {
+      "id": "US-605",
+      "title": "FAZIT continuation boundaries",
+      "description": "No FAZIT content fragments into next section; explicit continuation identity if 2 pages; p18/p19 zero bleed.",
+      "acceptanceCriteria": [
+        "p18/p19 show zero bleed",
+        "ST-22 starts at own boundary",
+        "continuation identity present if 2 pages"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: FAZIT splits at semantic boundary (close page = title/thesis/cost/CTA+signoff; result page = recap + market-proof viz); viz binds to the grounded page; social author binds to the section lead; root = flex min-height 245mm + CTA margin-top:auto; vision p19/p20/p21 zero contamination; renderer 421 + preprocessor 773 pass; deck 22pp"
+    },
+    {
+      "id": "US-606",
+      "title": "Real Director page brief",
+      "description": "Brief with references, anatomy, visual job, page_arc, region_plan, renderer_devices; persisted in package; provenance after the call.",
+      "acceptanceCriteria": [
+        "brief fields complete",
+        "selector gets format+density+exclude_report, diversified, real raster",
+        "brief persisted in package",
+        "provenance written after call with exact prompt/hash/model/seed"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: compose_page_brief emits the full contract (client_slug/report_id/page_key/section_id/st_type/selected_reference/rationale/visual_job/must_show/must_not_imply/page_arc/region_plan/renderer_devices); _write_director_brief persists it on all 22 package pages; no-fabrication (must_show verbatim, grounded); preprocessor 778 + renderer 421 pass; deck 22pp overlap CLEAN"
+    },
+    {
+      "id": "US-607",
+      "title": "Renderer consumes physical-page plans",
+      "description": "renderer reads physical plans + region_plan; casestudy_hero optional; sections may produce a4->a4->a3->a4.",
+      "acceptanceCriteria": [
+        "region_plan governs placement",
+        "casestudy_hero optional not mandatory",
+        "multi-format section sequence supported",
+        "no fixed-height overflow as pagination"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: patterns expose page_plan (page_id/section_id/continuation_index/section_page_count); templates render Seite N / M furniture on all 4 continuation pages (ST-06 p16/17 + FAZIT p19/20, vision-verified); folio via counter(page) correct; renderer 424 pass"
+    },
+    {
+      "id": "US-608",
+      "title": "Reference-grounded final-artifact QA",
+      "description": "References+metadata to every review; normalized row IDs; final composed PDF re-gated; clipping/contamination/count blocking; no hardcoded fixture path.",
+      "acceptanceCriteria": [
+        "references+metadata in every visual review",
+        "rubric IDs normalized",
+        "final composed PDF re-gated",
+        "clipping/contamination/page-count blocking",
+        "no hardcoded apex path in gate"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-16: gate passes retrieve_references + director_brief metadata per page; decorated IDs normalized before client; package_dir source (no hardcoded apex path); final composed artifact re-gated after convergence; ?figures detects REAL figures (%, €, units — not citation years); continuation pages gate on figure-only; ST-06 intro binds its own body figure; A3 rail gaps tightened; VISUAL GATE CLEAN 22/22"
+    },
+    {
+      "id": "US-609",
+      "title": "Acceptance run + evidence ledger",
+      "description": "Rebuild, render, visually inspect p16/p18/p19/p14/p15 + spot check; physical==planned count; reference-grounded QA on final artifact; reopen 402/403/408/509/510 until they hold.",
+      "acceptanceCriteria": [
+        "30-50% whole",
+        "zero contamination",
+        "physical==planned (may exceed 20)",
+        "final-artifact QA passes",
+        "reopened stories stay false until criteria hold"
+      ],
+      "priority": "high",
+      "passes": false,
+      "notes": ""
     }
   ]
 }

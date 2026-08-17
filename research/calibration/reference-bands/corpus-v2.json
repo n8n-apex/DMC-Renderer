@@ -1,0 +1,1142 @@
+{
+  "schema_version": "2.0",
+  "sources": "all six reference PDFs via reference-atlas source_object + spread_side mapping (55 faces)",
+  "measured_with": "quality_loop.gates.pixels_v3.measure_face_pixels @ policy 2.0.0, 1.2x raster; word counts from atlas OCR",
+  "family_bands": {
+    "case_narrative": {
+      "ink_occupancy": {
+        "min": 0.108,
+        "max": 0.6384,
+        "mean": 0.3301,
+        "n": 6
+      },
+      "whitespace_fraction": {
+        "min": 0.3511,
+        "max": 0.8239,
+        "mean": 0.6326,
+        "n": 6
+      },
+      "vertical_hierarchy": {
+        "min": 0.1272,
+        "max": 0.5078,
+        "mean": 0.363,
+        "n": 6
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 34,
+        "mean": 19.1667,
+        "n": 6
+      },
+      "image_coverage": {
+        "min": 0.0105,
+        "max": 0.0867,
+        "mean": 0.0373,
+        "n": 6
+      },
+      "word_count": {
+        "min": 226,
+        "max": 333,
+        "mean": 281.1667,
+        "n": 6
+      }
+    },
+    "closing_cta": {
+      "ink_occupancy": {
+        "min": 0.1106,
+        "max": 0.9915,
+        "mean": 0.5444,
+        "n": 7
+      },
+      "whitespace_fraction": {
+        "min": 0.0045,
+        "max": 0.8794,
+        "mean": 0.3368,
+        "n": 7
+      },
+      "vertical_hierarchy": {
+        "min": 0.0997,
+        "max": 0.5169,
+        "mean": 0.3426,
+        "n": 7
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 14,
+        "mean": 6.8571,
+        "n": 7
+      },
+      "image_coverage": {
+        "min": 0.004,
+        "max": 0.366,
+        "mean": 0.1188,
+        "n": 7
+      },
+      "word_count": {
+        "min": 35,
+        "max": 209,
+        "mean": 87.2857,
+        "n": 7
+      }
+    },
+    "collaboration_pathway": {
+      "ink_occupancy": {
+        "min": 0.0779,
+        "max": 0.4964,
+        "mean": 0.3132,
+        "n": 6
+      },
+      "whitespace_fraction": {
+        "min": 0.4565,
+        "max": 0.8927,
+        "mean": 0.6406,
+        "n": 6
+      },
+      "vertical_hierarchy": {
+        "min": 0.2312,
+        "max": 0.6098,
+        "mean": 0.4169,
+        "n": 6
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 58,
+        "mean": 25.8333,
+        "n": 6
+      },
+      "image_coverage": {
+        "min": 0.0187,
+        "max": 0.1124,
+        "mean": 0.0462,
+        "n": 6
+      },
+      "word_count": {
+        "min": 239,
+        "max": 349,
+        "mean": 291,
+        "n": 6
+      }
+    },
+    "editorial_lead": {
+      "ink_occupancy": {
+        "min": 0.2753,
+        "max": 0.9634,
+        "mean": 0.4698,
+        "n": 4
+      },
+      "whitespace_fraction": {
+        "min": 0.0199,
+        "max": 0.7097,
+        "mean": 0.5014,
+        "n": 4
+      },
+      "vertical_hierarchy": {
+        "min": 0.1859,
+        "max": 0.531,
+        "mean": 0.3917,
+        "n": 4
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 28,
+        "mean": 14.75,
+        "n": 4
+      },
+      "image_coverage": {
+        "min": 0.0151,
+        "max": 0.0443,
+        "mean": 0.0288,
+        "n": 4
+      },
+      "word_count": {
+        "min": 354,
+        "max": 529,
+        "mean": 458.75,
+        "n": 4
+      }
+    },
+    "evidence_wall": {
+      "ink_occupancy": {
+        "min": 0.0779,
+        "max": 0.9522,
+        "mean": 0.3855,
+        "n": 5
+      },
+      "whitespace_fraction": {
+        "min": 0.0389,
+        "max": 0.8927,
+        "mean": 0.5933,
+        "n": 5
+      },
+      "vertical_hierarchy": {
+        "min": 0.2312,
+        "max": 0.7108,
+        "mean": 0.5231,
+        "n": 5
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 58,
+        "mean": 25.8,
+        "n": 5
+      },
+      "image_coverage": {
+        "min": 0.0089,
+        "max": 0.0294,
+        "mean": 0.0212,
+        "n": 5
+      },
+      "word_count": {
+        "min": 63,
+        "max": 645,
+        "mean": 361.8,
+        "n": 5
+      }
+    },
+    "false_belief_stack": {
+      "ink_occupancy": {
+        "min": 0.2615,
+        "max": 0.4344,
+        "mean": 0.342,
+        "n": 4
+      },
+      "whitespace_fraction": {
+        "min": 0.5424,
+        "max": 0.7244,
+        "mean": 0.6246,
+        "n": 4
+      },
+      "vertical_hierarchy": {
+        "min": 0.1772,
+        "max": 0.9057,
+        "mean": 0.5265,
+        "n": 4
+      },
+      "type_rhythm_bands": {
+        "min": 22,
+        "max": 30,
+        "mean": 26,
+        "n": 4
+      },
+      "image_coverage": {
+        "min": 0.0141,
+        "max": 0.0776,
+        "mean": 0.0334,
+        "n": 4
+      },
+      "word_count": {
+        "min": 417,
+        "max": 495,
+        "mean": 439.25,
+        "n": 4
+      }
+    },
+    "mechanism_spread": {
+      "ink_occupancy": {
+        "min": 0.1685,
+        "max": 0.674,
+        "mean": 0.4389,
+        "n": 5
+      },
+      "whitespace_fraction": {
+        "min": 0.3025,
+        "max": 0.817,
+        "mean": 0.5361,
+        "n": 5
+      },
+      "vertical_hierarchy": {
+        "min": 0.1358,
+        "max": 0.7312,
+        "mean": 0.427,
+        "n": 5
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 34,
+        "mean": 9.6,
+        "n": 5
+      },
+      "image_coverage": {
+        "min": 0.0145,
+        "max": 0.0384,
+        "mean": 0.025,
+        "n": 5
+      },
+      "word_count": {
+        "min": 199,
+        "max": 368,
+        "mean": 273.4,
+        "n": 5
+      }
+    },
+    "objection_response": {
+      "ink_occupancy": {
+        "min": 0.1205,
+        "max": 0.674,
+        "mean": 0.372,
+        "n": 6
+      },
+      "whitespace_fraction": {
+        "min": 0.2921,
+        "max": 0.8617,
+        "mean": 0.5285,
+        "n": 6
+      },
+      "vertical_hierarchy": {
+        "min": 0.0963,
+        "max": 0.6589,
+        "mean": 0.4171,
+        "n": 6
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 20,
+        "mean": 8.8333,
+        "n": 6
+      },
+      "image_coverage": {
+        "min": 0.0178,
+        "max": 0.2848,
+        "mean": 0.0995,
+        "n": 6
+      },
+      "word_count": {
+        "min": 179,
+        "max": 370,
+        "mean": 307.3333,
+        "n": 6
+      }
+    },
+    "summary_synthesis": {
+      "ink_occupancy": {
+        "min": 0.2807,
+        "max": 0.9823,
+        "mean": 0.5811,
+        "n": 6
+      },
+      "whitespace_fraction": {
+        "min": 0.0117,
+        "max": 0.6737,
+        "mean": 0.3906,
+        "n": 6
+      },
+      "vertical_hierarchy": {
+        "min": 0.1738,
+        "max": 0.6098,
+        "mean": 0.4411,
+        "n": 6
+      },
+      "type_rhythm_bands": {
+        "min": 1,
+        "max": 22,
+        "mean": 10.8333,
+        "n": 6
+      },
+      "image_coverage": {
+        "min": 0.0059,
+        "max": 0.0723,
+        "mean": 0.0282,
+        "n": 6
+      },
+      "word_count": {
+        "min": 224,
+        "max": 450,
+        "mean": 344.6667,
+        "n": 6
+      }
+    },
+    "theory_interpretation": {
+      "ink_occupancy": {
+        "min": 0.09,
+        "max": 0.5269,
+        "mean": 0.3025,
+        "n": 6
+      },
+      "whitespace_fraction": {
+        "min": 0.317,
+        "max": 0.8447,
+        "mean": 0.6325,
+        "n": 6
+      },
+      "vertical_hierarchy": {
+        "min": 0.1485,
+        "max": 0.685,
+        "mean": 0.4228,
+        "n": 6
+      },
+      "type_rhythm_bands": {
+        "min": 2,
+        "max": 44,
+        "mean": 23.3333,
+        "n": 6
+      },
+      "image_coverage": {
+        "min": 0.0218,
+        "max": 0.1561,
+        "mean": 0.065,
+        "n": 6
+      },
+      "word_count": {
+        "min": 209,
+        "max": 396,
+        "mean": 328.3333,
+        "n": 6
+      }
+    }
+  },
+  "decisions": {
+    "case_narrative_dark_rail": "KEEP at 0.151 ink - inside corpus band 0.108-0.638 (the apex-only band 0.105-0.111 was one report's slice, not the corpus truth)",
+    "candidate_status_2026_08_06": "all ten candidate family ink means inside full-corpus bands; trust face words 39 vs corpus 63-645 remains the known structural floor of the wall region"
+  },
+  "per_face": [
+    {
+      "face_id": "apex-02",
+      "family_id": "editorial_lead",
+      "accent_fraction": 0.0003206022493131868,
+      "ink_occupancy": 0.31116795801854397,
+      "vertical_hierarchy": 0.1858752261540712,
+      "whitespace_fraction": 0.6445473471840659,
+      "type_rhythm_bands": 28,
+      "proof_visibility": 0.0008007236665773252,
+      "image_coverage": 0.044284694797390056,
+      "word_count": 529
+    },
+    {
+      "face_id": "buchagentur-02",
+      "family_id": "editorial_lead",
+      "accent_fraction": 0.0014486127943213296,
+      "ink_occupancy": 0.2752621299342105,
+      "vertical_hierarchy": 0.5309560122829179,
+      "whitespace_fraction": 0.7096823060941828,
+      "type_rhythm_bands": 20,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.015055563971606678,
+      "word_count": 464
+    },
+    {
+      "face_id": "niklas-02",
+      "family_id": "editorial_lead",
+      "accent_fraction": 5.097441620879121e-05,
+      "ink_occupancy": 0.9633963448660714,
+      "vertical_hierarchy": 0.5030809164570096,
+      "whitespace_fraction": 0.019894778073489012,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.01670887706043959,
+      "word_count": 488
+    },
+    {
+      "face_id": "aerzte-02",
+      "family_id": "editorial_lead",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.3292578835605542,
+      "vertical_hierarchy": 0.3469428219315112,
+      "whitespace_fraction": 0.6316379960296874,
+      "type_rhythm_bands": 10,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.039104120409758414,
+      "word_count": 354
+    },
+    {
+      "face_id": "apex-05",
+      "family_id": "false_belief_stack",
+      "accent_fraction": 0.0016969114869505495,
+      "ink_occupancy": 0.3078318166208791,
+      "vertical_hierarchy": 0.6670364521700944,
+      "whitespace_fraction": 0.6145220746050825,
+      "type_rhythm_bands": 30,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.07764610877403844,
+      "word_count": 495
+    },
+    {
+      "face_id": "alexander-05",
+      "family_id": "false_belief_stack",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.3643774039265527,
+      "vertical_hierarchy": 0.35604903407996924,
+      "whitespace_fraction": 0.6170333455968428,
+      "type_rhythm_bands": 29,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.018589250476604535,
+      "word_count": 420
+    },
+    {
+      "face_id": "niklas-06",
+      "family_id": "false_belief_stack",
+      "accent_fraction": 0.0007525433550824176,
+      "ink_occupancy": 0.2614759508070055,
+      "vertical_hierarchy": 0.9057400217319923,
+      "whitespace_fraction": 0.7243947458791209,
+      "type_rhythm_bands": 23,
+      "proof_visibility": 0.0006633610292146878,
+      "image_coverage": 0.014129303313873631,
+      "word_count": 417
+    },
+    {
+      "face_id": "aerzte-07",
+      "family_id": "false_belief_stack",
+      "accent_fraction": 5.5335366908067205e-06,
+      "ink_occupancy": 0.4344033809909181,
+      "vertical_hierarchy": 0.1772348008531392,
+      "whitespace_fraction": 0.5423931162803567,
+      "type_rhythm_bands": 22,
+      "proof_visibility": 1.3847538600013848e-05,
+      "image_coverage": 0.02320350272872529,
+      "word_count": 425
+    },
+    {
+      "face_id": "apex-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 9.390024038461539e-06,
+      "ink_occupancy": 0.10797722785027472,
+      "vertical_hierarchy": 0.3988117585555787,
+      "whitespace_fraction": 0.8239249763907966,
+      "type_rhythm_bands": 34,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.0680977957589286,
+      "word_count": 333
+    },
+    {
+      "face_id": "buchagentur-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0001623095567867036,
+      "ink_occupancy": 0.6384324684037396,
+      "vertical_hierarchy": 0.45864189477994827,
+      "whitespace_fraction": 0.35110397550207756,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.00025673940949935817,
+      "image_coverage": 0.010463556094182869,
+      "word_count": 309
+    },
+    {
+      "face_id": "alexander-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.20563898458142413,
+      "vertical_hierarchy": 0.26565929512832237,
+      "whitespace_fraction": 0.7716458744439614,
+      "type_rhythm_bands": 28,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.022715140974614467,
+      "word_count": 271
+    },
+    {
+      "face_id": "werkzeug-10",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.15625324230665477,
+      "vertical_hierarchy": 0.4197666309319916,
+      "whitespace_fraction": 0.7569975029915683,
+      "type_rhythm_bands": 29,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.08674925470177697,
+      "word_count": 226
+    },
+    {
+      "face_id": "niklas-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0003340165693681319,
+      "ink_occupancy": 0.408078371823489,
+      "vertical_hierarchy": 0.5077912405219249,
+      "whitespace_fraction": 0.5762134593921703,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.01570816878434067,
+      "word_count": 292
+    },
+    {
+      "face_id": "aerzte-08",
+      "family_id": "case_narrative",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.46409357210544155,
+      "vertical_hierarchy": 0.12718499422912682,
+      "whitespace_fraction": 0.5155886645500889,
+      "type_rhythm_bands": 22,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.020317763344469553,
+      "word_count": 256
+    },
+    {
+      "face_id": "apex-09",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 0.00011402172046703297,
+      "ink_occupancy": 0.0900154532967033,
+      "vertical_hierarchy": 0.48103614627029473,
+      "whitespace_fraction": 0.8447426596840659,
+      "type_rhythm_bands": 44,
+      "proof_visibility": 3.68533905119271e-05,
+      "image_coverage": 0.06524188701923084,
+      "word_count": 396
+    },
+    {
+      "face_id": "buchagentur-11",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 5.004544667590028e-05,
+      "ink_occupancy": 0.5269217451523546,
+      "vertical_hierarchy": 0.49658287572137577,
+      "whitespace_fraction": 0.3169729808691136,
+      "type_rhythm_bands": 2,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.15610527397853186,
+      "word_count": 376
+    },
+    {
+      "face_id": "alexander-13",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 2.675674771731496e-06,
+      "ink_occupancy": 0.16730057861466938,
+      "vertical_hierarchy": 0.3059260553880628,
+      "whitespace_fraction": 0.7953055286129971,
+      "type_rhythm_bands": 19,
+      "proof_visibility": 6.695681285570807e-06,
+      "image_coverage": 0.037393892772333515,
+      "word_count": 364
+    },
+    {
+      "face_id": "werkzeug-11",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.15625324230665477,
+      "vertical_hierarchy": 0.4197666309319916,
+      "whitespace_fraction": 0.7569975029915683,
+      "type_rhythm_bands": 29,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.08674925470177697,
+      "word_count": 316
+    },
+    {
+      "face_id": "niklas-11",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 0.0004091367616758242,
+      "ink_occupancy": 0.40399773566277475,
+      "vertical_hierarchy": 0.6849946145459135,
+      "whitespace_fraction": 0.5732945033482143,
+      "type_rhythm_bands": 21,
+      "proof_visibility": 0.0007806218172071831,
+      "image_coverage": 0.02270776098901095,
+      "word_count": 209
+    },
+    {
+      "face_id": "aerzte-11",
+      "family_id": "theory_interpretation",
+      "accent_fraction": 1.3833841727016801e-06,
+      "ink_occupancy": 0.47055812634447647,
+      "vertical_hierarchy": 0.14849587037304515,
+      "whitespace_fraction": 0.5076881575397896,
+      "type_rhythm_bands": 25,
+      "proof_visibility": 3.461884650003462e-06,
+      "image_coverage": 0.021753716115733956,
+      "word_count": 309
+    },
+    {
+      "face_id": "buchagentur-13",
+      "family_id": "mechanism_spread",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.16853953860803325,
+      "vertical_hierarchy": 0.28893090371182045,
+      "whitespace_fraction": 0.8169662179709142,
+      "type_rhythm_bands": 34,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.014494243421052544,
+      "word_count": 368
+    },
+    {
+      "face_id": "alexander-14",
+      "family_id": "mechanism_spread",
+      "accent_fraction": 8.829726746713936e-05,
+      "ink_occupancy": 0.674041272283354,
+      "vertical_hierarchy": 0.6038940349042573,
+      "whitespace_fraction": 0.30251312752934884,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.00022095748242383662,
+      "image_coverage": 0.02344560018729719,
+      "word_count": 313
+    },
+    {
+      "face_id": "werkzeug-16",
+      "family_id": "mechanism_spread",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.4062708804548567,
+      "vertical_hierarchy": 0.3749923989192398,
+      "whitespace_fraction": 0.5553747933569892,
+      "type_rhythm_bands": 2,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.03835432618815404,
+      "word_count": 199
+    },
+    {
+      "face_id": "niklas-14",
+      "family_id": "mechanism_spread",
+      "accent_fraction": 0.0011898501888736263,
+      "ink_occupancy": 0.4780005151098901,
+      "vertical_hierarchy": 0.7312178884947067,
+      "whitespace_fraction": 0.4937542925824176,
+      "type_rhythm_bands": 4,
+      "proof_visibility": 0.00036183328866255695,
+      "image_coverage": 0.028245192307692346,
+      "word_count": 222
+    },
+    {
+      "face_id": "aerzte-13",
+      "family_id": "mechanism_spread",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.4675008473228058,
+      "vertical_hierarchy": 0.13577368211790428,
+      "whitespace_fraction": 0.5120264503053821,
+      "type_rhythm_bands": 7,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.0204727023718122,
+      "word_count": 265
+    },
+    {
+      "face_id": "apex-14",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 5.365728021978022e-06,
+      "ink_occupancy": 0.36199884100274726,
+      "vertical_hierarchy": 0.5239344100863746,
+      "whitespace_fraction": 0.5657274854052198,
+      "type_rhythm_bands": 22,
+      "proof_visibility": 1.3401232913428035e-05,
+      "image_coverage": 0.07227367359203296,
+      "word_count": 414
+    },
+    {
+      "face_id": "buchagentur-15",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 9.468057479224377e-05,
+      "ink_occupancy": 0.9823298995844876,
+      "vertical_hierarchy": 0.49464442369835604,
+      "whitespace_fraction": 0.011741743853878116,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0001047226538747382,
+      "image_coverage": 0.005928356561634308,
+      "word_count": 372
+    },
+    {
+      "face_id": "alexander-16",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 1.7391886016254725e-05,
+      "ink_occupancy": 0.4459212682698418,
+      "vertical_hierarchy": 0.34301697648137686,
+      "whitespace_fraction": 0.5354252650590321,
+      "type_rhythm_bands": 12,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.018653466671126107,
+      "word_count": 450
+    },
+    {
+      "face_id": "werkzeug-18",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.28069833233037983,
+      "vertical_hierarchy": 0.6097947603822964,
+      "whitespace_fraction": 0.6737039419532002,
+      "type_rhythm_bands": 16,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.04559772571642007,
+      "word_count": 247
+    },
+    {
+      "face_id": "niklas-16",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.9755403288118132,
+      "vertical_hierarchy": 0.5012824026009998,
+      "whitespace_fraction": 0.017615685096153848,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.006843986092032968,
+      "word_count": 224
+    },
+    {
+      "face_id": "aerzte-16",
+      "family_id": "summary_synthesis",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.4403408658601537,
+      "vertical_hierarchy": 0.17375353309221342,
+      "whitespace_fraction": 0.539641565160853,
+      "type_rhythm_bands": 13,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.020017568978993205,
+      "word_count": 361
+    },
+    {
+      "face_id": "apex-15",
+      "family_id": "objection_response",
+      "accent_fraction": 0.0001448746565934066,
+      "ink_occupancy": 0.24128069196428573,
+      "vertical_hierarchy": 0.6589230886345759,
+      "whitespace_fraction": 0.5592658074347527,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 2.0101849370142053e-05,
+      "image_coverage": 0.19945350060096156,
+      "word_count": 179
+    },
+    {
+      "face_id": "buchagentur-17",
+      "family_id": "objection_response",
+      "accent_fraction": 2.5699013157894735e-05,
+      "ink_occupancy": 0.42307879587950137,
+      "vertical_hierarchy": 0.09627169369717062,
+      "whitespace_fraction": 0.2920746948580332,
+      "type_rhythm_bands": 15,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.2848465092624654,
+      "word_count": 370
+    },
+    {
+      "face_id": "alexander-15",
+      "family_id": "objection_response",
+      "accent_fraction": 8.829726746713936e-05,
+      "ink_occupancy": 0.674041272283354,
+      "vertical_hierarchy": 0.6038940349042573,
+      "whitespace_fraction": 0.30251312752934884,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.00022095748242383662,
+      "image_coverage": 0.02344560018729719,
+      "word_count": 330
+    },
+    {
+      "face_id": "werkzeug-15",
+      "family_id": "objection_response",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.33258630588007443,
+      "vertical_hierarchy": 0.4198322901841401,
+      "whitespace_fraction": 0.6160251222565762,
+      "type_rhythm_bands": 3,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.05138857186334933,
+      "word_count": 346
+    },
+    {
+      "face_id": "niklas-17",
+      "family_id": "objection_response",
+      "accent_fraction": 0.00021194625686813187,
+      "ink_occupancy": 0.12051022707760989,
+      "vertical_hierarchy": 0.5501596921985195,
+      "whitespace_fraction": 0.8617050673935439,
+      "type_rhythm_bands": 20,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.017784705528846145,
+      "word_count": 307
+    },
+    {
+      "face_id": "aerzte-17",
+      "family_id": "objection_response",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.4403408658601537,
+      "vertical_hierarchy": 0.17375353309221342,
+      "whitespace_fraction": 0.539641565160853,
+      "type_rhythm_bands": 13,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.020017568978993205,
+      "word_count": 312
+    },
+    {
+      "face_id": "apex-16",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 0.023835905305631868,
+      "ink_occupancy": 0.3402341067135989,
+      "vertical_hierarchy": 0.5364734525704654,
+      "whitespace_fraction": 0.5473927927541209,
+      "type_rhythm_bands": 30,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.11237310053228022,
+      "word_count": 333
+    },
+    {
+      "face_id": "buchagentur-18",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.07786530470914127,
+      "vertical_hierarchy": 0.4625695524303491,
+      "whitespace_fraction": 0.8926930942693906,
+      "type_rhythm_bands": 58,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.02944160102146809,
+      "word_count": 305
+    },
+    {
+      "face_id": "alexander-17",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 1.7391886016254725e-05,
+      "ink_occupancy": 0.4459212682698418,
+      "vertical_hierarchy": 0.34301697648137686,
+      "whitespace_fraction": 0.5354252650590321,
+      "type_rhythm_bands": 12,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.018653466671126107,
+      "word_count": 239
+    },
+    {
+      "face_id": "werkzeug-19",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.28069833233037983,
+      "vertical_hierarchy": 0.6097947603822964,
+      "whitespace_fraction": 0.6737039419532002,
+      "type_rhythm_bands": 16,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.04559772571642007,
+      "word_count": 262
+    },
+    {
+      "face_id": "niklas-18",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 0.00013011890453296703,
+      "ink_occupancy": 0.49637276785714285,
+      "vertical_hierarchy": 0.31804256506862866,
+      "whitespace_fraction": 0.4564745557177198,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.04715267642513743,
+      "word_count": 258
+    },
+    {
+      "face_id": "aerzte-18",
+      "family_id": "collaboration_pathway",
+      "accent_fraction": 0.0003652134215932435,
+      "ink_occupancy": 0.23822843822843823,
+      "vertical_hierarchy": 0.23120545527367747,
+      "whitespace_fraction": 0.7380285392154828,
+      "type_rhythm_bands": 38,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.023743022556078963,
+      "word_count": 349
+    },
+    {
+      "face_id": "buchagentur-19",
+      "family_id": "evidence_wall",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.07786530470914127,
+      "vertical_hierarchy": 0.4625695524303491,
+      "whitespace_fraction": 0.8926930942693906,
+      "type_rhythm_bands": 58,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.02944160102146809,
+      "word_count": 608
+    },
+    {
+      "face_id": "alexander-18",
+      "family_id": "evidence_wall",
+      "accent_fraction": 0.00022743235559717715,
+      "ink_occupancy": 0.32965249673902136,
+      "vertical_hierarchy": 0.7108387682999654,
+      "whitespace_fraction": 0.6484711863273019,
+      "type_rhythm_bands": 16,
+      "proof_visibility": 3.3478406427854035e-06,
+      "image_coverage": 0.021876316933676754,
+      "word_count": 645
+    },
+    {
+      "face_id": "alexander-19",
+      "family_id": "evidence_wall",
+      "accent_fraction": 0.00022743235559717715,
+      "ink_occupancy": 0.32965249673902136,
+      "vertical_hierarchy": 0.7108387682999654,
+      "whitespace_fraction": 0.6484711863273019,
+      "type_rhythm_bands": 16,
+      "proof_visibility": 3.3478406427854035e-06,
+      "image_coverage": 0.021876316933676754,
+      "word_count": 110
+    },
+    {
+      "face_id": "niklas-19",
+      "family_id": "evidence_wall",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.9521739247081044,
+      "vertical_hierarchy": 0.5001435950350189,
+      "whitespace_fraction": 0.03892835679945055,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.00889771849244509,
+      "word_count": 63
+    },
+    {
+      "face_id": "aerzte-19",
+      "family_id": "evidence_wall",
+      "accent_fraction": 0.0003652134215932435,
+      "ink_occupancy": 0.23822843822843823,
+      "vertical_hierarchy": 0.23120545527367747,
+      "whitespace_fraction": 0.7380285392154828,
+      "type_rhythm_bands": 38,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.023743022556078963,
+      "word_count": 383
+    },
+    {
+      "face_id": "apex-18",
+      "family_id": "closing_cta",
+      "accent_fraction": 5.231584821428571e-05,
+      "ink_occupancy": 0.13658460679945056,
+      "vertical_hierarchy": 0.23252048553588747,
+      "whitespace_fraction": 0.7297980339972527,
+      "type_rhythm_bands": 14,
+      "proof_visibility": 0.00013066202090592334,
+      "image_coverage": 0.13361735920329676,
+      "word_count": 46
+    },
+    {
+      "face_id": "apex-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 1.0731456043956045e-05,
+      "ink_occupancy": 0.2018318595467033,
+      "vertical_hierarchy": 0.18422140141051624,
+      "whitespace_fraction": 0.5049861027644231,
+      "type_rhythm_bands": 14,
+      "proof_visibility": 2.680246582685607e-05,
+      "image_coverage": 0.29318203768887363,
+      "word_count": 209
+    },
+    {
+      "face_id": "buchagentur-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 6.438873626373627e-05,
+      "ink_occupancy": 0.9915087354052198,
+      "vertical_hierarchy": 0.4996800337383225,
+      "whitespace_fraction": 0.004487090058379121,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.00016081479496113642,
+      "image_coverage": 0.0040041745364011025,
+      "word_count": 93
+    },
+    {
+      "face_id": "alexander-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 7.917813100021773e-06,
+      "ink_occupancy": 0.4517415889731256,
+      "vertical_hierarchy": 0.35688758174428215,
+      "whitespace_fraction": 0.18228521282421795,
+      "type_rhythm_bands": 4,
+      "proof_visibility": 1.3209167162010435e-05,
+      "image_coverage": 0.3659731982026565,
+      "word_count": 50
+    },
+    {
+      "face_id": "werkzeug-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.9441209631120611,
+      "vertical_hierarchy": 0.5169449968730156,
+      "whitespace_fraction": 0.035967988490243685,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.019911048397695252,
+      "word_count": 35
+    },
+    {
+      "face_id": "niklas-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 0.0,
+      "ink_occupancy": 0.9745101090315934,
+      "vertical_hierarchy": 0.5083025878627193,
+      "whitespace_fraction": 0.020857926253434064,
+      "type_rhythm_bands": 1,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.004631964714972528,
+      "word_count": 102
+    },
+    {
+      "face_id": "aerzte-20",
+      "family_id": "closing_cta",
+      "accent_fraction": 1.5217225899718482e-05,
+      "ink_occupancy": 0.11064444951685308,
+      "vertical_hierarchy": 0.09974502775897344,
+      "whitespace_fraction": 0.879375817061277,
+      "type_rhythm_bands": 13,
+      "proof_visibility": 0.0,
+      "image_coverage": 0.009979733421869974,
+      "word_count": 76
+    }
+  ],
+  "role_word_bands": {
+    "source": "complete reference atlas (all faces with OCR word counts)",
+    "bands": {
+      "about": {
+        "min": 168,
+        "max": 303,
+        "mean": 203.2,
+        "n": 6
+      },
+      "brand_breather": {
+        "min": 9,
+        "max": 9,
+        "mean": 9,
+        "n": 1
+      },
+      "case_study": {
+        "min": 211,
+        "max": 380,
+        "mean": 281.8,
+        "n": 18
+      },
+      "collaboration": {
+        "min": 239,
+        "max": 388,
+        "mean": 304.9,
+        "n": 7
+      },
+      "cover": {
+        "min": 127,
+        "max": 170,
+        "mean": 142,
+        "n": 6
+      },
+      "cta": {
+        "min": 35,
+        "max": 209,
+        "mean": 87.3,
+        "n": 7
+      },
+      "false_beliefs": {
+        "min": 218,
+        "max": 547,
+        "mean": 397.4,
+        "n": 10
+      },
+      "mechanism": {
+        "min": 194,
+        "max": 368,
+        "mean": 262.1,
+        "n": 9
+      },
+      "objections": {
+        "min": 179,
+        "max": 370,
+        "mean": 307.3,
+        "n": 6
+      },
+      "outlook": {
+        "min": 354,
+        "max": 529,
+        "mean": 441.7,
+        "n": 6
+      },
+      "status_quo": {
+        "min": 172,
+        "max": 521,
+        "mean": 343.5,
+        "n": 11
+      },
+      "summary": {
+        "min": 224,
+        "max": 450,
+        "mean": 344.7,
+        "n": 6
+      },
+      "theory": {
+        "min": 45,
+        "max": 464,
+        "mean": 325.9,
+        "n": 22
+      },
+      "trust_proof": {
+        "min": 63,
+        "max": 645,
+        "mean": 361.8,
+        "n": 5
+      }
+    }
+  }
+}

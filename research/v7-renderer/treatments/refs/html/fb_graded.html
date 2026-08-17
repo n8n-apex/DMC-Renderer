@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SS4';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SS3';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--rule:rgba(255,255,255,0.16);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{font-family:'SS3',sans-serif;color:#e9eef2;position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---------- FULL-BLEED PHOTO ---------- */
+.photo{position:absolute;inset:0;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png') center top/126% auto no-repeat;}
+/* GRADED REVEAL: solid navy top (clean zone) -> light bottom (men revealed) */
+.scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(20,28,38,0.96) 0%,
+    rgba(20,28,38,0.95) 36%,
+    rgba(20,28,38,0.90) 46%,
+    rgba(20,28,38,0.80) 53%,
+    rgba(20,28,38,0.66) 59%,
+    rgba(20,28,38,0.50) 65%,
+    rgba(20,28,38,0.34) 71%,
+    rgba(20,28,38,0.22) 79%,
+    rgba(20,28,38,0.13) 88%,
+    rgba(20,28,38,0.08) 100%);}
+/* side gutter darkeners so bottom-corner text stays legible without covering faces */
+.gutterL{position:absolute;left:0;bottom:0;width:520px;height:420px;
+  background:
+    linear-gradient(0deg, rgba(15,22,31,0.82) 0%, rgba(15,22,31,0.40) 55%, rgba(15,22,31,0) 100%),
+    linear-gradient(90deg, rgba(15,22,31,0.55) 0%, rgba(15,22,31,0.18) 55%, rgba(15,22,31,0) 100%);}
+.gutterR{position:absolute;right:0;bottom:0;width:520px;height:420px;
+  background:
+    linear-gradient(0deg, rgba(15,22,31,0.82) 0%, rgba(15,22,31,0.40) 55%, rgba(15,22,31,0) 100%),
+    linear-gradient(270deg, rgba(15,22,31,0.55) 0%, rgba(15,22,31,0.18) 55%, rgba(15,22,31,0) 100%);}
+
+/* ---------- HEADER ---------- */
+.toprule{position:absolute;top:54px;left:90px;right:90px;height:1px;background:var(--rule);}
+.header{position:absolute;top:84px;left:90px;right:90px;}
+.eyebrow{font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.42em;color:var(--teal-light);text-transform:uppercase;}
+.eyebrow .pg{color:rgba(255,255,255,0.45);margin-left:18px;letter-spacing:.2em;}
+.headline{font-family:'SS4';font-weight:560;font-size:46px;line-height:1.05;color:#ffffff;margin-top:16px;letter-spacing:-.01em;
+  text-shadow:0 2px 16px rgba(0,0,0,0.45);}
+.headline .teal{color:var(--teal-light);}
+
+/* ---------- COLUMN HEADERS ---------- */
+.colhead{position:absolute;top:236px;left:90px;right:90px;display:flex;}
+.colhead .h{width:50%;display:flex;flex-direction:column;}
+.colhead .h.l{align-items:flex-end;padding-right:64px;text-align:right;}
+.colhead .h.r{align-items:flex-start;padding-left:64px;}
+.tag{font-family:'SS3';font-weight:700;font-size:16px;letter-spacing:.34em;text-transform:uppercase;}
+.tag.v{color:rgba(255,255,255,0.78);}
+.tag.n{color:var(--teal-light);}
+.tagsub{font-size:14px;font-weight:400;margin-top:8px;}
+.tagsub.v{color:rgba(255,255,255,0.58);}
+.tagsub.n{color:#9fcdc8;}
+
+/* ---------- DIVERGING COMPARISON ROWS ---------- */
+.rows{position:absolute;top:296px;left:90px;right:90px;height:360px;}
+.axis{position:absolute;top:-8px;bottom:-8px;left:50%;width:2px;background:rgba(255,255,255,0.5);transform:translateX(-1px);}
+.axis .pivot{position:absolute;top:50%;left:50%;width:30px;height:30px;background:var(--teal);transform:translate(-50%,-50%) rotate(45deg);
+  box-shadow:0 0 0 5px rgba(20,28,38,0.55);}
+.axis .pivot::after{content:'›';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:rotate(-45deg);color:var(--cream);font-weight:700;font-size:20px;}
+
+.row{position:absolute;left:0;right:0;height:96px;}
+.row.r1{top:0;}
+.row.r2{top:134px;}
+.row.r3{top:268px;}
+
+.mlabel{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  font-family:'SS3';font-weight:700;font-size:13.5px;letter-spacing:.22em;text-transform:uppercase;color:#ffffff;
+  background:rgba(20,28,38,0.55);border-radius:14px;padding:4px 16px;z-index:4;white-space:nowrap;}
+
+.bar{position:absolute;top:26px;height:44px;display:flex;align-items:center;border-radius:3px;}
+.bar.v{right:calc(50% + 22px);background:rgba(246,243,237,0.90);justify-content:flex-start;flex-direction:row-reverse;}
+.bar.n{left:calc(50% + 22px);background:var(--teal);justify-content:flex-start;}
+.bval{font-family:'SS4';font-weight:600;font-size:27px;padding:0 18px;white-space:nowrap;display:flex;align-items:baseline;gap:5px;line-height:1;}
+.bar.v .bval{color:#2E3E50;}
+.bar.n .bval{color:var(--cream);}
+.bunit{font-family:'SS3';font-weight:500;font-size:14px;}
+.bar.v .bunit{color:#5a6470;}
+.bar.n .bunit{color:#d3ece5;}
+.dchip{position:absolute;left:calc(50% + 22px);top:78px;font-family:'SS3';font-weight:700;font-size:14px;
+  letter-spacing:.03em;color:#0f3b35;background:var(--teal-light);border-radius:18px;padding:5px 13px;}
+.dchip.left{left:auto;right:calc(50% + 22px);background:none;color:#9a9486;padding:5px 0;}
+
+/* ---------- BOTTOM QUOTE (left) ---------- */
+.quote{position:absolute;left:90px;bottom:118px;max-width:440px;z-index:6;}
+.quote .qm{font-family:'SS4';font-weight:700;font-size:52px;color:var(--teal-light);line-height:.4;height:30px;}
+.quote .qt{font-family:'SS4';font-weight:400;font-style:italic;font-size:24px;line-height:1.42;color:#ffffff;margin-top:14px;
+  text-shadow:0 2px 14px rgba(0,0,0,0.55);}
+.quote .qa{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-light);margin-top:20px;}
+
+/* ---------- BOTTOM SAVINGS (right) ---------- */
+.save{position:absolute;right:90px;bottom:118px;text-align:right;z-index:6;}
+.save .s{margin-bottom:30px;}
+.save .s:last-child{margin-bottom:0;}
+.save .sv{font-family:'SS4';font-weight:600;font-size:50px;color:#ffffff;line-height:1;letter-spacing:-.01em;
+  text-shadow:0 2px 14px rgba(0,0,0,0.55);}
+.save .sv em{font-style:normal;color:var(--teal-light);}
+.save .sl{font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.72);margin-top:11px;}
+
+/* ---------- FOOTER ---------- */
+.footrule{position:absolute;left:90px;right:90px;bottom:72px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;right:90px;bottom:40px;display:flex;justify-content:space-between;align-items:center;z-index:6;}
+.partners{font-family:'SS3';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:rgba(255,255,255,0.60);}
+.partners b{color:#ffffff;font-weight:600;}
+.brand{font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:#ffffff;}
+</style>
+</head>
+<body>
+  <div class="photo"></div>
+  <div class="scrim"></div>
+  <div class="gutterL"></div>
+  <div class="gutterR"></div>
+
+  <div class="toprule"></div>
+  <div class="header">
+    <div class="eyebrow">ÜBER UNS<span class="pg">/ 03</span></div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  </div>
+
+  <div class="colhead">
+    <div class="h l"><span class="tag v">Vorher</span><span class="tagsub v">manuelle Prozesse</span></div>
+    <div class="h r"><span class="tag n">Nachher</span><span class="tagsub n">automatisiert · in 90 Tagen</span></div>
+  </div>
+
+  <div class="rows">
+    <div class="axis"><div class="pivot"></div></div>
+
+    <div class="row r1">
+      <div class="mlabel">Onboarding</div>
+      <div class="bar v" style="width:540px"><span class="bval">30<span class="bunit">Min</span></span></div>
+      <div class="bar n" style="width:80px"><span class="bval">2<span class="bunit">Min</span></span></div>
+      <div class="dchip">−93 %</div>
+    </div>
+
+    <div class="row r2">
+      <div class="mlabel">Reaktionszeit</div>
+      <div class="bar v" style="width:540px"><span class="bval">24<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:150px"><span class="bval">Minuten</span></div>
+      <div class="dchip">Std&nbsp;→&nbsp;Min</div>
+    </div>
+
+    <div class="row r3">
+      <div class="mlabel">Gebundene Zeit / Woche</div>
+      <div class="bar v" style="width:540px"><span class="bval">20+<span class="bunit">Std</span></span></div>
+      <div class="bar n" style="width:64px"><span class="bval">frei</span></div>
+      <div class="dchip">+20 Std / Woche</div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <div class="qm">„</div>
+    <div class="qt">In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</div>
+    <div class="qa">Kundenstimme</div>
+  </div>
+
+  <div class="save">
+    <div class="s"><div class="sv">€200k<em>+</em></div><div class="sl">Einsparung / Jahr</div></div>
+    <div class="s"><div class="sv">30–50<em>%</em></div><div class="sl">Betriebskosten · ohne Mehr-Headcount</div></div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

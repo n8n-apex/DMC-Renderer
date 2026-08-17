@@ -1,0 +1,137 @@
+{# viz_proportion — PROPORTION family of the data-viz PRESET layer.
+   Brand-agnostic / token-only; every figure shown VERBATIM, geometry (arc/width)
+   derived from the spec's percent. Macros take (v, uid=0): uid (the dispatch's
+   loop.index) makes every SVG gradient id page-unique. icon_array uses inline
+   SVG circles (NO Tabler webfont in the print head). Graceful: missing required
+   fields → renders nothing. #}
+
+{# donut — proportion ring. percent drives the arc; figure shown VERBATIM in the
+   centre (e.g. "90 %"); label + optional source beside. #}
+{% macro donut(v, uid=0) %}
+{%- if v and v.figure -%}
+{%- set pct = (v.percent | default(0, true)) | float -%}
+{%- set circ = 314.159 -%}{# 2·π·r, r=50 #}
+{%- set dash = (pct / 100.0 * circ) | round(1) -%}
+<figure class="c-viz c-viz-donut" role="img" aria-label="{{ v.figure }} {{ v.label or '' }}">
+  <svg viewBox="0 0 120 120" class="c-viz-donut__svg">
+    <defs>
+      <linearGradient id="vizdonut{{ uid }}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="color-mix(in srgb, var(--color-primary) 70%, var(--color-accent))"/>
+        <stop offset="1" stop-color="color-mix(in srgb, var(--color-primary) 94%, var(--color-ink))"/>
+      </linearGradient>
+    </defs>
+    <circle class="c-viz-donut__track" cx="60" cy="60" r="50" fill="none" stroke-width="18"/>
+    <circle class="c-viz-donut__arc" cx="60" cy="60" r="50" fill="none" stroke-width="18"
+            stroke-linecap="round" stroke="url(#vizdonut{{ uid }})"
+            stroke-dasharray="{{ dash }} {{ circ }}" transform="rotate(-90 60 60)"/>
+    <text class="c-viz-donut__center" x="60" y="66" text-anchor="middle" style="font-size:{{ v.figure | fitfs(60, 27) }}px">{{ v.figure }}</text>
+  </svg>
+  <div class="c-viz-donut__meta">
+    {%- if v.label %}<div class="c-viz-donut__label">{{ v.label }}</div>{% endif -%}
+    {%- if v.source %}<div class="c-viz-donut__source">{{ v.source }}</div>{% endif -%}
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# split_bar — two-segment proportion bar; widths = percents, each percent shown
+   VERBATIM. a in accent, b muted. #}
+{% macro split_bar(v, uid=0) %}
+{%- set a = v.a if v else none -%}
+{%- set b = v.b if v else none -%}
+{%- if a and a.percent and b and b.percent -%}
+<figure class="c-viz c-viz-split" role="img" aria-label="{{ a.percent }}% {{ a.label or '' }} · {{ b.percent }}% {{ b.label or '' }}">
+  {%- if v.title %}<figcaption class="c-viz-split__title">{{ v.title }}</figcaption>{% endif -%}
+  <div class="c-viz-split__bar">
+    <div class="c-viz-split__seg c-viz-split__seg--a" style="width:{{ a.percent }}%"><span class="c-viz-split__pct">{{ a.percent }}%</span></div>
+    <div class="c-viz-split__seg c-viz-split__seg--b" style="width:{{ b.percent }}%"><span class="c-viz-split__pct">{{ b.percent }}%</span></div>
+  </div>
+  <div class="c-viz-split__legend">
+    <span class="c-viz-split__leg c-viz-split__leg--a">{{ a.label }}</span>
+    <span class="c-viz-split__leg c-viz-split__leg--b">{{ b.label }}</span>
+  </div>
+  {%- if v.source %}<div class="c-viz-split__source">{{ v.source }}</div>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# gauge — semicircle; a highlighted band from lo to hi on a 0-100 scale. Uses
+   pathLength="100" so the band maps directly to lo..hi (no trig). figure shown
+   VERBATIM in the centre (e.g. "30–50 %"). #}
+{% macro gauge(v, uid=0) %}
+{%- if v and v.figure -%}
+{%- set lo = (v.lo | default(0, true)) | float -%}
+{%- set hi = (v.hi | default(lo, true)) | float -%}
+{%- set band = (hi - lo) -%}
+<figure class="c-viz c-viz-gauge" role="img" aria-label="{{ v.figure }} {{ v.label or '' }}">
+  <svg viewBox="0 0 200 128" class="c-viz-gauge__svg">
+    <defs>
+      <linearGradient id="vizgauge{{ uid }}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="color-mix(in srgb, var(--color-primary) 78%, var(--color-accent))"/>
+        <stop offset="1" stop-color="color-mix(in srgb, var(--color-accent) 92%, transparent)"/>
+      </linearGradient>
+    </defs>
+    <path class="c-viz-gauge__track" d="M 22 105 A 78 78 0 0 1 178 105" fill="none" stroke-width="14" stroke-linecap="round"/>
+    <path class="c-viz-gauge__band" d="M 22 105 A 78 78 0 0 1 178 105" fill="none" stroke-width="14"
+          stroke-linecap="round" stroke="url(#vizgauge{{ uid }})" pathLength="100"
+          stroke-dasharray="{{ band if band > 0 else 2 }} 100" stroke-dashoffset="{{ -lo }}"/>
+    <text class="c-viz-gauge__center" x="100" y="92" text-anchor="middle" style="font-size:{{ v.figure | fitfs(130, 26) }}px">{{ v.figure }}</text>
+    {%- if v.label %}<text class="c-viz-gauge__label" x="100" y="111" text-anchor="middle">{{ v.label }}</text>{% endif -%}
+  </svg>
+  {%- if v.source %}<figcaption class="c-viz-gauge__source">{{ v.source }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# radial_cluster — 2-3 small rings side by side; each figure VERBATIM. Gradient
+   ids unique via uid + the ring's own loop index. #}
+{% macro radial_cluster(v, uid=0) %}
+{%- if v and v.rings -%}
+<figure class="c-viz c-viz-cluster" role="img" aria-label="{% for r in v.rings %}{{ r.figure }} {{ r.label or '' }}; {% endfor %}">
+  <div class="c-viz-cluster__row">
+  {%- for r in v.rings -%}
+    {%- set pct = (r.percent | default(0, true)) | float -%}
+    {%- set circ = 226.195 -%}{# 2·π·r, r=36 #}
+    {%- set dash = (pct / 100.0 * circ) | round(1) -%}
+    <div class="c-viz-cluster__cell">
+      <svg viewBox="0 0 90 90" class="c-viz-cluster__svg">
+        <defs>
+          <linearGradient id="vizcluster{{ uid }}_{{ loop.index }}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="color-mix(in srgb, var(--color-accent) 88%, transparent)"/>
+            <stop offset="1" stop-color="color-mix(in srgb, var(--color-primary) 90%, transparent)"/>
+          </linearGradient>
+        </defs>
+        <circle class="c-viz-cluster__track" cx="45" cy="45" r="36" fill="none" stroke-width="10"/>
+        <circle class="c-viz-cluster__arc" cx="45" cy="45" r="36" fill="none" stroke-width="10"
+                stroke-linecap="round" stroke="url(#vizcluster{{ uid }}_{{ loop.index }})"
+                stroke-dasharray="{{ dash }} {{ circ }}" transform="rotate(-90 45 45)"/>
+        <text class="c-viz-cluster__center" x="45" y="50" text-anchor="middle" style="font-size:{{ r.figure | fitfs(46, 19) }}px">{{ r.figure }}</text>
+      </svg>
+      {%- if r.label %}<div class="c-viz-cluster__label">{{ r.label }}</div>{% endif -%}
+    </div>
+  {%- endfor -%}
+  </div>
+  {%- if v.source %}<figcaption class="c-viz-cluster__source">{{ v.source }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# icon_array — waffle pictograph: `total` inline-SVG circles, first `filled` in
+   accent, rest muted. figure + label beside. (NO Tabler webfont in print.) #}
+{% macro icon_array(v, uid=0) %}
+{%- if v and v.figure and (v.total | default(0, true) | int) > 0 -%}
+{%- set total = v.total | int -%}
+{%- set filled = v.filled | default(0, true) | int -%}
+<figure class="c-viz c-viz-iconarray" role="img" aria-label="{{ filled }} von {{ total }}: {{ v.figure }} {{ v.label or '' }}">
+  <div class="c-viz-iconarray__grid">
+  {%- for i in range(total) -%}
+    <svg viewBox="0 0 10 10" class="c-viz-iconarray__dot {{ 'is-filled' if i < filled else 'is-empty' }}"><circle cx="5" cy="5" r="4.2"/></svg>
+  {%- endfor -%}
+  </div>
+  <div class="c-viz-iconarray__meta">
+    <span class="c-viz-iconarray__figure">{{ v.figure }}</span>
+    {%- if v.label %}<span class="c-viz-iconarray__label">{{ v.label }}</span>{% endif -%}
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}

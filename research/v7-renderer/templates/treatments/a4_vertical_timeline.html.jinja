@@ -1,0 +1,83 @@
+{# a4_vertical_timeline treatment (A4-portrait, archetype "timeline").
+
+   A vertical process timeline driven ENTIRELY by TreatmentData (`td`):
+     Header : eyebrow, two-tone serif headline, a bold lede (td.subhead or the
+              first body paragraph).
+     Rail   : a left spine with a connecting line + numbered nodes (01, 02, ...),
+              each row = node + step title (serif) + step body. An OPTIONAL
+              right-aligned big stat per step from td.stats paired by index;
+              the right stat column is OMITTED entirely when td.stats is empty or
+              shorter than the step list (never fabricated, paired by index only).
+     Foot   : a pull-quote from td.quote when present (omitted otherwise).
+
+   Reference: treatments/refs/{html,png}/a4_vertical_timeline. The mockup's
+   hardcoded apex strings + hex + font names are DEMO content; this template reads
+   only `td` and the page-scoped CSS uses semantic tokens ONLY
+   (styles/treatments/a4_vertical_timeline.css, collected into the shared head).
+
+   For the real assigned pages (ST-06 idx 15, ST-22 idx 18) the data carries a
+   headline, a lede (body[0]), and steps, but NO stats and NO quote, so the render
+   is header + numbered steps only. That is intentional; the steps distribute down
+   the rail so the page breathes with no dead space. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'pull_quote.jinja' import pull_quote %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{% set lede = td.subhead or (td.body[0] if td.body else '') %}
+
+<div class="tl-root">
+
+  <div class="tl-head">
+    {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+    {% if td.headline %}
+      {{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}
+    {% endif %}
+    {% if lede %}<p class="tl-lede">{{ lede }}</p>{% endif %}
+  </div>
+
+  {% if td.steps %}
+  {# per-step stat CONTRACT (see header): stats pair to steps by index, and the
+     right stat column renders ONLY when td.stats covers the WHOLE step list.
+     Fewer stats than steps means the figures are page-level, not per-step, so
+     the column is omitted entirely (never misattributed to steps). #}
+  {% set step_stats = td.stats if (td.stats and td.stats | length >= td.steps | length) else none %}
+  <ol class="tl-steps">
+    {% for step in td.steps %}
+    <li class="tl-step">
+      <div class="tl-node"><span class="tl-dot"></span></div>
+      <div class="tl-row">
+        <div class="tl-row-main">
+          <div class="tl-rowtop">
+            <span class="tl-idx">{{ '%02d' | format(loop.index) }}</span>
+            {% if step.title %}<span class="tl-title">{{ step.title }}</span>{% endif %}
+          </div>
+          {% if step.body %}<p class="tl-desc">{{ step.body }}</p>{% endif %}
+        </div>
+        {% set stat = step_stats[loop.index0] if step_stats else none %}
+        {% if stat %}
+        <div class="tl-fig">
+          {% if stat.value %}<div class="tl-fig-v">{{ stat.value }}</div>{% endif %}
+          {% if stat.label %}<div class="tl-fig-k">{{ stat.label }}</div>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+
+  {# HOST SLOT: the page's data-viz devices (a %-kennzahl arrives as a READY
+     donut spec on td.viz now; previously it was a stat and this treatment was
+     its only reader - the ring was silently unrendered). Graceful. #}
+  {% if td.viz %}
+  <div class="tl-viz">{{ render_viz(td.viz) }}</div>
+  {% endif %}
+
+  {% if td.quote and td.quote.text %}
+  <div class="tl-quote">
+    {{ pull_quote(td.quote.text, td.quote.attribution or '', on_panel=false) }}
+  </div>
+  {% endif %}
+
+</div>

@@ -1,0 +1,88 @@
+{
+  "external_generation_enabled": false,
+  "overall_status": "failed",
+  "run_stamp": "20260804T215537Z",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:55:38Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_1_contracts.log",
+      "started_at": "2026-08-04T21:55:38Z",
+      "status": "passed",
+      "step_id": "phase_1_contracts"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:55:38Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_2_composition.log",
+      "started_at": "2026-08-04T21:55:38Z",
+      "status": "passed",
+      "step_id": "phase_2_composition"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:03Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_2_renderer.log",
+      "started_at": "2026-08-04T21:55:38Z",
+      "status": "passed",
+      "step_id": "phase_2_renderer"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:21Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_3_quality_and_exports.log",
+      "started_at": "2026-08-04T21:56:03Z",
+      "status": "passed",
+      "step_id": "phase_3_quality_and_exports"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:21Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_4_workflow_assets_policy.log",
+      "started_at": "2026-08-04T21:56:21Z",
+      "status": "passed",
+      "step_id": "phase_4_workflow_assets_policy"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:22Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_4_renderer.log",
+      "started_at": "2026-08-04T21:56:21Z",
+      "status": "passed",
+      "step_id": "phase_4_renderer"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:22Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_4_node_contracts.log",
+      "started_at": "2026-08-04T21:56:22Z",
+      "status": "passed",
+      "step_id": "phase_4_node_contracts"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:22Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/phase_5_route_isolation.log",
+      "started_at": "2026-08-04T21:56:22Z",
+      "status": "passed",
+      "step_id": "phase_5_route_isolation"
+    },
+    {
+      "exit_code": 0,
+      "finished_at": "2026-08-04T21:56:23Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/verifier_contract.log",
+      "started_at": "2026-08-04T21:56:22Z",
+      "status": "passed",
+      "step_id": "verifier_contract"
+    },
+    {
+      "exit_code": 1,
+      "finished_at": "2026-08-04T22:04:50Z",
+      "log_path": "/Users/utkarsh/Projects/richard/research/calibration/runs/20260804T215537Z-verification/logs/full_historical_v2_suite.log",
+      "started_at": "2026-08-04T21:56:23Z",
+      "status": "failed",
+      "step_id": "full_historical_v2_suite"
+    }
+  ]
+}

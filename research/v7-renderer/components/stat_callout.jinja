@@ -1,0 +1,24 @@
+{# stat_callout — a single REAL figure lifted from the prose into a small
+   dark-glass corner card (Richard's "expensive afterthought" weighting that
+   chromatically anchors an otherwise text-heavy page). AUGMENT device: the
+   figure already lives (and is already counted) in the body copy, so this adds
+   visual proof WITHOUT adding text — it never fabricates a number.
+
+   Token-only / brand-agnostic: the dark-glass fill, accent numeral, glow +
+   keyline come from tokens via color-mix (Chromium honours the gradient/glow;
+   WeasyPrint drops the glow losslessly). The host page positions .c-statcard.
+
+   DATA CONTRACT (diagram dict, kind == "stat_callout"):
+     figure : the number string, shown VERBATIM (e.g. "30 %", "15x", "200.000 €")
+     label  : optional one-line caption under the figure
+
+   Graceful: no figure → renders nothing. #}
+{% macro stat_callout(diagram) %}
+{%- if diagram and diagram.kind == 'stat_callout' and diagram.figure -%}
+<figure class="c-statcard" role="img"
+        aria-label="{{ diagram.figure }} {{ diagram.label or '' }}">
+  <span class="c-statcard__figure">{{ diagram.figure }}</span>
+  {%- if diagram.label %}<span class="c-statcard__label">{{ diagram.label }}</span>{% endif %}
+</figure>
+{%- endif -%}
+{% endmacro %}

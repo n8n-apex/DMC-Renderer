@@ -1053,27 +1053,35 @@ def test_st02_rebuild_composes_serif_headline_two_col_and_check_panel() -> None:
     """The rebuilt ST-02 (outlook) is a large serif question-headline, a
     two-column body, and a tint check-list panel (callout_panel carrying a
     check_list) for the audience / Zielgruppe — composed from the macro library on
-    the token-themed .st-02 layout. Loads the REAL apex outlook page (slot 2)."""
+    the token-themed .st-02 layout. US-604: the section spans TWO continuation
+    pages — the CONTEXT page carries the headline + two-column body, the EVIDENCE
+    page carries the tint check-list panel."""
     from patterns import st_02
-    page = _load_fixture_page("ST-02")
-    frag = st_02.render(page, _ctx(APEX_FIXTURE))
+    ctx = _ctx(APEX_FIXTURE)
+
+    # CONTEXT continuation: serif question-headline + two-column body.
+    page = _load_fixture_continuation("ST-02", "context")
+    frag = st_02.render(page, ctx)
     assert isinstance(frag, PageFragment)
     _no_head_css(frag)
     assert ".st-02" in frag.css, "fragment CSS must be scoped to .st-02"
 
-    # Signature devices: a serif question-headline, a two-column body, and the
-    # tint callout panel carrying the accent check-list (Zielgruppe).
+    # Signature devices: a serif question-headline + a two-column body.
     assert "ol-headline" in frag.html, "serif question-headline missing"
     assert "ol-body" in frag.html, "two-column body block missing"
-    assert "c-callout-panel" in frag.html, "tint check-list panel missing"
-    assert "c-check-list" in frag.html, "accent check-list missing"
-    assert "c-check-list__check" in frag.html, "accent check glyph missing"
 
     # Real outlook content from the fixture flows through.
     assert "Dein Wachstum scheitert nicht am Markt" in frag.html            # title
-    assert "B2B-Unternehmen mit 10 bis 50 Mitarbeitern" in frag.html        # zielgruppe 1
-    assert "€500.000 bis €3 Millionen Jahresumsatz" in frag.html            # zielgruppe 2
     assert "Manuelle Prozesse fressen" in frag.html                         # body prose
+
+    # EVIDENCE continuation: the tint callout panel carrying the check-list.
+    ev = _load_fixture_continuation("ST-02", "evidence")
+    frag2 = st_02.render(ev, ctx)
+    assert "c-callout-panel" in frag2.html, "tint check-list panel missing"
+    assert "c-check-list" in frag2.html, "accent check-list missing"
+    assert "c-check-list__check" in frag2.html, "accent check glyph missing"
+    assert "B2B-Unternehmen mit 10 bis 50 Mitarbeitern" in frag2.html        # zielgruppe 1
+    assert "€500.000 bis €3 Millionen Jahresumsatz" in frag2.html            # zielgruppe 2
 
     # graceful: empty data still composes a non-empty fragment.
     assert st_02.render(_page("ST-02", {}, slot=2), _ctx()).html.strip()
@@ -1279,16 +1287,21 @@ def test_st05_rebuild_composes_serif_heading_stat_trio_and_logo_wall() -> None:
 
 def test_st05_phase4b_dark_panel_and_social_proof_from_slots() -> None:
     """Phase 4b + IG-assets: the positioning statement (the body's FIRST paragraph)
-    rides a DARK authority panel (.ab-lead, DNA §C3). The apex about page leads its
-    §C4 social proof with the designed TESTIMONIAL CARDS (real client quote+metric+
-    name, scraped from the founder's socials); the framed proof-photo gallery is the
-    FALLBACK rendered only when no testimonial cards are present."""
+    rides a DARK authority panel (.ab-lead, DNA §C3). The apex about section leads
+    its §C4 social proof with the designed TESTIMONIAL CARDS (real client
+    quote+metric+name, scraped from the founder's socials); the framed proof-photo
+    gallery is the FALLBACK rendered only when no testimonial cards are present.
+    US-604: the ST-05 section spans TWO continuation pages — the IDENTITY page
+    carries the body/stats (the dark positioning panel); the PROOF page carries
+    the testimonials (or the proof gallery fallback)."""
     import copy
     from patterns import st_05
-    page = _load_fixture_page("ST-05")
-    frag = st_05.render(page, _ctx(APEX_FIXTURE))
+    ctx = _ctx(APEX_FIXTURE)
 
-    # dark positioning panel carries the thesis (the body's first paragraph)
+    # IDENTITY continuation: dark positioning panel carries the thesis (the
+    # body's first paragraph).
+    page = _load_fixture_continuation("ST-05", "identity")
+    frag = st_05.render(page, ctx)
     assert "ab-lead" in frag.html, "dark positioning panel (.ab-lead) missing"
     assert "APEX Consulting hat" in frag.html, "thesis (body para 1) must be on the panel"
     # the panel grounds on --color-ink with on-dark text (the §C3 dark panel,
@@ -1297,20 +1310,23 @@ def test_st05_phase4b_dark_panel_and_social_proof_from_slots() -> None:
     assert ".ab-lead" in frag.css
     assert "var(--color-ink)" in frag.css and "var(--color-on-dark)" in frag.css
 
-    # social proof: the designed testimonial cards (the apex page carries 2 whole cards).
+    # PROOF continuation: the designed testimonial cards (the apex page carries
+    # 2 whole cards).
+    proof = _load_fixture_continuation("ST-05", "proof")
+    frag_p = st_05.render(proof, ctx)
     # The card ASSET paths are produced by the Social Layout Planner (staged as
-    # ig_<basename>), so derive the expected filename from the page DATA rather than
-    # hardcoding — the planner is the source of truth, not a fixed filename.
-    assert frag.html.count("ab-testimonials__card") == 2, "both testimonial cards must render"
-    assert "Das sagen unsere Kunden" in frag.html, "testimonials content label missing"
-    tpaths = (page.get("data") or {}).get("testimonials") or []
-    assert tpaths, "fixture ST-05 must carry planner-bound testimonials"
-    assert tpaths[0].split("/")[-1] in frag.html, "testimonial card asset must integrate"
+    # ig_<basename>), so derive the expected filename from the page DATA rather
+    # than hardcoding — the planner is the source of truth, not a fixed filename.
+    assert frag_p.html.count("ab-testimonials__card") == 2, "both testimonial cards must render"
+    assert "Das sagen unsere Kunden" in frag_p.html, "testimonials content label missing"
+    tpaths = (proof.get("data") or {}).get("testimonials") or []
+    assert tpaths, "fixture ST-05 proof page must carry planner-bound testimonials"
+    assert tpaths[0].split("/")[-1] in frag_p.html, "testimonial card asset must integrate"
 
     # FALLBACK: with NO testimonials, the framed proof-photo gallery renders instead
-    page_no_t = copy.deepcopy(page)
+    page_no_t = copy.deepcopy(proof)
     (page_no_t.get("data") or {}).pop("testimonials", None)
-    frag2 = st_05.render(page_no_t, _ctx(APEX_FIXTURE))
+    frag2 = st_05.render(page_no_t, ctx)
     assert "c-proof-gallery" in frag2.html, "proof gallery (fallback) missing"
     assert frag2.html.count("c-proof-gallery__item") == 3, "all 3 proof photos must render"
     assert "Referenzen" in frag2.html, "proof gallery content label missing"

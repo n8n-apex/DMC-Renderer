@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SS4';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SS3';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{background:var(--cream);font-family:'SS3',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---------- HEADER ---------- */
+.header{position:absolute;top:64px;left:64px;right:64px;}
+.eyebrow{display:flex;align-items:center;gap:16px;color:var(--teal);font-family:'SS3';font-size:14px;font-weight:600;letter-spacing:.36em;text-transform:uppercase;}
+.eyebrow .tick{width:40px;height:2px;background:var(--teal);}
+.eyebrow .pg{margin-left:auto;color:#b0a690;letter-spacing:.24em;font-weight:600;}
+.headline{font-family:'SS4';font-weight:480;font-size:56px;line-height:1.05;color:var(--ink);margin-top:30px;letter-spacing:-.012em;}
+.headline .teal{color:var(--teal);}
+
+/* ---------- LANDSCAPE IMAGE BAND ---------- */
+/* native ar 1.562 (1_founder.png); box width 712, height round(712/1.562)=456 */
+.band{position:absolute;top:288px;left:64px;width:712px;height:456px;overflow:hidden;background:var(--ink);}
+.band .img{position:absolute;inset:0;background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png') center 30%/cover no-repeat;}
+.band .seam{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal);z-index:2;}
+.band::after{content:'';position:absolute;left:0;right:0;bottom:0;height:150px;z-index:1;
+  background:linear-gradient(to bottom,rgba(46,62,80,0) 0%,rgba(46,62,80,0.82) 100%);}
+.bcap{position:absolute;left:36px;bottom:26px;z-index:3;color:var(--cream);}
+.bcap .name{font-family:'SS4';font-size:22px;font-weight:560;letter-spacing:.005em;}
+.bcap .role{font-family:'SS3';font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-light);margin-top:7px;}
+
+/* ---------- THESIS ---------- */
+.thesis{position:absolute;top:790px;left:64px;width:640px;}
+.thesis .qm{font-family:'SS4';font-size:54px;font-weight:600;color:var(--teal);line-height:.5;height:24px;}
+.thesis p{font-family:'SS4';font-size:25px;line-height:1.46;color:var(--ink);font-weight:430;margin-top:10px;}
+.thesis p .em{color:var(--teal);font-weight:560;}
+
+/* ---------- 3-METRIC ROW ---------- */
+.metrics{position:absolute;top:960px;left:64px;right:64px;display:flex;}
+.metrics::before{content:'';position:absolute;left:0;right:0;top:-30px;height:1px;background:var(--rule);}
+.m{flex:1;padding-right:34px;position:relative;}
+.m + .m{padding-left:40px;}
+.m + .m::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--rule);}
+.m .v{font-family:'SS4';font-size:50px;font-weight:520;color:var(--ink);line-height:1;letter-spacing:-.01em;}
+.m .v em{font-style:normal;color:var(--teal);}
+.m .l{font-family:'SS3';font-size:13px;font-weight:500;color:var(--body);letter-spacing:.02em;margin-top:14px;line-height:1.4;}
+.m .l b{color:var(--ink);font-weight:600;}
+
+/* ---------- FOOTER ---------- */
+.footrule{position:absolute;left:64px;right:64px;bottom:74px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:64px;right:64px;bottom:44px;display:flex;justify-content:space-between;align-items:center;}
+.partners{font-family:'SS3';font-weight:500;font-size:12.5px;letter-spacing:.04em;color:#6f7d8b;}
+.partners b{color:var(--ink);font-weight:600;}
+.brand{font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS<span class="pg">03</span></div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  </div>
+
+  <div class="band">
+    <div class="img"></div>
+    <div class="seam"></div>
+    <div class="bcap">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+  </div>
+
+  <div class="thesis">
+    <div class="qm">„</div>
+    <p><span class="em">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="m">
+      <div class="v">100<em>+</em></div>
+      <div class="l">realisierte <b>AI-Projekte</b></div>
+    </div>
+    <div class="m">
+      <div class="v">€200k<em>+</em></div>
+      <div class="l"><b>Einsparung</b> pro Jahr</div>
+    </div>
+    <div class="m">
+      <div class="v">30–50<em>%</em></div>
+      <div class="l">weniger <b>Betriebskosten</b><br>ohne Mehr-Headcount</div>
+    </div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

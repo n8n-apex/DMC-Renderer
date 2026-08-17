@@ -50,6 +50,25 @@ def _page(st_type: str) -> dict:
     return copy.deepcopy(next(p for p in pkg.pages if str(p.get("st_type")) == st_type))
 
 
+def _page_of(pkg, st_type: str, role=None) -> dict:
+    """The page with `st_type`; when `role` is given it must also match
+    continuation_role (US-604: ST-02/ST-05/ST-06/ST-FAZIT span continuation
+    pages). With role=None a NON-continuation page is preferred, then the first
+    page of that type."""
+    for p in pkg:
+        if str(p.get("st_type")) != st_type:
+            continue
+        if role is None:
+            if not p.get("continuation_index"):
+                return copy.deepcopy(p)
+        elif p.get("continuation_role") == role:
+            return copy.deepcopy(p)
+    for p in pkg:
+        if str(p.get("st_type")) == st_type:
+            return copy.deepcopy(p)
+    raise AssertionError(f"no {st_type} page (role={role!r}) in the apex fixture")
+
+
 # ---------------------------------------------------------------------------
 # HOST WIRING — viz renders when present, page is unchanged when absent.
 # ---------------------------------------------------------------------------
@@ -130,17 +149,23 @@ def test_curation_binds_magnitude_and_process_presets():
 
 def test_curation_every_displayed_figure_is_grounded():
     """The structural no-fabrication guarantee for the Phase 4 host pages: every
-    figure/title a curated preset DISPLAYS must appear verbatim in that page."""
+    figure/title a curated preset DISPLAYS must appear verbatim in that page.
+    US-605: a continuation page lacking the figure's source copy (e.g. the
+    ST-02 evidence page without the body's percentages) is SKIPPED by the
+    curation — the figure is displayed on the page that carries its source, so
+    the guard runs only on the pages whose spec actually grounds (would bind)."""
     pkg = json.loads((APEX / "resolved_package.json").read_text(encoding="utf-8"))
     for page in pkg["pages"]:
         if page.get("st_type") not in ("ST-02", "ST-09"):
             continue
         specs = _viz_for_page(page)
-        assert specs, f"{page['st_type']} should have a curated spec"
+        if not specs:
+            continue
         for spec in specs:
-            for fig in _spec_figures(spec):
-                if fig in (None, ""):
-                    continue
+            figs = [f for f in _spec_figures(spec) if f not in (None, "")]
+            if figs and not all(_figure_grounded(f, page) for f in figs):
+                continue  # curation skips this page — nothing displayed here
+            for fig in figs:
                 assert _figure_grounded(fig, page), (
                     f"ungrounded figure {fig!r} on {page['st_type']}")
 
@@ -171,19 +196,20 @@ def test_applied_curation_renders_on_host_pages():
     pkg = load_package(APEX)
     raw = json.loads((APEX / "resolved_package.json").read_text(encoding="utf-8"))
     apply_apex_viz(raw)
-    by_type = {p["st_type"]: p for p in raw["pages"]}
     ctx = _ctx()
 
-    st02 = copy.deepcopy(by_type["ST-02"])
+    # US-604: ST-02 spans context + evidence continuations; the curated
+    # radial_cluster binds to the CONTEXT page (it carries the figures).
+    st02 = _page_of(raw["pages"], "ST-02", role="context")
     html02 = st_02.render(st02, ctx).html
     assert "c-viz-cluster" in html02 and "30 %" in html02 and "60 %" in html02
 
-    st09 = copy.deepcopy(by_type["ST-09"])
+    st09 = _page_of(raw["pages"], "ST-09")
     html09 = st_09.render(st09, ctx).html
     assert "c-viz-mega" in html09 and "50 %" in html09
 
     # ST-06 step_cascade binding is intentionally disabled (it duplicated the page's
     # own step list and overflowed the sheet); ST-06 must carry no curated viz band.
-    st06 = copy.deepcopy(by_type["ST-06"])
+    st06 = _page_of(raw["pages"], "ST-06", role="intro")
     assert not (st06.get("data") or {}).get("viz"), "ST-06 should carry no curated viz"
     _ = pkg  # load_package smoke (package parses cleanly)

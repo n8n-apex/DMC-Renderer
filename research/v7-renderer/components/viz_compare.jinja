@@ -1,0 +1,209 @@
+{# viz_compare (COMPARISON family of the data-viz PRESET layer): formula_ladder,
+   grouped_bars, stacked_bar_100, entity_bars. These are the devices the owner
+   refs use to COMPARE quantities: a calculation derived step by step, a
+   before/after per category, a composition of a whole, and entities ranked on
+   one metric.
+
+   Brand-agnostic / token-only: every colour arrives as var(--token) + color-mix
+   from styles/viz_compare.css; no hex, no font-family literal, no branding.
+   Macros take (v, uid=0): uid (the dispatch's loop.index) keeps every DOM id
+   page-unique so two equal-valued devices never collide.
+
+   The verbatim law: every figure is printed EXACTLY as the writer supplied it
+   ("3-5", "1.200", "2,5", "13.160 €"). Only the bar GEOMETRY is derived, via the
+   `num` filter (German convention: thousands dot, decimal comma), so a width can
+   never diverge from the numeral above it, and a range never collapses into a
+   single fabricated number. Graceful: a missing required field renders NOTHING,
+   so adding a spec to a page can never break a render. Nothing is invented: no
+   figure, no source, no segment, no legend text.
+
+   These are HTML/CSS box devices (like split_bar / ranked_bars), not SVG: widths
+   are percentages of the host column, so they reflow inside any Chromium print
+   column and can never blow a fixed mm height. #}
+
+{# formula_ladder (the CALCULATION device). A vertical ladder of numbered steps,
+   each a hairline-separated row of: accent numeral chip, the BIG value, its unit,
+   and the explanatory label. The ladder lands in a DARK result box carrying the
+   figure the whole calculation was built to produce. This is a ladder, NOT a
+   chart: nothing here is scaled, because a derivation's steps are not commensurate
+   (hours, percent and euro do not share an axis). Ref: Martic p6
+   (5 x 160 = 800 Stunden, landing in "13.160 € pro Monat"); Frese p9
+   (8 x 35,28 € x 210 = 133.358 €). #}
+{% macro formula_ladder(v, uid=0) %}
+{%- set schritte = (v.get('schritte') if v else none) or none -%}
+{%- if schritte and (schritte | selectattr('wert') | list) -%}
+{%- set ergebnis = v.get('ergebnis') or none -%}
+<figure class="c-viz c-viz-ladder" role="img" aria-label="{% for s in schritte if s.wert %}{{ s.wert }} {{ s.einheit or '' }} {{ s.label or '' }}; {% endfor %}{% if ergebnis and ergebnis.wert %}{{ ergebnis.wert }} {{ ergebnis.label or '' }}{% endif %}">
+  {%- if v.titel %}<figcaption class="c-viz-ladder__title" id="vizladder{{ uid }}">{{ v.titel }}</figcaption>{% endif -%}
+  <ol class="c-viz-ladder__list">
+  {%- for s in schritte if s.wert -%}
+    <li class="c-viz-ladder__row">
+      <span class="c-viz-ladder__chip">{{ loop.index }}</span>
+      <span class="c-viz-ladder__figure">
+        <span class="c-viz-ladder__wert">{{ s.wert }}</span>
+        {%- if s.einheit %}<span class="c-viz-ladder__einheit">{{ s.einheit }}</span>{% endif -%}
+      </span>
+      {%- if s.label %}<span class="c-viz-ladder__label">{{ s.label }}</span>{% endif -%}
+    </li>
+  {%- endfor -%}
+  </ol>
+  {%- if ergebnis and ergebnis.wert -%}
+  <div class="c-viz-ladder__ergebnis">
+    <span class="c-viz-ladder__ergebnis-wert">{{ ergebnis.wert }}</span>
+    {%- if ergebnis.label %}<span class="c-viz-ladder__ergebnis-label">{{ ergebnis.label }}</span>{% endif -%}
+  </div>
+  {%- endif -%}
+  {%- if v.quelle %}<figcaption class="c-viz-ladder__source">{{ v.quelle }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# grouped_bars (BEFORE/AFTER per CATEGORY). Per row: the category label, then two
+   stacked horizontal bars, vorher in a muted context tone, nachher in solid
+   accent, each carrying its value VERBATIM at the bar end. Both series share ONE
+   scale (the max across every value in the table), which is what makes the pair
+   comparable across rows. A legend beneath names the two series, using only the
+   labels the writer supplied. Ref: Martic p9 (Reporting / Kampagnen-Setup /
+   Werbemittel / Gesamt). #}
+{% macro grouped_bars(v, uid=0) %}
+{%- set zeilen = (v.get('zeilen') if v else none) or none -%}
+{%- if zeilen and (zeilen | selectattr('label') | list) -%}
+{%- set nums = (zeilen | map(attribute='vorher') | map('num') | list)
+              + (zeilen | map(attribute='nachher') | map('num') | list) -%}
+{%- set m = nums | max -%}
+<figure class="c-viz c-viz-grouped" role="img" aria-label="{% for z in zeilen if z.label %}{{ z.label }}: {{ v.vorher_label or '' }} {{ z.vorher or '' }}, {{ v.nachher_label or '' }} {{ z.nachher or '' }}; {% endfor %}">
+  {%- if v.titel %}<figcaption class="c-viz-grouped__title" id="vizgrouped{{ uid }}">{{ v.titel }}</figcaption>{% endif -%}
+  <div class="c-viz-grouped__rows">
+  {%- for z in zeilen if z.label -%}
+    <div class="c-viz-grouped__row">
+      <div class="c-viz-grouped__label">{{ z.label }}</div>
+      <div class="c-viz-grouped__pair">
+        {%- if z.vorher is defined and z.vorher -%}
+        {%- set nv = z.vorher | num -%}
+        {%- set wv = ((([((nv / m * 100) if m else 0) | round(0, 'floor') | int, 2] | max)) if nv > 0 else 0) -%}
+        <div class="c-viz-grouped__track">
+          <span class="c-viz-grouped__bar c-viz-grouped__bar--vorher" style="width:{{ wv }}%"></span>
+          <span class="c-viz-grouped__val">{{ z.vorher }}{% if v.einheit %} {{ v.einheit }}{% endif %}</span>
+        </div>
+        {%- endif -%}
+        {%- if z.nachher is defined and z.nachher -%}
+        {%- set nn = z.nachher | num -%}
+        {%- set wn = ((([((nn / m * 100) if m else 0) | round(0, 'floor') | int, 2] | max)) if nn > 0 else 0) -%}
+        <div class="c-viz-grouped__track">
+          <span class="c-viz-grouped__bar c-viz-grouped__bar--nachher" style="width:{{ wn }}%"></span>
+          <span class="c-viz-grouped__val">{{ z.nachher }}{% if v.einheit %} {{ v.einheit }}{% endif %}</span>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+  </div>
+  {%- if v.vorher_label or v.nachher_label -%}
+  <div class="c-viz-grouped__legend">
+    {%- if v.vorher_label -%}
+    <span class="c-viz-grouped__leg"><span class="c-viz-grouped__swatch c-viz-grouped__swatch--vorher"></span>{{ v.vorher_label }}</span>
+    {%- endif -%}
+    {%- if v.nachher_label -%}
+    <span class="c-viz-grouped__leg"><span class="c-viz-grouped__swatch c-viz-grouped__swatch--nachher"></span>{{ v.nachher_label }}</span>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+  {%- if v.quelle %}<figcaption class="c-viz-grouped__source">{{ v.quelle }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# stacked_bar_100 (COMPOSITION of a whole, and the before/after of ONE ratio).
+   One full-width bar segmented by `teile`; each segment's width IS its percent, so
+   the bar sums to exactly what the writer stated (nothing is normalised, nothing
+   is padded to reach 100). A segment wide enough to hold its percent carries it
+   INSIDE; a thin one carries it ABOVE, on a reserved lane, so a 1% sliver stays
+   readable. The legend maps the tonal ramp back to the writer's labels.
+   When `vergleich_teile` is present the device becomes TWO stacked bars, one per
+   series, each named on the left by `teile_label` / `vergleich_label`, and the two
+   share ONE ramp so a segment means the same thing in both rows. Ref: Frese p11
+   (43/45/10/1); Martic p11 (87/13 vorher against 10/90 nachher). #}
+{% macro stacked_bar_100(v, uid=0) %}
+{%- set teile = (v.get('teile') if v else none) or none -%}
+{%- if teile -%}
+{%- set vergleich = (v.get('vergleich_teile') if v else none) or none -%}
+{%- set reihen = [{'teile': teile, 'label': v.get('teile_label')}]
+                 + ([{'teile': vergleich, 'label': v.get('vergleich_label')}] if vergleich else []) -%}
+{# a percent under 8 cannot hold its own label inside the segment, so the whole
+   device reserves an outside lane above the bars (uniformly, to keep the two
+   series baselines aligned). #}
+{%- set alle = teile + (vergleich or []) -%}
+{%- set schmal = alle | map(attribute='prozent') | map('num') | select('lt', 8) | list -%}
+<figure class="c-viz c-viz-stack{% if schmal %} c-viz-stack--outside{% endif %}" role="img" aria-label="{% for r in reihen %}{{ r.label or '' }} {% for t in r.teile %}{{ t.prozent }}% {{ t.label or '' }}; {% endfor %}{% endfor %}">
+  {%- if v.titel %}<figcaption class="c-viz-stack__title" id="vizstack{{ uid }}">{{ v.titel }}</figcaption>{% endif -%}
+  <div class="c-viz-stack__lines">
+  {%- for r in reihen -%}
+    <div class="c-viz-stack__line">
+      {%- if r.label %}<span class="c-viz-stack__rowlabel">{{ r.label }}</span>{% endif -%}
+      <span class="c-viz-stack__track">
+        {%- for t in r.teile -%}
+        {%- set p = t.prozent | num -%}
+        {# the width IS the stated percent; a whole number stays whole (43, not
+           43.0) so the geometry never invents a precision the writer did not. #}
+        {%- set pw = (p | int) if (p == (p | round(0))) else (p | round(2)) -%}
+        {%- set ptxt = (t.prozent | string) if ('%' in (t.prozent | string)) else ((t.prozent | string) ~ '%') -%}
+        <span class="c-viz-stack__seg c-viz-stack__seg--t{{ (loop.index0 % 5) + 1 }}" style="width:{{ pw }}%">
+          {%- if p >= 8 -%}
+          <span class="c-viz-stack__pct">{{ ptxt }}</span>
+          {%- elif p > 0 -%}
+          <span class="c-viz-stack__pct c-viz-stack__pct--outside">{{ ptxt }}</span>
+          {%- endif -%}
+        </span>
+        {%- endfor -%}
+      </span>
+    </div>
+  {%- endfor -%}
+  </div>
+  {%- if teile | selectattr('label') | list -%}
+  <div class="c-viz-stack__legend">
+    {%- for t in teile -%}{%- if t.label -%}
+    <span class="c-viz-stack__leg"><span class="c-viz-stack__swatch c-viz-stack__swatch--t{{ (loop.index0 % 5) + 1 }}"></span>{{ t.label }}</span>
+    {%- endif -%}{%- endfor -%}
+  </div>
+  {%- endif -%}
+  {%- if v.quelle %}<figcaption class="c-viz-stack__source">{{ v.quelle }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# entity_bars (ENTITIES compared on ONE metric). Per row: an optional `marke` (a
+   SHORT text mark, e.g. a country name or code, rendered as a pill, never an emoji
+   flag, which would not embed reliably in print), the entity name, then a bar
+   carrying its value VERBATIM at the end. `wert` may be a RANGE ("3-5") or a
+   German-formatted figure ("1.200", "2,5"): the bar length comes from the LEADING
+   number, the label prints the string exactly as given, so a range is never
+   re-rendered as a single number it does not claim. Bars share one scale (the max
+   leading number across entries). Ref: Frese p11 (Ausbildungsdauer per country).
+   #}
+{% macro entity_bars(v, uid=0) %}
+{%- set eintraege = (v.get('eintraege') if v else none) or none -%}
+{%- if eintraege and (eintraege | selectattr('wert') | list) -%}
+{%- set nums = eintraege | map(attribute='wert') | map('num') | list -%}
+{%- set m = nums | max -%}
+<figure class="c-viz c-viz-entity" role="img" aria-label="{% for e in eintraege if e.wert %}{{ e.name or '' }}: {{ e.wert }} {{ v.einheit or '' }}; {% endfor %}">
+  {%- if v.titel %}<figcaption class="c-viz-entity__title" id="vizentity{{ uid }}">{{ v.titel }}</figcaption>{% endif -%}
+  <ul class="c-viz-entity__list">
+  {%- for e in eintraege if e.wert -%}
+    {%- set n = e.wert | num -%}
+    {%- set w = ((([((n / m * 100) if m else 0) | round(0, 'floor') | int, 2] | max)) if n > 0 else 0) -%}
+    <li class="c-viz-entity__row">
+      <span class="c-viz-entity__head">
+        {%- if e.marke %}<span class="c-viz-entity__marke">{{ e.marke }}</span>{% endif -%}
+        {%- if e.name %}<span class="c-viz-entity__name">{{ e.name }}</span>{% endif -%}
+      </span>
+      <span class="c-viz-entity__track">
+        <span class="c-viz-entity__bar" style="width:{{ w }}%"></span>
+        <span class="c-viz-entity__wert">{{ e.wert }}{% if v.einheit %} {{ v.einheit }}{% endif %}</span>
+      </span>
+    </li>
+  {%- endfor -%}
+  </ul>
+  {%- if v.quelle %}<figcaption class="c-viz-entity__source">{{ v.quelle }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}

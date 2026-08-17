@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{
+  --cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{
+  background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);
+  position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+
+/* ============================= TOP CREAM ZONE ============================= */
+.top{position:absolute;left:0;top:0;width:840px;height:566px;}
+
+.eyebrow{
+  position:absolute;left:64px;top:78px;
+  display:flex;align-items:center;gap:16px;
+  color:var(--teal);font-size:13px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;
+}
+.eyebrow .tick{width:38px;height:2px;background:var(--teal);}
+
+.headline{
+  position:absolute;left:64px;top:128px;width:712px;
+  font-family:'SourceSerif',serif;color:var(--ink);font-weight:430;
+  font-size:62px;line-height:1.05;letter-spacing:-0.014em;
+}
+.headline .teal{color:var(--teal);}
+
+.thesis{
+  position:absolute;left:64px;top:300px;width:560px;
+  font-size:18.5px;line-height:1.62;color:var(--body);font-weight:400;
+}
+.thesis .lead{color:var(--ink);font-weight:600;}
+
+/* ---- stat row: donut + two stacked figures ---- */
+.statrow{position:absolute;left:64px;top:404px;width:712px;display:flex;align-items:center;gap:46px;}
+
+.donut-wrap{display:flex;flex-direction:column;align-items:flex-start;flex:none;}
+.donut-cap{font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--body);margin-bottom:14px;}
+.donut{position:relative;width:152px;height:152px;}
+.donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut .num{font-family:'SourceSerif',serif;font-size:30px;font-weight:520;color:var(--ink);letter-spacing:-0.012em;line-height:1;}
+.donut .sub{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-top:6px;}
+
+.vrule{width:1px;align-self:stretch;background:var(--rule);margin:6px 0;}
+
+.figs{flex:1;display:flex;flex-direction:column;gap:22px;}
+.fig{display:flex;align-items:baseline;gap:18px;}
+.fig .v{font-family:'SourceSerif',serif;font-size:40px;font-weight:520;color:var(--ink);line-height:1;letter-spacing:-0.012em;min-width:150px;}
+.fig .l{font-size:14.5px;font-weight:400;color:var(--body);line-height:1.35;}
+
+/* ============================= SEAM ============================= */
+.seam{position:absolute;left:0;top:566px;width:840px;height:3px;background:var(--teal);z-index:5;}
+
+/* ============================= BOTTOM NAVY ZONE ============================= */
+.bottom{position:absolute;left:0;top:569px;width:840px;height:619px;background:var(--ink);overflow:hidden;}
+/* ambient glow behind the glass panel */
+.bottom .glow{position:absolute;left:50%;top:228px;width:760px;height:520px;transform:translateX(-50%);
+  background:radial-gradient(ellipse 50% 50% at 50% 40%,rgba(127,183,179,0.28) 0%,rgba(127,183,179,0.08) 42%,rgba(46,62,80,0) 72%);}
+
+.bot-eyebrow{
+  position:absolute;left:64px;top:48px;
+  display:flex;align-items:center;gap:16px;
+  color:var(--teal-light);font-size:12.5px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;
+}
+.bot-eyebrow .tick{width:34px;height:2px;background:var(--teal-light);}
+
+/* glowing dark-glass panel carrying the hero stat */
+.panel{
+  position:absolute;left:64px;top:92px;width:712px;height:300px;
+  border-radius:18px;
+  background:linear-gradient(150deg,rgba(127,183,179,0.10) 0%,rgba(255,255,255,0.035) 38%,rgba(46,62,80,0.0) 100%);
+  border:1px solid rgba(127,183,179,0.22);
+  box-shadow:0 30px 80px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.10);
+  overflow:hidden;
+}
+.panel .sheen{position:absolute;left:0;top:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(127,183,179,0.55),transparent);}
+
+.hero{position:absolute;left:48px;top:64px;}
+.hero .num{font-family:'SourceSerif',serif;font-size:152px;font-weight:500;color:var(--cream);line-height:0.84;letter-spacing:-0.02em;}
+.hero .num .plus{color:var(--teal-light);}
+.hero .lbl{margin-top:20px;font-size:15px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-light);}
+
+/* supporting figure rail inside panel, right side */
+.support{position:absolute;right:48px;top:62px;width:236px;display:flex;flex-direction:column;}
+.support .sup{padding:24px 0;border-top:1px solid rgba(255,255,255,0.12);}
+.support .sup:first-child{border-top:none;padding-top:0;}
+.support .sup:last-child{padding-bottom:0;}
+.support .sv{font-family:'SourceSerif',serif;font-size:46px;font-weight:520;color:var(--cream);line-height:1;letter-spacing:-0.012em;}
+.support .sv em{font-style:normal;color:var(--teal-light);}
+.support .sl{margin-top:10px;font-size:12.5px;font-weight:500;letter-spacing:.04em;color:#9db0bd;line-height:1.4;}
+
+/* quote band below the panel */
+.qband{position:absolute;left:64px;top:430px;width:712px;}
+.qband .mark{font-family:'SourceSerif',serif;font-size:54px;color:var(--teal-light);line-height:0.5;height:26px;}
+.qband p{font-family:'SourceSerif',serif;font-size:20px;line-height:1.46;color:var(--cream);font-weight:420;font-style:italic;margin-top:6px;max-width:648px;}
+.qband .attr{margin-top:14px;font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-light);}
+
+/* footer */
+.footer{position:absolute;left:64px;bottom:36px;width:712px;display:flex;align-items:center;justify-content:space-between;}
+.footer .brandmark{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.36em;color:var(--cream);}
+.footer .pageno{font-family:'SourceSerif',serif;font-size:15px;color:var(--teal-light);font-weight:500;}
+</style>
+</head>
+<body>
+
+  <!-- ===================== TOP CREAM ZONE ===================== -->
+  <div class="top">
+    <div class="eyebrow"><span class="tick"></span>Über uns</div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+    <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+
+    <div class="statrow">
+      <div class="donut-wrap">
+        <div class="donut-cap">Betriebskosten</div>
+        <div class="donut">
+          <svg width="152" height="152" viewBox="0 0 152 152">
+            <circle cx="76" cy="76" r="62" fill="none" stroke="#2E3E50" stroke-opacity="0.10" stroke-width="15"/>
+            <circle cx="76" cy="76" r="62" fill="none" stroke="#4A7C7E" stroke-width="15" stroke-linecap="round"
+                    stroke-dasharray="156 389.6" transform="rotate(-90 76 76)"/>
+          </svg>
+          <div class="center"><div class="num">30&ndash;50%</div><div class="sub">weniger</div></div>
+        </div>
+      </div>
+      <div class="vrule"></div>
+      <div class="figs">
+        <div class="fig"><span class="v">20+</span><span class="l">Std/Woche zurückgewonnen<br>durch automatisierte Workflows</span></div>
+        <div class="fig"><span class="v">24 Std &rarr; Min</span><span class="l">Reaktionszeit auf<br>eingehende Anfragen</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seam"></div>
+
+  <!-- ===================== BOTTOM NAVY ZONE ===================== -->
+  <div class="bottom">
+    <div class="glow"></div>
+    <div class="bot-eyebrow"><span class="tick"></span>In Zahlen</div>
+
+    <div class="panel">
+      <div class="sheen"></div>
+      <div class="hero">
+        <div class="num">100<span class="plus">+</span></div>
+        <div class="lbl">realisierte AI-Projekte</div>
+      </div>
+      <div class="support">
+        <div class="sup">
+          <div class="sv">€200k<em>+</em></div>
+          <div class="sl">Einsparung pro Jahr</div>
+        </div>
+        <div class="sup">
+          <div class="sv">30&ndash;50<em>%</em></div>
+          <div class="sl">weniger Betriebskosten<br>ohne Mehr-Headcount</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qband">
+      <div class="mark">&ldquo;</div>
+      <p>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</p>
+      <div class="attr">Kundenstimme</div>
+    </div>
+
+    <div class="footer">
+      <div class="brandmark">APEX</div>
+      <div class="pageno">03</div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{# Callout panel: a TINT panel (--color-accent-tint fill in CSS) for an
+   insight / tip / check-list, with an OPTIONAL small uppercase label. Used by
+   ST-09 (the status-quo insight/tip). Styling: .c-callout-panel.
+
+   body_html  pre-rendered HTML for the panel content
+   label      optional small uppercase label (e.g. "Einsicht" / "Tipp")
+#}
+{% macro callout_panel(body_html, label='') -%}
+<div class="c-callout-panel">
+  {% if label %}<div class="c-callout-panel__label">{{ label }}</div>{% endif %}
+  <div class="c-callout-panel__body">{{ body_html }}</div>
+</div>
+{%- endmacro %}

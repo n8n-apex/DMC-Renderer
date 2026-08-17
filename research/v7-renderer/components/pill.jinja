@@ -1,0 +1,8 @@
+{# Rounded kicker / badge pill. Uppercase, letter-spaced eyebrow type.
+   variant 'outline' (default) = accent text + accent border;
+   variant 'solid' = on-accent text on an accent fill.
+   Rounded corners are a GATED exception to the no-rounded rule (this is a pill).
+   Styling lives in styles/components.css (.c-pill, .c-pill--solid). #}
+{% macro pill(label, variant='outline') -%}
+<span class="c-pill c-pill--{{ variant }}">{{ label }}</span>
+{%- endmacro %}

@@ -1,0 +1,39 @@
+{
+  "all_identical": true,
+  "comparisons": {
+    "contract": {
+      "identical": true,
+      "run_a_sha256": "311e756a18ea79ed90ceb36560257eb3aa7887a5cbaaf047b81b2f00cb964502",
+      "run_b_sha256": "311e756a18ea79ed90ceb36560257eb3aa7887a5cbaaf047b81b2f00cb964502"
+    },
+    "html": {
+      "identical": true,
+      "run_a_sha256": "5014f4a4980aed2f38e2547e44420150af6a9899ea4a5895d290650d1eaeee8d",
+      "run_b_sha256": "5014f4a4980aed2f38e2547e44420150af6a9899ea4a5895d290650d1eaeee8d"
+    },
+    "ledger": {
+      "identical": true,
+      "run_a_sha256": "0922e0acdfa9c7a73a8f1eac202f197e002dbff4f31c6fda5c46e99adec5823a",
+      "run_b_sha256": "0922e0acdfa9c7a73a8f1eac202f197e002dbff4f31c6fda5c46e99adec5823a"
+    },
+    "pdf": {
+      "identical": true,
+      "run_a_sha256": "3dcf5bf6bce76032e22481b417068e945caa5f4a61d8ef7694e984d5f19b82b3",
+      "run_b_sha256": "3dcf5bf6bce76032e22481b417068e945caa5f4a61d8ef7694e984d5f19b82b3"
+    }
+  },
+  "external_generation_enabled": false,
+  "fixture_id": "calibration.apex-synthetic",
+  "input_contract": "same envelope and immutable asset paths reused for both runs",
+  "runs": [
+    {
+      "label": "run-a",
+      "release_state": "review_candidate"
+    },
+    {
+      "label": "run-b",
+      "release_state": "review_candidate"
+    }
+  ],
+  "schema_version": "1.0"
+}

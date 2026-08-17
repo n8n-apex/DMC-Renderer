@@ -1,0 +1,1317 @@
+/* Atomic component library (Plan B, Task 2).
+ *
+ * Semantic design tokens ONLY (var(--…)) — no raw hex, no font literals — so
+ * components stay brand-agnostic. Every rule is scoped to a namespaced
+ * component class (the `c-` prefix: .c-pill / .c-eyebrow / .c-section-label /
+ * .c-media / .c-qr / .c-stat-strip / .c-pull-quote). There are NO bare element
+ * selectors and NO global rules, AND the `c-` namespace cannot collide with any
+ * existing pattern markup (e.g. st_07a's own .stat-strip / .qr), so appending
+ * this sheet to the shared <head> changes NOTHING visually until a pattern
+ * adopts a macro (the visual-regression baseline stays green).
+ *
+ * Accent discipline (§3.7): accent fires only at pills, stat values, labels,
+ * glyphs, links, rules — never on body text.
+ */
+
+/* ---- pill: rounded kicker / badge (gated rounded exception) ---- */
+.c-pill {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+}
+.c-pill--outline {
+  color: var(--color-accent);
+  border: 0.35mm solid var(--color-accent);
+  background: transparent;
+}
+.c-pill--solid {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  border: 0.35mm solid var(--color-accent);
+}
+
+/* ---- eyebrow: small uppercase letter-spaced label ---- */
+.c-eyebrow {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+
+/* ---- section_label: in-body uppercase section heading + optional rule ---- */
+.c-section-label {
+  font-family: var(--font-head);
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-section-label--rule {
+  padding-bottom: var(--space-2);
+  border-bottom: 0.3mm solid var(--color-accent);
+}
+
+/* ---- media_figure: background-image photo at a fixed aspect ratio ---- */
+.c-media {
+  margin: 0;
+  display: block;
+}
+.c-media .c-media-img {
+  width: 100%;
+  background-color: var(--color-surface);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.c-media .c-media-img--placeholder {
+  background-color: var(--color-surface);
+}
+.c-media--frame .c-media-img {
+  border: 0.3mm solid var(--color-muted);
+}
+.c-media--4x3 .c-media-img { aspect-ratio: 4 / 3; }
+.c-media--1x1 .c-media-img { aspect-ratio: 1 / 1; }
+.c-media--16x9 .c-media-img { aspect-ratio: 16 / 9; }
+.c-media--full .c-media-img { aspect-ratio: auto; height: 100%; }
+.c-media .c-media-caption {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin: var(--space-2) 0 0 0;
+}
+
+/* ---- qr: square box wrapping a pre-built inline SVG ---- */
+.c-qr {
+  width: 26mm;
+  height: 26mm;
+  padding: var(--space-1);
+  background: var(--color-on-dark);
+  line-height: 0;
+}
+.c-qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- stat_strip: horizontal flex of big-number cells ---- */
+.c-stat-strip {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+.c-stat-strip .c-stat-cell {
+  flex: 1 1 0;
+}
+.c-stat-strip .c-stat-value {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat-xl);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.c-stat-strip .c-stat-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-body);
+  margin-top: var(--space-1);
+}
+
+/* ---- stat_rail: VERTICAL stack of big-number cells (cover variant) ----
+   A column counterpart to .c-stat-strip: cells stack top-to-bottom with a thin
+   divider between them. Reuses the .c-stat-value / .c-stat-label type roles. The
+   --on-dark modifier recolors labels for an overlay on a dark scrim. */
+.c-stat-rail {
+  display: flex;
+  flex-direction: column;
+}
+.c-stat-rail .c-stat-rail-cell {
+  padding: var(--space-2) 0;
+  border-top: 0.2mm solid var(--color-muted);
+}
+.c-stat-rail .c-stat-rail-cell:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.c-stat-rail .c-stat-value {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat-xl);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.c-stat-rail .c-stat-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-body);
+  margin-top: var(--space-1);
+}
+/* On a dark scrim: labels go to the on-dark ink; dividers lighten. */
+.c-stat-rail--on-dark .c-stat-rail-cell {
+  border-top-color: var(--color-on-dark);
+}
+.c-stat-rail--on-dark .c-stat-label {
+  color: var(--color-on-dark);
+}
+
+/* ---- pull_quote: accent glyph + italic quote + accent attribution ---- */
+.c-pull-quote {
+  margin: 0;
+  position: relative;
+}
+.c-pull-quote .c-pull-quote-glyph {
+  display: block;
+  font-family: var(--font-display);
+  /* DNA §C1: the quote mark is an OVERSIZED decorative glyph (≈3×+ body). Bumped
+     from --type-display (32pt) to ~1.4× so it reads as a large editorial quote
+     mark, not a slightly-big character. line-height:0.6 keeps the tall glyph from
+     adding leading above the quote text. */
+  font-size: calc(var(--type-display) * 1.4);
+  font-weight: 700;
+  line-height: 0.6;
+  color: var(--color-accent);
+}
+.c-pull-quote .c-pull-quote-text {
+  font-family: var(--font-body);
+  font-size: var(--type-h3);
+  font-style: italic;
+  line-height: 1.4;
+  margin: var(--space-2) 0 0 0;
+}
+.c-pull-quote .c-pull-quote-attr {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-top: var(--space-3);
+}
+.c-pull-quote--panel .c-pull-quote-text {
+  color: var(--color-on-dark);
+}
+.c-pull-quote--ground .c-pull-quote-text {
+  color: var(--color-body);
+}
+
+/* ---- numbered_block: big accent numeral + bold title + body, with an
+   optional accent-ruled reality sub-block + optional uppercase source.
+   A flex row: a fixed numeral gutter beside a text column. Shared by ST-09
+   (status-quo symptoms) and ST-14 (belief→reality). #} */
+.c-numbered-block {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+.c-numbered-block__num {
+  flex: 0 0 auto;
+  min-width: 12mm;
+  font-family: var(--font-display);   /* serif numeral via the headline axis */
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 0.9;
+  color: var(--color-accent);
+}
+.c-numbered-block__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.c-numbered-block__title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  line-height: 1.18;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+}
+.c-numbered-block__body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.32;
+  color: var(--color-body);
+}
+.c-numbered-block__body p {
+  margin: 0 0 var(--space-1) 0;
+  hyphens: auto;
+}
+.c-numbered-block__body p:last-child { margin-bottom: 0; }
+.c-numbered-block__body strong { font-weight: 700; color: var(--color-ink); }
+/* reality sub-block: an accent left-rule sets the truth apart from the myth. */
+.c-numbered-block__reality {
+  margin-top: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 0.8mm solid var(--color-accent);
+}
+.c-numbered-block__reality-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-1) 0;
+}
+.c-numbered-block__reality-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.32;
+  color: var(--color-body);
+}
+.c-numbered-block__reality-body p { margin: 0 0 var(--space-1) 0; hyphens: auto; }
+.c-numbered-block__reality-body p:last-child { margin-bottom: 0; }
+.c-numbered-block__reality-body strong { font-weight: 700; color: var(--color-ink); }
+.c-numbered-block__source {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ---- callout_panel: a TINT panel (--color-accent-tint fill) for insight /
+   tip / check-list content, with an optional uppercase label. #} */
+.c-callout-panel {
+  background-color: var(--color-accent-tint);
+  padding: var(--space-4);
+}
+.c-callout-panel__label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-callout-panel__body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.34;
+  color: var(--color-body);
+}
+.c-callout-panel__body p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.c-callout-panel__body p:last-child { margin-bottom: 0; }
+.c-callout-panel__body strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- color_block_opener: a SOLID --color-accent block carrying a serif
+   heading in on-accent ink. A section opener (ST-14). #} */
+.c-color-block {
+  background-color: var(--color-accent);
+  padding: var(--space-5) var(--space-5);
+}
+.c-color-block__eyebrow {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  opacity: 0.85;
+  margin: 0 0 var(--space-2) 0;
+}
+.c-color-block__heading {
+  font-family: var(--font-display);   /* serif via the headline_type axis */
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-on-accent);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+/* ---- step_card: a numbered mechanism stage — a serif accent numeral beside a
+   bold title + body, in a thin token-bordered card. Used by ST-06. A flex row:
+   a fixed numeral gutter beside a text column. #} */
+.c-step-card {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border: 0.2mm solid var(--color-muted);
+}
+.c-step-card__num {
+  flex: 0 0 auto;
+  min-width: 9mm;
+  font-family: var(--font-display);   /* serif numeral via the headline axis */
+  font-weight: 700;
+  font-size: var(--type-h2);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.c-step-card__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.c-step-card__title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-body);
+  line-height: 1.18;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+}
+.c-step-card__body {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  line-height: 1.3;
+  color: var(--color-body);
+}
+.c-step-card__body p { margin: 0; hyphens: auto; }
+.c-step-card__body strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- horizontal_flow: a row of connected step boxes joined by accent arrow
+   connectors. The boxes + arrows are inline-block so WeasyPrint lays them in one
+   row (flexbox is weak for this); each box is a tint plate with an accent number
+   + short title + body + optional duration. #} */
+.c-hflow {
+  font-size: 0;             /* collapse inter-box whitespace */
+  white-space: nowrap;
+}
+.c-hflow__step {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  box-sizing: border-box;
+  background-color: var(--color-accent-tint);
+  padding: var(--space-2);
+  text-align: left;
+}
+.c-hflow__arrow {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  line-height: 1;
+  color: var(--color-accent);
+  padding: 0 var(--space-1);
+}
+.c-hflow__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.c-hflow__title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: var(--space-1) 0 0 0;
+}
+.c-hflow__body {
+  font-family: var(--font-body);
+  font-size: var(--type-eyebrow);
+  line-height: 1.25;
+  color: var(--color-body);
+  margin: var(--space-1) 0 0 0;
+}
+.c-hflow__dauer {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: var(--space-1) 0 0 0;
+}
+
+/* ---- bar_chart: the renderer's OWN horizontal bars. Each row is a label, a
+   tint TRACK carrying an accent FILL (width set inline from the data magnitude),
+   and the value text. A fixed table-layout keeps the label / track / value
+   columns aligned (robust in WeasyPrint 68.1). #} */
+.c-bar-chart {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+.c-bar-chart__row {
+  display: table-row;
+}
+.c-bar-chart__label,
+.c-bar-chart__track,
+.c-bar-chart__value {
+  display: table-cell;
+  vertical-align: middle;
+  padding: var(--space-1) 0;
+}
+.c-bar-chart__label {
+  width: 34mm;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-label);
+  color: var(--color-ink);
+  padding-right: var(--space-3);
+  white-space: nowrap;
+}
+.c-bar-chart__track {
+  width: auto;
+  background-color: var(--color-accent-tint);
+}
+.c-bar-chart__fill {
+  height: 4mm;
+  background-color: var(--color-accent);
+}
+.c-bar-chart__value {
+  width: 22mm;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-label);
+  color: var(--color-accent);
+  text-align: right;
+  padding-left: var(--space-3);
+  white-space: nowrap;
+}
+
+/* ---- stat_callout_card: a small tint card — a big accent figure over an
+   uppercase label. Floats beside body copy (ST-06). #} */
+.c-stat-callout {
+  background-color: var(--color-accent-tint);
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+}
+.c-stat-callout__value {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat-xl);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.c-stat-callout__label {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-body);
+  margin-top: var(--space-2);
+}
+
+/* ---- dark_recap_panel: a SOLID dark panel filled with --color-ink (the
+   genuinely-dark neutral — reads as a true dark panel for ANY brand, even a
+   light/tonal accent), carrying a heading + body in on-dark ink. The accent
+   fires only on the heading label. The "Das Ergebnis" payoff block (ST-06). #} */
+.c-dark-recap {
+  background-color: var(--color-panel);
+  padding: var(--space-4) var(--space-5);
+}
+.c-dark-recap__heading {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-dark-recap__body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: var(--color-on-panel);
+}
+
+/* ---- GLASS material (brand texture axis → data-material="glass") -----------
+   Modern faux-glass panels: a rounded corner + a hairline light EDGE. The
+   translucent depth is supplied by the frosted GROUND / photo BEHIND the panel —
+   WeasyPrint has NO backdrop-filter, so we never blur at render time; the edge +
+   the ground read as glass. Gated on data-material="glass" (compile_tokens derives
+   it from the texture axis: smooth→glass, marble/crumpled→paper, else flat), so
+   "paper"/"flat" brands are completely unaffected. The edge colour harmonises with
+   each panel's own fill — accent rim on the light accent-tint cards, on-accent rim
+   on the solid accent block, on-panel rim on the dark recap. */
+[data-material="glass"] .c-callout-panel,
+[data-material="glass"] .c-stat-callout {
+  border-radius: 2mm;
+  border: 0.2mm solid var(--color-accent);
+}
+[data-material="glass"] .c-color-block {
+  border-radius: 2mm;
+  border: 0.2mm solid var(--color-on-accent);
+}
+[data-material="glass"] .c-dark-recap {
+  border-radius: 2mm;
+  border: 0.2mm solid var(--color-on-panel);
+}
+.c-dark-recap__body p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.c-dark-recap__body p:last-child { margin-bottom: 0; }
+.c-dark-recap__body strong { font-weight: 700; color: var(--color-on-panel); }
+
+/* ---- authority_panel: the REUSABLE solid-dark "authority" beat (DNA §C3,
+   gap #4). The same true-dark idea as dark_recap_panel, generalised: a CTA
+   panel / case-study stat rail / positioning statement / header band. The
+   DEFAULT tone fills with --color-ink (the genuinely-dark neutral — reads as a
+   true dark panel for ANY brand, even a light/tonal accent) and sets on-dark
+   text. The --primary modifier fills with the SATURATED --color-primary and
+   sets the luminance-derived --color-on-primary text. NEVER a pale accent-tint
+   / ground-wash fill — that pale look is exactly the gap this closes. The
+   accent fires only on the small eyebrow kicker; the heading + body read in the
+   on-color so the block stays high-contrast. Token-colored => brand-agnostic. */
+.c-authority {
+  background-color: var(--color-panel);
+  color: var(--color-on-panel);
+  padding: var(--space-4) var(--space-5);
+}
+.c-authority__eyebrow {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-authority__heading {
+  font-family: var(--font-display);   /* serif via the headline_type axis */
+  font-weight: 700;
+  font-size: var(--type-h2);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: inherit;                     /* on-dark / on-primary from the panel */
+  margin: 0 0 var(--space-2) 0;
+}
+.c-authority__body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: inherit;                     /* on-dark / on-primary from the panel */
+}
+.c-authority__body p { margin: 0 0 var(--space-2) 0; hyphens: auto; }
+.c-authority__body p:last-child { margin-bottom: 0; }
+.c-authority__body strong { font-weight: 700; color: inherit; }
+
+/* ---- check_list: audience / qualifier items, each an accent check glyph beside
+   the item text. The Zielgruppe device (ST-02), dropped inside a callout_panel.
+   A list reset + a fixed check gutter so multi-line items hang cleanly. The
+   accent fires only on the check glyph (a glyph, per the accent locations). */
+.c-check-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.c-check-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-check-list__item:last-child { margin-bottom: 0; }
+.c-check-list__check {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-body);
+  line-height: 1.34;
+  color: var(--color-accent);
+}
+.c-check-list__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.34;
+  color: var(--color-body);
+}
+.c-check-list__text strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- qa_item: one FAQ entry — an accent question over a body answer. The
+   atomic unit of the ST-08 two-column Q&A stack. The question fires the accent
+   (a label-like heading line, per the accent locations); the answer is body ink. */
+.c-qa-item {
+  /* break-inside:avoid is set on the page-local cell so a Q&A pair never splits
+     across a column boundary; the unit itself only owns its type. */
+}
+.c-qa-item__question {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-h3);
+  line-height: 1.22;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-1) 0;
+}
+.c-qa-item__answer {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.34;
+  color: var(--color-body);
+}
+.c-qa-item__answer p { margin: 0 0 var(--space-1) 0; hyphens: auto; }
+.c-qa-item__answer p:last-child { margin-bottom: 0; }
+.c-qa-item__answer strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- logo_wall: a GRAYSCALE row of partner/client logo tiles — the "bekannt
+   aus" credibility band (ST-05). The tiles are inline-block so WeasyPrint 68.1
+   lays them in a wrapping row (flexbox is weak for this); each is a fixed-height
+   background-image plate under filter:grayscale(1) (grayscale applies to images
+   in WeasyPrint). A muted hairline separates each tile from its label-like role.
+   The accent does NOT fire here — a credibility wall reads as quiet/neutral.
+   When only NAMES are available (no logo art) the --text variant renders quiet
+   uppercase name chips instead — never fabricating logo art. #} */
+.c-logo-wall {
+  font-size: 0;             /* collapse inter-tile whitespace */
+  line-height: 0;
+}
+.c-logo-wall__logo {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  width: 30mm;
+  height: 12mm;
+  margin: 0 var(--space-4) var(--space-3) 0;
+  background-color: var(--color-surface);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: grayscale(1);
+  opacity: 0.78;            /* a restrained, monochrome credibility read */
+}
+/* Text fallback: quiet uppercase name chips when no logo art is supplied. */
+.c-logo-wall--text {
+  font-size: var(--type-body);
+  line-height: 1.3;
+}
+.c-logo-wall__name {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-label);
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+  margin: 0 var(--space-3) var(--space-2) 0;
+  /* premium "known-from" chip (Chromium depth): a white card-chip that lifts off
+     the page — reads as a partner mark, not underlined text. Token-only. */
+  padding: 2mm 5mm;
+  background-color: var(--color-on-dark);
+  border: 0.25mm solid var(--color-muted);
+  border-radius: 999px;
+  box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 12%, transparent);
+}
+
+/* ---- proof_gallery: a framed CREDIBILITY photo ROW (DNA §C4 social-proof). A
+   row of equal-width full-COLOR plates — the ST-05 `proof` photos (real
+   client/deal moments). Unlike the logo wall this is FULL COLOR (no grayscale)
+   and FRAMED, reading as "these are real people/results", not a quiet mark band.
+   The tiles are inline-block so WeasyPrint 68.1 lays them in a row (flexbox is
+   weak for this); each is a fixed-height background-image plate under a 1-line
+   frame, cover-cropped + centered. The accent does NOT fire here. An optional
+   uppercase label (a section-label cousin) sits above with a thin accent rule.
+   The row avoids splitting across a page break. #}
+.c-proof-gallery {
+  break-inside: avoid;
+}
+.c-proof-gallery__label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding-bottom: var(--space-2);
+  margin: 0 0 var(--space-2) 0;
+  border-bottom: 0.3mm solid var(--color-accent);
+}
+/* The row is a fixed table-layout so the tiles share width EQUALLY and robustly
+   (WeasyPrint 68.1 flexbox is weak for full-width equal columns — same reason the
+   page grids + logo wall avoid it). border-spacing supplies the inter-tile gap. */
+.c-proof-gallery__row {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: var(--space-3) 0;
+  /* pull the outer border-spacing back so the row stays flush to the content box */
+  margin: 0 calc(-1 * var(--space-3));
+  width: calc(100% + 2 * var(--space-3));
+}
+.c-proof-gallery__item {
+  display: table-cell;
+  height: 37mm;
+  background-color: var(--color-surface);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0.3mm solid var(--color-muted);
+}
+
+/* ---- key_insight: the ST-07B payoff — a distinct accent-ruled TINT panel with
+   a LARGER italic insight line. A heavier cousin of callout_panel: a thick accent
+   left-rule + a tint fill + a large italic body. The accent fires on the rule (a
+   rule, per the accent locations) + the optional label; the body is primary ink.
+   #} */
+.c-key-insight {
+  margin: 0;
+  background-color: var(--color-accent-tint);
+  border-left: 1.2mm solid var(--color-accent);
+  padding: var(--space-4) var(--space-5);
+}
+.c-key-insight__label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-key-insight__body {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 600;
+  font-size: var(--type-h2);
+  line-height: 1.32;
+  color: var(--color-primary);
+  margin: 0;
+}
+.c-key-insight__body p { margin: 0 0 var(--space-2) 0; }
+.c-key-insight__body p:last-child { margin-bottom: 0; }
+
+/* ---- geo_shapes: a low-opacity geometric accent OVERLAY for the breathing /
+   atmospheric page (ST-31/ST-32). A quiet logo motif of translucent rings,
+   diagonal bars and triangles laid over the full-bleed atmospheric ground. The
+   container fills the bleed block (inset:0 over a block with real height — it
+   paints in WeasyPrint 68.1); each shape is absolutely positioned and LOW-opacity
+   so it reads as a soft motif, never a solid graphic. Token-colored => brand
+   agnostic: the accent tone uses --color-accent, the `--dark` tone uses
+   --color-on-dark (for contrast variety over a dark vs light patch of ground).
+   The geometry (position / size / rotation) comes inline from the macro; only the
+   color + opacity live here. Shapes overflow the page edges by design (they bleed
+   off), so the container clips with overflow:hidden. #} */
+.c-geo {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.c-geo__shape {
+  position: absolute;
+  display: block;
+}
+/* circle: a translucent ring (outline) — a logo-motif loop, not a solid disc. */
+.c-geo__shape--circle {
+  border: 2.2mm solid var(--color-accent);
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0.42;
+}
+/* bar: a thin translucent diagonal slab (rotated inline). */
+.c-geo__shape--bar {
+  height: 2.8mm;
+  background: var(--color-accent);
+  opacity: 0.38;
+  transform-origin: center;
+}
+/* tri: the classic CSS triangle (transparent sides + a token-filled bottom),
+   sized off the inline width/height; opacity keeps it a soft accent. */
+.c-geo__shape--tri {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border-left: 14mm solid transparent;
+  border-right: 14mm solid transparent;
+  border-bottom: 24mm solid var(--color-accent);
+  opacity: 0.40;
+}
+/* contrast tone: tint the shape toward the dark ink instead of the accent (a
+   darker loop that reads over the LIGHT patches of an atmospheric ground, where a
+   light accent shape would wash out — giving the motif depth + variety across the
+   page). --color-ink is the genuinely-dark neutral for ANY brand; kept lower in
+   opacity than the accent so the dark loops stay a soft motif, never harsh. */
+.c-geo__shape--dark.c-geo__shape--circle { border-color: var(--color-ink); opacity: 0.24; }
+.c-geo__shape--dark.c-geo__shape--bar    { background: var(--color-ink); opacity: 0.20; }
+.c-geo__shape--dark.c-geo__shape--tri    { border-bottom-color: var(--color-ink); opacity: 0.22; }
+
+/* ---- these_statement: the summary page's THESIS — a LARGE serif pull-statement
+   (var(--font-display) via the headline axis) set off by a thick accent left-rule.
+   NOT a quotation (no glyph / attribution) — the author's core argument stated
+   plainly, the editorial centerpiece of ST-FAZIT. The accent fires on the rule (a
+   rule, per §3.7); the statement itself is primary ink so it reads as the page's
+   dominant voice. Token-colored => brand-agnostic. #} */
+.c-these {
+  font-family: var(--font-display);   /* serif via the headline_type axis */
+  font-weight: 700;
+  font-size: var(--type-h2);
+  line-height: 1.28;
+  letter-spacing: -0.005em;
+  color: var(--color-primary);
+  border-left: 1.2mm solid var(--color-accent);
+  padding-left: var(--space-4);
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ---- cost_block: the offer cost / cost-of-inaction device — a BIG accent figure
+   beside an uppercase label, over a tint plate, with an optional supporting note.
+   A figure-led block that makes the price impossible to skim. A flex column: the
+   label is a small uppercase kicker, the value is a large accent figure (the
+   --type-display token, the same big-figure role as the stat callouts), and the
+   note is a body line. The accent fires on the figure (a number, per §3.7); the
+   tint plate sets it apart from the recap copy. Token-colored => brand-agnostic. */
+.c-cost-block {
+  background-color: var(--color-accent-tint);
+  border-left: 1.2mm solid var(--color-accent);
+  padding: var(--space-4) var(--space-5);
+}
+.c-cost-block__label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-cost-block__value {
+  font-family: var(--font-display);   /* serif figure via the headline axis */
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 1.04;
+  color: var(--color-accent);
+  margin: 0;
+}
+.c-cost-block__note {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: var(--color-body);
+  margin: var(--space-2) 0 0 0;
+}
+.c-cost-block__note strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- two_tone_headline: the SIGNATURE display headline (DNA §C1) — a NEUTRAL
+   serif run + a BOLD-UPPERCASE ACCENT run ("Ein kurzer AUSBLICK", "…REPORT 2026").
+   The whole headline sizes off the display serif (var(--font-display) via the
+   headline_type axis); the lead run is the calm setup in primary ink, the accent
+   run fires var(--color-accent), forced uppercase + heaviest weight, as the punch.
+   The runs are inline so they wrap together as one headline (a line break falls
+   naturally between them on a narrow measure). Accent discipline (§3.7): accent
+   fires on this headline RUN as the deliberate two-tone device. Token-colored =>
+   brand-agnostic. Patterns scope the SIZE (e.g. the cover bumps it to display-xl);
+   this sets the shared shape. The --solo modifier (one run only) reads as a plain
+   single-tone headline. #} */
+.c-two-tone {
+  font-family: var(--font-display);   /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  margin: 0;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+.c-two-tone__lead {
+  font-weight: 700;
+  color: inherit;
+}
+.c-two-tone__accent {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;       /* uppercase wants a touch more tracking */
+  color: var(--color-accent);
+}
+
+/* ---- url_band: a FULL-WIDTH band carrying the URL as LARGE type — a button-like
+   CTA bar (checklist #15, the "giant URL"). Default: a SOLID accent band on a
+   light content page (the URL in on-accent ink) — the summary's closing call.
+   --on-ground: NO band fill — an OVERSIZED URL in on-dark (white) ink directly on
+   the back cover's saturated brand ground, where it is the page's hero element (a
+   tint plate would muddy the saturated field, and an accent-hue URL would wash out
+   over a saturated same-hue ground — white POPS for ANY brand). The whole band is
+   the anchor (a real button target). Token-colored => brand-agnostic. */
+.c-url-band {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-decoration: none;
+  background-color: var(--color-accent);
+  /* premium CTA button (Chromium depth): rounded + a soft wide shadow + a subtle
+     vertical sheen so the band lifts off the page like a real button. Token-only;
+     weasy ignores radius-shadow gracefully (stays a flat band). */
+  border-radius: 2.5mm;
+  background-image: linear-gradient(180deg,
+    color-mix(in srgb, var(--color-on-dark) 10%, var(--color-accent)),
+    var(--color-accent));
+  box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 42%, transparent);
+  padding: var(--space-4) var(--space-5);
+}
+.c-url-band__label {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  opacity: 0.85;
+  margin: 0 0 var(--space-2) 0;
+}
+.c-url-band__url {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-h2);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-on-accent);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+/* --on-ground: a closing CTA URL on a dark/atmospheric ground (ST-FAZIT). No band
+   fill; on-dark ink. The URL is PROPORTIONATE (--type-h2), NOT oversized — a naked
+   40pt URL wrapped across the panel and read as crude (the ST-03 back cover was
+   redesigned off this macro for the same reason). The scheme is stripped upstream
+   (st_fazit) so it shows the bare domain. */
+.c-url-band--on-ground {
+  background-color: transparent;
+  background-image: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+.c-url-band--on-ground .c-url-band__label {
+  color: var(--color-on-dark);
+  opacity: 0.9;
+}
+.c-url-band--on-ground .c-url-band__url {
+  font-size: var(--type-h2);
+  line-height: 1.1;
+  color: var(--color-on-dark);
+}
+
+/* Shared hairline rules (DNA §C6). Token-colored => brand-agnostic. */
+.c-rule { border: 0; border-top: var(--rule-hairline, 0.2mm) solid var(--color-muted); }
+.c-rule--accent { border-top-color: var(--color-accent); }
+.c-rule--eyebrow { width: 26px; border-top-width: 0.4mm; border-top-color: var(--color-accent); }
+/* Oversized faint ghost numeral utility (DNA §C1/§C6). */
+.c-ghost-num { position: absolute; font-family: var(--font-display); font-weight: 700;
+  font-size: var(--type-hero); line-height: 1; color: var(--color-accent); opacity: 0.06; z-index: 0;
+  pointer-events: none; }
+
+/* ---- phone_mockup (DNA §C2 "live social presence"): a RENDERER-DRAWN smartphone
+   — a dark device bezel + notch + white screen carrying an Instagram-style header
+   (avatar + handle) over a real post photo. Pure CSS chrome (no phone image), so it
+   is crisp at print res. Token-only => brand-agnostic. The host sizes .c-phone
+   (width); no box-shadow (WeasyPrint ignores it) — the bezel reads as a device via
+   the dark fill + radius alone. ---- */
+.c-phone {
+  box-sizing: border-box;
+  width: 84mm;                              /* default; host may override */
+  background-color: var(--color-ink);       /* the device bezel */
+  border-radius: 9mm;
+  padding: 2.6mm;
+  position: relative;
+}
+.c-phone__notch {
+  position: absolute; top: 4mm; left: 50%; transform: translateX(-50%);
+  width: 18mm; height: 1.8mm; border-radius: 1mm;
+  background-color: var(--color-on-dark); opacity: 0.22; z-index: 2;
+}
+.c-phone__screen {
+  background-color: var(--color-on-dark);   /* the white screen */
+  border-radius: 6.6mm;
+  overflow: hidden;
+}
+.c-phone__hdr {
+  display: flex; align-items: center; gap: 2.4mm;
+  padding: 6mm 3.4mm 2.6mm 3.4mm;           /* top pad clears the notch */
+}
+.c-phone__avatar {
+  display: block; width: 8mm; height: 8mm; flex: 0 0 auto;
+  border-radius: 50%;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: var(--color-surface);
+}
+.c-phone__handle {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: var(--type-label); letter-spacing: 0.01em;
+  color: var(--color-ink);
+}
+.c-phone__photo {
+  display: block; width: 100%; height: 86mm;   /* the post image */
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: var(--color-surface);
+}
+.c-phone__cap {
+  padding: 3mm 3.4mm 5mm 3.4mm;
+  font-family: var(--font-body); font-size: var(--type-caption, 8.5pt);
+  line-height: 1.32; color: var(--color-body);
+}
+.c-phone__foot { height: 7mm; }              /* the post's white action/caption strip */
+/* profile-GRID mode: a 3-column grid of the real posts (the "active brand
+   presence" look). Hairline gaps; square cells via a fixed size matched to the
+   default ~92mm phone (host may rescale the phone, cells scale with it visually). */
+.c-phone__grid {
+  display: flex; flex-wrap: wrap;
+  gap: 0.9mm;
+  padding: 1.4mm 1.4mm 2.4mm 1.4mm;
+}
+.c-phone__cell {
+  display: block;
+  width: 29.5mm; height: 29.5mm;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  background-color: var(--color-surface);
+}
+
+/* ---- c-venn: conceptual CONVERGENCE diagram (3-lobe Venn) -----------------
+   Mirrors the apex reference deck's myths-page figure: three soft overlapping
+   discs (the lobes), each labelled inside its outer zone, sharing ONE centre
+   (the synthesis printed in the triple overlap). Token-only / brand-agnostic.
+   The lobes are low-opacity accent fills so the OVERLAPS deepen naturally (the
+   classic Venn shading) without needing rgba literals or blend modes (which
+   WeasyPrint ignores). Labels + centre are full-opacity text SIBLINGS painted
+   over the discs (so they stay crisp). Geometry is in mm for print fidelity. */
+.c-venn {
+  margin: 0;
+  text-align: center;
+  break-inside: avoid;       /* keep the discs (and caption) on one page */
+}
+.c-venn__stage {
+  position: relative;
+  width: 102mm;
+  height: 52mm;
+  margin: 0 auto;
+}
+/* the lobe is a CRISP full-opacity accent RING (clearly visible on the pale
+   ground — the prior 0.14 flat fill vanished); a translucent fill CHILD adds
+   colour and lets the OVERLAPS deepen (Venn shading) without fading the ring. */
+.c-venn__lobe {
+  position: absolute;
+  width: 40mm;
+  height: 40mm;
+  border-radius: 50%;
+  border: 0.4mm solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+  background: transparent;
+  /* soft accent OUTER GLOW (Chromium) so each disc reads as lit, not outlined;
+     weasy drops box-shadow losslessly. */
+  box-shadow: 0 0 7mm color-mix(in srgb, var(--color-neutral-dark) 30%, transparent);
+}
+.c-venn__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* RADIAL fill: dense accent at the centre fading to transparent at the rim, so
+     where two/three discs OVERLAP the alpha STACKS and the intersection deepens
+     organically — the classic Venn shading, no blend-mode needed. Token-only. */
+  background-image: radial-gradient(circle at 50% 50%,
+    color-mix(in srgb, var(--color-accent) 42%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 22%, transparent) 45%,
+    transparent 72%);
+}
+.c-venn__lobe--a { top: 0;     left: 16mm; }   /* centre (36, 20) */
+.c-venn__lobe--b { top: 0;     left: 46mm; }   /* centre (66, 20) */
+.c-venn__lobe--c { top: 12mm;  left: 31mm; }   /* centre (51, 32) */
+
+.c-venn__label {
+  position: absolute;
+  width: 30mm;
+  text-align: center;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-label);
+  line-height: 1.12;
+  color: var(--color-ink);
+}
+.c-venn__label--a { top: 6mm;  left: 10mm; }   /* upper-left lobe outer zone */
+.c-venn__label--b { top: 6mm;  left: 62mm; }   /* upper-right lobe outer zone */
+.c-venn__label--c { top: 38mm; left: 36mm; }   /* bottom lobe outer zone */
+
+/* the synthesis sits on a DARK-GLASS DISC in the triple overlap — the payoff
+   reads as the lit core the three ideas converge into (Richard's bold centre).
+   Token-derived dark fill + hairline accent keyline + soft accent glow. */
+.c-venn__core {
+  position: absolute;
+  top: 11mm;
+  left: 38mm;
+  width: 26mm;
+  height: 26mm;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 2mm;
+  text-align: center;
+  line-height: 1.12;
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  color: var(--color-on-dark);
+  background-color: color-mix(in srgb, var(--color-ink) 88%, var(--color-primary));
+  border: 0.3mm solid color-mix(in srgb, var(--color-accent) 60%, transparent);
+  box-shadow: 0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent);
+  z-index: 2;
+}
+.c-venn__core strong {
+  display: block;
+  font-weight: 800;
+  font-size: var(--type-label);
+  color: var(--color-accent);
+  margin-bottom: 0.4mm;
+}
+.c-venn__caption {
+  margin: var(--space-2) 0 0 0;
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted, var(--color-ink));
+}
+
+/* ---- DEPTH SYSTEM (Chromium engine) -----------------------------------
+   Soft wide AMBIENT shadows + glow — the material depth Richard's decks use.
+   Colors are TOKEN-DERIVED via color-mix (no hex → brand-agnostic; the shadow
+   is the brand's near-black at low alpha, the glow is the brand accent).
+   WeasyPrint silently ignores box-shadow/text-shadow → the legacy engine
+   renders flat, losslessly. Wide+soft, never hard offsets (DNA: depth by
+   material, not UI chrome). */
+.c-callout-panel,
+.c-stat-callout,
+.c-phone {
+  box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 18%, transparent);
+}
+.c-media--frame .c-media-img,
+.c-proof-gallery__item {
+  box-shadow: 0 2mm 7mm color-mix(in srgb, var(--color-neutral-dark) 16%, transparent);
+}
+.c-qr {
+  box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent);
+}
+/* big stat numerals GLOW on dark grounds (the references' luminous number
+   blocks). Scoped to the dark hosts via their own pattern sheets; this is the
+   shared recipe for the component's dark context. */
+.c-stat-rail .c-stat-value {
+  text-shadow: 0 0 4mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent);
+}
+
+/* ---- c-statcard: AUGMENT corner figure card (the stat_callout diagram) -------
+   A small dark-glass card pinned bottom-right of a text-heavy content page — one
+   REAL figure (verbatim from prose) as a big accent numeral over a muted label.
+   Adds chromatic proof without adding text. Token-only; Chromium honours the
+   gradient + glow, WeasyPrint drops them. Absolutely positioned inside the
+   per-page section (.page is position:relative). The host opts in by rendering
+   the diagram dispatch; plan_diagrams only places it where there is bottom room. */
+.c-statcard {
+  /* FLOAT (not absolute) so prose wraps around it — collision-safe on any host;
+     the editor stage only places it on pages it has already condensed, so there
+     is room. Rendered at the top of the body; text reflows beside it. */
+  float: right;
+  clear: right;
+  width: 52mm;
+  margin: 0 0 var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 2mm;
+  background-color: color-mix(in srgb, var(--color-ink) 90%, var(--color-primary));
+  background-image: radial-gradient(circle at 82% 8%,
+    color-mix(in srgb, var(--color-accent) 26%, transparent), transparent 60%);
+  border: 0.3mm solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+  box-shadow: 0 4mm 12mm color-mix(in srgb, var(--color-neutral-dark) 26%, transparent),
+              0 0 6mm color-mix(in srgb, var(--color-neutral-dark) 28%, transparent);
+}
+.c-statcard__figure {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: var(--color-accent);
+  text-shadow: 0 0 5mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent);
+}
+.c-statcard__label {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.8;
+}
+
+/* ---- c-twincol: before/after twin comparison (Ohne / Mit) -------------------
+   Two side-by-side panels: muted status-quo left, accent answer right. */
+.c-twincol { margin: 0; break-inside: avoid; }
+.c-twincol__title {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: var(--type-eyebrow); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-muted); margin: 0 0 var(--space-2) 0;
+}
+.c-twincol__row { display: flex; gap: var(--space-4); align-items: stretch; }
+.c-twincol__col {
+  flex: 1 1 0; box-sizing: border-box; border-radius: 2mm;
+  padding: var(--space-3) var(--space-4);
+  box-shadow: 0 2mm 8mm color-mix(in srgb, var(--color-neutral-dark) 14%, transparent);
+}
+.c-twincol__col--ohne {
+  background-color: color-mix(in srgb, var(--color-muted) 16%, var(--color-surface));
+  border: 0.25mm solid var(--color-muted);
+}
+.c-twincol__col--mit {
+  background-color: var(--color-accent-tint);
+  border: 0.25mm solid var(--color-accent);
+}
+.c-twincol__head {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: var(--type-label); letter-spacing: 0.08em; text-transform: uppercase;
+  margin: 0 0 var(--space-2) 0;
+}
+.c-twincol__col--ohne .c-twincol__head { color: var(--color-muted); }
+.c-twincol__col--mit .c-twincol__head { color: var(--color-accent); }
+.c-twincol__list { list-style: none; margin: 0; padding: 0; }
+.c-twincol__item {
+  font-family: var(--font-body); font-size: var(--type-label); line-height: 1.32;
+  color: var(--color-body); margin: 0 0 var(--space-2) 0; padding-left: var(--space-3);
+  position: relative;
+}
+.c-twincol__item:last-child { margin-bottom: 0; }
+
+/* ---- c-qa: numbered objection→answer ladder with ghost numerals -------------*/
+.c-qa { margin: 0; }
+.c-qa__card {
+  position: relative; display: flex; gap: var(--space-4); align-items: flex-start;
+  padding: var(--space-2) 0; margin: 0 0 var(--space-2) 0;
+  border-bottom: 0.2mm solid var(--color-muted); overflow: hidden;
+}
+.c-qa__card:last-child { border-bottom: none; margin-bottom: 0; }
+.c-qa__num {
+  flex: 0 0 auto; font-family: var(--font-display); font-weight: 800;
+  font-size: var(--type-stat); line-height: 0.9;
+  color: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}
+.c-qa__text { flex: 1 1 auto; min-width: 0; }
+.c-qa__q {
+  font-family: var(--font-display); font-style: italic; font-weight: 700;
+  font-size: var(--type-h3); line-height: 1.22; color: var(--color-ink);
+  margin: 0 0 var(--space-1) 0;
+}
+.c-qa__a {
+  font-family: var(--font-body); font-size: var(--type-body); line-height: 1.32;
+  color: var(--color-body);
+}

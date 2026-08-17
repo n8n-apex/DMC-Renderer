@@ -1,0 +1,24 @@
+{# cost_block — presents the offer's cost / price prominently: a BIG accent
+   figure (the value) beside an uppercase label, with an optional note line. The
+   "Kosten" / price device of the summary page (ST-FAZIT) — here it frames the
+   COST OF INACTION (kosten_des_nichtstuns): a prominent figure-led block that
+   makes the price of doing nothing impossible to skim past.
+
+   Token-only by construction: this macro emits ONLY structure + the text; the
+   big-figure sizing / accent color / tint plate live in the .c-cost-block class
+   (styles/components.css), so the block stays brand-agnostic.
+
+   value  the prominent figure (e.g. "0 €", "25-30%") — set LARGE in accent.
+   label  the uppercase label above the figure (what the cost IS).
+   note   an OPTIONAL supporting line below (body ink). When `note` is the only
+          content (no value), the block degrades to a labelled note panel.
+   Graceful: with neither a value nor a note the block renders nothing. #}
+{% macro cost_block(label, value, note='') -%}
+{% if value or note %}
+<div class="c-cost-block">
+  {% if label %}<div class="c-cost-block__label">{{ label }}</div>{% endif %}
+  {% if value %}<div class="c-cost-block__value">{{ value }}</div>{% endif %}
+  {% if note %}<div class="c-cost-block__note">{{ note }}</div>{% endif %}
+</div>
+{% endif %}
+{%- endmacro %}

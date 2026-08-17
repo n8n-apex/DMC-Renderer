@@ -1,0 +1,29 @@
+{# Logo wall: a row/grid of partner/client logos rendered in GRAYSCALE — the
+   "bekannt aus" credibility band (ST-05). Each logo is a background-image tile
+   under `filter: grayscale(1)` (WeasyPrint 68.1 applies grayscale to images).
+   All under the c-logo-wall namespace; the token-only look (grayscale, tile
+   rhythm, the optional fallback chip) lives in styles/components.css.
+
+   logos  list of resolved image URIs/paths (the logo art). When present, each
+          becomes a grayscale tile.
+   names  OPTIONAL list of partner NAME strings — a restrained TEXT fallback used
+          ONLY when no logo images are available (the apex fixture supplies names,
+          not logo art). The fallback never fabricates logo art.
+
+   GRACEFUL: with neither logos nor names the macro renders NOTHING. With logos it
+   renders the grayscale tiles; with only names it renders the text chips. #}
+{% macro logo_wall(logos, names=[]) -%}
+{% if logos %}
+<div class="c-logo-wall">
+  {% for src in logos %}
+  <span class="c-logo-wall__logo" role="img" style="background-image:url('{{ src }}');"></span>
+  {% endfor %}
+</div>
+{% elif names %}
+<div class="c-logo-wall c-logo-wall--text">
+  {% for name in names %}
+  <span class="c-logo-wall__name">{{ name }}</span>
+  {% endfor %}
+</div>
+{% endif %}
+{%- endmacro %}

@@ -1,0 +1,10 @@
+fastapi>=0.115
+uvicorn[standard]>=0.32
+pydantic>=2.9
+httpx>=0.27
+pytest>=9.0
+playwright>=1.49
+Pillow>=11.0
+pydantic-settings>=2.5
+stamina>=24.2
+structlog>=24.4

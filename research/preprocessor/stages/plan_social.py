@@ -402,11 +402,34 @@ def apply_social_plan(
             staged = [s for s in (stage(a) for a in b.assets) if s]
             if not staged:
                 continue
+            # US-609: the About section now splits at the identity/proof
+            # boundary — testimonials are PROOF content, so they land on the
+            # proof continuation page, never the identity lead (where they
+            # would duplicate the split).
+            target = page
+            for cand in package.get("pages", []):
+                if (cand.get("slot") == b.page_slot
+                        and cand.get("continuation_role") == "proof"):
+                    target = cand
+                    break
+            data = target.setdefault("data", {})
             data["testimonials"] = staged
-            # The copy-fit that travels WITH the binding (gap-audit #3): trim
-            # the About body to its first 2 paragraphs so ST-05 stays 1 page.
-            if "body" in data:
-                data["body"] = _trim_body_to_paras(data["body"], 2)
+            # US-609: the About section splits identity/proof — the copy-fit
+            # trim belongs on the IDENTITY page's body (the proof page has no
+            # body). When the section did NOT split (light About), trim the
+            # lead page's body (back-compat).
+            _trimmed = False
+            for cand in package.get("pages", []):
+                if (cand.get("slot") == b.page_slot
+                        and cand.get("continuation_role") == "identity"):
+                    idata = cand.setdefault("data", {})
+                    if "body" in idata:
+                        idata["body"] = _trim_body_to_paras(idata["body"], 2)
+                    _trimmed = True
+                    break
+            if not _trimmed and isinstance(page, dict):
+                if "body" in page.setdefault("data", {}):
+                    page["data"]["body"] = _trim_body_to_paras(page["data"]["body"], 2)
 
         elif b.element == "case_study_post":
             staged = stage(b.assets[0]) if b.assets else None

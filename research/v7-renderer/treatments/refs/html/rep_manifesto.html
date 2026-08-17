@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---------- TOP RULE + EYEBROW ---------- */
+.toprule{position:absolute;top:90px;left:90px;width:1500px;height:1px;background:var(--rule);}
+.eyebrow{position:absolute;top:124px;left:90px;display:flex;align-items:center;gap:18px;
+  color:var(--teal);font-family:'SourceSans';font-size:15px;font-weight:600;letter-spacing:.36em;text-transform:uppercase;}
+.eyebrow .tick{width:46px;height:2px;background:var(--teal);}
+.pageno{position:absolute;top:120px;right:90px;font-family:'SourceSerif',serif;font-size:16px;font-weight:500;color:var(--ink);letter-spacing:.08em;}
+
+/* ---------- MANIFESTO HERO ---------- */
+.hero{position:absolute;top:236px;left:90px;width:1290px;
+  font-family:'SourceSerif',serif;color:var(--ink);
+  font-weight:380;font-size:80px;line-height:1.16;letter-spacing:-0.014em;}
+.hero .soft{color:#6f7c89;font-weight:360;}
+.hero .teal{color:var(--teal);font-weight:430;}
+
+/* ---------- METRIC RAIL ---------- */
+.rail-rule{position:absolute;left:90px;top:806px;width:1110px;height:1px;background:var(--rule);}
+.rail{position:absolute;left:90px;top:842px;width:1110px;display:flex;}
+.rail .cell{flex:1;position:relative;padding-right:40px;}
+.rail .cell+.cell{padding-left:48px;}
+.rail .cell+.cell::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--rule);}
+.rail .fig{font-family:'SourceSerif',serif;font-size:60px;font-weight:460;color:var(--ink);line-height:1;letter-spacing:-0.015em;}
+.rail .fig .u{color:var(--teal);}
+.rail .lab{font-family:'SourceSans';font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--body);margin-top:18px;line-height:1.5;}
+
+/* ---------- FRAMED FOUNDER PORTRAIT (lower-right) ---------- */
+/* native ar 0.821 -> height 360 => width round(360*0.821)=296 */
+.founder{position:absolute;right:90px;bottom:150px;width:296px;}
+.founder .frame{width:296px;height:360px;position:relative;background:var(--ink);}
+.founder .frame .seam{position:absolute;top:0;left:0;width:4px;height:100%;background:var(--teal);z-index:2;}
+.founder .photo{position:absolute;top:0;left:4px;right:0;bottom:0;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 16%/cover no-repeat;}
+.founder .cap{margin-top:20px;}
+.founder .cap .name{font-family:'SourceSerif',serif;font-size:24px;font-weight:540;color:var(--ink);letter-spacing:.004em;}
+.founder .cap .role{font-family:'SourceSans';font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-top:9px;}
+
+/* ---------- FOOTER ---------- */
+.footrule{position:absolute;left:90px;bottom:84px;width:1500px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;bottom:50px;width:1500px;display:flex;align-items:center;justify-content:space-between;}
+.partners{font-family:'SourceSans';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:#6f7d8b;}
+.partners b{color:var(--ink);font-weight:600;}
+.brand{font-family:'SourceSerif',serif;font-weight:600;font-size:15px;letter-spacing:.36em;color:var(--ink);}
+</style>
+</head>
+<body>
+  <div class="toprule"></div>
+  <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+  <div class="pageno">03</div>
+
+  <h1 class="hero">Wachstumsprobleme in B2B<br>sind <span class="soft">selten Umsatzprobleme.</span><br>Sie sind <span class="teal">Automatisierungsprobleme.</span></h1>
+
+  <div class="rail-rule"></div>
+  <div class="rail">
+    <div class="cell">
+      <div class="fig">100<span class="u">+</span></div>
+      <div class="lab">Realisierte<br>AI-Projekte</div>
+    </div>
+    <div class="cell">
+      <div class="fig"><span class="u">€</span>200k<span class="u">+</span></div>
+      <div class="lab">Einsparung<br>pro Jahr</div>
+    </div>
+    <div class="cell">
+      <div class="fig">30&ndash;50<span class="u">%</span></div>
+      <div class="lab">Weniger<br>Betriebskosten</div>
+    </div>
+    <div class="cell">
+      <div class="fig"><span class="u">&minus;</span>93<span class="u">%</span></div>
+      <div class="lab">Onboarding<br>30 Min &rarr; 2 Min</div>
+    </div>
+  </div>
+
+  <div class="founder">
+    <div class="frame">
+      <div class="seam"></div>
+      <div class="photo"></div>
+    </div>
+    <div class="cap">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+</body>
+</html>

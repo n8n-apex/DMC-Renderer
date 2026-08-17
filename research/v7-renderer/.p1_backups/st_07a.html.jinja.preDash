@@ -1,0 +1,320 @@
+{# ST-07A — case-study page (Plan B flagship). DATA comes pre-shaped from
+   patterns/st_07a.py; this template only COMPOSES the macro library on the
+   token-themed .st-07a layout (styles/st_07a.css). It emits a fragment only —
+   no <html>/<head>/<style>/@page/@font-face/:root (those live in the head). #}
+{% from 'pill.jinja' import pill %}
+{% from 'viz.jinja' import viz as render_viz %}
+{% from 'media_figure.jinja' import media_figure %}
+{% from 'qr.jinja' import qr %}
+{% from 'pull_quote.jinja' import pull_quote %}
+{% from 'stat_strip.jinja' import stat_strip %}
+{% from 'section_label.jinja' import section_label %}
+{% from 'ghost_numeral.jinja' import ghost_numeral %}
+{% from 'phone_mockup.jinja' import phone_mockup %}
+
+{% if layout_variant == 'fill' %}
+{# ---- FILL variant (niklas p8/p10/p12 "authority panel" composition) ----
+   A FULL-HEIGHT dark sidebar on the RIGHT runs edge-to-edge top→bottom: the
+   optional portrait, then the kunde name/role/own-URL (url in accent), then
+   a VERTICAL big-number stat STACK (oversized numbers + small labels, white/
+   accent on the dark ground), then the QR + pull-quote pinned to the bottom.
+   The header + body sections flow in the wider LEFT column. The dark panel
+   FILLS the right strip top→bottom regardless of body length — this is what
+   removes the dead band. The full height is carried by .cs-fill-root (a
+   definite-height relative box) so the absolutely-positioned dark panel can
+   resolve top:0/bottom:0 against it (WeasyPrint won't stretch an abs box
+   against a min-height container — only a definite height). #}
+<div class="cs-fill-root" data-cs-variant="fill">
+  <div class="cs-panelfill">
+    <div class="cs-panelfill-head">
+      {% if has_social_post %}
+      {# client-matched social post: a COMPACT renderer-drawn phone in the
+         portrait slot's place (REPLACES the static portrait — never both, the
+         rail is narrow). Sized to the rail width by .cs-socialpost .c-phone in
+         styles/st_07a.css. #}
+      <div class="cs-socialpost cs-socialpost--fill">
+        {{ phone_mockup(social_photo, avatar_uri=social_avatar, handle=social_handle) }}
+      </div>
+      {% elif portrait_uri %}
+      <div class="cs-portrait cs-portrait--fill">
+        {{ media_figure(portrait_uri, alt=portrait_alt, ratio='1x1', frame=true) }}
+      </div>
+      {% endif %}
+      {% if kunde_name or kunde_role or kunde_url %}
+      <div class="cs-kunde cs-kunde--fill">
+        {% if kunde_name %}<div class="cs-kunde-name">{{ kunde_name }}</div>{% endif %}
+        {% if kunde_role %}<div class="cs-kunde-role">{{ kunde_role }}</div>{% endif %}
+        {% if kunde_url %}<a class="cs-kunde-link" href="{{ kunde_href }}">{{ kunde_url }}</a>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% if stats %}
+    <div class="cs-statstack">
+      {% for s in stats %}
+      <div class="cs-statstack-cell">
+        {# a before->after metric ("24 Std. → Minuten") renders as Richard's
+           before/after BAR device (infographic vocabulary archetype #3): a gray
+           status-quo bar collapsing to an accent outcome bar — NOT a text arrow.
+           Bar heights arrive pre-derived from the figures (patterns/st_07a.py);
+           both states are shown verbatim (no fabricated number). Plain figures
+           keep the big numeral; prose values get --long so they wrap (is_long is
+           FORMAT logic). 'from' is a Jinja keyword so fields are read by subscript. #}
+        {% if s.kind == 'transform' %}
+        <div class="cs-statstack-ba">
+          <div class="cs-ba-col">
+            <span class="cs-ba-num">{{ s['from'] }}</span>
+            <span class="cs-ba-track"><span class="cs-ba-bar cs-ba-bar--before" style="height:{{ s.from_h }}%"></span></span>
+            <span class="cs-ba-cap">vorher</span>
+          </div>
+          <div class="cs-ba-col">
+            <span class="cs-ba-num cs-ba-num--after">{{ s['to'] }}</span>
+            <span class="cs-ba-track"><span class="cs-ba-bar cs-ba-bar--after" style="height:{{ s.to_h }}%"></span></span>
+            <span class="cs-ba-cap">nachher</span>
+          </div>
+        </div>
+        {% else %}
+        <div class="cs-statstack-value{% if s.is_long %} cs-statstack-value--long{% endif %}">{% if s.cmp %}<span class="cs-fig-cmp">{{ s.cmp }}</span>{% endif %}{{ s.value }}</div>
+        {% endif %}
+        <div class="cs-statstack-label">{{ s.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if qr_svg or pullquote_text %}
+    <div class="cs-panelfill-foot">
+      {% if pullquote_text %}
+      {{ pull_quote(pullquote_text, attribution=pullquote_attribution, on_panel=true) }}
+      {% endif %}
+      {% if qr_svg %}
+      <div class="cs-panel-qr cs-panel-qr--fill">{{ qr(qr_svg) }}</div>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="cs-header cs-header--fill">
+    {% if fallstudie_number %}
+    <div class="cs-ghost">{{ ghost_numeral(fallstudie_number) }}</div>
+    {% endif %}
+    <div class="cs-kicker">{{ pill(kicker_label, 'solid') }}</div>
+    {% if headline %}
+    <h1 class="cs-headline">{{ headline }}</h1>
+    {% endif %}
+    {% if lede_html %}
+    <div class="cs-lede cs-lede--fill">{{ lede_html }}</div>
+    {% endif %}
+  </div>
+  <div class="cs-main cs-main--fill">
+    {% for section in sections %}
+    <div class="cs-section">
+      {{ section_label(section.heading) }}
+      <div class="cs-body">{{ section.body_html }}</div>
+    </div>
+    {% endfor %}
+    {% if chart_svgs %}
+    <div class="cs-charts">
+      {% for svg in chart_svgs %}
+      <div class="cs-chart-svg">{{ svg | safe }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{# Case-study layout: the proof visual is the big-numeral RAIL (right), like
+   Richard's niklas case study. NO separate bottom viz here — it duplicated the
+   rail numbers and overflowed the page. The narrative + rail fill one sheet. #}
+{% elif layout_variant == 'magazine' %}
+{# MAGAZINE modular interlock (the layout system): text and visuals woven on the
+   SAME page(s). A full-width header, then modular rows that pair each copy block
+   with the visual that proves it, alternating sides for rhythm. Each row is a
+   clean unit (break-inside: avoid) so nothing splits across the page boundary;
+   the layout flows to a 2nd page as WHOLE rows when content needs it. Every viz
+   sits on a tinted module panel, never on blank space. viz is a list: viz[0]
+   pairs with Ausgangssituation, viz[1] with Lösung; Ergebnis pairs with the
+   stat + quote. #}
+{% set viz_list = viz or [] %}
+<div class="cs-mag">
+  <div class="cs-mag-head">
+    <div class="cs-mag-eyebrow">{{ kicker_label }}{% if kunde_name %}<span class="cs-story-org">{{ kunde_name }}</span>{% endif %}</div>
+    {% if headline %}<h1 class="cs-mag-headline">{{ headline }}</h1>{% endif %}
+    {% if lede_html %}<div class="cs-mag-lede">{{ lede_html }}</div>{% endif %}
+  </div>
+
+  {% for section in sections if section.heading == 'Ausgangssituation' %}
+  <div class="cs-mag-row">
+    <div class="cs-mag-text">
+      {{ section_label(section.heading) }}
+      <div class="cs-body">{{ section.body_html }}</div>
+    </div>
+    {% if viz_list[0] %}<div class="cs-mag-viz">{{ render_viz([viz_list[0]]) }}</div>{% endif %}
+  </div>
+  {% endfor %}
+
+  {% for section in sections if section.heading == 'Lösung' %}
+  <div class="cs-mag-row">
+    {% if viz_list[1] %}<div class="cs-mag-viz">{{ render_viz([viz_list[1]]) }}</div>{% endif %}
+    <div class="cs-mag-text">
+      {{ section_label(section.heading) }}
+      <div class="cs-body">{{ section.body_html }}</div>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% for section in sections if section.heading == 'Ergebnis' %}
+  <div class="cs-mag-row">
+    <div class="cs-mag-text">
+      {{ section_label(section.heading) }}
+      <div class="cs-body">{{ section.body_html }}</div>
+    </div>
+    <div class="cs-mag-viz cs-mag-viz--proof">
+      {% if stats %}{% set s = stats[-1] %}
+      <div class="cs-mag-stat">
+        <div class="cs-mag-stat-value">{{ s.value }}</div>
+        <div class="cs-mag-stat-label">{{ s.label }}</div>
+      </div>
+      {% endif %}
+      {% if pullquote_text %}
+      <div class="cs-mag-quote">{{ pull_quote(pullquote_text, attribution=pullquote_attribution, on_panel=false) }}</div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+
+  {% if kunde_url %}<div class="cs-mag-foot"><a href="{{ kunde_href }}">{{ kunde_url }}</a></div>{% endif %}
+</div>
+{% elif layout_variant == 'casestudy_hero' %}
+{# CASESTUDY_HERO (A3-landscape SPREAD, Richard "Doppelseite" model): ONE continuous
+   canvas that reads left->right. LEFT = the client STORY (kicker + result headline +
+   framed testimonial portrait + lede + Ausgangssituation/Loesung/Ergebnis narrative).
+   RIGHT = the PROOF, led DETERMINISTICALLY by the data shape: a before->after pair
+   renders the bar_compare CHART; a single rate renders the GAUGE; otherwise the metric
+   chips ARE the exhibit (no duplicate device). Client quote pinned beneath. A hairline
+   spine joins the halves. #}
+{% set _vp = (viz[0].preset if viz and viz[0] is mapping else '') %}
+<div class="csh">
+  <div class="csh-left">
+    <div class="csh-kicker">{{ pill(kicker_label, 'solid') }}</div>
+    {% if headline %}<h1 class="csh-headline">{{ headline }}</h1>{% endif %}
+    {% if portrait_uri %}
+    <figure class="csh-portrait">
+      <img class="csh-portrait-img" src="{{ portrait_uri }}" alt="{{ portrait_alt }}"/>
+      <figcaption class="csh-portrait-cap">
+        <span class="csh-pname">{{ kunde_name }}</span>
+        {% if kunde_role %}<span class="csh-prole">{{ kunde_role }}</span>{% endif %}
+      </figcaption>
+    </figure>
+    {% endif %}
+    {% if lede_html %}<div class="csh-lede">{{ lede_html }}</div>{% endif %}
+    <div class="csh-narr">
+      {# the spread is one A3 sheet (A4-tall): drop the redundant Ziel section and
+         keep the Ausgangssituation -> Loesung -> Ergebnis throughline. #}
+      {% for section in sections if section.heading != 'Ziel' %}
+      <div class="csh-sec">
+        {{ section_label(section.heading) }}
+        <div class="csh-body">{{ section.body_html }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="csh-right">
+    <div class="csh-proof">
+      {{ section_label('Das Ergebnis') }}
+      {% if viz and _vp in ('bar_compare','donut','gauge','radial_cluster','completion_ring','transform_arrow') %}
+      <div class="csh-proof-viz">{{ render_viz(viz) }}</div>
+      {% endif %}
+      {% if stats %}
+      {# The viz shows the HERO number; `stats` carries the OTHER metrics (the
+         preprocessor curates them so they never duplicate the device). #}
+      <div class="csh-proof-metrics">
+        {% for s in stats %}
+        <div class="csh-pm"><span class="csh-pm-v">{{ s.value }}</span><span class="csh-pm-l">{{ s.label }}</span></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% if pullquote_text %}
+    <figure class="csh-quote">
+      <blockquote class="csh-quote-text">{{ pullquote_text }}</blockquote>
+      {% if pullquote_attribution %}<figcaption class="csh-quote-attr">{{ pullquote_attribution }}</figcaption>{% endif %}
+    </figure>
+    {% endif %}
+  </div>
+</div>
+{% else %}
+<div class="cs-header">
+  {# decorative oversized faint Fallstudie numeral behind the kicker (DNA §C1/§C6).
+     position:absolute in components.css; .cs-header is position:relative + clipped
+     in styles/st_07a.css so it never pushes content or overflows the page. #}
+  {% if fallstudie_number %}
+  <div class="cs-ghost">{{ ghost_numeral(fallstudie_number) }}</div>
+  {% endif %}
+  <div class="cs-kicker">{{ pill(kicker_label, 'solid') }}</div>
+  {% if headline %}
+  <h1 class="cs-headline">{{ headline }}</h1>
+  {% endif %}
+  {% if lede_html %}
+  <div class="cs-lede">{{ lede_html }}</div>
+  {% endif %}
+</div>
+
+<table class="cs-grid">
+  <tbody>
+    <tr>
+      <td class="cs-sidebar">
+        {% if has_social_post %}
+        {# client-matched social post REPLACES the static portrait in the
+           sidebar (compact phone sized to the rail by .cs-socialpost in
+           styles/st_07a.css). #}
+        <div class="cs-socialpost">
+          {{ phone_mockup(social_photo, avatar_uri=social_avatar, handle=social_handle) }}
+        </div>
+        {% elif portrait_uri %}
+        <div class="cs-portrait">
+          {{ media_figure(portrait_uri, alt=portrait_alt, ratio='4x5', frame=true) }}
+        </div>
+        {% endif %}
+        {% if kunde_name or kunde_role or kunde_url %}
+        <div class="cs-kunde">
+          {% if kunde_name %}<div class="cs-kunde-name">{{ kunde_name }}</div>{% endif %}
+          {% if kunde_role %}<div class="cs-kunde-role">{{ kunde_role }}</div>{% endif %}
+          {% if kunde_url %}<a class="cs-kunde-link" href="{{ kunde_href }}">{{ kunde_url }}</a>{% endif %}
+        </div>
+        {% endif %}
+        <div class="cs-panel">
+          {% if qr_svg %}
+          <div class="cs-panel-qr">{{ qr(qr_svg) }}</div>
+          {% if pullquote_text %}<hr class="cs-panel-rule"/>{% endif %}
+          {% endif %}
+          {% if pullquote_text %}
+          {{ pull_quote(pullquote_text, attribution=pullquote_attribution, on_panel=true) }}
+          {% endif %}
+        </div>
+      </td>
+      <td class="cs-gutter"></td>
+      <td class="cs-main">
+        {% if stats %}
+        <div class="cs-stats">{{ stat_strip(stats) }}</div>
+        {% endif %}
+        {% for section in sections %}
+        <div class="cs-section">
+          {{ section_label(section.heading) }}
+          <div class="cs-body">{{ section.body_html }}</div>
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{# Chart band: a FULL-WIDTH row BELOW the grid so it fills the case-study dead
+   bottom band (the page space the columns don't occupy) instead of growing the
+   cs-main cell and overflowing onto a spill page. Side-by-side, capped at 2. #}
+{% if chart_svgs %}
+<div class="cs-charts cs-charts--below">
+  {% for svg in chart_svgs %}
+  <div class="cs-chart-svg">{{ svg | safe }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% if viz %}
+<div class="cs-viz">{{ render_viz(viz) }}</div>
+{% endif %}
+{% endif %}

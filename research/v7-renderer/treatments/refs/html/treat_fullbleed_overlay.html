@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{
+  font-family:'SourceSerif4';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SourceSans3';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:#F6F3ED;
+  font-family:'SourceSans3',sans-serif;
+  position:relative;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== FULL-BLEED HERO PHOTO ===== */
+/* Native 1179x755 (ar1.562). Cover full width = 1680, height 1075.5.
+   Subject (Jousef seated) sits centered. We anchor so the upper torso/face
+   stays well inside the frame: object-position center top-ish. */
+.hero{
+  position:absolute;
+  top:0; left:0;
+  width:1680px;
+  height:1076px;
+  overflow:hidden;
+}
+.hero img{
+  width:1680px;
+  height:1076px;
+  object-fit:cover;
+  object-position:50% 28%;
+  display:block;
+  filter:saturate(0.96) contrast(1.02);
+}
+/* cinematic vignette / gradient scrim only on the lower-left where the panel sits,
+   plus a soft top scrim for the eyebrow rail. flat, no neon. */
+.scrim-bottom{
+  position:absolute;
+  left:0; bottom:0;
+  width:1680px; height:430px;
+  background:linear-gradient(to top, rgba(46,62,80,0.55) 0%, rgba(46,62,80,0.18) 45%, rgba(46,62,80,0) 100%);
+  pointer-events:none;
+}
+.scrim-left{
+  position:absolute;
+  left:0; top:0;
+  width:760px; height:1076px;
+  background:linear-gradient(to right, rgba(46,62,80,0.40) 0%, rgba(46,62,80,0.12) 40%, rgba(46,62,80,0) 100%);
+  pointer-events:none;
+}
+
+/* ===== CREAM SHELF (bottom band) ===== */
+.shelf{
+  position:absolute;
+  left:0; bottom:0;
+  width:1680px; height:112px;
+  background:#F6F3ED;
+}
+.shelf-inner{
+  position:absolute;
+  left:90px; right:90px; bottom:0;
+  height:112px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.shelf-rule{
+  position:absolute;
+  left:90px; right:90px; top:0;
+  height:1px; background:#cdc7ba;
+}
+.partners{
+  font-family:'SourceSans3',sans-serif;
+  font-size:16px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:#3a4a5a;
+  font-weight:500;
+}
+.partners .dot{color:#4A7C7E;margin:0 12px;font-weight:700;}
+.pageno{
+  font-family:'SourceSerif4',serif;
+  font-size:18px;
+  color:#2E3E50;
+  letter-spacing:0.04em;
+}
+
+/* ===== TOP EYEBROW RAIL (over photo) ===== */
+.toprail{
+  position:absolute;
+  top:64px; left:90px;
+  display:flex; align-items:center; gap:18px;
+  z-index:5;
+}
+.toprail .eyebrow{
+  font-family:'SourceSans3',sans-serif;
+  font-size:18px;
+  letter-spacing:0.42em;
+  text-transform:uppercase;
+  color:#F6F3ED;
+  font-weight:600;
+}
+.toprail .tick{
+  width:46px; height:2px; background:#4A7C7E;
+}
+.brandmark{
+  position:absolute;
+  top:62px; right:90px;
+  font-family:'SourceSerif4',serif;
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:0.30em;
+  color:#F6F3ED;
+  z-index:5;
+}
+
+/* ===== FLOATING NAVY PANEL (lower-left over photo) ===== */
+.panel{
+  position:absolute;
+  left:90px;
+  bottom:184px;          /* floats above the cream shelf */
+  width:752px;
+  background:#2E3E50;
+  color:#F6F3ED;
+  padding:54px 58px 50px 58px;
+  box-shadow:0 28px 64px rgba(28,38,50,0.36);
+  z-index:6;
+}
+.panel .p-eyebrow{
+  font-family:'SourceSans3',sans-serif;
+  font-size:14px;
+  letter-spacing:0.34em;
+  text-transform:uppercase;
+  color:#9fb4b5;
+  font-weight:600;
+  margin-bottom:22px;
+  display:flex; align-items:center; gap:14px;
+}
+.panel .p-eyebrow .accent{
+  width:30px; height:2px; background:#4A7C7E; display:inline-block;
+}
+.panel h1{
+  font-family:'SourceSerif4',serif;
+  font-weight:500;
+  font-size:54px;
+  line-height:1.06;
+  letter-spacing:-0.012em;
+  color:#F6F3ED;
+}
+.panel h1 .teal{color:#7fb7b4;font-style:italic;font-weight:400;}
+.panel .thesis{
+  font-family:'SourceSans3',sans-serif;
+  font-size:19px;
+  line-height:1.5;
+  color:#c7d2da;
+  margin-top:26px;
+  max-width:580px;
+  font-weight:330;
+}
+
+/* divider inside panel */
+.panel .pdiv{
+  height:1px; background:rgba(246,243,237,0.16);
+  margin:34px 0 30px 0;
+}
+
+/* ===== ONE STAT (mega numeral) inside panel ===== */
+.statrow{
+  display:flex; align-items:flex-end; gap:28px;
+}
+.stat{
+  display:flex; flex-direction:column;
+}
+.stat .num{
+  font-family:'SourceSerif4',serif;
+  font-weight:600;
+  font-size:92px;
+  line-height:0.86;
+  color:#F6F3ED;
+  letter-spacing:-0.02em;
+}
+.stat .num .unit{color:#7fb7b4;font-size:0.62em;}
+.stat .lbl{
+  font-family:'SourceSans3',sans-serif;
+  font-size:15px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:#9fb4b5;
+  font-weight:500;
+  margin-top:14px;
+}
+/* small supporting kpi to the right of the mega numeral */
+.statside{
+  border-left:1px solid rgba(246,243,237,0.18);
+  padding-left:28px;
+  display:flex; flex-direction:column; gap:18px;
+  padding-bottom:6px;
+}
+.kpi{display:flex;align-items:baseline;gap:10px;}
+.kpi .kn{
+  font-family:'SourceSerif4',serif;
+  font-weight:600; font-size:26px; color:#7fb7b4;
+  min-width:108px;
+}
+.kpi .kl{
+  font-family:'SourceSans3',sans-serif;
+  font-size:14px; color:#c7d2da; letter-spacing:0.02em; font-weight:330;
+}
+
+/* ===== floating quote chip on the RIGHT over photo (cinematic caption) ===== */
+.quotechip{
+  position:absolute;
+  right:90px;
+  bottom:440px;
+  width:352px;
+  z-index:6;
+}
+.quotechip .qmark{
+  font-family:'SourceSerif4',serif;
+  font-size:88px; line-height:0.5;
+  color:#7fb7b4;
+  height:46px;
+}
+.quotechip .qtext{
+  font-family:'SourceSerif4',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:24px;
+  line-height:1.36;
+  color:#F6F3ED;
+  margin-top:8px;
+  text-shadow:0 2px 14px rgba(28,38,50,0.55);
+}
+.quotechip .qattr{
+  font-family:'SourceSans3',sans-serif;
+  font-size:13px;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:#cdd8dd;
+  margin-top:18px;
+  font-weight:600;
+  text-shadow:0 1px 8px rgba(28,38,50,0.6);
+}
+.quotechip .qrule{
+  width:54px;height:2px;background:#4A7C7E;margin-top:14px;
+}
+</style>
+</head>
+<body>
+
+  <!-- FULL-BLEED HERO -->
+  <div class="hero">
+    <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png" alt="Gründer">
+    <div class="scrim-left"></div>
+    <div class="scrim-bottom"></div>
+  </div>
+
+  <!-- TOP RAIL over photo -->
+  <div class="toprail">
+    <span class="tick"></span>
+    <span class="eyebrow">Über uns</span>
+  </div>
+  <div class="brandmark">APEX</div>
+
+  <!-- cinematic quote caption, right side -->
+  <div class="quotechip">
+    <div class="qmark">&#8220;</div>
+    <div class="qtext">In 90&nbsp;Tagen ein vollautomatischer Workflow, der uns 20+&nbsp;Stunden pro Woche spart.</div>
+    <div class="qrule"></div>
+    <div class="qattr">Kundenstimme</div>
+  </div>
+
+  <!-- FLOATING NAVY PANEL -->
+  <div class="panel">
+    <div class="p-eyebrow"><span class="accent"></span>Über 100 AI-Projekte</div>
+    <h1>Betrieb ohne<br><span class="teal">Flaschenhals.</span></h1>
+    <p class="thesis">Wachstumsprobleme in B2B sind selten Umsatzprobleme. Sie sind Automatisierungsprobleme.</p>
+
+    <div class="pdiv"></div>
+
+    <div class="statrow">
+      <div class="stat">
+        <div class="num">100<span class="unit">+</span></div>
+        <div class="lbl">AI-Projekte</div>
+      </div>
+      <div class="statside">
+        <div class="kpi"><span class="kn">€200k+</span><span class="kl">Einsparung pro Jahr</span></div>
+        <div class="kpi"><span class="kn">30–50%</span><span class="kl">weniger Betriebskosten</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREAM SHELF -->
+  <div class="shelf">
+    <div class="shelf-rule"></div>
+    <div class="shelf-inner">
+      <div class="partners">Frese Recruiting <span class="dot">·</span> Conesso GmbH <span class="dot">·</span> Pure Media Marketing</div>
+      <div class="pageno">03</div>
+    </div>
+  </div>
+
+</body>
+</html>

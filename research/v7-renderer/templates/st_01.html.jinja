@@ -1,0 +1,67 @@
+{# ST-01 — report COVER (Phase 4b founder-hero rebuild). DATA comes pre-shaped
+   from patterns/st_01.py; this template only COMPOSES the macro library on the
+   token-themed .st-01 layout (styles/st_01.css). It emits a fragment only — no
+   <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure (founder-as-hero, DNA §C2 + §D COVER recipe):
+     A full-bleed column split into two stacked zones:
+       1) cv-hero — the PROMINENT founder portrait (or, fallback, the generated
+          scene) as a background block carrying a scrim. Overlaid: the top nav
+          row (wordmark + kicker pills) and a floated stat rail (the proof
+          numbers). The scrim ramps to --color-ink at its foot so it fuses into
+          the band below and the overlaid text stays legible.
+       2) cv-band — a dark editorial title band (--color-ink ground) carrying the
+          founder byline (eyebrow "MIT" + name + role), the two-tone display
+          title, the audience line + subtitle, and the teaser rail. All on-dark.
+   #}
+{% from 'pill.jinja' import pill %}
+{% from 'stat_rail.jinja' import stat_rail %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+
+<div class="cv">
+  <div class="cv-hero{% if is_portrait %} cv-hero--portrait{% endif %}"{{ hero_style }}>
+    <div class="cv-scrim"></div>
+    <div class="cv-hero-overlay">
+
+      <div class="cv-top">
+        {% if wordmark %}<div class="cv-wordmark">{{ wordmark }}</div>{% endif %}
+        {% if kicker_pills %}
+        <div class="cv-pills">
+          {% for k in kicker_pills %}{{ pill(k, 'outline') }}{% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      {% if stats %}
+      <div class="cv-rail">{{ stat_rail(stats, on_dark=true) }}</div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <div class="cv-band">
+    {% if author_name or author_role %}
+    <div class="cv-author">
+      <span class="cv-author-kicker">Mit</span>
+      {% if author_name %}<span class="cv-author-name">{{ author_name }}</span>{% endif %}
+      {% if author_role %}<span class="cv-author-role">{{ author_role }}</span>{% endif %}
+    </div>
+    {% endif %}
+
+    {% if title_lead or title_accent %}
+    <div class="cv-title">{{ two_tone_headline(title_lead, title_accent) }}</div>
+    {% endif %}
+
+    {% if audience %}<div class="cv-audience">{{ audience }}</div>{% endif %}
+    {% if subtitle %}<div class="cv-subtitle">{{ subtitle }}</div>{% endif %}
+
+    {% if teaser %}
+    <div class="cv-teaser">
+      <div class="cv-teaser-label">In diesem Report</div>
+      <ul class="cv-teaser-list">
+        {% for t in teaser %}<li class="cv-teaser-item">{{ t }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</div>

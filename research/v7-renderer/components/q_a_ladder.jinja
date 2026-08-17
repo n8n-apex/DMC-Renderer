@@ -1,0 +1,28 @@
+{# q_a_ladder — a NUMBERED objection→answer stack (Richard's numbered-card /
+   Q&A archetype). Each card: an oversized tone-on-tone GHOST numeral bleeding
+   under a bold objection (the question), with the rebuttal beneath. Used on
+   FAQ/objection pages. NO fabrication — only the supplied question/answer pairs,
+   verbatim.
+
+   Token-only / brand-agnostic: the ghost numeral, hairline divider, soft card
+   shadow come from tokens. Host sizes/positions .c-qa.
+
+   DATA CONTRACT (diagram dict, kind == "q_a" | "q_a_ladder"):
+     items : list of {frage, antwort} (3-6), shown verbatim
+
+   Graceful: empty items → renders nothing. #}
+{% macro q_a_ladder(diagram) %}
+{%- if diagram and (diagram.kind == 'q_a' or diagram.kind == 'q_a_ladder') and diagram['items'] -%}
+<div class="c-qa">
+  {% for it in diagram['items'] %}
+  <div class="c-qa__card">
+    <span class="c-qa__num" aria-hidden="true">{{ '%02d' % loop.index }}</span>
+    <div class="c-qa__text">
+      {% if it.frage %}<div class="c-qa__q">{{ it.frage }}</div>{% endif %}
+      {% if it.antwort %}<div class="c-qa__a">{{ it.antwort }}</div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{%- endif -%}
+{% endmacro %}

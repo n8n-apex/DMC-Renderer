@@ -1,0 +1,519 @@
+/* viz.css — premium data-viz PRESET library (Chromium engine).
+   Token-only / brand-agnostic: every colour via var(--token) + color-mix; no
+   hex, no font-family literal, no client data. FLAT-ON-CREAM editorial style
+   (Richard / Power-BI): solid accent marks, muted-gray context, hairline rules,
+   navy-ink numerals; no glow, no shadows, no gradient fills (they fight the cream
+   ground). Families: viz_transform / viz_proportion / viz_magnitude / viz_process. */
+.c-viz { break-inside: avoid; margin: var(--space-3) 0 0 0; }
+
+/* ============================ TRANSFORMATION ============================ */
+
+/* ba_bars — paired before/after bars. The pair shares a baseline; the BEFORE
+   bar is a flat muted-gray context fill, the AFTER bar a solid accent fill, so
+   the drop reads instantly. Numerals are display-serif. Delta is an accent tint
+   pill (no semantic-green token). */
+.c-viz-ba__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-ba__row { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.c-viz-ba__pair { flex: 1 1 0; min-width: 46mm; }
+.c-viz-ba__plabel {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+}
+.c-viz-ba__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-4);
+  height: 34mm;
+}
+.c-viz-ba__col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.c-viz-ba__num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: var(--type-stat);
+  line-height: 0.98;
+  color: var(--color-ink);
+  margin-bottom: 1.5mm;
+}
+.c-viz-ba__num--after {
+  color: var(--color-primary);
+}
+.c-viz-ba__bar {
+  width: 100%;
+  max-width: 16mm;
+  border-radius: 1.5mm 1.5mm 0 0;
+  min-height: 1.5mm;
+}
+.c-viz-ba__bar--before {
+  background-color: color-mix(in srgb, var(--color-muted) 42%, var(--color-surface));
+}
+.c-viz-ba__bar--after {
+  background-color: var(--color-accent);
+}
+.c-viz-ba__cap {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  color: var(--color-muted);
+  margin-top: 1.5mm;
+}
+.c-viz-ba__delta {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-caption);
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--color-primary) 75%, var(--color-ink));
+  background-color: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  border-radius: 1.5mm;
+  padding: 1mm 2.5mm;
+}
+
+/* transform_arrow — A → B on a dark-glass card; the TO side glows in accent. */
+.c-viz-arrow {
+  display: flex;
+  flex-direction: column;
+  border-radius: 2mm;
+  padding: var(--space-4) var(--space-5);
+  background-color: color-mix(in srgb, var(--color-ink) 4%, var(--color-surface));
+  border: 0.3mm solid color-mix(in srgb, var(--color-ink) 16%, transparent);
+}
+.c-viz-arrow__title {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+.c-viz-arrow__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.c-viz-arrow__side { text-align: center; flex: 1 1 0; }
+.c-viz-arrow__num {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-stat);
+  line-height: 1;
+  color: var(--color-ink);
+}
+.c-viz-arrow__num--to {
+  color: var(--color-accent);
+}
+.c-viz-arrow__cap {
+  display: block;
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-top: 2mm;
+}
+.c-viz-arrow__glyph { color: var(--color-accent); font-size: var(--type-h3); line-height: 1; }
+
+/* completion_ring — SVG progress ring as a centered ring + caption UNIT (a lone
+   small ring reads sparse in a wide band; the horizontal composition gives it
+   presence). Track muted, arc gradient + glow, center figure display-serif. */
+.c-viz-ring {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: left;
+}
+.c-viz-ring__svg { width: 42mm; height: 42mm; flex: none; }
+.c-viz-ring__track { stroke: color-mix(in srgb, var(--color-muted) 26%, transparent); }
+.c-viz-ring__arc { stroke: var(--color-accent); }
+.c-viz-ring__center {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 30px;
+  fill: var(--color-primary);
+}
+.c-viz-ring__label {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-lede);
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  max-width: 58mm;
+  margin: 0;
+}
+
+/* bar_compare — horizontal before/after EXHIBIT. Flat-on-cream: muted 'before'
+   bar, accent 'after' bar, verbatim values in their OWN lane column (never over
+   the bars/delta), a light gridline scale + axis. Four fixed columns so every row
+   and the axis align: [category | plot | value-lane | delta]. Token-only. */
+.c-viz-barc {
+  margin-top: var(--space-3);
+  --barc-cat: 38mm; --barc-lane: 18mm; --barc-delta: 22mm;
+}
+.c-viz-barc__title {
+  font-family: var(--font-head); font-weight: 700; font-size: var(--type-h3);
+  color: var(--color-ink); margin: 0 0 var(--space-1) 0;
+}
+.c-viz-barc__sub {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  color: var(--color-muted); margin: 0 0 var(--space-2) 0;
+}
+.c-viz-barc__legend {
+  display: flex; gap: var(--space-4); margin-bottom: var(--space-2);
+  font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-ink);
+}
+.c-viz-barc__sw {
+  display: inline-block; width: 3mm; height: 3mm; border-radius: 0.5mm;
+  vertical-align: middle; margin-right: 1.6mm;
+}
+.c-viz-barc__sw--b { background-color: var(--color-muted); }
+.c-viz-barc__sw--a { background-color: var(--color-accent); }
+.c-viz-barc__row {
+  display: grid;
+  grid-template-columns: var(--barc-cat) 1fr var(--barc-lane) var(--barc-delta);
+  align-items: center; column-gap: var(--space-3);
+}
+.c-viz-barc__cat {
+  text-align: right; font-family: var(--font-head); font-weight: 600;
+  font-size: var(--type-caption); line-height: 1.15; color: var(--color-ink);
+}
+.c-viz-barc__plot { position: relative; height: 14mm; }
+.c-viz-barc__grid {
+  position: absolute; top: 1mm; bottom: 1mm;
+  border-left: 0.2mm solid color-mix(in srgb, var(--color-muted) 40%, transparent);
+}
+.c-viz-barc__bar { position: absolute; height: 4.4mm; border-radius: 0 1mm 1mm 0; min-width: 0.6mm; }
+.c-viz-barc__bar--b { top: 2.6mm; background-color: var(--color-muted); }
+.c-viz-barc__bar--a { top: 7.8mm; background-color: var(--color-accent); }
+.c-viz-barc__vlane {
+  position: relative; height: 14mm; white-space: nowrap;
+  font-family: var(--font-head); font-weight: 700; font-size: var(--type-caption);
+}
+.c-viz-barc__vb { position: absolute; top: 2.3mm; color: var(--color-ink); }
+.c-viz-barc__va { position: absolute; top: 7.5mm; color: var(--color-accent); }
+.c-viz-barc__delta {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  color: var(--color-accent); line-height: 1;
+}
+.c-viz-barc__axis {
+  display: grid;
+  grid-template-columns: var(--barc-cat) 1fr var(--barc-lane) var(--barc-delta);
+  column-gap: var(--space-3); margin-top: 1mm;
+}
+.c-viz-barc__ticks { position: relative; height: 5mm; }
+.c-viz-barc__ticks span {
+  position: absolute; top: 0; transform: translateX(-50%);
+  font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted);
+}
+.c-viz-barc__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* ============================== PROPORTION ============================== */
+
+/* donut — ring + center figure + meta beside (horizontal unit). */
+.c-viz-donut { display: inline-flex; align-items: center; gap: var(--space-4); }
+.c-viz-donut__svg { width: 38mm; height: 38mm; flex: none; }
+.c-viz-donut__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+.c-viz-donut__arc { stroke: var(--color-accent); }
+.c-viz-donut__center {
+  font-family: var(--font-head); font-weight: 800; font-size: 27px;
+  fill: var(--color-primary);
+}
+.c-viz-donut__meta { max-width: 56mm; }
+.c-viz-donut__label {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-lede);
+  line-height: 1.2; color: var(--color-ink);
+}
+.c-viz-donut__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--color-muted); margin-top: var(--space-1);
+}
+
+/* split_bar — two-segment bar; a accent, b muted; percents knocked out inside. */
+.c-viz-split { width: 100%; }
+.c-viz-split__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted);
+  margin: 0 0 var(--space-2) 0;
+}
+.c-viz-split__bar {
+  display: flex; height: 13mm; border-radius: 2mm; overflow: hidden;
+}
+.c-viz-split__seg { display: flex; align-items: center; justify-content: center; }
+.c-viz-split__seg--a {
+  background-color: var(--color-accent);
+}
+.c-viz-split__seg--b { background-color: color-mix(in srgb, var(--color-muted) 34%, transparent); }
+.c-viz-split__pct {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+}
+.c-viz-split__seg--a .c-viz-split__pct { color: var(--color-on-primary); }
+.c-viz-split__seg--b .c-viz-split__pct { color: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+.c-viz-split__legend { display: flex; justify-content: space-between; margin-top: var(--space-2); }
+.c-viz-split__leg { font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted); }
+.c-viz-split__leg--a { color: var(--color-primary); }
+.c-viz-split__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* gauge — semicircle range band + center figure. */
+.c-viz-gauge { text-align: center; }
+.c-viz-gauge__svg { width: 56mm; height: 36mm; }
+.c-viz-gauge__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+.c-viz-gauge__band { stroke: var(--color-accent); }
+.c-viz-gauge__center {
+  font-family: var(--font-head); font-weight: 800; font-size: 26px;
+  fill: var(--color-primary);
+}
+.c-viz-gauge__label {
+  font-family: var(--font-head); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; fill: var(--color-muted);
+}
+.c-viz-gauge__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+}
+
+/* radial_cluster — 2-3 rings in a row. */
+.c-viz-cluster__row { display: flex; gap: var(--space-5); justify-content: center; flex-wrap: wrap; }
+.c-viz-cluster__cell { text-align: center; }
+.c-viz-cluster__svg { width: 28mm; height: 28mm; }
+.c-viz-cluster__track { stroke: color-mix(in srgb, var(--color-muted) 22%, transparent); }
+.c-viz-cluster__arc { stroke: var(--color-accent); }
+.c-viz-cluster__center { font-family: var(--font-head); font-weight: 800; font-size: 19px; fill: var(--color-primary); }
+.c-viz-cluster__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.2;
+  color: var(--color-muted); margin-top: var(--space-1); max-width: 30mm;
+}
+.c-viz-cluster__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  text-align: center; margin-top: var(--space-2);
+}
+
+/* icon_array — waffle of inline-SVG circles + figure/label. */
+.c-viz-iconarray { display: inline-flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.c-viz-iconarray__grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.2mm;
+}
+.c-viz-iconarray__dot { width: 6.5mm; height: 6.5mm; }
+.c-viz-iconarray__dot.is-filled circle { fill: color-mix(in srgb, var(--color-accent) 85%, var(--color-primary)); }
+.c-viz-iconarray__dot.is-empty circle { fill: color-mix(in srgb, var(--color-muted) 32%, transparent); }
+.c-viz-iconarray__meta { max-width: 56mm; }
+.c-viz-iconarray__figure {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-stat); color: var(--color-primary); line-height: 1;
+}
+.c-viz-iconarray__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-1);
+}
+
+/* =============================== MAGNITUDE ============================== */
+
+/* stat_strip — a row of big-figure proof cells (value + small label). */
+.c-viz-strip { width: 100%; text-align: center; }
+.c-viz-strip__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-strip__row {
+  display: flex; gap: var(--space-5); justify-content: center;
+  align-items: flex-end; flex-wrap: wrap;
+}
+.c-viz-strip__cell { flex: 1 1 0; min-width: 34mm; }
+.c-viz-strip__value {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-stat-xl); line-height: 1; color: var(--color-primary);
+}
+.c-viz-strip__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.3; color: var(--color-muted); margin-top: var(--space-2);
+}
+.c-viz-strip__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-3);
+}
+
+/* money_bar — a single currency figure as a hero on a full-width accent bar. */
+.c-viz-money { width: 100%; text-align: center; }
+.c-viz-money__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-money__bar {
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-4) var(--space-5); border-radius: 2mm;
+  background-color: var(--color-primary);
+}
+.c-viz-money__value {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-stat);
+  line-height: 1; color: var(--color-on-primary);
+}
+.c-viz-money__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.3;
+  color: var(--color-muted); margin-top: var(--space-2);
+}
+.c-viz-money__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+/* mega_numeral — ONE oversized hero figure + small label. */
+.c-viz-mega { text-align: center; }
+.c-viz-mega__value {
+  display: block; font-family: var(--font-head); font-weight: 800;
+  font-size: var(--type-display-xl); line-height: 0.95; color: var(--color-primary);
+}
+.c-viz-mega__label {
+  display: block; font-family: var(--font-head); font-size: var(--type-lede);
+  line-height: 1.25; color: var(--color-muted); margin-top: var(--space-2);
+  max-width: 80mm; margin-left: auto; margin-right: auto;
+}
+.c-viz-mega__source {
+  display: block; font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* kpi_card — boxed dark-glass figure + label. */
+.c-viz-kpi {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: var(--space-4) var(--space-5); border-radius: 2mm;
+  background-color: var(--color-ink);
+}
+.c-viz-kpi__value {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-stat);
+  line-height: 1; color: var(--color-on-dark);
+}
+.c-viz-kpi__label {
+  font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.3;
+  color: color-mix(in srgb, var(--color-on-dark) 78%, transparent);
+  margin-top: var(--space-2); text-align: center;
+}
+.c-viz-kpi__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-on-dark) 60%, transparent);
+  margin-top: var(--space-1);
+}
+
+/* ranked_bars — horizontal ranking; bar width derived from each figure. */
+.c-viz-ranked { width: 100%; }
+.c-viz-ranked__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-ranked__list { list-style: none; margin: 0; padding: 0; }
+.c-viz-ranked__row {
+  display: flex; align-items: center; gap: var(--space-4); padding: 1.5mm 0;
+}
+.c-viz-ranked__label {
+  flex: 0 0 38mm; font-family: var(--font-head); font-size: var(--type-caption);
+  line-height: 1.2; color: var(--color-ink);
+}
+.c-viz-ranked__track {
+  flex: 1 1 0; display: flex; align-items: center; gap: var(--space-3);
+}
+.c-viz-ranked__bar {
+  height: 5mm; border-radius: 2.5mm; flex: none;
+  background-color: var(--color-accent);
+}
+.c-viz-ranked__figure {
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-lede);
+  color: var(--color-primary); white-space: nowrap;
+}
+.c-viz-ranked__source {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2);
+}
+
+/* =============================== PROCESS =============================== */
+
+/* phase_timeline — horizontal numbered phases on a spine + titles/durations. */
+.c-viz-phase { width: 100%; }
+.c-viz-phase__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-phase__track {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: var(--space-4); justify-content: space-between;
+}
+.c-viz-phase__step {
+  flex: 1 1 0; text-align: center; position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-1);
+}
+.c-viz-phase__step:not(:last-child)::after {
+  content: ""; position: absolute; top: 5mm; left: calc(50% + 6mm);
+  width: calc(100% - 12mm); height: 0.4mm;
+  background: color-mix(in srgb, var(--color-accent) 38%, transparent);
+}
+.c-viz-phase__node {
+  flex: none; width: 10mm; height: 10mm; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+}
+.c-viz-phase__duration {
+  font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-accent);
+}
+.c-viz-phase__steptitle {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-caption);
+  line-height: 1.2; color: var(--color-ink); max-width: 30mm;
+}
+
+/* step_cascade — numbered accent nodes joined by a connecting spine + titles. */
+.c-viz-cascade__title {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+.c-viz-cascade__list { list-style: none; margin: 0; padding: 0; }
+.c-viz-cascade__step {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: 2.5mm 0; position: relative;
+}
+.c-viz-cascade__step:not(:last-child)::before {
+  content: ""; position: absolute; left: 5mm; top: 10mm; height: calc(100% - 2mm);
+  width: 0.4mm; background: color-mix(in srgb, var(--color-accent) 38%, transparent);
+}
+.c-viz-cascade__node {
+  flex: none; width: 10mm; height: 10mm; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+  font-family: var(--font-head); font-weight: 800; font-size: var(--type-h3);
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+}
+.c-viz-cascade__steptitle {
+  font-family: var(--font-head); font-weight: 600; font-size: var(--type-lede);
+  line-height: 1.2; color: var(--color-ink);
+}

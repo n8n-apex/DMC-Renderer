@@ -34,8 +34,11 @@
    definite-height flex column now (backstop: the belief list absorbs slack
    and the section can never exceed its sheet again). */
 .page.st-14 {
-  height: 260.6mm;   /* a hair under the 261mm page area: exact-equality
-                        fragments spill on subpixel rounding */
+  height: 250mm;      /* US-609: 260.6mm + the unbreakable proof band crossed
+                        Chromium's fragmentation boundary (silent 23-page
+                        deck). 250mm gives the proof band real headroom below
+                        the page's chrome while the flex column still fills
+                        the sheet. */
   display: flex;
   flex-direction: column;
   overflow: hidden;

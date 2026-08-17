@@ -159,6 +159,70 @@ def _split_st07a(page: PlannedPage, budget: int) -> list[PlannedPage]:
     return [p1, p2]
 
 
+def _split_st02(page: PlannedPage) -> list[PlannedPage]:
+    """ST-02 (Outlook): the 1544-char recap + the market-proof viz + the
+    target-audience block exceed one sheet (verified: ST-02 alone rendered 2
+    sheets). Split at the semantic context/evidence boundary: page 1 = the
+    outlook + recap (context), page 2 = the market-proof viz + target
+    audience (evidence). Real data; nothing invented."""
+    data = page.data
+    sid = _section_id(page.slot)
+    context_fields = ("title", "body", "pullquote")
+    evidence_fields = ("viz", "zielgruppe")
+
+    def _pick(fields) -> dict:
+        return {f: data[f] for f in fields if f in data and data[f] not in (None, "", [])}
+
+    def _mk(index: int, role: str, d: dict) -> PlannedPage:
+        return PlannedPage(
+            slot=page.slot, st_type=page.st_type, css_template=page.css_template,
+            components=list(page.components) if index == 1 else [],
+            has_cta=page.has_cta,
+            data=d,
+            page_numbers=page.page_numbers if index == 1 else None,
+            layout_variant=page.layout_variant,
+            page_format=page.page_format,
+            section_id=sid, page_id=_page_id(sid, index),
+            continuation_index=index, continuation_role=role,
+            section_page_count=2,
+        )
+
+    return [_mk(1, "context", _pick(context_fields)),
+            _mk(2, "evidence", _pick(evidence_fields))]
+
+
+def _split_st05(page: PlannedPage) -> list[PlannedPage]:
+    """ST-05 (About): the page carries BOTH identity (title/body/stats/
+    partners) AND proof (testimonials/credibility) — at vertical capacity it
+    spills (US-609: silently became a 2-sheet section, shifting the deck).
+    Split at the semantic identity/proof boundary: page 1 = identity, page 2
+    = proof. Real data; nothing invented."""
+    data = page.data
+    sid = _section_id(page.slot)
+    id_fields = ("title", "body", "stats", "partners")
+    proof_fields = ("testimonials", "credibility_points")
+
+    def _pick(fields) -> dict:
+        return {f: data[f] for f in fields if f in data and data[f] not in (None, "", [])}
+
+    def _mk(index: int, role: str, d: dict) -> PlannedPage:
+        return PlannedPage(
+            slot=page.slot, st_type=page.st_type, css_template=page.css_template,
+            components=list(page.components) if index == 1 else [],
+            has_cta=page.has_cta,
+            data=d,
+            page_numbers=page.page_numbers if index == 1 else None,
+            layout_variant=page.layout_variant,
+            page_format=page.page_format,
+            section_id=sid, page_id=_page_id(sid, index),
+            continuation_index=index, continuation_role=role,
+            section_page_count=2,
+        )
+
+    return [_mk(1, "identity", _pick(id_fields)),
+            _mk(2, "proof", _pick(proof_fields))]
+
+
 def _split_fazit(page: PlannedPage) -> list[PlannedPage]:
     """ST-FAZIT: the closing page's recap is long (the FAZIT content measures
     937px+CTA > the 986px sheet — verified US-605). Split at a SEMANTIC
@@ -215,6 +279,19 @@ def split_section(page: PlannedPage) -> list[PlannedPage]:
         # Doppelseite). It is NOT split — see module note.
         return [page]
     total = _copy_len(page.data)
+    if page.st_type == "ST-02":
+        # US-609: the Outlook's recap+viz+audience exceed one sheet (verified:
+        # ST-02 alone rendered 2 sheets). Split context/evidence ONLY when
+        # the copy is genuinely heavy (an empty/light Outlook stays one page).
+        if total > 700:
+            return _split_st02(page)
+        return [page]
+    if page.st_type == "ST-05":
+        # US-609: the About's identity+proof exceed one sheet (verified spill).
+        # Split at the identity/proof boundary ONLY when heavy.
+        if total > 900:
+            return _split_st05(page)
+        return [page]
     if page.st_type == "ST-FAZIT":
         # US-605: the FAZIT's real layout (header + 900-char recap + thesis +
         # market-proof viz + cost + CTA band) measures past the 261mm sheet

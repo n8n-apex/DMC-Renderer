@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:'SS4';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SS3';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:#F6F3ED;
+  font-family:'SS3',sans-serif;
+  color:#3a4a5a;
+  position:relative;
+  overflow:hidden;
+}
+.canvas{position:absolute;inset:0;}
+
+/* ---------- HEADER ---------- */
+.header{position:absolute;top:74px;left:90px;right:90px;}
+.eyebrow{
+  font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.42em;
+  color:#4A7C7E;text-transform:uppercase;
+}
+.eyebrow .pg{color:#b3a998;margin-left:18px;letter-spacing:.2em;}
+.headline{
+  font-family:'SS4';font-weight:540;font-size:48px;line-height:1.06;
+  color:#2E3E50;margin-top:18px;letter-spacing:-.01em;max-width:1000px;
+}
+.headline .teal{color:#4A7C7E;}
+.toprule{
+  position:absolute;top:30px;left:90px;right:90px;height:1px;background:#cdc7ba;
+}
+
+/* ---------- STAGE (two zones) ---------- */
+.stage{
+  position:absolute;top:236px;left:90px;right:90px;bottom:96px;
+  display:flex;
+}
+/* VORHER zone */
+.vorher{
+  width:43%;
+  background:#ECE8DF;
+  border:1px solid #ddd6c8;
+  position:relative;
+  padding:46px 54px 44px 52px;
+  display:flex;flex-direction:column;
+}
+/* NACHHER zone */
+.nachher{
+  flex:1;
+  background:#2E3E50;
+  position:relative;
+  padding:46px 56px 44px 62px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+/* diagonal seam accent */
+.seam{
+  position:absolute;top:0;bottom:0;left:43%;width:0;
+  border-left:2px solid #4A7C7E;z-index:6;
+}
+.seam::before{
+  content:'';position:absolute;top:50%;left:-18px;transform:translateY(-50%) rotate(45deg);
+  width:34px;height:34px;background:#4A7C7E;
+}
+.seam .arr{
+  position:absolute;top:50%;left:-9px;transform:translateY(-50%);
+  z-index:7;color:#F6F3ED;font-size:22px;line-height:1;font-family:'SS3';font-weight:700;
+}
+
+/* zone labels */
+.zlabel{display:flex;align-items:baseline;gap:14px;}
+.ztag{
+  font-family:'SS3';font-weight:700;font-size:14px;letter-spacing:.34em;
+  text-transform:uppercase;
+}
+.vorher .ztag{color:#8c8676;}
+.nachher .ztag{color:#7FB7B3;}
+.zsub{font-family:'SS3';font-weight:400;font-size:14.5px;}
+.vorher .zsub{color:#9a9486;}
+.nachher .zsub{color:#aebcc9;}
+
+/* ---------- VORHER pain block (top of panel) ---------- */
+.painblock{margin-top:42px;}
+.painlead{
+  font-family:'SS4';font-weight:420;font-size:23px;line-height:1.3;
+  color:#6b6557;max-width:330px;letter-spacing:.005em;
+}
+.painrow{display:flex;align-items:center;gap:22px;margin-top:34px;}
+.painnum{
+  font-family:'SS4';font-weight:620;font-size:88px;line-height:.82;
+  color:#b0a892;letter-spacing:-.02em;
+}
+.paintxt{
+  font-family:'SS3';font-weight:500;font-size:15px;line-height:1.42;color:#8c8676;
+}
+
+/* ---------- BEFORE/AFTER BAR PAIRS ---------- */
+.metrics{margin-top:auto;}
+.metric{margin-bottom:0;}
+.mlabel{
+  font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.02em;
+}
+.vorher .mlabel{color:#6b6557;}
+.nachher .mlabel{color:#cdd6df;}
+.bar{
+  height:50px;border-radius:3px;display:flex;align-items:center;
+  margin-top:11px;position:relative;
+}
+.vorher .bar.full{background:#c3bcab;}
+.nachher .bar{background:#4A7C7E;}
+.bval{
+  font-family:'SS4';font-weight:600;
+  padding:0 18px;line-height:1;white-space:nowrap;display:flex;align-items:baseline;gap:5px;
+}
+.vorher .bval{color:#4a463b;font-size:30px;}
+.nachher .bval{color:#F6F3ED;font-size:30px;}
+.bunit{font-family:'SS3';font-weight:500;font-size:14px;letter-spacing:.04em;}
+.vorher .bunit{color:#7a7466;}
+.nachher .bunit{color:#bfe0d8;}
+
+/* divider between the two metric blocks */
+.mgap{height:34px;}
+
+/* delta chip on nachher bars */
+.delta{
+  position:absolute;left:calc(100% + 16px);top:50%;transform:translateY(-50%);
+  font-family:'SS3';font-weight:700;font-size:16px;letter-spacing:.03em;
+  color:#0f3b35;background:#7FB7B3;border-radius:20px;padding:6px 14px;white-space:nowrap;
+}
+
+/* small caption under metrics */
+.mcap{
+  font-family:'SS3';font-weight:400;font-size:13px;margin-top:16px;line-height:1.4;
+}
+.vorher .mcap{color:#9a9486;max-width:300px;}
+.nachher .mcap{color:#92a3b2;}
+
+/* ---------- PHOTO + QUOTE in nachher ---------- */
+.napex{display:flex;gap:30px;align-items:flex-start;margin-bottom:6px;}
+.photo{
+  border:5px solid #41526a;border-radius:4px;overflow:hidden;flex-shrink:0;
+  background:#F6F3ED;
+}
+.photo img{display:block;}
+.quote{flex:1;padding-top:2px;}
+.qmark{font-family:'SS4';font-weight:700;font-size:46px;color:#4A7C7E;line-height:.5;}
+.qtext{
+  font-family:'SS4';font-weight:380;font-size:21px;line-height:1.38;
+  color:#e9eef2;font-style:italic;margin-top:12px;letter-spacing:.005em;
+}
+.qattr{
+  font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:#7FB7B3;margin-top:16px;
+}
+
+/* ---------- FOOTER ---------- */
+.footer{
+  position:absolute;left:90px;right:90px;bottom:40px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.partners{
+  font-family:'SS3';font-weight:500;font-size:13.5px;letter-spacing:.04em;color:#6f7d8b;
+}
+.partners b{color:#2E3E50;font-weight:600;}
+.brand{
+  font-family:'SS4';font-weight:600;font-size:15px;letter-spacing:.36em;color:#2E3E50;
+}
+.footrule{position:absolute;left:90px;right:90px;bottom:72px;height:1px;background:#cdc7ba;}
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="toprule"></div>
+  <div class="header">
+    <div class="eyebrow">ÜBER UNS<span class="pg">/ 03</span></div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+  </div>
+
+  <div class="stage">
+
+    <!-- ======= VORHER ======= -->
+    <div class="vorher">
+      <div class="zlabel">
+        <span class="ztag">Vorher</span>
+        <span class="zsub">manuelle Prozesse</span>
+      </div>
+
+      <div class="painblock">
+        <div class="painlead">Der Flaschenhals kostet Zeit, die niemand hat.</div>
+        <div class="painrow">
+          <span class="painnum">20+</span>
+          <span class="paintxt">Stunden pro Woche<br>in wiederkehrenden Abläufen gebunden</span>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="mlabel">Reaktionszeit</div>
+          <div class="bar full"><span class="bval">24<span class="bunit">Std</span></span></div>
+        </div>
+        <div class="mgap"></div>
+        <div class="metric">
+          <div class="mlabel">Onboarding</div>
+          <div class="bar full"><span class="bval">30<span class="bunit">Min</span></span></div>
+        </div>
+        <div class="mcap">Wachstumsprobleme sind selten Umsatzprobleme — sie sind Automatisierungsprobleme.</div>
+      </div>
+    </div>
+
+    <div class="seam"><span class="arr">›</span></div>
+
+    <!-- ======= NACHHER ======= -->
+    <div class="nachher">
+      <div class="zlabel">
+        <span class="ztag">Nachher</span>
+        <span class="zsub">automatisiert · in 90 Tagen</span>
+      </div>
+
+      <div class="napex">
+        <div class="photo" id="photoBox">
+          <img id="photoImg" src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png">
+        </div>
+        <div class="quote">
+          <div class="qmark">„</div>
+          <div class="qtext">In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</div>
+          <div class="qattr">Kundenstimme</div>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="mlabel">Reaktionszeit</div>
+          <div class="bar" style="width:28%"><span class="bval">Minuten</span></div>
+        </div>
+        <div class="mgap"></div>
+        <div class="metric">
+          <div class="mlabel">Onboarding</div>
+          <div class="bar" style="width:28%"><span class="bval">2<span class="bunit">Min</span></span><span class="delta">−93 %</span></div>
+        </div>
+        <div class="mcap">€200k+ Einsparung pro Jahr · 30–50 % niedrigere Betriebskosten · ohne Mehr-Headcount.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="partners">Vertrauen von <b>Frese Recruiting</b> · <b>Conesso GmbH</b> · <b>Pure Media Marketing</b></div>
+    <div class="brand">APEX</div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var img=document.getElementById('photoImg');
+  var box=document.getElementById('photoBox');
+  var H=176;
+  function apply(){
+    var ar=(img.naturalWidth&&img.naturalHeight)?img.naturalWidth/img.naturalHeight:1.007;
+    var w=Math.round(H*ar);
+    img.style.height=H+'px';
+    img.style.width=w+'px';
+    box.style.height=H+'px';
+    box.style.width=w+'px';
+  }
+  if(img.complete) apply(); else img.onload=apply;
+})();
+</script>
+</body>
+</html>

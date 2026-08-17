@@ -1,0 +1,15 @@
+{# these_statement — a LARGE serif pull-statement (the "These" / thesis), the
+   editorial centerpiece of the summary page (ST-FAZIT). It sets the report's
+   core argument in the serif display face (var(--font-display) via the headline
+   axis) at a large size, set off by an accent left-rule. NOT a quotation (no
+   glyph / attribution) — it is the author's THESIS, stated plainly.
+
+   Token-only by construction: this macro emits ONLY structure + the text; the
+   serif sizing / accent rule / color live in the .c-these class
+   (styles/components.css), so the statement stays brand-agnostic. Graceful: an
+   empty text renders nothing (the page simply drops the statement). #}
+{% macro these_statement(text) -%}
+{% if text %}
+<div class="c-these">{{ text }}</div>
+{% endif %}
+{%- endmacro %}

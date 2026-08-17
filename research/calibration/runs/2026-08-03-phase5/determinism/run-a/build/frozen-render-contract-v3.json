@@ -1,0 +1,1364 @@
+{
+  "artifact_hashes": {
+    "asset_ledger": "49145d0050332b65dba7526f9128c351f1f58acf462104a49545474040d42f5d",
+    "composition_plan": "c8fe430ed3803b4c3dd678ee4783eab516ac6f8641adfe54a744c77494c21890",
+    "composition_policy": "6da90ab65b9093335f57520edffbd5cb6a92fd98b121b6c83c44dafccbb594de",
+    "contract_payload": "b89f2870a0478e6fd9c1e02bbc9839589a4aa26f8fa10f52051f29927a935849",
+    "family_registry": "99844ef14601e6106432689fd7ba72a4856279b0328d2ac173503fbdc3d825a0",
+    "report_plan": "0bc569490c48b114b7a9b0889ffa54948a0f222e5daf93ab6f21f649667ab448",
+    "source_ledger": "aaa704c201e21f267626ab78a8411010812812fdbcbc8611d4ac47a6c1627949"
+  },
+  "asset_refs": [
+    "asset.face.01.context",
+    "asset.face.02.context",
+    "asset.face.03.context",
+    "asset.face.04.context",
+    "asset.face.06.identity",
+    "asset.face.10.identity",
+    "asset.face.12.identity",
+    "asset.face.15.proof",
+    "asset.face.19.context"
+  ],
+  "claim_refs": [
+    "claim.face.06.proof",
+    "claim.face.10.proof",
+    "claim.face.12.proof",
+    "claim.face.15.trust"
+  ],
+  "content_refs": [
+    "content.face.01.anchor.01",
+    "content.face.01.headline.01",
+    "content.face.01.narrative.01",
+    "content.face.02.anchor.01",
+    "content.face.02.headline.01",
+    "content.face.02.narrative.01",
+    "content.face.03.anchor.01",
+    "content.face.03.headline.01",
+    "content.face.03.narrative.01",
+    "content.face.04.anchor.01",
+    "content.face.04.headline.01",
+    "content.face.04.narrative.01",
+    "content.face.05.beliefs.01",
+    "content.face.05.opening.01",
+    "content.face.06.case_story.01",
+    "content.face.06.case_story.02",
+    "content.face.06.evidence_rail.01",
+    "content.face.07.mechanism.01",
+    "content.face.07.mechanism.02",
+    "content.face.07.principle.01",
+    "content.face.08.mechanism.01",
+    "content.face.08.mechanism.02",
+    "content.face.08.principle.01",
+    "content.face.09.mechanism.01",
+    "content.face.09.mechanism.02",
+    "content.face.09.principle.01",
+    "content.face.10.case_story.01",
+    "content.face.10.case_story.02",
+    "content.face.10.evidence_rail.01",
+    "content.face.11.mechanism.01",
+    "content.face.11.mechanism.02",
+    "content.face.11.principle.01",
+    "content.face.12.case_story.01",
+    "content.face.12.case_story.02",
+    "content.face.12.evidence_rail.01",
+    "content.face.13.mechanism.01",
+    "content.face.13.mechanism.02",
+    "content.face.13.principle.01",
+    "content.face.14.method_frame.01",
+    "content.face.14.steps.01",
+    "content.face.14.steps.02",
+    "content.face.15.proof_wall.01",
+    "content.face.15.trust_header.01",
+    "content.face.16.payoff.01",
+    "content.face.16.payoff.02",
+    "content.face.16.synthesis.01",
+    "content.face.17.objection_frame.01",
+    "content.face.17.responses.01",
+    "content.face.18.commitment.01",
+    "content.face.18.pathway.01",
+    "content.face.18.pathway.02",
+    "content.face.19.anchor.01",
+    "content.face.19.headline.01",
+    "content.face.19.narrative.01",
+    "content.face.20.closing_statement.01",
+    "content.face.20.identity_close.01"
+  ],
+  "contract_id": "contract.b89f2870a0478e6fd9c1",
+  "fragments": [
+    {
+      "composition": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "photo_bleed"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.01.headline.01",
+          "element_id": "face.01.headline.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "headline",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.01.narrative.01",
+          "element_id": "face.01.narrative.body.01",
+          "kind": "body",
+          "region_id": "narrative",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.01.anchor.01",
+          "asset_id": "asset.face.01.context",
+          "element_id": "face.01.anchor.image.01",
+          "kind": "image",
+          "region_id": "anchor",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.01.headline.heading.01": 28.0,
+          "face.01.narrative.body.01": 9.5
+        },
+        "required_element_ids": [
+          "face.01.headline.heading.01",
+          "face.01.narrative.body.01",
+          "face.01.anchor.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.01"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.01",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.01.headline.heading.01"
+          ],
+          "region_id": "headline"
+        },
+        {
+          "element_ids": [
+            "face.01.narrative.body.01"
+          ],
+          "region_id": "narrative"
+        },
+        {
+          "element_ids": [
+            "face.01.anchor.image.01"
+          ],
+          "region_id": "anchor"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "photo_bleed"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.02.headline.01",
+          "element_id": "face.02.headline.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "headline",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.02.narrative.01",
+          "element_id": "face.02.narrative.body.01",
+          "kind": "body",
+          "region_id": "narrative",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.02.anchor.01",
+          "asset_id": "asset.face.02.context",
+          "element_id": "face.02.anchor.image.01",
+          "kind": "image",
+          "region_id": "anchor",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.02.headline.heading.01": 28.0,
+          "face.02.narrative.body.01": 9.5
+        },
+        "required_element_ids": [
+          "face.02.headline.heading.01",
+          "face.02.narrative.body.01",
+          "face.02.anchor.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.02"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.02",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.02.headline.heading.01"
+          ],
+          "region_id": "headline"
+        },
+        {
+          "element_ids": [
+            "face.02.narrative.body.01"
+          ],
+          "region_id": "narrative"
+        },
+        {
+          "element_ids": [
+            "face.02.anchor.image.01"
+          ],
+          "region_id": "anchor"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "photo_bleed"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.03.headline.01",
+          "element_id": "face.03.headline.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "headline",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.03.narrative.01",
+          "element_id": "face.03.narrative.body.01",
+          "kind": "body",
+          "region_id": "narrative",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.03.anchor.01",
+          "asset_id": "asset.face.03.context",
+          "element_id": "face.03.anchor.image.01",
+          "kind": "image",
+          "region_id": "anchor",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.03.headline.heading.01": 28.0,
+          "face.03.narrative.body.01": 9.5
+        },
+        "required_element_ids": [
+          "face.03.headline.heading.01",
+          "face.03.narrative.body.01",
+          "face.03.anchor.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.03"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.03",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.03.headline.heading.01"
+          ],
+          "region_id": "headline"
+        },
+        {
+          "element_ids": [
+            "face.03.narrative.body.01"
+          ],
+          "region_id": "narrative"
+        },
+        {
+          "element_ids": [
+            "face.03.anchor.image.01"
+          ],
+          "region_id": "anchor"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "photo_bleed"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.04.headline.01",
+          "element_id": "face.04.headline.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "headline",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.04.narrative.01",
+          "element_id": "face.04.narrative.body.01",
+          "kind": "body",
+          "region_id": "narrative",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.04.anchor.01",
+          "asset_id": "asset.face.04.context",
+          "element_id": "face.04.anchor.image.01",
+          "kind": "image",
+          "region_id": "anchor",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.04.headline.heading.01": 28.0,
+          "face.04.narrative.body.01": 9.5
+        },
+        "required_element_ids": [
+          "face.04.headline.heading.01",
+          "face.04.narrative.body.01",
+          "face.04.anchor.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.04"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.04",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.04.headline.heading.01"
+          ],
+          "region_id": "headline"
+        },
+        {
+          "element_ids": [
+            "face.04.narrative.body.01"
+          ],
+          "region_id": "narrative"
+        },
+        {
+          "element_ids": [
+            "face.04.anchor.image.01"
+          ],
+          "region_id": "anchor"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "false_belief_stack",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "card_grid"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.05.opening.01",
+          "element_id": "face.05.opening.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "opening",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.05.beliefs.01",
+          "element_id": "face.05.beliefs.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "beliefs",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.05.beliefs.heading.01": 8.8,
+          "face.05.opening.heading.01": 10.0
+        },
+        "required_element_ids": [
+          "face.05.opening.heading.01",
+          "face.05.beliefs.heading.01"
+        ]
+      },
+      "face_ids": [
+        "face.05"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.05",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.05.opening.heading.01"
+          ],
+          "region_id": "opening"
+        },
+        {
+          "element_ids": [
+            "face.05.beliefs.heading.01"
+          ],
+          "region_id": "beliefs"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "left_rail"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.06.case_story.01",
+          "element_id": "face.06.case_story.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.06.case_story.02",
+          "element_id": "face.06.case_story.body.01",
+          "kind": "body",
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "claim_id": "claim.face.06.proof",
+          "element_id": "face.06.evidence_rail.stat.01",
+          "kind": "stat",
+          "label_content_ref": "content.face.06.evidence_rail.01",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.06.evidence_rail.01",
+          "asset_id": "asset.face.06.identity",
+          "element_id": "face.06.evidence_rail.image.01",
+          "kind": "image",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.06.case_story.body.01": 9.2,
+          "face.06.case_story.heading.01": 9.2,
+          "face.06.evidence_rail.stat.01": 8.0
+        },
+        "required_element_ids": [
+          "face.06.case_story.heading.01",
+          "face.06.case_story.body.01",
+          "face.06.evidence_rail.stat.01",
+          "face.06.evidence_rail.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.06"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.06",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.06.case_story.heading.01",
+            "face.06.case_story.body.01"
+          ],
+          "region_id": "case_story"
+        },
+        {
+          "element_ids": [
+            "face.06.evidence_rail.stat.01",
+            "face.06.evidence_rail.image.01"
+          ],
+          "region_id": "evidence_rail"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "comparison_band"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.07.principle.01",
+          "element_id": "face.07.principle.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "principle",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.07.mechanism.process.01",
+          "item_content_refs": [
+            "content.face.07.mechanism.01",
+            "content.face.07.mechanism.02"
+          ],
+          "kind": "process",
+          "region_id": "mechanism",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.07.mechanism.process.01": 8.5,
+          "face.07.principle.heading.01": 9.2
+        },
+        "required_element_ids": [
+          "face.07.principle.heading.01",
+          "face.07.mechanism.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.07"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.07",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.07.principle.heading.01"
+          ],
+          "region_id": "principle"
+        },
+        {
+          "element_ids": [
+            "face.07.mechanism.process.01"
+          ],
+          "region_id": "mechanism"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "comparison_band"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.08.principle.01",
+          "element_id": "face.08.principle.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "principle",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.08.mechanism.process.01",
+          "item_content_refs": [
+            "content.face.08.mechanism.01",
+            "content.face.08.mechanism.02"
+          ],
+          "kind": "process",
+          "region_id": "mechanism",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.09.principle.01",
+          "element_id": "face.09.principle.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "principle",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.09.mechanism.process.01",
+          "item_content_refs": [
+            "content.face.09.mechanism.01",
+            "content.face.09.mechanism.02"
+          ],
+          "kind": "process",
+          "region_id": "mechanism",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.08.mechanism.process.01": 8.5,
+          "face.08.principle.heading.01": 9.2,
+          "face.09.mechanism.process.01": 8.5,
+          "face.09.principle.heading.01": 9.2
+        },
+        "required_element_ids": [
+          "face.08.principle.heading.01",
+          "face.08.mechanism.process.01",
+          "face.09.principle.heading.01",
+          "face.09.mechanism.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.08",
+        "face.09"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a3",
+      "fragment_id": "fragment.08",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.08.principle.heading.01",
+            "face.09.principle.heading.01"
+          ],
+          "region_id": "principle"
+        },
+        {
+          "element_ids": [
+            "face.08.mechanism.process.01",
+            "face.09.mechanism.process.01"
+          ],
+          "region_id": "mechanism"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "left_rail"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.10.case_story.01",
+          "element_id": "face.10.case_story.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.10.case_story.02",
+          "element_id": "face.10.case_story.body.01",
+          "kind": "body",
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "claim_id": "claim.face.10.proof",
+          "element_id": "face.10.evidence_rail.stat.01",
+          "kind": "stat",
+          "label_content_ref": "content.face.10.evidence_rail.01",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.10.evidence_rail.01",
+          "asset_id": "asset.face.10.identity",
+          "element_id": "face.10.evidence_rail.image.01",
+          "kind": "image",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.10.case_story.body.01": 9.2,
+          "face.10.case_story.heading.01": 9.2,
+          "face.10.evidence_rail.stat.01": 8.0
+        },
+        "required_element_ids": [
+          "face.10.case_story.heading.01",
+          "face.10.case_story.body.01",
+          "face.10.evidence_rail.stat.01",
+          "face.10.evidence_rail.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.10"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.09",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.10.case_story.heading.01",
+            "face.10.case_story.body.01"
+          ],
+          "region_id": "case_story"
+        },
+        {
+          "element_ids": [
+            "face.10.evidence_rail.stat.01",
+            "face.10.evidence_rail.image.01"
+          ],
+          "region_id": "evidence_rail"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "comparison_band"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.11.principle.01",
+          "element_id": "face.11.principle.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "principle",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.11.mechanism.process.01",
+          "item_content_refs": [
+            "content.face.11.mechanism.01",
+            "content.face.11.mechanism.02"
+          ],
+          "kind": "process",
+          "region_id": "mechanism",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.11.mechanism.process.01": 8.5,
+          "face.11.principle.heading.01": 9.2
+        },
+        "required_element_ids": [
+          "face.11.principle.heading.01",
+          "face.11.mechanism.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.11"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.10",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.11.principle.heading.01"
+          ],
+          "region_id": "principle"
+        },
+        {
+          "element_ids": [
+            "face.11.mechanism.process.01"
+          ],
+          "region_id": "mechanism"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "left_rail"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.12.case_story.01",
+          "element_id": "face.12.case_story.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.12.case_story.02",
+          "element_id": "face.12.case_story.body.01",
+          "kind": "body",
+          "region_id": "case_story",
+          "required_visibility": true
+        },
+        {
+          "claim_id": "claim.face.12.proof",
+          "element_id": "face.12.evidence_rail.stat.01",
+          "kind": "stat",
+          "label_content_ref": "content.face.12.evidence_rail.01",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.12.evidence_rail.01",
+          "asset_id": "asset.face.12.identity",
+          "element_id": "face.12.evidence_rail.image.01",
+          "kind": "image",
+          "region_id": "evidence_rail",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.12.case_story.body.01": 9.2,
+          "face.12.case_story.heading.01": 9.2,
+          "face.12.evidence_rail.stat.01": 8.0
+        },
+        "required_element_ids": [
+          "face.12.case_story.heading.01",
+          "face.12.case_story.body.01",
+          "face.12.evidence_rail.stat.01",
+          "face.12.evidence_rail.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.12"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.11",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.12.case_story.heading.01",
+            "face.12.case_story.body.01"
+          ],
+          "region_id": "case_story"
+        },
+        {
+          "element_ids": [
+            "face.12.evidence_rail.stat.01",
+            "face.12.evidence_rail.image.01"
+          ],
+          "region_id": "evidence_rail"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "comparison_band"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.13.principle.01",
+          "element_id": "face.13.principle.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "principle",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.13.mechanism.process.01",
+          "item_content_refs": [
+            "content.face.13.mechanism.01",
+            "content.face.13.mechanism.02"
+          ],
+          "kind": "process",
+          "region_id": "mechanism",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.13.mechanism.process.01": 8.5,
+          "face.13.principle.heading.01": 9.2
+        },
+        "required_element_ids": [
+          "face.13.principle.heading.01",
+          "face.13.mechanism.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.13"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.12",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.13.principle.heading.01"
+          ],
+          "region_id": "principle"
+        },
+        {
+          "element_ids": [
+            "face.13.mechanism.process.01"
+          ],
+          "region_id": "mechanism"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "mechanism_spread",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "horizontal_spread"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.14.method_frame.01",
+          "element_id": "face.14.method_frame.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "method_frame",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.14.steps.process.01",
+          "item_content_refs": [
+            "content.face.14.steps.01",
+            "content.face.14.steps.02"
+          ],
+          "kind": "process",
+          "region_id": "steps",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.14.method_frame.heading.01": 9.2,
+          "face.14.steps.process.01": 8.8
+        },
+        "required_element_ids": [
+          "face.14.method_frame.heading.01",
+          "face.14.steps.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.14"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.13",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.14.method_frame.heading.01"
+          ],
+          "region_id": "method_frame"
+        },
+        {
+          "element_ids": [
+            "face.14.steps.process.01"
+          ],
+          "region_id": "steps"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "evidence_wall",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "logo_wall"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.15.trust_header.01",
+          "element_id": "face.15.trust_header.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "trust_header",
+          "required_visibility": true
+        },
+        {
+          "claim_id": "claim.face.15.trust",
+          "element_id": "face.15.trust_header.stat.01",
+          "kind": "stat",
+          "label_content_ref": "content.face.15.trust_header.01",
+          "region_id": "trust_header",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.15.proof_wall.01",
+          "asset_id": "asset.face.15.proof",
+          "element_id": "face.15.proof_wall.image.01",
+          "kind": "image",
+          "region_id": "proof_wall",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.15.trust_header.heading.01": 9.0,
+          "face.15.trust_header.stat.01": 9.0
+        },
+        "required_element_ids": [
+          "face.15.trust_header.heading.01",
+          "face.15.trust_header.stat.01",
+          "face.15.proof_wall.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.15"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.14",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.15.trust_header.heading.01",
+            "face.15.trust_header.stat.01"
+          ],
+          "region_id": "trust_header"
+        },
+        {
+          "element_ids": [
+            "face.15.proof_wall.image.01"
+          ],
+          "region_id": "proof_wall"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "summary_synthesis",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "comparison_dashboard"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.16.synthesis.01",
+          "element_id": "face.16.synthesis.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "synthesis",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.16.payoff.comparison.01",
+          "kind": "comparison",
+          "left_content_refs": [
+            "content.face.16.payoff.01"
+          ],
+          "region_id": "payoff",
+          "required_visibility": true,
+          "right_content_refs": [
+            "content.face.16.payoff.02"
+          ]
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.16.payoff.comparison.01": 8.0,
+          "face.16.synthesis.heading.01": 9.2
+        },
+        "required_element_ids": [
+          "face.16.synthesis.heading.01",
+          "face.16.payoff.comparison.01"
+        ]
+      },
+      "face_ids": [
+        "face.16"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.15",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.16.synthesis.heading.01"
+          ],
+          "region_id": "synthesis"
+        },
+        {
+          "element_ids": [
+            "face.16.payoff.comparison.01"
+          ],
+          "region_id": "payoff"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "objection_response",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "numbered_ladder"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.17.objection_frame.01",
+          "element_id": "face.17.objection_frame.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "objection_frame",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.17.responses.01",
+          "element_id": "face.17.responses.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "responses",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.17.objection_frame.heading.01": 10.0,
+          "face.17.responses.heading.01": 8.8
+        },
+        "required_element_ids": [
+          "face.17.objection_frame.heading.01",
+          "face.17.responses.heading.01"
+        ]
+      },
+      "face_ids": [
+        "face.17"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.16",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.17.objection_frame.heading.01"
+          ],
+          "region_id": "objection_frame"
+        },
+        {
+          "element_ids": [
+            "face.17.responses.heading.01"
+          ],
+          "region_id": "responses"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "collaboration_pathway",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "guided_path"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.18.commitment.01",
+          "element_id": "face.18.commitment.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "commitment",
+          "required_visibility": true
+        },
+        {
+          "claim_ids": [],
+          "element_id": "face.18.pathway.process.01",
+          "item_content_refs": [
+            "content.face.18.pathway.01",
+            "content.face.18.pathway.02"
+          ],
+          "kind": "process",
+          "region_id": "pathway",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.18.commitment.heading.01": 9.0,
+          "face.18.pathway.process.01": 8.8
+        },
+        "required_element_ids": [
+          "face.18.commitment.heading.01",
+          "face.18.pathway.process.01"
+        ]
+      },
+      "face_ids": [
+        "face.18"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.17",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.18.commitment.heading.01"
+          ],
+          "region_id": "commitment"
+        },
+        {
+          "element_ids": [
+            "face.18.pathway.process.01"
+          ],
+          "region_id": "pathway"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "photo_bleed"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.19.headline.01",
+          "element_id": "face.19.headline.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "headline",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.19.narrative.01",
+          "element_id": "face.19.narrative.body.01",
+          "kind": "body",
+          "region_id": "narrative",
+          "required_visibility": true
+        },
+        {
+          "alt_content_ref": "content.face.19.anchor.01",
+          "asset_id": "asset.face.19.context",
+          "element_id": "face.19.anchor.image.01",
+          "kind": "image",
+          "region_id": "anchor",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.19.headline.heading.01": 28.0,
+          "face.19.narrative.body.01": 9.5
+        },
+        "required_element_ids": [
+          "face.19.headline.heading.01",
+          "face.19.narrative.body.01",
+          "face.19.anchor.image.01"
+        ]
+      },
+      "face_ids": [
+        "face.19"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.18",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.19.headline.heading.01"
+          ],
+          "region_id": "headline"
+        },
+        {
+          "element_ids": [
+            "face.19.narrative.body.01"
+          ],
+          "region_id": "narrative"
+        },
+        {
+          "element_ids": [
+            "face.19.anchor.image.01"
+          ],
+          "region_id": "anchor"
+        }
+      ]
+    },
+    {
+      "composition": {
+        "family_id": "closing_cta",
+        "family_version": "1.1.0",
+        "theme_id": "light",
+        "variant_id": "brand_pause"
+      },
+      "elements": [
+        {
+          "content_ref": "content.face.20.closing_statement.01",
+          "element_id": "face.20.closing_statement.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "closing_statement",
+          "required_visibility": true
+        },
+        {
+          "content_ref": "content.face.20.identity_close.01",
+          "element_id": "face.20.identity_close.heading.01",
+          "kind": "heading",
+          "level": 2,
+          "region_id": "identity_close",
+          "required_visibility": true
+        }
+      ],
+      "expected_materialization": {
+        "minimum_font_pt": {
+          "face.20.closing_statement.heading.01": 12.0,
+          "face.20.identity_close.heading.01": 8.0
+        },
+        "required_element_ids": [
+          "face.20.closing_statement.heading.01",
+          "face.20.identity_close.heading.01"
+        ]
+      },
+      "face_ids": [
+        "face.20"
+      ],
+      "fallback_family_id": null,
+      "fit_policy": "strict",
+      "format": "a4",
+      "fragment_id": "fragment.19",
+      "region_assignments": [
+        {
+          "element_ids": [
+            "face.20.closing_statement.heading.01"
+          ],
+          "region_id": "closing_statement"
+        },
+        {
+          "element_ids": [
+            "face.20.identity_close.heading.01"
+          ],
+          "region_id": "identity_close"
+        }
+      ]
+    }
+  ],
+  "mode": "ship",
+  "product_profile_id": "dmc_house_20_face",
+  "schema_version": "3.0"
+}

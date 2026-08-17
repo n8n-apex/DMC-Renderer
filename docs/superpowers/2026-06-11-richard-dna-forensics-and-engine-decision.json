@@ -1,0 +1,235 @@
+{
+  "summary": "Forensic extraction of Richard's design language + quantitative bland-gap metrics + open-source engine/component/template research with viability verdicts",
+  "agentCount": 11,
+  "logs": [],
+  "result": {
+    "richard_component_catalog": [
+      "Dark photographic cover hero — full-bleed graded founder/trade photo, kicker strip, two-tone display headline, proof band or info rail with stat teasers and learn-list (all 5 decks)",
+      "Two-tone display headline lockup — serif-vs-sans or color-flip on the one emphasis word/phrase that IS the page's thesis (all 5 decks)",
+      "Pill/chip label grammar — 'FALLSTUDIE 1 / Mythos #N / SCHRITT N / Irrglaube N / Tipp' chips announcing every section; outlined = passive label, filled = action/emphasis",
+      "Running page chrome — logo + hairline + report title header, top-edge micro-CTA runner with bold URL on every content page, quiet folio, rotated side page tab (niemeyer)",
+      "Case-study template — chip → two-tone headline → UNTERNEHMENSPROFIL → AUSGANGSSITUATION/ZIEL/LÖSUNG/ERGEBNIS letterspaced crossheads → bold-metric result bullets, repeated 3x verbatim per deck",
+      "Case-study proof sidebar — client portrait + QR-on-tile + website URL + serif-italic pull-quote + giant stat numerals with hairline dividers, on a tinted/gradient rail",
+      "Big-numeral stat strip — trio of oversized display-serif or gold figures (15x / +370.000 € / 4,8) with small captions and hairline separators",
+      "Oversized-numeral listicle — huge serif/bold numerals '1.'–'7.' hanging in the margin beside quoted myths/errors (the numeral is the icon)",
+      "Step cascade / staircase — Stufe 1-N stepped bars or offset cards forming a literal staircase; SCHRITT 1-6 filled chips + step-card grids for the method page",
+      "URL CTA pill & mega-band — white fully-rounded pill (hairline stroke + soft shadow, bold caps URL), or full-width color band with tracked-out URL and gold/hairline accent; repeated 4-6x per deck",
+      "CTA gradient page field with ghost brand watermark — pale gradient 'selling moment' pages with brand letterforms/logo at 5-10% opacity behind content",
+      "Quote overlay portrait module — dark-graded photo card or panel with large white serif quote, giant quotation-mark ornament, dash attribution",
+      "Author/founder credential panel — photo + 'AUTOR:' caps name + role line + check-bulleted credentials on a dark panel; circle headshot beside a closing pull-quote",
+      "Logo wall — greyscale press logos ('BEKANNT AUS') on a shadowed white card, or client logos as white knockouts / original colors in an even grid",
+      "Trustpilot review recreation — rating widget (big 4,8, green star tiles, distribution bars) + masonry wall of bordered review cards with avatars; third-party green left untouched",
+      "Bespoke flat data-viz — gradient mega bars with knockout numerals, trust/decay curve charts, duo-line growth comparisons, hand-drawn hatched 'consultancy' charts, n/10 rating-square meters, progress-bar comparison cards",
+      "Flow & loop diagrams — segmented cycle/loop circle, horizontal node timeline, decision-funnel wiring diagram, vertical doom-loop chain, arrow chip-chains (A → B → C)",
+      "Venn diagram with alpha-stacked translucent circles whose overlaps visibly darken/lighten, bold center label",
+      "Before/after comparison devices — tilted overlapping Vorher/Nachher paper cards, Ohne/Mit-KI bar cards with photo badges, mapping tables with connector arrows, staggered loss/gain money pills",
+      "Device & product mockups — photoreal phone/laptop/tablet/book renders with baked shadows, rotated and overlapping cards or page edges as proof of real work",
+      "Callout/insight boxes — pale tinted 'Tipp' box with line icon + bold lead, dark margin insight tile, lightbulb band with circle badge breaking the panel edge",
+      "Check-pill and check-circle lists — outlined audience pills with check-in-circle icons, solid-circle check symptom lists, bare check credential bullets",
+      "Photo containers — large-radius photo card with baked scrim + overlay title, photo-on-navy-plate caption card, full-bleed photo with gradient scrim; photos never raw on white",
+      "Textured material grounds — paper-grain/crumpled-paper light pages, kintsugi navy-marble or chalkboard dark fills, gold-thread wave footer band; texture as the material system",
+      "Q&A objection cards — numbered chips or giant serif numerals + bold quoted objection („…\") + rebuttal copy, in grids or stacks"
+    ],
+    "richard_design_language": [
+      "Two-voice typography contract: a high-contrast display face (serif or condensed caps) carries emotion, authority and every big numeral; a neutral sans carries 100% of running information. The display voice is rationed — headlines, numerals, pull-quotes only.",
+      "Massive type-scale jumps with an empty middle register: ~6.5pt chrome → 8-10pt body → 28-56pt display → 300-500pt ghost numerals. The gap itself reads as premium.",
+      "One palette, strict semantic roles: a single brand hue does hierarchy by tone (ice→sky→steel→navy); exactly one accent means 'this matters/money/action' and is never decorative; foreign colors (Trustpilot green, client logos) are quarantined to their widgets.",
+      "Page-temperature rotation: dark immersive → light editorial → accent/gradient CTA pages in deliberate rhythm; the reader learns the code by page 3 and CTA pages read as 'selling moments'.",
+      "Numbers ARE the icon system: oversized display numerals (Mythos #1, Stufe 4, 15x, stat trios) do the wayfinding; real icons are thin-line, single-color, and never larger than the text they serve.",
+      "Chip grammar announces every section; outlined chip = label, filled chip = action — a two-state semantic the whole deck obeys.",
+      "Template repetition as credibility: the identical case-study skeleton runs 3x, the same CTA trio (QR + 'kostenloses Erstgespräch' + URL) repeats like a chorus — rhythm is the trust signal.",
+      "Conversion furniture is page chrome: micro-CTA runner on every page, URL pill/band repeated 5+ times, QR in every case rail, escalating monotonically to a dedicated back-cover CTA.",
+      "Controlled overlap is the craft tell: stat panel over hero card, pill half-over panel edge, photo badge breaking a border, cutout figure crossing three background zones — depth by z-order, 2-3 moments per deck.",
+      "Depth by material, not UI chrome: gradients along the brand axis, baked grain/marble/chalkboard textures, tonal elevation (panel one lightness step above ground), 5-10% ghost watermarks; soft shadows are rare and wide, never hard offsets.",
+      "Justified, hyphenated German body in narrow columns with relentless bold-lead inline emphasis — every page skimmable by reading only the bold; hairline rules structure everything, boxes almost never.",
+      "Photos are never raw: graded into the palette, contained in rounded frames or full-bleed under scrims, dissolved into panels via baked alpha fades; proof photos (clients, teams) stay deliberately plain for authenticity."
+    ],
+    "holding_us_back": [
+      {
+        "cause": "Engine ceiling kills the entire material system: WeasyPrint 68.1 silently drops box-shadow, renders conic-gradient fully transparent, and has no blend modes or filters — so our deck is 100% flat: no soft shadows under cards/pills, no gradient panels, no ghost watermarks, not a single overlap or rotated element. This is the single largest perceived-craft gap vs all 5 Richard decks.",
+        "severity": "fundamental",
+        "fix": "Swap the PDF engine to Chromium print-to-PDF via Playwright (verified locally: every depth effect except backdrop-filter renders in print output). Bridge immediately with the PIL baked-asset factory on WeasyPrint (verified working: alpha-shadow cards, nine-slice border-image at px units only, radial glows) and keep the factory permanently for glass-blur and grain."
+      },
+      {
+        "cause": "Visible chroma starvation: only 9.6% of our pixels are colorful vs 24.4% (APEX) / 21.0% (buchagentur) — a 2.2-2.5x deficit. Our saturation is an accounting trick parked in value<0.2 navy that the eye reads as black; typical body pages run 3-6% colorful while APEX's WORST page is 7.1%.",
+        "severity": "fundamental",
+        "fix": "Put chroma at mid/high value: token-driven tinted panels and grounds (ice/pale fills), gradient panels along the brand axis, an accent/gradient CTA page temperature, chromatic chart fills. Add a CI metric gate: every page ≥10% colorful, deck mean 15-25%."
+      },
+      {
+        "cause": "Photo/graphic cadence collapse: Richard lands a photo or large graphic on 91-95% of pages; we manage 35% (20% large), with runs of 4-5 consecutive pages whose only visual is a dark text panel.",
+        "severity": "fundamental",
+        "fix": "Per-page anchor budget enforced by the grammar: portrait insets, device mockups, photo strips, chart/diagram devices on content pages — not just breather pages. Build photo-container components (scrim card, photo-on-plate, full-bleed+scrim) and a preprocessor grading/compositing step. Target ≥80% coverage, never 2 consecutive text-only pages."
+      },
+      {
+        "cause": "Display typography reads bookish: Source Serif 4 headlines have text-face contrast, loose leading and flat fill where Richard's decks use high-contrast editorial display serifs (Gestura/Merriweather 120pt class) at 3-4x body with ~0.95 leading. Fonts are ~40-55% of the premium gap on headline-led pages, and one hardcoded pair can't serve five different brand voices.",
+        "severity": "major",
+        "fix": "Bundle OFL variables (Fraunces roman+italic, Inter, Archivo, Instrument Sans, Merriweather, Lato statics, Bebas Neue, Poppins, ~5-7MB) and add display_voice/body_voice axes to brand_profile mapping each brand to a bundled stack + axis settings. Immediate free win: drive Source Serif 4 opsz to max and tighten display leading to 0.95-1.0 today."
+      },
+      {
+        "cause": "No data-viz proof layer: our deck contains zero bars/lines/percent-fills — only big stat text and one faint stroke-only Venn. Richard backs every claim with gradient mega bars, progress-bar cards, curves, rating squares, hatched consultancy charts; his serif numerals function as the icon system. Our pages read as styled copy, not analysis.",
+        "severity": "major",
+        "fix": "Build 6-8 chart components in charts_svg.py (gradient bars with knockout numerals, progress comparison cards, duo-line growth, n/10 rating squares, alpha-filled Venn) + cycle/timeline/staircase/funnel diagram SVGs; switch stat numerals to the display-serif voice via tokens. pygal as gap-filler for radar/treemap/gauge. Real data only — charts render from supplied metrics, never invented."
+      },
+      {
+        "cause": "Missing conversion & credibility furniture — the lead-gen genre's trust machinery: no URL CTA pill (Richard repeats his 5+ times), no QR or client portrait in any of our five case rails, 'BEKANNT AUS' is underlined text instead of a logo wall, no author credential panel.",
+        "severity": "major",
+        "fix": "Build the URL pill (shadowed, hairline stroke), per-case QR+portrait+pull-quote sidebar, logo-wall component, and author panel as patterns. Honor the real-data constraint: components render only client-supplied logos/portraits/ratings and degrade gracefully (e.g. text fallback) when assets are absent — never fabricate."
+      },
+      {
+        "cause": "No brand watermark/art moments and only two page temperatures (dark/white) — we lack the ice-gradient CTA pages and ghost letterform watermarking that mark Richard's selling moments and brand depth.",
+        "severity": "major",
+        "fix": "Add a third 'accent CTA' named-page temperature (token gradient field + radial glow zones) and a ghost-watermark component (brand logotype/letterforms at 5-10% opacity inside gradient panels and CTA pages), both pure tokens — trivial under Chromium."
+      },
+      {
+        "cause": "Hyphenation and emphasis defects in detail typography: case-rail stat headlines hyphenate mid-word ('Minu-ten', 'eli-miniert'), and body paragraphs lack the bold-lead inline emphasis that makes Richard's pages skimmable.",
+        "severity": "minor",
+        "fix": "hyphens:none + manual break control on all display/stat/sidebar elements; preprocessor emits bold-lead key phrases per paragraph (content rule: 1-3 bold spans per paragraph, enforced by a lint)."
+      },
+      {
+        "cause": "Icon-free callouts and lists: our Tipp boxes, check bullets and chips have no line-icon micro-system, flattening the component hierarchy.",
+        "severity": "minor",
+        "fix": "Vendor ~60 Lucide outline icons + Phosphor duotone variants into assets/icons/ with a Jinja inline-SVG macro (currentColor tinting from tokens); use sparingly per Richard's discipline — icons never larger than their text."
+      }
+    ],
+    "open_source_adoptions": [
+      {
+        "item": "CourtBouillon weasyprint-samples (public domain)",
+        "verdict": "adopt",
+        "why": "Guaranteed-idiomatic named-page/margin-box/SVG-decoration patterns for our current engine; the CSS-custom-property accent pattern is exactly our token model, and the paged-media techniques transfer to the Chromium subset."
+      },
+      {
+        "item": "Lucide icon set (ISC)",
+        "verdict": "adopt",
+        "why": "Primary icon voice: ~1,700 premium-neutral outline icons, stroke=currentColor for instant token tinting, vendored from lucide-static and inlined via Jinja — zero engine risk, fully offline."
+      },
+      {
+        "item": "Phosphor Icons (MIT)",
+        "verdict": "adopt",
+        "why": "The 6-weight axis becomes a brand-personality lever, and duotone gives two-layer icon-chip depth with no filters — works even on WeasyPrint, better on Chromium."
+      },
+      {
+        "item": "Tabler Icons (MIT)",
+        "verdict": "adopt",
+        "why": "Deep-vocabulary fallback (6,146 icons, same 24px/2px-stroke spec as Lucide) for German B2B verticals — manufacturing, trades, finance, dental — that Lucide misses; visually compatible at chip sizes."
+      },
+      {
+        "item": "Heroicons (MIT)",
+        "verdict": "reject",
+        "why": "~300 concepts is too small to matter once Lucide+Tabler are vendored, and a third icon voice dilutes the single-set discipline Richard's decks demonstrate."
+      },
+      {
+        "item": "fffuel generators (free, no attribution)",
+        "verdict": "adopt",
+        "why": "Best texture quarry: sssurf/mmmotif/ooorganize export pure-path SVG baked with token-parameterized colors (engine-safe, tintable); nnnoise/gggrain grain baked to per-palette PNG since SVG filters are off-limits. Design-time only, deterministic."
+      },
+      {
+        "item": "Hero Patterns (CC BY 4.0)",
+        "verdict": "reject",
+        "why": "Attribution clause is a real problem for white-label client deliverables; fffuel covers the same ground with no attribution requirement."
+      },
+      {
+        "item": "Haikei (proprietary free web app)",
+        "verdict": "trial",
+        "why": "Useful one-time bakery for layered-wave/blob cover grounds (pure paths, tintable after hand-tokenizing); no API so it can never enter the pipeline — keep as a designer tool, drop if fffuel suffices."
+      },
+      {
+        "item": "css-doodle + cssd CLI (MIT)",
+        "verdict": "reject",
+        "why": "Browser-dependent generative patterns duplicating what procedural Python textures already do deterministically; PNG output isn't token-tintable."
+      },
+      {
+        "item": "pygal (LGPL-3.0)",
+        "verdict": "trial",
+        "why": "Pure-Python static-SVG gap-filler for radar/treemap/gauge beside charts_svg.py (render with js=[] for static output, token-fed Style). Trial because LGPL needs a legal flag and our hand-rolled charts stay primary for layout control."
+      },
+      {
+        "item": "matplotlib (BSD-style)",
+        "verdict": "reject",
+        "why": "60MB dependency, determinism requires svg.hashsalt pinning, and heavy styling effort to look premium — overkill next to charts_svg.py for editorial chart devices."
+      },
+      {
+        "item": "mermaid-cli (MIT)",
+        "verdict": "reject",
+        "why": "Puppeteer-weight for diagrams our bespoke SVG components draw better with full token control; default foreignObject labels break WeasyPrint and the DSL look reads dashboard, not editorial. Revisit only if methodology-diagram volume explodes post-Chromium."
+      },
+      {
+        "item": "d3-node (MIT)",
+        "verdict": "reject",
+        "why": "Unmaintained since 2018, Node+jsdom outside the Python stack, and charts_svg.py already owns the bespoke-SVG niche."
+      },
+      {
+        "item": "paged.js + pagedjs-cli (MIT)",
+        "verdict": "reject",
+        "why": "Our page-per-pattern architecture has deterministic pagination, so string-set/running() reduce to Jinja template logic under Chromium; paged.js would add a JS layout pass, DOM restructuring that breaks overflow validators, and fragmentation edge cases for zero needed capability. Bookmark; adopt only if true reflow-dependent running headers ever become a requirement."
+      },
+      {
+        "item": "electricbookworks/paged-design (CC0)",
+        "verdict": "trial",
+        "why": "Public-domain theme architecture worth mining: the per-theme variable taxonomy (colors/measurements/feature toggles) is a ready checklist for what a brand-agnostic print theme must parameterize. Steal the structure, no dependency."
+      },
+      {
+        "item": "Typst Universe templates (MIT/Apache)",
+        "verdict": "reject",
+        "why": "Different engine, no code reuse; keep as a design-idea quarry (alternating-row tables, circular author photo, dropcaps) — all reimplementable in our Jinja/CSS layer in an afternoon."
+      },
+      {
+        "item": "Style Dictionary (Apache-2.0)",
+        "verdict": "reject",
+        "why": "Steal the architecture, skip the dependency: copy the core→semantic→component token layering and consider the W3C DTCG format as the brand_profile interchange schema, but emit CSS custom properties with ~30 lines of our own Python instead of adding a Node build step."
+      },
+      {
+        "item": "OFL font bundle: Fraunces, Inter, Archivo, Instrument Sans, Merriweather, Lato (statics), Bebas Neue v2, Poppins (~5-7MB)",
+        "verdict": "adopt",
+        "why": "Covers all five reference decks' typography either exactly (Instrument Sans, Merriweather, Lato, Bebas Neue, Source Sans 3/Montserrat already bundled) or with the closest OFL voice (Fraunces opsz144 for Gestura, Poppins for Azo, Inter for Acumin); enables per-brand display_voice/body_voice axes with zero font downloads at render time."
+      }
+    ],
+    "engine_decision": {
+      "recommendation": "Migrate the PDF engine to Chromium print-to-PDF via Playwright as the primary backend. Ship the PIL baked-asset factory on WeasyPrint immediately as the zero-risk bridge, keep WeasyPrint behind a fallback flag for one release, and keep the baked-asset factory permanently (it covers Chromium's one verified gap — backdrop-filter glass blur — plus grain textures, and stays useful under any engine).",
+      "rationale": "The local tests settle this empirically, not theoretically. Two of the three fundamental gaps (flat material system; chroma starvation expressed through gradient/tinted surfaces) trace directly to WeasyPrint's verified ceiling: box-shadow silently dropped, conic-gradient rendered fully transparent, no blend modes, no filters. Chromium 148 print output verified rendering the complete premium depth vocabulary Richard's decks use — soft wide box-shadows, linear/radial/conic gradients, mix/background blend modes, CSS filter blur+drop-shadow, SVG feDropShadow/feGaussianBlur, text glow, layered mesh gradients — with vector text and working CID font subsetting. The only verified failure is backdrop-filter (baked assets cover it; rgba+border fake-glass already looks 80% right). The migration is far cheaper than it looks because the v7 architecture is page-per-pattern with deterministic pagination: the only genuinely missing features (string-set/position:running, both verified dead in Chromium) reduce to ~20 lines of Jinja emitting the already-known chapter title per page, while @page margin boxes with counter(page)/counter(pages), :first overrides, named full-bleed pages, and position:fixed repetition all verified working. Playwright is already in the stack. Alternatives are dead ends: Typst has beautiful German typesetting but zero blur/shadow/blend — a 4-8 week total rewrite that does not raise the premium ceiling; react-pdf is a 6+ week rewrite with no filters either plus a Node sidecar; Satori cannot paginate at all.",
+      "migration_plan": "Step 0 (hours, this week): ship the baked-asset factory on WeasyPrint — PIL alpha-shadow cards as background-image and nine-slice border-image (px units only; mm crashes WeasyPrint 68.1 at draw/border.py:176), radial glow PNGs, assets baked at 2-3x for 300dpi. Immediate visual lift with zero pipeline risk. Step 1 (days): add a 'chromium' backend behind a flag in research/v7-renderer/render.py using Playwright page.pdf(print_background=True, prefer_css_page_size=True); port folios/running headers from string-set to per-page Jinja emission or @page margin boxes; replace the ~6 WeasyPrint box-tree overflow validators with in-page JS scrollHeight measurement (simpler than what they replace); most of the 211 tests (models, slots, fixtures, golden JSON) are untouched. Step 2 (days): re-bake visual-regression baselines; verify German hyphens:auto in the Linux Docker image (verified on macOS; fallback is pyphen soft-hyphen insertion in the preprocessor); pin Playwright+Chromium versions with a documented golden-raster re-bake ritual for upgrades; add a PDF-size budget check for filter-heavy pages. Step 3 (cutover): flip the default to chromium, keep --engine=weasyprint for one release, then remove. Total: 1-2 weeks to green.",
+      "risk": "(1) Chromium rendering nondeterminism across versions — mitigated by pinning Playwright and re-baking goldens only on deliberate upgrades. (2) Docker image grows ~400MB — accepted cost; renderer image, not the FastAPI preprocessor. (3) Pages with filters/blends rasterize those regions (~1MB/page at default DPI) — acceptable for 20-page lead magnets; budget-check in CI and keep filter regions local, text stays vector. (4) hyphens:auto unverified on Linux — verify in step 2 before cutover; pyphen fallback ready. (5) backdrop-filter inert in print — known and permanently covered by the baked-asset factory. (6) No tagged/PDF-A output — parity with WeasyPrint's current default, not a regression."
+    },
+    "build_plan": [
+      {
+        "phase": "Phase 0 — Quick wins on the current engine (days)",
+        "what": "Ship the PIL baked-asset factory on WeasyPrint (alpha-shadow cards, nine-slice px-only border-image, radial glows); drive Source Serif 4 opsz to max with display leading 0.95-1.0 at 3-4x body scale; hyphens:none on all stat/display/sidebar elements; preprocessor bold-lead emphasis rule for body paragraphs.",
+        "outcome": "Visible today: white cards and pills lift off the page with real soft shadows, headlines stop reading bookish, case-rail stats stop hyphenating mid-word ('Minu-ten' gone), and body pages become skimmable by bold alone — before any architectural change."
+      },
+      {
+        "phase": "Phase 1 — Engine migration to Chromium (1-2 weeks)",
+        "what": "Execute the migration plan: chromium backend behind a flag in render.py, folios/running headers via per-page Jinja emission + @page margin boxes, overflow validators rewritten as in-page JS measurement, baselines re-baked, Linux hyphenation verified, versions pinned, then cutover with WeasyPrint as a one-release fallback flag.",
+        "outcome": "The full 20-page deck renders through Chromium with all tests green, plus one demo page proving the new ceiling: gradient panel, soft ambient shadows, alpha-stacked Venn, blend-mode photo scrim and ghost watermark — none of which the old engine could draw."
+      },
+      {
+        "phase": "Phase 2 — Material & color system (1 week)",
+        "what": "Token-driven gradient surfaces (navy→steel authority panels, ice-gradient CTA page temperature with radial glow zones), mid-value tinted grounds and callout fills, ghost brand-watermark component at 5-10% opacity, fffuel texture bakes (grain PNG per palette, wave/motif SVG with token colors), and the dark/light/accent page-temperature rotation encoded in the grammar.",
+        "outcome": "Measured by the existing metric harness: deck colorful% rises from 9.6% toward 15-25% with no page under 10%; the deck gains its third 'selling moment' page temperature and every dark panel reads as material instead of flat ink."
+      },
+      {
+        "phase": "Phase 3 — Typography voices (3-5 days)",
+        "what": "Bundle the OFL font set (Fraunces, Inter, Archivo, Instrument Sans, Merriweather, Lato, Bebas Neue, Poppins) into v7-renderer/fonts/; add display_voice/body_voice axes to brand_profile mapping brands to bundled stacks + axis settings (no font literals in logic — guard-tested); switch all stat numerals, list numerals and 'Stufe/Schritt' labels to the display-serif voice.",
+        "outcome": "Two demo brand profiles render the same deck in visibly different typographic personalities (Fraunces-editorial vs Bebas-condensed), and every big number on every page carries the display voice — Richard's de-facto icon system — instead of bold sans."
+      },
+      {
+        "phase": "Phase 4 — Proof layer: charts, diagrams, icons (1-2 weeks)",
+        "what": "Build the data-viz components in charts_svg.py (gradient mega bars with knockout numerals, progress-bar comparison cards, duo-line growth chart, n/10 rating squares, alpha-filled Venn) and the diagram set (cycle/loop circle, horizontal node timeline, typographic staircase, before/after mapping arrows, arrow chip-chain); vendor Lucide+Phosphor+Tabler icons with the Jinja currentColor macro; trial pygal for radar/gauge gaps. All render strictly from supplied real data.",
+        "outcome": "Every claim page carries at least one chart or diagram device and callouts get their line-icon micro-system — the deck reads as analysis with evidence, not styled copy; grammar enforces a 2-3 device minimum per deck."
+      },
+      {
+        "phase": "Phase 5 — Conversion & credibility furniture (1 week)",
+        "what": "Build the lead-gen trust machinery as patterns: shadowed URL CTA pill (repeated cover/mid/back), per-case-study sidebar with client portrait + QR tile + serif-italic pull-quote + stat trio, real logo-wall component (renders only supplied assets, text fallback otherwise — never fabricated), author credential panel with photo and check bullets, check-pill audience lists, Tipp callout with icon chip.",
+        "outcome": "The CTA escalation arc is visible end-to-end — runner strip on every page, pill mid-deck, QR in every case rail, dedicated back-cover close — and credibility furniture (logo wall, author panel, review-style cards) appears wherever real client assets exist."
+      },
+      {
+        "phase": "Phase 6 — Photo cadence & overlap craft (1-2 weeks)",
+        "what": "Photo-container components (rounded scrim-title card, photo-on-plate caption card, full-bleed + gradient scrim), preprocessor grading/compositing step to pull supplied photos toward the brand palette and bake scrims, device-mockup compositing for screenshots, and 2-3 controlled-overlap layouts per deck (stat panel over hero card, pill over panel edge, photo badge breaking a card border, ±2-3° tilted comparison cards).",
+        "outcome": "Photo/large-graphic coverage rises from 35% toward 80%+ with no two consecutive text-only pages, photos never appear raw, and the deck gains the overlap moments that read as designer craft in every Richard deck."
+      },
+      {
+        "phase": "Phase 7 — Verification & golden parity (3-5 days, then ongoing)",
+        "what": "Promote the richness metrics (colorful%, photo coverage, ink) to CI gates with per-page thresholds; lock visual-regression goldens on the Chromium backend; rebuild the full 20-page deck and run a blind side-by-side against the APEX reference at contact-sheet and 110dpi crop level.",
+        "outcome": "Quantified parity: our deck sits inside the Richard band (colorful ≥15% mean, photo/graphic ≥80%, no page below APEX's 7.1% floor) and survives a blind side-by-side review — with regressions caught automatically on every future change."
+      }
+    ]
+  }
+}

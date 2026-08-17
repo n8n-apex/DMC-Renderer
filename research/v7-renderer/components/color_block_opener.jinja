@@ -1,0 +1,13 @@
+{# Color-block opener: a SOLID --color-accent block carrying a section heading
+   in --color-on-accent ink (serif via --font-display in CSS). A section opener
+   used by ST-14 (false beliefs). Styling: .c-color-block.
+
+   heading  the section heading text
+   eyebrow  optional small uppercase eyebrow above the heading (on-accent)
+#}
+{% macro color_block_opener(heading, eyebrow='') -%}
+<div class="c-color-block">
+  {% if eyebrow %}<div class="c-color-block__eyebrow">{{ eyebrow }}</div>{% endif %}
+  <h1 class="c-color-block__heading">{{ heading }}</h1>
+</div>
+{%- endmacro %}

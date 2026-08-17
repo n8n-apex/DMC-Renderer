@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{
+  --cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{
+  background:var(--ink);
+  font-family:'SourceSans',sans-serif;color:var(--cream);
+  position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;
+}
+/* faint vertical glow so the navy field breathes rather than reading flat */
+.field-glow{position:absolute;inset:0;
+  background:radial-gradient(ellipse 620px 560px at 50% 42%, rgba(127,183,179,0.10) 0%, rgba(127,183,179,0.03) 42%, rgba(46,62,80,0) 72%);}
+
+/* thin teal frame inset from the page margins — quiet editorial containment */
+.frame{position:absolute;left:64px;top:64px;right:64px;bottom:64px;
+  border:1px solid rgba(127,183,179,0.16);}
+
+/* ===================== TOP MARK ===================== */
+.topmark{position:absolute;left:104px;top:120px;}
+.eyebrow{display:flex;align-items:center;gap:18px;color:var(--teal-light);
+  font-size:14px;font-weight:600;letter-spacing:.36em;text-transform:uppercase;}
+.eyebrow .tick{width:42px;height:2px;background:var(--teal-light);}
+
+/* ===================== CENTERED HERO STATEMENT ===================== */
+.hero{position:absolute;left:104px;right:104px;top:430px;text-align:center;}
+.kicker{font-family:'SourceSerif',serif;font-size:34px;font-weight:380;
+  color:var(--cream);letter-spacing:.005em;line-height:1.1;opacity:.92;}
+.statement{font-family:'SourceSerif',serif;color:var(--teal-light);
+  font-weight:420;font-size:88px;line-height:1.02;letter-spacing:-0.014em;
+  margin-top:26px;}
+
+/* short centered hairline under the hero */
+.under-rule{position:absolute;left:50%;top:760px;transform:translateX(-50%);
+  width:72px;height:1px;background:rgba(127,183,179,0.5);}
+
+/* ===================== ONE QUIET METRIC ===================== */
+.metric{position:absolute;left:0;right:0;top:822px;text-align:center;}
+.metric .num{font-family:'SourceSerif',serif;font-size:46px;font-weight:480;
+  color:var(--cream);letter-spacing:.005em;line-height:1;}
+.metric .lbl{font-family:'SourceSans',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.30em;text-transform:uppercase;color:#8aa0ad;margin-top:16px;}
+
+/* ===================== FOOTER ===================== */
+.footer{position:absolute;left:104px;right:104px;bottom:118px;
+  display:flex;align-items:center;justify-content:space-between;}
+.brandmark{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;
+  letter-spacing:.40em;color:#7e94a2;}
+.pageno{font-family:'SourceSerif',serif;font-size:15px;color:#7e94a2;font-weight:500;letter-spacing:.04em;}
+</style>
+</head>
+<body>
+  <div class="field-glow"></div>
+  <div class="frame"></div>
+
+  <div class="topmark">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+  </div>
+
+  <div class="hero">
+    <div class="kicker">Über 100 AI-Projekte.</div>
+    <h1 class="statement">Betrieb ohne<br>Flaschenhals.</h1>
+  </div>
+
+  <div class="under-rule"></div>
+
+  <div class="metric">
+    <div class="num">100+</div>
+    <div class="lbl">Realisierte AI-Projekte</div>
+  </div>
+
+  <div class="footer">
+    <div class="brandmark">APEX</div>
+    <div class="pageno">03</div>
+  </div>
+</body>
+</html>

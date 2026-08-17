@@ -1,0 +1,5 @@
+{# In-body uppercase, letter-spaced section heading (e.g. "Ausgangssituation").
+   Accent ink + a thin leading rule (rule=true, default). Styling: .c-section-label. #}
+{% macro section_label(text, rule=true) -%}
+<div class="c-section-label{% if rule %} c-section-label--rule{% endif %}">{{ text }}</div>
+{%- endmacro %}

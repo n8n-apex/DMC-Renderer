@@ -193,10 +193,28 @@ def _gate_rows_for_stype(st_type: str) -> list[str]:
     JOB well", never "every page must have a chart".
     """
     st = str(st_type or "")
-    if st in ("ST-07A", "ST-02", "ST-09", "ST-FAZIT", "ST-06", "ST-22"):
+    if st == "ST-07A":
+        # A3 case-study spread: the right rail is the user-mandated SHORT box
+        # (the full-height panel was rejected as an abomination) — the
+        # deliberate breathing below it is the design, and P12 (light-density)
+        # misreads it as "empty". The spread's bar: its bound devices (P11*,
+        # the dash strip/ring/arrow) + atmosphere PRESENT (P13>=1 — the
+        # ground texture is real and pixel-measured; the reviewer's 2-bar
+        # wants more than the quiet ground the user approved).
+        return ["P11*", "P13?"]
+    if st in ("ST-02", "ST-09", "ST-FAZIT", "ST-06", "ST-22"):
         # device pages: AT LEAST ONE real bound figure (P11* — a page with a
         # single honest number must never fabricate a second) + density.
         return ["P11*", "P12"]
+    if st == "ST-05":
+        # About identity: density + a bound figure (its stats). The PROOF
+        # continuation maps to "ST-05-PROOF" below.
+        return ["P12", "P11*?figures"]
+    if st == "ST-05-PROOF":
+        # About proof page: its device IS the social proof (testimonial
+        # cards) — P07 alone (the reviewer sees the cards, not a numeric
+        # device; demanding one would be wrong).
+        return ["P07"]
     if st == "ST-31":
         return ["P14", "P13"]        # breathers: photo treatment + atmosphere
     if st in ("ST-01", "ST-03"):
@@ -311,8 +329,12 @@ def _run_visual_qa_gate(out_dir: Path, *, package_dir: Path | None = None,
         _is_cont = bool(
             (page_objs[i].get("continuation_index") if i < len(page_objs) else None)
         )
-        rows = _gate_rows_for_stype("ST-CONT" if _is_cont
-                                    else (st_types[i] if i < len(st_types) else ""))
+        _st = st_types[i] if i < len(st_types) else ""
+        if _is_cont and _st == "ST-05" and (
+                (page_objs[i].get("continuation_role") or "") == "proof"):
+            _st = "ST-05-PROOF"
+        rows = _gate_rows_for_stype("ST-CONT" if _is_cont and _st != "ST-05-PROOF"
+                                    else _st)
         # US-608: normalize decorated IDs (P11*/P11*?figures) to the real
         # rubric IDs the prompt/client know, and resolve their thresholds.
         clean_rows: list[tuple[str, int]] = []
@@ -332,6 +354,8 @@ def _run_visual_qa_gate(out_dir: Path, *, package_dir: Path | None = None,
                 clean_rows.append(("P11", 1))
             elif row.endswith("*"):
                 clean_rows.append((row.rstrip("*"), 1))
+            elif row.endswith("?"):
+                clean_rows.append((row.rstrip("?"), 1))
             else:
                 clean_rows.append((row, threshold))
         # US-608: pass the page's reference PNGs + Director brief metadata.

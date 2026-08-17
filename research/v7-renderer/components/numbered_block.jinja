@@ -1,0 +1,29 @@
+{# Numbered block: a big accent numeral + a bold title + body, with an OPTIONAL
+   "reality" sub-block (accent left-rule — e.g. belief→reality) and an OPTIONAL
+   small uppercase source line. Shared by ST-09 (status-quo symptoms) and ST-14
+   (false beliefs). All under the c-numbered-block namespace; the token-only look
+   lives in styles/components.css.
+
+   n            big accent numeral (int or string)
+   title        bold block title (the symptom / the myth quote)
+   body_html    pre-rendered body HTML (markdown → HTML by the pattern)
+   reality_html optional pre-rendered HTML for the reality sub-block
+   source        optional small uppercase source line (e.g. "BCG 2025")
+   reality_label optional uppercase label for the reality sub-block (e.g. "REALITÄT")
+#}
+{% macro numbered_block(n, title, body_html, reality_html='', source='', reality_label='') -%}
+<div class="c-numbered-block">
+  <div class="c-numbered-block__num">{{ n }}</div>
+  <div class="c-numbered-block__text">
+    {% if title %}<div class="c-numbered-block__title">{{ title }}</div>{% endif %}
+    {% if body_html %}<div class="c-numbered-block__body">{{ body_html }}</div>{% endif %}
+    {% if reality_html %}
+    <div class="c-numbered-block__reality">
+      {% if reality_label %}<div class="c-numbered-block__reality-label">{{ reality_label }}</div>{% endif %}
+      <div class="c-numbered-block__reality-body">{{ reality_html }}</div>
+    </div>
+    {% endif %}
+    {% if source %}<div class="c-numbered-block__source">{{ source }}</div>{% endif %}
+  </div>
+</div>
+{%- endmacro %}

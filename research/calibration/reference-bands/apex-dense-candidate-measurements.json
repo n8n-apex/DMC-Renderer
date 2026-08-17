@@ -1,0 +1,818 @@
+{
+ "schema_version": "1.1",
+ "candidate": "calibration.apex-dense (recipe apex-dense-report)",
+ "measured_with": "quality_loop.gates.pixels_v3.measure_face_pixels @ policy 2.0.0, 1.5x raster (build_v3 face rasters), accent_rgb (64, 128, 160); words via fitz get_text('words') on report.raw.pdf, A3 pages split at the horizontal midpoint. Re-measured 2026-08-06 after the color-field treatments (dark family fields, reversed type, blue gradient photo assets).",
+ "release_state": "review_candidate",
+ "means": {
+  "words_per_face": 249.95,
+  "ink_occupancy": 0.227,
+  "whitespace_fraction": 0.751,
+  "vertical_hierarchy": 0.5768,
+  "type_rhythm_bands": 17.8,
+  "image_coverage": 0.022
+ },
+ "family_ink_vs_reference": {
+  "case_narrative": {
+   "before_color_fields": 0.0803,
+   "after_color_fields": 0.1507,
+   "reference_band": [
+    0.1047,
+    0.1112
+   ],
+   "reference_observed": [
+    0.108,
+    0.108
+   ],
+   "position": "above_band"
+  },
+  "closing_cta": {
+   "before_color_fields": 0.0274,
+   "after_color_fields": 0.2093,
+   "reference_band": [
+    0.1268,
+    0.2116
+   ],
+   "reference_observed": [
+    0.1366,
+    0.2018
+   ],
+   "position": "inside_band"
+  },
+  "collaboration_pathway": {
+   "before_color_fields": 0.0498,
+   "after_color_fields": 0.3392,
+   "reference_band": [
+    0.33,
+    0.3504
+   ],
+   "reference_observed": [
+    0.3402,
+    0.3402
+   ],
+   "position": "inside_band"
+  },
+  "editorial_lead": {
+   "before_color_fields": 0.2051,
+   "after_color_fields": 0.3036,
+   "reference_band": [
+    0.3018,
+    0.3205
+   ],
+   "reference_observed": [
+    0.3112,
+    0.3112
+   ],
+   "position": "inside_band"
+  },
+  "evidence_wall": {
+   "before_color_fields": 0.0559,
+   "after_color_fields": 0.2834,
+   "reference_band": null,
+   "position": "no_reference_band"
+  },
+  "false_belief_stack": {
+   "before_color_fields": 0.106,
+   "after_color_fields": 0.3081,
+   "reference_band": [
+    0.2986,
+    0.3171
+   ],
+   "reference_observed": [
+    0.3078,
+    0.3078
+   ],
+   "position": "inside_band"
+  },
+  "mechanism_spread": {
+   "before_color_fields": 0.2817,
+   "after_color_fields": 0.2817,
+   "reference_band": null,
+   "position": "no_reference_band"
+  },
+  "objection_response": {
+   "before_color_fields": 0.0571,
+   "after_color_fields": 0.2478,
+   "reference_band": [
+    0.234,
+    0.2485
+   ],
+   "reference_observed": [
+    0.2413,
+    0.2413
+   ],
+   "position": "inside_band"
+  },
+  "summary_synthesis": {
+   "before_color_fields": 0.0539,
+   "after_color_fields": 0.3693,
+   "reference_band": [
+    0.3511,
+    0.3729
+   ],
+   "reference_observed": [
+    0.362,
+    0.362
+   ],
+   "position": "inside_band"
+  },
+  "theory_interpretation": {
+   "before_color_fields": 0.0564,
+   "after_color_fields": 0.1061,
+   "reference_band": [
+    0.0873,
+    0.0927
+   ],
+   "reference_observed": [
+    0.09,
+    0.09
+   ],
+   "position": "above_band"
+  }
+ },
+ "reference_comparison": {
+  "words_per_face": {
+   "candidate_mean": 249.95,
+   "target_range": [
+    240,
+    340
+   ],
+   "apex_mean": 337.7,
+   "corpus_range": [
+    248.8,
+    345.0
+   ],
+   "in_band": true
+  },
+  "ink_occupancy": {
+   "candidate_mean": 0.227,
+   "corpus_band": [
+    0.0492,
+    0.4028
+   ],
+   "observed_band": [
+    0.09,
+    0.362
+   ],
+   "in_corpus_band": true
+  },
+  "whitespace_fraction": {
+   "candidate_mean": 0.751,
+   "corpus_band": [
+    0.454,
+    0.8957
+   ],
+   "observed_band": [
+    0.505,
+    0.8447
+   ],
+   "in_corpus_band": true
+  },
+  "vertical_hierarchy": {
+   "candidate_mean": 0.5768,
+   "corpus_band": [
+    0.1118,
+    0.7395
+   ],
+   "observed_band": [
+    0.1842,
+    0.667
+   ],
+   "in_corpus_band": true
+  },
+  "type_rhythm_bands": {
+   "candidate_mean": 17.8,
+   "corpus_band": [
+    0,
+    50.45
+   ],
+   "observed_band": [
+    1,
+    44
+   ],
+   "in_corpus_band": true
+  },
+  "image_coverage": {
+   "candidate_mean": 0.022,
+   "corpus_band": [
+    0.007,
+    0.3305
+   ],
+   "observed_band": [
+    0.0443,
+    0.2932
+   ],
+   "in_corpus_band": true
+  }
+ },
+ "per_face": [
+  {
+   "face_id": "face.01",
+   "family_id": "editorial_lead",
+   "variant_id": "photo_bleed",
+   "words": 293,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.3302,
+   "vertical_hierarchy": 0.6867,
+   "whitespace_fraction": 0.6605,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0092
+  },
+  {
+   "face_id": "face.02",
+   "family_id": "editorial_lead",
+   "variant_id": "photo_bleed",
+   "words": 261,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2879,
+   "vertical_hierarchy": 0.7092,
+   "whitespace_fraction": 0.6432,
+   "type_rhythm_bands": 23,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0689
+  },
+  {
+   "face_id": "face.03",
+   "family_id": "editorial_lead",
+   "variant_id": "photo_bleed",
+   "words": 278,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2868,
+   "vertical_hierarchy": 0.7106,
+   "whitespace_fraction": 0.6434,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0699
+  },
+  {
+   "face_id": "face.04",
+   "family_id": "editorial_lead",
+   "variant_id": "photo_bleed",
+   "words": 280,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.3368,
+   "vertical_hierarchy": 0.6808,
+   "whitespace_fraction": 0.6538,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0095
+  },
+  {
+   "face_id": "face.05",
+   "family_id": "false_belief_stack",
+   "variant_id": "card_grid",
+   "words": 304,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.3081,
+   "vertical_hierarchy": 0.7228,
+   "whitespace_fraction": 0.6805,
+   "type_rhythm_bands": 20,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0114
+  },
+  {
+   "face_id": "face.06",
+   "family_id": "case_narrative",
+   "variant_id": "left_rail",
+   "words": 275,
+   "accent_fraction": 0.0041,
+   "ink_occupancy": 0.1477,
+   "vertical_hierarchy": 0.62,
+   "whitespace_fraction": 0.8333,
+   "type_rhythm_bands": 23,
+   "proof_visibility": 0.0103,
+   "image_coverage": 0.0189
+  },
+  {
+   "face_id": "face.07",
+   "family_id": "theory_interpretation",
+   "variant_id": "comparison_band",
+   "words": 275,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.1106,
+   "vertical_hierarchy": 0.4853,
+   "whitespace_fraction": 0.8753,
+   "type_rhythm_bands": 25,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0141
+  },
+  {
+   "face_id": "face.08",
+   "family_id": "theory_interpretation",
+   "variant_id": "comparison_band",
+   "words": 267,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.1087,
+   "vertical_hierarchy": 0.4731,
+   "whitespace_fraction": 0.8754,
+   "type_rhythm_bands": 23,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0159
+  },
+  {
+   "face_id": "face.09",
+   "family_id": "theory_interpretation",
+   "variant_id": "comparison_band",
+   "words": 240,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.1038,
+   "vertical_hierarchy": 0.4748,
+   "whitespace_fraction": 0.8818,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0145
+  },
+  {
+   "face_id": "face.10",
+   "family_id": "case_narrative",
+   "variant_id": "left_rail",
+   "words": 276,
+   "accent_fraction": 0.0041,
+   "ink_occupancy": 0.1534,
+   "vertical_hierarchy": 0.6067,
+   "whitespace_fraction": 0.8263,
+   "type_rhythm_bands": 21,
+   "proof_visibility": 0.0103,
+   "image_coverage": 0.0204
+  },
+  {
+   "face_id": "face.11",
+   "family_id": "theory_interpretation",
+   "variant_id": "comparison_band",
+   "words": 251,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.103,
+   "vertical_hierarchy": 0.5005,
+   "whitespace_fraction": 0.8819,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0151
+  },
+  {
+   "face_id": "face.12",
+   "family_id": "case_narrative",
+   "variant_id": "left_rail",
+   "words": 276,
+   "accent_fraction": 0.0041,
+   "ink_occupancy": 0.151,
+   "vertical_hierarchy": 0.6027,
+   "whitespace_fraction": 0.829,
+   "type_rhythm_bands": 21,
+   "proof_visibility": 0.0103,
+   "image_coverage": 0.02
+  },
+  {
+   "face_id": "face.13",
+   "family_id": "theory_interpretation",
+   "variant_id": "comparison_band",
+   "words": 246,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.1045,
+   "vertical_hierarchy": 0.4832,
+   "whitespace_fraction": 0.8811,
+   "type_rhythm_bands": 22,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0145
+  },
+  {
+   "face_id": "face.14",
+   "family_id": "mechanism_spread",
+   "variant_id": "horizontal_spread",
+   "words": 300,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2817,
+   "vertical_hierarchy": 0.4515,
+   "whitespace_fraction": 0.7105,
+   "type_rhythm_bands": 1,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0077
+  },
+  {
+   "face_id": "face.15",
+   "family_id": "evidence_wall",
+   "variant_id": "review_wall",
+   "words": 39,
+   "accent_fraction": 0.0132,
+   "ink_occupancy": 0.2834,
+   "vertical_hierarchy": 0.7167,
+   "whitespace_fraction": 0.6855,
+   "type_rhythm_bands": 2,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0311
+  },
+  {
+   "face_id": "face.16",
+   "family_id": "summary_synthesis",
+   "variant_id": "comparison_dashboard",
+   "words": 264,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.3693,
+   "vertical_hierarchy": 0.5546,
+   "whitespace_fraction": 0.6218,
+   "type_rhythm_bands": 18,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0089
+  },
+  {
+   "face_id": "face.17",
+   "family_id": "objection_response",
+   "variant_id": "response_grid",
+   "words": 310,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2478,
+   "vertical_hierarchy": 0.7791,
+   "whitespace_fraction": 0.7426,
+   "type_rhythm_bands": 17,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0097
+  },
+  {
+   "face_id": "face.18",
+   "family_id": "collaboration_pathway",
+   "variant_id": "step_cards",
+   "words": 262,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.3392,
+   "vertical_hierarchy": 0.5543,
+   "whitespace_fraction": 0.6522,
+   "type_rhythm_bands": 4,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0086
+  },
+  {
+   "face_id": "face.19",
+   "family_id": "editorial_lead",
+   "variant_id": "photo_bleed",
+   "words": 263,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2765,
+   "vertical_hierarchy": 0.7234,
+   "whitespace_fraction": 0.6549,
+   "type_rhythm_bands": 21,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0686
+  },
+  {
+   "face_id": "face.20",
+   "family_id": "closing_cta",
+   "variant_id": "photo_close",
+   "words": 39,
+   "accent_fraction": 0.0,
+   "ink_occupancy": 0.2093,
+   "vertical_hierarchy": 0.0,
+   "whitespace_fraction": 0.7873,
+   "type_rhythm_bands": 5,
+   "proof_visibility": 0.0,
+   "image_coverage": 0.0034
+  }
+ ],
+ "before_color_fields": {
+  "measured": "2026-08-06 density build, before the color-field treatments",
+  "release_state": "review_candidate",
+  "means": {
+   "words_per_face": 249.95,
+   "ink_occupancy": 0.109,
+   "whitespace_fraction": 0.8469,
+   "vertical_hierarchy": 0.6156,
+   "type_rhythm_bands": 22.25,
+   "image_coverage": 0.0441
+  },
+  "reference_comparison": {
+   "words_per_face": {
+    "candidate_mean": 249.95,
+    "target_range": [
+     240,
+     340
+    ],
+    "apex_mean": 337.7,
+    "corpus_range": [
+     248.8,
+     345.0
+    ],
+    "in_band": true
+   },
+   "ink_occupancy": {
+    "candidate_mean": 0.109,
+    "corpus_band": [
+     0.0492,
+     0.4028
+    ],
+    "observed_band": [
+     0.09,
+     0.362
+    ],
+    "in_corpus_band": true
+   },
+   "whitespace_fraction": {
+    "candidate_mean": 0.8469,
+    "corpus_band": [
+     0.454,
+     0.8957
+    ],
+    "observed_band": [
+     0.505,
+     0.8447
+    ],
+    "in_corpus_band": true
+   },
+   "vertical_hierarchy": {
+    "candidate_mean": 0.6156,
+    "corpus_band": [
+     0.1118,
+     0.7395
+    ],
+    "observed_band": [
+     0.1842,
+     0.667
+    ],
+    "in_corpus_band": true
+   },
+   "type_rhythm_bands": {
+    "candidate_mean": 22.25,
+    "corpus_band": [
+     0,
+     50.45
+    ],
+    "observed_band": [
+     1,
+     44
+    ],
+    "in_corpus_band": true
+   },
+   "image_coverage": {
+    "candidate_mean": 0.0441,
+    "corpus_band": [
+     0.007,
+     0.3305
+    ],
+    "observed_band": [
+     0.0443,
+     0.2932
+    ],
+    "in_corpus_band": true
+   }
+  },
+  "per_face": [
+   {
+    "face_id": "face.01",
+    "family_id": "editorial_lead",
+    "variant_id": "photo_bleed",
+    "words": 293,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.3039,
+    "vertical_hierarchy": 0.7186,
+    "whitespace_fraction": 0.6869,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0092
+   },
+   {
+    "face_id": "face.02",
+    "family_id": "editorial_lead",
+    "variant_id": "photo_bleed",
+    "words": 261,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.1413,
+    "vertical_hierarchy": 0.5863,
+    "whitespace_fraction": 0.6715,
+    "type_rhythm_bands": 23,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.1872
+   },
+   {
+    "face_id": "face.03",
+    "family_id": "editorial_lead",
+    "variant_id": "photo_bleed",
+    "words": 278,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.1402,
+    "vertical_hierarchy": 0.589,
+    "whitespace_fraction": 0.6716,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.1882
+   },
+   {
+    "face_id": "face.04",
+    "family_id": "editorial_lead",
+    "variant_id": "photo_bleed",
+    "words": 280,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.3104,
+    "vertical_hierarchy": 0.7119,
+    "whitespace_fraction": 0.6801,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0094
+   },
+   {
+    "face_id": "face.05",
+    "family_id": "false_belief_stack",
+    "variant_id": "card_grid",
+    "words": 304,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.106,
+    "vertical_hierarchy": 0.5946,
+    "whitespace_fraction": 0.8828,
+    "type_rhythm_bands": 23,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0112
+   },
+   {
+    "face_id": "face.06",
+    "family_id": "case_narrative",
+    "variant_id": "left_rail",
+    "words": 275,
+    "accent_fraction": 0.0146,
+    "ink_occupancy": 0.0775,
+    "vertical_hierarchy": 0.6183,
+    "whitespace_fraction": 0.8944,
+    "type_rhythm_bands": 34,
+    "proof_visibility": 0.0366,
+    "image_coverage": 0.0281
+   },
+   {
+    "face_id": "face.07",
+    "family_id": "theory_interpretation",
+    "variant_id": "comparison_band",
+    "words": 275,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0601,
+    "vertical_hierarchy": 0.6911,
+    "whitespace_fraction": 0.9252,
+    "type_rhythm_bands": 25,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0147
+   },
+   {
+    "face_id": "face.08",
+    "family_id": "theory_interpretation",
+    "variant_id": "comparison_band",
+    "words": 267,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.059,
+    "vertical_hierarchy": 0.678,
+    "whitespace_fraction": 0.9245,
+    "type_rhythm_bands": 23,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0165
+   },
+   {
+    "face_id": "face.09",
+    "family_id": "theory_interpretation",
+    "variant_id": "comparison_band",
+    "words": 240,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0541,
+    "vertical_hierarchy": 0.6934,
+    "whitespace_fraction": 0.9308,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.015
+   },
+   {
+    "face_id": "face.10",
+    "family_id": "case_narrative",
+    "variant_id": "left_rail",
+    "words": 276,
+    "accent_fraction": 0.0146,
+    "ink_occupancy": 0.0828,
+    "vertical_hierarchy": 0.6277,
+    "whitespace_fraction": 0.8887,
+    "type_rhythm_bands": 33,
+    "proof_visibility": 0.0366,
+    "image_coverage": 0.0285
+   },
+   {
+    "face_id": "face.11",
+    "family_id": "theory_interpretation",
+    "variant_id": "comparison_band",
+    "words": 251,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0542,
+    "vertical_hierarchy": 0.7189,
+    "whitespace_fraction": 0.9307,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0151
+   },
+   {
+    "face_id": "face.12",
+    "family_id": "case_narrative",
+    "variant_id": "left_rail",
+    "words": 276,
+    "accent_fraction": 0.0146,
+    "ink_occupancy": 0.0807,
+    "vertical_hierarchy": 0.6019,
+    "whitespace_fraction": 0.8915,
+    "type_rhythm_bands": 32,
+    "proof_visibility": 0.0366,
+    "image_coverage": 0.0278
+   },
+   {
+    "face_id": "face.13",
+    "family_id": "theory_interpretation",
+    "variant_id": "comparison_band",
+    "words": 246,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0544,
+    "vertical_hierarchy": 0.7031,
+    "whitespace_fraction": 0.9305,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0151
+   },
+   {
+    "face_id": "face.14",
+    "family_id": "mechanism_spread",
+    "variant_id": "horizontal_spread",
+    "words": 300,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.2817,
+    "vertical_hierarchy": 0.4515,
+    "whitespace_fraction": 0.7105,
+    "type_rhythm_bands": 1,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0077
+   },
+   {
+    "face_id": "face.15",
+    "family_id": "evidence_wall",
+    "variant_id": "review_wall",
+    "words": 39,
+    "accent_fraction": 0.0167,
+    "ink_occupancy": 0.0559,
+    "vertical_hierarchy": 0.7444,
+    "whitespace_fraction": 0.8621,
+    "type_rhythm_bands": 14,
+    "proof_visibility": 0.0417,
+    "image_coverage": 0.0819
+   },
+   {
+    "face_id": "face.16",
+    "family_id": "summary_synthesis",
+    "variant_id": "comparison_dashboard",
+    "words": 264,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0539,
+    "vertical_hierarchy": 0.6533,
+    "whitespace_fraction": 0.9356,
+    "type_rhythm_bands": 22,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0105
+   },
+   {
+    "face_id": "face.17",
+    "family_id": "objection_response",
+    "variant_id": "response_grid",
+    "words": 310,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0571,
+    "vertical_hierarchy": 0.6197,
+    "whitespace_fraction": 0.9331,
+    "type_rhythm_bands": 24,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0098
+   },
+   {
+    "face_id": "face.18",
+    "family_id": "collaboration_pathway",
+    "variant_id": "step_cards",
+    "words": 262,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0498,
+    "vertical_hierarchy": 0.6951,
+    "whitespace_fraction": 0.9336,
+    "type_rhythm_bands": 32,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.0167
+   },
+   {
+    "face_id": "face.19",
+    "family_id": "editorial_lead",
+    "variant_id": "photo_bleed",
+    "words": 263,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.1299,
+    "vertical_hierarchy": 0.6151,
+    "whitespace_fraction": 0.6832,
+    "type_rhythm_bands": 21,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.187
+   },
+   {
+    "face_id": "face.20",
+    "family_id": "closing_cta",
+    "variant_id": "photo_close",
+    "words": 39,
+    "accent_fraction": 0.0,
+    "ink_occupancy": 0.0274,
+    "vertical_hierarchy": 0.0,
+    "whitespace_fraction": 0.9706,
+    "type_rhythm_bands": 6,
+    "proof_visibility": 0.0,
+    "image_coverage": 0.002
+   }
+  ]
+ }
+}

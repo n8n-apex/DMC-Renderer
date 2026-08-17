@@ -1,0 +1,19 @@
+{
+  "artifact_hashes": {
+    "asset_ledger": "5f1fb19faaa80b05ff69aa012ab1cc800d845070adc5974721b1ab69b170a0f4",
+    "composition_plan": "c8fe430ed3803b4c3dd678ee4783eab516ac6f8641adfe54a744c77494c21890",
+    "composition_policy": "6da90ab65b9093335f57520edffbd5cb6a92fd98b121b6c83c44dafccbb594de",
+    "contract_payload": "b89f2870a0478e6fd9c1e02bbc9839589a4aa26f8fa10f52051f29927a935849",
+    "family_registry": "99844ef14601e6106432689fd7ba72a4856279b0328d2ac173503fbdc3d825a0",
+    "report_plan": "0bc569490c48b114b7a9b0889ffa54948a0f222e5daf93ab6f21f649667ab448",
+    "source_ledger": "aaa704c201e21f267626ab78a8411010812812fdbcbc8611d4ac47a6c1627949"
+  },
+  "contract_id": "contract.b89f2870a0478e6fd9c1",
+  "degradations": [],
+  "face_count": 20,
+  "fragment_count": 19,
+  "ghostscript_invoked": false,
+  "mode": "ship",
+  "pdf_object_count": 19,
+  "schema_version": "3.0"
+}

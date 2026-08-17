@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:'SS4';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SS3';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');
+  font-weight:200 900;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:#F6F3ED;
+  font-family:'SS3',sans-serif;
+  color:#3a4a5a;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow:hidden;
+}
+.page{position:absolute;inset:0;padding:86px 90px 56px 90px;}
+
+/* ---- TOP ROW: eyebrow + headline left, page marker right ---- */
+.toprow{display:flex;justify-content:space-between;align-items:flex-start;}
+.eyebrow{
+  font-family:'SS3';font-weight:600;font-size:15px;letter-spacing:.36em;
+  color:#4A7C7E;text-transform:uppercase;margin-bottom:18px;
+}
+.headline{
+  font-family:'SS4';font-weight:560;font-size:54px;line-height:1.08;
+  color:#2E3E50;letter-spacing:-0.01em;max-width:1080px;
+}
+.headline .teal{color:#4A7C7E;}
+.pageno{
+  text-align:right;font-family:'SS4';font-weight:400;
+  color:#2E3E50;line-height:1;padding-top:4px;
+}
+.pageno .num{font-size:40px;display:block;}
+.pageno .lbl{
+  font-family:'SS3';font-weight:600;font-size:11px;letter-spacing:.28em;
+  color:#9a958a;text-transform:uppercase;margin-top:8px;
+}
+
+/* ---- STAT BAND ---- */
+.bandwrap{margin-top:54px;}
+.band-cap{
+  font-family:'SS3';font-weight:600;font-size:12px;letter-spacing:.3em;
+  color:#9a958a;text-transform:uppercase;margin-bottom:24px;
+  display:flex;align-items:center;gap:16px;
+}
+.band-cap::after{content:"";flex:1;height:1px;background:#cdc7ba;}
+.band{
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.kpi{
+  padding:0 38px;position:relative;
+}
+.kpi:first-child{padding-left:0;}
+.kpi:not(:first-child)::before{
+  content:"";position:absolute;left:0;top:6px;bottom:10px;width:1px;background:#cdc7ba;
+}
+.kpi .fig{
+  font-family:'SS4';font-weight:600;font-size:84px;line-height:.9;
+  color:#2E3E50;letter-spacing:-0.02em;display:flex;align-items:baseline;
+}
+.kpi.accent .fig{color:#4A7C7E;}
+.kpi .fig .unit{font-size:48px;font-weight:500;margin-left:2px;}
+.kpi .fig .cur{font-size:48px;font-weight:500;margin-right:3px;align-self:flex-start;line-height:1.05;}
+.kpi .lab{
+  font-family:'SS3';font-weight:500;font-size:16px;letter-spacing:.01em;
+  color:#5a6675;margin-top:18px;line-height:1.3;
+}
+.kpi .sub{
+  font-family:'SS3';font-weight:600;font-size:12.5px;letter-spacing:.04em;
+  color:#4A7C7E;margin-top:6px;text-transform:uppercase;
+}
+
+/* slim teal rule under band */
+.tealrule{height:3px;background:#4A7C7E;width:100%;margin-top:40px;border-radius:2px;}
+
+/* ---- PHOTO STRIP + thesis ---- */
+.lower{display:flex;gap:34px;margin-top:44px;align-items:flex-start;}
+.strip{display:flex;gap:22px;}
+.shot{
+  height:432px;overflow:hidden;background:#F6F3ED;
+  position:relative;border-radius:2px;box-shadow:0 8px 26px rgba(46,62,80,0.10);
+}
+.shot img{height:432px;width:auto;display:block;}
+.shot .tag{
+  position:absolute;left:0;bottom:0;
+  background:#2E3E50;color:#F6F3ED;
+  font-family:'SS3';font-weight:600;font-size:12px;letter-spacing:.12em;
+  text-transform:uppercase;padding:9px 16px;
+}
+.shot .tag.teal{background:#4A7C7E;}
+
+/* thesis column floating in trailing cream */
+.thesis{flex:1;padding-top:6px;display:flex;flex-direction:column;height:432px;}
+.thesis .mark{
+  font-family:'SS4';font-weight:600;font-size:64px;color:#cdc7ba;line-height:.6;
+  height:30px;
+}
+.thesis .body{
+  font-family:'SS4';font-weight:420;font-size:25px;line-height:1.42;
+  color:#2E3E50;margin-top:18px;letter-spacing:-0.005em;
+}
+.thesis .body b{color:#4A7C7E;font-weight:560;}
+.thesis .meth{margin-top:auto;}
+.thesis .meth .mh{
+  font-family:'SS3';font-weight:600;font-size:11px;letter-spacing:.28em;
+  color:#9a958a;text-transform:uppercase;margin-bottom:14px;
+}
+.thesis .meth ol{list-style:none;}
+.thesis .meth li{
+  display:flex;align-items:baseline;gap:13px;
+  font-family:'SS3';font-weight:500;font-size:15px;color:#3a4a5a;
+  padding:7px 0;border-top:1px solid #e3ded2;
+}
+.thesis .meth li:first-child{border-top:none;}
+.thesis .meth li .n{
+  font-family:'SS4';font-weight:600;font-size:17px;color:#4A7C7E;
+  min-width:18px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="toprow">
+    <div>
+      <div class="eyebrow">Über uns</div>
+      <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+    </div>
+    <div class="pageno">
+      <span class="num">03</span>
+      <span class="lbl">APEX</span>
+    </div>
+  </div>
+
+  <div class="bandwrap">
+    <div class="band-cap">In Zahlen</div>
+    <div class="band">
+      <div class="kpi">
+        <div class="fig">100<span class="unit">+</span></div>
+        <div class="lab">Umgesetzte AI-Projekte</div>
+        <div class="sub">Skaliert &amp; im Betrieb</div>
+      </div>
+      <div class="kpi accent">
+        <div class="fig"><span class="cur">€</span>200k<span class="unit">+</span></div>
+        <div class="lab">Einsparung pro Jahr</div>
+        <div class="sub">Pro Mandat</div>
+      </div>
+      <div class="kpi">
+        <div class="fig">30–50<span class="unit">%</span></div>
+        <div class="lab">Geringere Betriebskosten</div>
+        <div class="sub">Nachhaltig</div>
+      </div>
+      <div class="kpi accent">
+        <div class="fig">–93<span class="unit">%</span></div>
+        <div class="lab">Onboarding-Zeit</div>
+        <div class="sub">30 Min → 2 Min</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tealrule"></div>
+
+  <div class="lower">
+    <div class="strip">
+      <div class="shot">
+        <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png" alt="Gründer">
+        <div class="tag teal">Jousef · Gründer</div>
+      </div>
+      <div class="shot">
+        <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png" alt="Team &amp; Auszeichnung">
+        <div class="tag">Ausgezeichnet</div>
+      </div>
+    </div>
+
+    <div class="thesis">
+      <div class="mark">&ldquo;</div>
+      <div class="body">Wachstumsprobleme in B2B sind selten Umsatzprobleme. Sie sind <b>Automatisierungsprobleme.</b></div>
+      <div class="meth">
+        <div class="mh">Unsere Methode</div>
+        <ol>
+          <li><span class="n">1</span><span>Audit &amp; Engpass-Diagnose</span></li>
+          <li><span class="n">2</span><span>Automatisierung &amp; KI-Integration</span></li>
+          <li><span class="n">3</span><span>Skalierung ohne Mehr-Headcount</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

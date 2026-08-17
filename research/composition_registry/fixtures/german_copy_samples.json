@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "samples": [
+    {
+      "sample_id": "editorial.short.de",
+      "language": "de",
+      "text": "Eine klare These braucht eine lesbare Hierarchie und einen sichtbaren Beleg."
+    },
+    {
+      "sample_id": "belief.boundary.de",
+      "language": "de",
+      "text": "Ein wiederkehrender Einwand wird als konkrete Aussage benannt, direkt beantwortet und nur dann mit einer Zahl verstärkt, wenn ein belastbarer Claim vorliegt."
+    },
+    {
+      "sample_id": "case.boundary.de",
+      "language": "de",
+      "text": "Die Ausgangslage, der Eingriff und das Ergebnis bleiben als getrennte Einheiten sichtbar. Identität und Ergebnisbeleg stehen im selben Lesepfad."
+    }
+  ]
+}

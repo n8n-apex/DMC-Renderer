@@ -1,0 +1,43 @@
+{# phone_mockup — a RENDERER-DRAWN smartphone frame showing a real social post (a
+   "live social presence" element, the way Richard's NMR deck shows an "Insta
+   Profil"/story in a phone). Pure CSS chrome (NO image of a phone) so it is crisp
+   at print res and brand-agnostic: a dark device bezel + a notch + a white screen
+   carrying an Instagram-style header (avatar + handle) over the real post photo.
+
+   It NEVER fabricates engagement (no invented likes/caption text): it shows only
+   REAL data passed in — the founder's real avatar, real handle, and a real post
+   image. An optional caption line is shown only when real caption text is supplied.
+
+   Token-only by construction: this macro emits ONLY structure; every colour / font
+   / size lives in the `.c-phone` classes (styles/components.css), so the device
+   stays brand-agnostic (the bezel is --color-ink, the screen --color-on-dark).
+
+   photo_uri   the real post image (single-post mode's main content).
+   avatar_uri  the founder's real avatar (small circle in the header). Optional.
+   handle      the real account handle (shown as "@handle"). Optional.
+   caption     OPTIONAL real caption text (shown only if supplied — never faked).
+   posts       OPTIONAL list of real post image URIs → renders a PROFILE-GRID (a
+               3-col grid of the real posts, the "active brand presence" look)
+               instead of a single post. When given it takes precedence over
+               photo_uri. Never fabricates follower/like counts — only real art. #}
+{% macro phone_mockup(photo_uri='', avatar_uri='', handle='', caption='', posts=None) -%}
+<div class="c-phone{% if posts %} c-phone--grid{% endif %}" aria-hidden="true">
+  <span class="c-phone__notch"></span>
+  <div class="c-phone__screen">
+    {% if avatar_uri or handle %}
+    <div class="c-phone__hdr">
+      {% if avatar_uri %}<span class="c-phone__avatar" role="img" style="background-image:url('{{ avatar_uri }}');"></span>{% endif %}
+      {% if handle %}<span class="c-phone__handle">@{{ handle }}</span>{% endif %}
+    </div>
+    {% endif %}
+    {% if posts %}
+    <div class="c-phone__grid">
+      {% for p in posts %}<span class="c-phone__cell" role="img" style="background-image:url('{{ p }}');"></span>{% endfor %}
+    </div>
+    {% else %}
+    {% if photo_uri %}<span class="c-phone__photo" role="img" style="background-image:url('{{ photo_uri }}');"></span>{% endif %}
+    {% if caption %}<div class="c-phone__cap">{{ caption }}</div>{% else %}<div class="c-phone__foot"></div>{% endif %}
+    {% endif %}
+  </div>
+</div>
+{%- endmacro %}

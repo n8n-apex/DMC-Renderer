@@ -1,0 +1,62 @@
+"""Typed runtime configuration (pydantic-settings).
+
+Replaces scattered os.getenv() reads with one validated object injected
+via FastAPI Depends. Secrets are SecretStr so they never appear in logs
+or error reprs. Env-var names are UNCHANGED from the prior os.getenv
+calls, so behaviour is identical. Reads PROCESS ENV ONLY (the deployment
+supplies keys via exported env / uvicorn --env-file); `.env` is NOT
+auto-loaded here, so the test suite stays hermetic. Pure infrastructure —
+no client literal.
+"""
+from __future__ import annotations
+
+from typing import Optional
+
+from pydantic import SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        extra="ignore",
+        case_sensitive=False,
+    )
+
+    # ── external-service credentials (masked) ──
+    openrouter_api_key: Optional[SecretStr] = None
+    fal_key: Optional[SecretStr] = None
+
+    # ── model slugs (env-swappable; defaults == the prior literals) ──
+    openrouter_vision_model: str = "anthropic/claude-sonnet-4.6"
+    openrouter_brief_model: str = "anthropic/claude-opus-4.6"
+    openrouter_prompt_model: str = "anthropic/claude-sonnet-4.6"
+    # the "editor" tier — condensing dense copy is a judgement task → Opus.
+    openrouter_restructure_model: str = "anthropic/claude-opus-4.6"
+    restructure_cache_dir: str = "var/restructure_cache"
+    fal_image_model: str = "fal-ai/nano-banana-pro"
+    fal_image_resolution: str = "2K"
+
+    # ── timeouts / pooling ──
+    http_timeout_s: float = 30.0
+    http_max_connections: int = 20
+
+    # ── asset budget + cache (load-bearing in Phase 3) ──
+    max_generations_per_report: int = 12
+    asset_cache_dir: str = "var/asset_cache"
+
+    # ── local client-assets folder (Drive substitute; Phase 4a) ──
+    client_assets_dir: str = "client_assets"
+
+    # ── webhook / output dirs ──
+    report_generator_webhook: Optional[str] = None
+    onboard_output_dir: Optional[str] = None
+
+    def openrouter_key_str(self) -> Optional[str]:
+        return (
+            self.openrouter_api_key.get_secret_value()
+            if self.openrouter_api_key
+            else None
+        )
+
+    def fal_key_str(self) -> Optional[str]:
+        return self.fal_key.get_secret_value() if self.fal_key else None

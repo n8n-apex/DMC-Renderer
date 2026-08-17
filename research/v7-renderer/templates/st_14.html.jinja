@@ -1,0 +1,56 @@
+{# ST-14 — false-beliefs page (Plan B rebuild, grammar P-5). DATA comes
+   pre-shaped from patterns/st_14.py; this template only COMPOSES the macro
+   library on the token-themed .st-14 layout (styles/st_14.css). Fragment only —
+   no <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a solid-accent color-block opener behind the serif heading
+   (color_block_opener), a short intro lede, then numbered belief→reality blocks
+   (numbered_block — the myth as the bold title, a distinct accent-ruled Realität
+   reality sub-block, and an optional uppercase source line). #}
+{% from 'color_block_opener.jinja' import color_block_opener %}
+{% from 'numbered_block.jinja' import numbered_block %}
+{% from 'concept_diagram.jinja' import concept_diagram %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+<div class="fb-opener">
+  {{ color_block_opener(title, eyebrow=kicker) }}
+</div>
+
+{% if intro_html %}
+<div class="fb-intro">{{ intro_html }}</div>
+{% endif %}
+
+{% if beliefs %}
+<div class="fb-list">
+  {% for b in beliefs %}
+  <div class="fb-item">
+    {{ numbered_block(b.n, b.myth, '', reality_html=b.reality_html,
+                      source=b.source, reality_label=reality_label) }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if diagram %}
+<div class="fb-diagram">{{ concept_diagram(diagram) }}</div>
+{% endif %}
+
+{# proof band: the writer's sourced figures behind the belief answers — donut
+   rings (data.viz) + any scalar stat tiles. Fills the page foot with the
+   evidence layer instead of a dead band. Graceful: absent -> nothing. #}
+{% if viz or stats %}
+<div class="fb-proof">
+  {% if viz %}<div class="fb-proof-viz">{{ render_viz(viz) }}</div>{% endif %}
+  {% if stats %}
+  <div class="fb-proof-stats">
+    {% for s in stats %}
+    <div class="fb-proof-stat">
+      <div class="fb-proof-value">{{ s.value }}</div>
+      {% if s.label %}<div class="fb-proof-label">{{ s.label }}</div>{% endif %}
+      {% if s.sub %}<div class="fb-proof-source">{{ s.sub }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endif %}

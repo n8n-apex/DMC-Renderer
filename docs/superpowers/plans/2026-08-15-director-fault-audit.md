@@ -274,3 +274,64 @@ A page passes only when both answers are positive. A generated image that
    run semantic review; inspect the rendered page.
 6. Only after 5 passes: regenerate the other four case studies and re-render
    the deck.
+
+---
+
+## 10. EVIDENCE CORRECTION — 2026-08-16 (the reported "clean" gate was wrong)
+
+The `[qa] visual gate: CLEAN` result shipped a PDF that fails visual inspection
+on ALL 20 pages. The gate's score-pass was a checklist artifact; the rendered
+artifact is not acceptable. This section supersedes any claim that US-402/
+US-403/US-408/US-509/US-510 completed the visual contract.
+
+### 10.1 Method
+
+A full 20-page pre-press inspection was run via the OpenRouter vision client
+(`VisionClient.extract_json`, OpenRouter key from `preprocessor/.env`) against
+`research/v7-renderer/output/report-p*.png`, with a prompt demanding every
+defect: clipped text, cross-section contamination, alignment breaks, dead
+zones, broken devices, and a print verdict. Full JSON: `/tmp/vision_audit_20.json`.
+
+Result: **20/20 pages verdict = no.**
+
+### 10.2 Per-page worst defects (verbatim evidence)
+
+| Page | Worst defect |
+|---|---|
+| p1 | Dead white band at bottom (~10% height), no footer anchor |
+| p2 | Ring sizes inconsistent — third ring ('30 bis 50 %') materially smaller |
+| p3 | Massive left-column dead zone + near-empty bottom quarter; Referenzen thumbnails clip text |
+| p4 | 25–30% blank lower page below the callout |
+| p5 | **Venn diagram overprints item-3 text** — third lie obscured/cut |
+| p6 | Multiple text strings hard-clipped at right page edge (screen props) + 15% bottom band |
+| p7 | **Duplicate stat content in right column** ('> 200.000 €' + '4 automatisierte Kernprozesse' rendered twice) |
+| p8 | Bottom ~40% empty; body columns share no top baseline |
+| p9 | 30% dead band between quote and lower stat block in right column |
+| p10 | '40 %' stat is a broken context-free fragment; label is an incomplete sentence |
+| p11 | Brand/logo clipped at left edge ('ldman'); 15% bottom band |
+| p12 | **Broken arrow device: 'MIT APEX' shows only 'Minuten' with no number** |
+| p13 | 15% empty dark band below the quote; page number clipped |
+| p14 | ~40% dead band between dark KPI box and pull-quote |
+| p15 | **'ohne Headco…' hard-clipped at right page edge** — key metric cut off |
+| p16 | **'30-50%' clipped at right edge — '%' cut off by the box** (the recurring fault) |
+| p17 | 15% bottom band; quote floats unanchored |
+| p18 | **Founder headshot + name bleeding in from the next page** (contamination) |
+| p19 | **Header text clipped/obscured by the portrait overlay bleeding from p18**; stat baselines misaligned |
+| p20 | 45% lower-half dead zone; ghost '20' clipped at page edges; QR misaligned |
+
+### 10.3 Root-cause classes (what must be fixed, not papered over)
+
+1. **Fixed one-page skeleton per section** — every section is forced into one
+   sheet; overflow is "squeezed" (p16) or fragments (p18→p19).
+2. **No section/physical-page identity** — the package is a flat `pages[]`
+   list; continuation boundaries do not exist, so p18 content bleeds into p19.
+3. **Director sidecar, not Director contract** — the brief has no
+   `region_plan`/`page_arc`; the renderer never consumes it.
+4. **QA not reference-grounded and not on the final artifact** — the gate
+   passes zero reference images, runs before convergence, and misses
+   intrinsic clipping (scrollWidth 176px vs clientWidth 111px on p16).
+5. **Device bugs left in place** — p7 duplicate stats, p12 arrow with no
+   destination value, p2 inconsistent rings, p5 Venn/text collision.
+
+The fix program is defined in
+`docs/superpowers/plans/2026-08-16-ralph-director-pagination-repair.md`.

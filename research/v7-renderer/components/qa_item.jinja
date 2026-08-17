@@ -1,0 +1,15 @@
+{# Q&A item: one FAQ entry — an accent question above a body answer. The atomic
+   unit of the ST-08 (FAQ) two-column stack; the page CSS arranges multiple
+   qa_items into two columns (break-inside:avoid keeps a Q&A pair together). All
+   under the c-qa-item namespace; the token-only look (accent question, body
+   answer) lives in styles/components.css.
+
+   question     the question text (plain string — the accent/bold line)
+   answer_html  pre-rendered answer HTML (markdown → HTML by the pattern)
+#}
+{% macro qa_item(question, answer_html) -%}
+<div class="c-qa-item">
+  {% if question %}<div class="c-qa-item__question">{{ question }}</div>{% endif %}
+  {% if answer_html %}<div class="c-qa-item__answer">{{ answer_html }}</div>{% endif %}
+</div>
+{%- endmacro %}

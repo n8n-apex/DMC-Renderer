@@ -1,0 +1,22 @@
+{# Check list: a list of audience / qualifier items, each with an accent check
+   glyph (✓) marker beside the item text. The "Zielgruppe" (target-audience)
+   device on ST-02 — dropped INSIDE a callout_panel body so it reads as a tint
+   qualifier panel. All under the c-check-list namespace; the token-only look
+   (accent check, item rhythm) lives in styles/components.css.
+
+   items  list of strings (the audience qualifiers). Plain text — escaped by the
+          pattern before it reaches here is NOT required (autoescape is off, but
+          the pattern passes trusted text); empty list yields nothing fragile.
+#}
+{% macro check_list(items) -%}
+{% if items %}
+<ul class="c-check-list">
+  {% for item in items %}
+  <li class="c-check-list__item">
+    <span class="c-check-list__check" aria-hidden="true">&check;</span>
+    <span class="c-check-list__text">{{ item }}</span>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{%- endmacro %}

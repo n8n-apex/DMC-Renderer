@@ -1,0 +1,144 @@
+{# a4_case_study treatment (A4-portrait, archetype "case_study").
+
+   ST-07A Fallstudie EINZELSEITE: the STANDARD case study, one A4 page. Reference
+   anatomy: nikl_p08 / aerz_p05-left. Driven ENTIRELY by TreatmentData (td):
+
+     LEFT cream field (~60%): the NARRATIVE: eyebrow ("FALLSTUDIE 0N") + two-tone
+       result headline (ergebnis_headline) + kurzportraet lede + the labeled
+       sections (Ausgangssituation / Ziel / Lösung / Ergebnis), distributed down
+       the column so it fills top-to-bottom.
+
+     RIGHT dark rail (~40%, full-bleed): the PROOF: an oversized ghost numeral
+       (the Fallstudie number), the client PORTRAIT (when one resolves; a
+       photo-less case shows the ident text alone, the ghost numeral already
+       carries the rail's identity mark) + name/role/url, the big Ergebnis
+       NUMBERS (>=40pt, the data-viz: the number IS the visual), and the client
+       PULL-QUOTE at the foot. space-between distributes the blocks so the rail
+       always fills, photo or not.
+
+   Semantic tokens only in the CSS; this template emits only structural classes +
+   td data. Graceful-omit throughout (every block guards on its data). #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{# the oversized ghost numeral = the trailing token of the eyebrow ("FALLSTUDIE 03" -> "03") #}
+{% set _num = td.eyebrow.split()[-1] if (td.eyebrow and ' ' in td.eyebrow) else '' %}
+
+{% set _marble = ctx.resolve_report_asset(("panel_texture",), ("panel_texture",)) %}
+
+<div class="cs4-grid"{% if _marble %} style="--panel-marble: url('{{ _marble }}');"{% endif %}>
+
+  {# ---- LEFT: the cream narrative field ---- #}
+  <div class="cs4-main">
+    <div class="cs4-head">
+      {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+      {% if td.headline %}{{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}{% endif %}
+      {% if td.subhead %}<p class="cs4-lede">{{ td.subhead }}</p>{% endif %}
+    </div>
+
+    {% if td.sections %}
+    <div class="cs4-sections">
+      {% for sec in td.sections %}
+      <div class="cs4-section">
+        {% if sec.label %}<div class="cs4-section-label">{{ sec.label }}</div>{% endif %}
+        {% if sec.text %}<p class="cs4-section-text">{{ sec.text }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# HOST SLOT: the page's data-viz (the case's transformation as an A->B
+       device) + generated component SVGs, anchored at the FOOT of the cream
+       field. Fills the lower-left band that used to sit empty while the dark
+       rail was full, and gives the produced devices a render home. #}
+    {% if td.viz or td.components or td.images %}
+    <div class="cs4-devices">
+      {# ONE hero device per band: the client's REAL product shot (pre-framed
+         device render, asked for via bildwunsch geraet_mockup_*) REPLACES the
+         A->B viz card when present. The transformation numbers already anchor
+         the dark rail as the ERGEBNIS stats; image + arrow together overflowed
+         the field and painted over the narrative (2026-07-13). #}
+      {% if td.images %}
+      <img class="cs4-product" src="{{ td.images[0] }}" alt=""/>
+      {% elif td.viz %}
+      {{ render_viz(td.viz) }}
+      {% endif %}
+      {% for svg in td.components %}<div class="cs4-comp">{{ svg | safe }}</div>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  {# ---- RIGHT: the dark proof rail ---- #}
+  <div class="cs4-rail">
+    {% if _num %}<div class="cs4-numeral" aria-hidden="true">{{ _num }}</div>{% endif %}
+
+    <div class="cs4-rail-body">
+      {# person block: portrait (or initials) + name/role/url #}
+      {% if td.image or td.caption %}
+      <div class="cs4-person">
+        {% if td.image %}
+        <div class="cs4-portrait" style="background-image:url('{{ td.image }}');"></div>
+        {% endif %}
+        {# no photo -> ident text only. The initials circle repeated identically
+           on every photo-less case read as generated monotony (the reference
+           decks vary their case proof); the ghost numeral already carries the
+           rail's identity mark. #}
+        {% if td.caption %}
+        <div class="cs4-ident">
+          {% if td.caption.name %}<div class="cs4-ident-name">{{ td.caption.name }}</div>{% endif %}
+          {% if td.caption.role %}<div class="cs4-ident-role">{{ td.caption.role }}</div>{% endif %}
+          {% if td.caption.url %}<div class="cs4-ident-url">{{ td.caption.url }}</div>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {# the Ergebnis dashboard: big result numbers (the data-viz) #}
+      {% if td.stats %}
+      <div class="cs4-stats">
+        <div class="cs4-stats-cap">Ergebnis</div>
+        {% for s in td.stats %}
+        {# a trailing parenthetical ("(vorher: 3 Wochen)") is CONTEXT, not the
+           figure: it moves to the small source line so the big value stays a
+           clean anchor instead of a wrapped clutter block. #}
+        {% set _v = s.value or '' %}
+        {% set _paren = none %}
+        {% if _v and '(' in _v and not _v.startswith('(') and _v.rstrip().endswith(')') %}
+          {% set _split = _v.split('(', 1) %}
+          {% set _v = _split[0].rstrip() %}
+          {% set _paren = '(' + _split[1] %}
+        {% endif %}
+        {# a short value is a FIGURE (big number anchor); a long value is a
+           STATEMENT (rendered smaller so it reads as a line, not a clipping
+           giant). The rail's inner measure is ~51mm: ~10 glyphs at figure
+           size; longer values wrap ugly mid-digit, so they take the
+           statement style instead. The check reads the PRE-escape glyph
+           count (value_len, recorded by _stat_pairs) when present: escaped
+           entities inflate the raw length and would demote a short printed
+           figure. When a parenthetical was split off above, the visible
+           slice's own length is the honest measure instead. #}
+        {% set _vlen = s.value_len if (s.value_len is defined and _paren is none) else (_v | length) %}
+        {% set _figure = _v and _vlen <= 10 %}
+        <div class="cs4-stat {{ 'is-figure' if _figure else 'is-statement' }}">
+          {% if s.label %}<div class="cs4-stat-label">{{ s.label }}</div>{% endif %}
+          {% if _v %}<div class="cs4-stat-value">{{ _v }}</div>{% endif %}
+          {% if _paren %}<div class="cs4-stat-source">{{ _paren }}</div>{% endif %}
+          {% if s.sub %}<div class="cs4-stat-source">{{ s.sub }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {# client pull-quote at the foot of the rail #}
+      {% if td.quote and td.quote.text %}
+      <div class="cs4-quote">
+        <span class="cs4-quote-mark" aria-hidden="true">&#8222;</span>
+        <blockquote class="cs4-quote-text">{{ td.quote.text }}</blockquote>
+        {% if td.quote.attribution %}<div class="cs4-quote-attr">{{ td.quote.attribution }}</div>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>

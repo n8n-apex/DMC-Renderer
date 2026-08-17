@@ -1,0 +1,21 @@
+..........................................                               [100%]
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:241
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:241
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:241
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+research/quality_loop/tests/test_materialization_gates_v3.py: 1 warning
+dmc-renderer/tests/test_v3_adversarial_e2e.py: 20 warnings
+  /Users/utkarsh/Projects/richard/research/quality_loop/gates/pixels_v3.py:65: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+    pixels = image.convert("RGB").getdata()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+42 passed, 26 warnings in 16.19s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

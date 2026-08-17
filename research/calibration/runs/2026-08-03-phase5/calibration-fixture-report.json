@@ -1,0 +1,68 @@
+{
+  "external_generation_enabled": false,
+  "fixture_manifest_version": "1.0.0",
+  "fixtures": [
+    {
+      "actual_failure_codes": [
+        "ungrounded_numeric_candidate",
+        "face_count_mismatch",
+        "case_count_mismatch",
+        "required_role_missing",
+        "cta_not_last",
+        "missing_required"
+      ],
+      "actual_gate_state": "rejected",
+      "expected_blockers": [
+        "face_count_mismatch",
+        "case_count_mismatch",
+        "ungrounded_numeric_candidate",
+        "missing_required"
+      ],
+      "expected_gate_state": "rejected",
+      "fixture_id": "calibration.christoph-redacted",
+      "gate_report_sha256": null,
+      "matched_expectation": true
+    },
+    {
+      "actual_failure_codes": [],
+      "actual_gate_state": "review_candidate",
+      "expected_blockers": [],
+      "expected_gate_state": "review_candidate",
+      "fixture_id": "calibration.apex-synthetic",
+      "gate_report_sha256": "c57411c893ecb59a18a655298482f90228f5089dd2e8760c4cd007dcfba86453",
+      "matched_expectation": true
+    },
+    {
+      "actual_failure_codes": [],
+      "actual_gate_state": "review_candidate",
+      "expected_blockers": [],
+      "expected_gate_state": "review_candidate",
+      "fixture_id": "calibration.service-business",
+      "gate_report_sha256": "67cf553681f32094c5493748e7beea7b4639be2dfd73f5fa6565734598e282df",
+      "matched_expectation": true
+    },
+    {
+      "actual_failure_codes": [],
+      "actual_gate_state": "review_candidate",
+      "expected_blockers": [],
+      "expected_gate_state": "review_candidate",
+      "fixture_id": "calibration.product-business",
+      "gate_report_sha256": "487e0aaa8d83cc3903f0268406e12133708013ed67c9182637b361e75b4c1e8a",
+      "matched_expectation": true
+    },
+    {
+      "actual_failure_codes": [
+        "missing_required"
+      ],
+      "actual_gate_state": "rejected",
+      "expected_blockers": [
+        "missing_required"
+      ],
+      "expected_gate_state": "rejected",
+      "fixture_id": "calibration.sparse-evidence",
+      "gate_report_sha256": null,
+      "matched_expectation": true
+    }
+  ],
+  "schema_version": "1.0"
+}

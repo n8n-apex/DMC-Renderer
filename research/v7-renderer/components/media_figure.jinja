@@ -1,0 +1,16 @@
+{# Photo block: a background-image div (cover/center) at a fixed aspect ratio.
+   ratio in {4x3,1x1,16x9,full}; frame=true adds a subtle 1-line border.
+   When src is falsy renders a neutral --color-surface placeholder (never crashes).
+   Optional caption in eyebrow type / muted ink. Styling: .c-media + modifiers. #}
+{% macro media_figure(src, alt='', caption='', ratio='4x3', frame=false) -%}
+<figure class="c-media c-media--{{ ratio }}{% if frame %} c-media--frame{% endif %}{% if not src %} c-media--empty{% endif %}">
+  {% if src %}
+  <div class="c-media-img" role="img" aria-label="{{ alt }}" style="background-image:url('{{ src }}');"></div>
+  {% else %}
+  <div class="c-media-img c-media-img--placeholder" role="img" aria-label="{{ alt }}"></div>
+  {% endif %}
+  {% if caption %}
+  <figcaption class="c-media-caption">{{ caption }}</figcaption>
+  {% endif %}
+</figure>
+{%- endmacro %}

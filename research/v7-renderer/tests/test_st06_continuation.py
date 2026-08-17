@@ -97,10 +97,29 @@ def test_continuation_pages_are_full_width_step_rows() -> None:
     )
 
 
+def _page_of(pkg, st_type: str, role=None) -> dict:
+    """The page with `st_type`; when `role` is given it must also match
+    continuation_role (US-604: ST-02/ST-05/ST-06/ST-FAZIT span continuation
+    pages). With role=None a NON-continuation page is preferred, then the
+    first page of that type."""
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) != st_type:
+            continue
+        if role is None:
+            if not pg.get("continuation_index"):
+                return pg
+        elif pg.get("continuation_role") == role:
+            return pg
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) == st_type:
+            return pg
+    raise AssertionError(f"no {st_type} page (role={role!r}) in the apex fixture")
+
+
 def test_single_page_st06_unchanged() -> None:
     """A non-continuation ST-06 page keeps the exact legacy markup."""
     pkg = load_package(APEX)
-    page = copy.deepcopy(pkg.pages[15])
+    page = copy.deepcopy(_page_of(pkg, "ST-06", role="intro"))
     assert str(page.get("st_type")) == "ST-06"
     # strip identity — a single-page ST-06 has none
     for k in ("page_id", "section_id", "continuation_index",

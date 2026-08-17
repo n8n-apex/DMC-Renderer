@@ -189,12 +189,6 @@
       "data": {
         "title": "Dein Wachstum scheitert nicht am Markt",
         "body": "Dein Unternehmen läuft. Du gewinnst Kunden, dein Team liefert, der Umsatz steigt. Und trotzdem weißt du, dass du jeden Monat Geld auf dem Tisch lässt – weil jeder neue Auftrag mehr manuelle Arbeit bedeutet, nicht mehr Gewinn.\n\nManuelle Prozesse fressen in B2B-Unternehmen bis zu 30 % der gesamten Betriebskosten – das entspricht allein in der deutschen Beratungsbranche €700 bis €800 Millionen jährlich (BCG, 2025). Das ist kein Randproblem. Das ist struktureller Gewinnverlust, der sich in jeder Excel-Liste, jedem manuellen Onboarding und jeder Statusrunde versteckt.\n\nDas eigentliche Problem ist nicht, dass du zu wenig Umsatz machst. Das Problem ist, dass dein Betrieb so gebaut ist, dass mehr Umsatz automatisch mehr Overhead bedeutet. Jeder neue Kunde erhöht die Last auf deinem Team. Jede neue Anfrage landet als manuelle Aufgabe auf einem Schreibtisch. Du wächst – aber deine Marge schrumpft.\n\nDieser Report zeigt, warum 60 % der Unternehmen trotz erheblicher Investitionen keinen messbaren Wert aus AI-Initiativen ziehen (BCG, 2026) – und was die 40 % anders machen. Konkret: Wie B2B-Unternehmen mit 10 bis 50 Mitarbeitern ihre operativen Kernprozesse durch spezialisierte AI-Agenten vollständig automatisieren und dabei 30 bis 50 % ihrer Betriebskosten eliminieren, ohne ihre bestehende Tool-Umgebung aufzugeben oder ein einziges IT-Projekt zu stemmen.\n\nDu wirst keine generischen KI-Ratschläge finden. Du wirst sehen, wo genau der Flaschenhals entsteht, was er dich pro Monat kostet – und welcher Mechanismus ihn dauerhaft beseitigt.",
-        "zielgruppe": [
-          "B2B-Unternehmen mit 10 bis 50 Mitarbeitern",
-          "€500.000 bis €3 Millionen Jahresumsatz",
-          "Geschäftsführer, bei denen jeder neue Kunde mehr Overhead erzeugt als Marge",
-          "Teams, die in der Phase stecken, in der manuelles Wachstum aufhört zu funktionieren"
-        ],
         "pullquote": "Nicht zu wenig Umsatz ist das Problem – sondern ein Betrieb, in dem jeder neue Kunde mehr Overhead bringt als Marge.",
         "viz": [
           {
@@ -225,10 +219,15 @@
       "slots": [],
       "assets": [],
       "components": [],
+      "section_id": "section.2",
+      "page_id": "section.2.page.1",
+      "continuation_index": 1,
+      "continuation_role": "context",
+      "section_page_count": 2,
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
-        "page_key": "slot.2",
+        "page_key": "section.2.page.1",
         "section_id": "section.2",
         "st_type": "ST-02",
         "selected_reference": null,
@@ -245,9 +244,70 @@
           {
             "page": 1,
             "role": "context"
-          },
+          }
+        ],
+        "region_plan": [
           {
-            "page": 2,
+            "region": "main",
+            "role": "main",
+            "bounds": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "renderer_devices": [
+          "radial_cluster",
+          "stat_strip"
+        ]
+      }
+    },
+    {
+      "slot": 2,
+      "st_type": "ST-02",
+      "css_template": "outlook",
+      "has_cta": false,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
+        "zielgruppe": [
+          "B2B-Unternehmen mit 10 bis 50 Mitarbeitern",
+          "€500.000 bis €3 Millionen Jahresumsatz",
+          "Geschäftsführer, bei denen jeder neue Kunde mehr Overhead erzeugt als Marge",
+          "Teams, die in der Phase stecken, in der manuelles Wachstum aufhört zu funktionieren"
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "section_id": "section.2",
+      "page_id": "section.2.page.2",
+      "continuation_index": 2,
+      "continuation_role": "evidence",
+      "section_page_count": 2,
+      "director_brief": {
+        "client_slug": "apex",
+        "report_id": "APEX-R1",
+        "page_key": "section.2.page.2",
+        "section_id": "section.2",
+        "st_type": "ST-02",
+        "selected_reference": null,
+        "rationale": "ST-02 has no matching reference in the catalog; page scored alone",
+        "visual_job": "support",
+        "must_show": [],
+        "must_not_imply": [
+          "new metric",
+          "fake interface",
+          "real customer photograph",
+          "price"
+        ],
+        "page_arc": [
+          {
+            "page": 1,
             "role": "evidence"
           }
         ],
@@ -297,7 +357,163 @@
           "Frese Recruiting",
           "Conesso GmbH",
           "Pure Media Marketing"
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "team",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "team",
+          "index": null,
+          "expected": "team",
+          "warnings": [],
+          "slot_id": "about_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "4x3"
+        },
+        {
+          "slot_kind": "press_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "press-logo-*",
+          "index": null,
+          "expected": "press-logo-*",
+          "warnings": [],
+          "slot_id": "press_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "client_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "client-logo-*",
+          "index": null,
+          "expected": "client-logo-*",
+          "warnings": [],
+          "slot_id": "client_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_0.png",
+          "drive_key": "proof-*",
+          "index": 0,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_1.png",
+          "drive_key": "proof-*",
+          "index": 1,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/3_proof_2.png",
+          "drive_key": "proof-*",
+          "index": 2,
+          "expected": null,
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "logo",
+          "index": null,
+          "expected": "logo",
+          "warnings": [],
+          "slot_id": "about_logo",
+          "image_type": "logo",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "section_id": "section.3",
+      "page_id": "section.3.page.1",
+      "continuation_index": 1,
+      "continuation_role": "identity",
+      "section_page_count": 2,
+      "director_brief": {
+        "client_slug": "apex",
+        "report_id": "APEX-R1",
+        "page_key": "section.3.page.1",
+        "section_id": "section.3",
+        "st_type": "ST-05",
+        "selected_reference": null,
+        "rationale": "ST-05 has no matching reference in the catalog; page scored alone",
+        "visual_job": "support",
+        "must_show": [
+          "100+",
+          "€200k+",
+          "30-50%"
         ],
+        "must_not_imply": [
+          "new metric",
+          "fake interface",
+          "real customer photograph",
+          "price"
+        ],
+        "page_arc": [
+          {
+            "page": 1,
+            "role": "identity"
+          }
+        ],
+        "region_plan": [
+          {
+            "region": "main",
+            "role": "main",
+            "bounds": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "renderer_devices": [
+          "stat_strip",
+          "testimonial_cards",
+          "logo_wall"
+        ]
+      }
+    },
+    {
+      "slot": 3,
+      "st_type": "ST-05",
+      "css_template": "about",
+      "has_cta": false,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
         "credibility_points": [
           "Abgeschlossene AI-Projekte: 100+",
           "Betriebskosteneinsparung: 30–50 %",
@@ -407,20 +623,21 @@
       ],
       "assets": [],
       "components": [],
+      "section_id": "section.3",
+      "page_id": "section.3.page.2",
+      "continuation_index": 2,
+      "continuation_role": "proof",
+      "section_page_count": 2,
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
-        "page_key": "slot.3",
+        "page_key": "section.3.page.2",
         "section_id": "section.3",
         "st_type": "ST-05",
         "selected_reference": null,
         "rationale": "ST-05 has no matching reference in the catalog; page scored alone",
         "visual_job": "support",
-        "must_show": [
-          "100+",
-          "€200k+",
-          "30-50%"
-        ],
+        "must_show": [],
         "must_not_imply": [
           "new metric",
           "fake interface",
@@ -430,10 +647,6 @@
         "page_arc": [
           {
             "page": 1,
-            "role": "identity"
-          },
-          {
-            "page": 2,
             "role": "proof"
           }
         ],
@@ -2379,10 +2592,10 @@
     }
   ],
   "slot_summary": {
-    "resolved": 7,
+    "resolved": 10,
     "missing_required": 4,
-    "absent": 4,
-    "total": 15,
+    "absent": 8,
+    "total": 22,
     "missing": [
       {
         "page_slot": 7,
@@ -2762,7 +2975,7 @@
       }
     ],
     "layout_warnings": [
-      "page count mismatch: 22 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
+      "page count mismatch: 24 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
       "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
       "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
     ],

@@ -1,0 +1,202 @@
+{
+  "face-01.png": {
+    "cohort": "reference",
+    "source": "apex-15",
+    "image_sha256": "0d949f1e826017ce7de97c646f2de67f04acaaacee2aec976318e669595e555e"
+  },
+  "face-02.png": {
+    "cohort": "reference",
+    "source": "apex-05",
+    "image_sha256": "0e3e9906fd52077b82d8829dc1d4a6aa2b95757d145cdfa5858d7d7c0c90bd8c"
+  },
+  "face-03.png": {
+    "cohort": "reference",
+    "source": "apex-07",
+    "image_sha256": "14dcf48ecf12208eb64fd50a0bc2f34d53a0d1c133d7ab04293d7be345e1b43f"
+  },
+  "face-04.png": {
+    "cohort": "reference",
+    "source": "aerzte-04",
+    "image_sha256": "1707e8770e7fa05697ba94e0c6593753265efe6f2e5e72dad8a0084430d1b806"
+  },
+  "face-05.png": {
+    "cohort": "candidate",
+    "source": "face.18",
+    "image_sha256": "19ccddbf147b6e7981cf6c1cb3e1c65ba77f4614eedd50c326f65707e16a3e21"
+  },
+  "face-06.png": {
+    "cohort": "candidate",
+    "source": "face.10",
+    "image_sha256": "1de2643e1a44e06888b70a3882a4e421ba66f954eab3ad90030bb8fa88b20608"
+  },
+  "face-07.png": {
+    "cohort": "candidate",
+    "source": "face.19",
+    "image_sha256": "2003b9d5da37bee64ca9520d2ad78e09136374d7073827844ab8c333fed4af5d"
+  },
+  "face-08.png": {
+    "cohort": "reference",
+    "source": "apex-14",
+    "image_sha256": "24217fc7bfa335d84aa1ac0ae9e9032e932e16dcb0408b209dfa70a2a4787cde"
+  },
+  "face-09.png": {
+    "cohort": "reference",
+    "source": "apex-04",
+    "image_sha256": "2854321691593df56425a58bdf0d750ed2e3e4e935c5f3b9de099f355b84da93"
+  },
+  "face-10.png": {
+    "cohort": "reference",
+    "source": "apex-02",
+    "image_sha256": "3a6a47711fad675e3baf9858dad71835a236320ad7346b8973975a0d4cd24543"
+  },
+  "face-11.png": {
+    "cohort": "candidate",
+    "source": "face.02",
+    "image_sha256": "4865889127d6f0c904ce69aca38a5d75e7353650158c2d0abd19c481b139b1cd"
+  },
+  "face-12.png": {
+    "cohort": "candidate",
+    "source": "face.14",
+    "image_sha256": "607ceacfdc725481ba2b90280522112d47e1aad5c8d32ab1eebe7f384695c47d"
+  },
+  "face-13.png": {
+    "cohort": "candidate",
+    "source": "face.01",
+    "image_sha256": "65fcbea32fd5ca2a1d4e2faed2d7fd964db0f1ed18ac40d058411fd3b3051516"
+  },
+  "face-14.png": {
+    "cohort": "candidate",
+    "source": "face.20",
+    "image_sha256": "6a408b27b31e1d16bb9db0d02cb8c163d1a9d339608452b441149cd05c913516"
+  },
+  "face-15.png": {
+    "cohort": "candidate",
+    "source": "face.17",
+    "image_sha256": "6e46e1dc8aefc0b4de4ef1fae96e7abd9f83cb82f75347b1fa68ca783efa86f7"
+  },
+  "face-16.png": {
+    "cohort": "candidate",
+    "source": "face.16",
+    "image_sha256": "731c97f2b33264088203f99386868d99674b1e4d942bef51538e0959a13ba7b3"
+  },
+  "face-17.png": {
+    "cohort": "reference",
+    "source": "apex-01",
+    "image_sha256": "7d693c1f44c5b71c563a7b1635d6baab82ec6d720deaea881ed1cae2f4c2f574"
+  },
+  "face-18.png": {
+    "cohort": "reference",
+    "source": "apex-08",
+    "image_sha256": "87de9d1390d61cdfd90c270441c354db370f5db48b710a485d557bd6472ddaa0"
+  },
+  "face-19.png": {
+    "cohort": "reference",
+    "source": "apex-11",
+    "image_sha256": "892b43b5e759c2b7c73d3ce6939ded4c3ab44eb388c8475f5e6b96f5690b4035"
+  },
+  "face-20.png": {
+    "cohort": "candidate",
+    "source": "face.12",
+    "image_sha256": "89f983d9d408556440ac9c397d2491f5255c78b4e1d8a2cefaae782600b57f62"
+  },
+  "face-21.png": {
+    "cohort": "candidate",
+    "source": "face.15",
+    "image_sha256": "8e399236b94bf435448ef57475e4d95987c6dda7dad4a5c9cd1d207a96f9b1e0"
+  },
+  "face-22.png": {
+    "cohort": "reference",
+    "source": "apex-13",
+    "image_sha256": "8f26a1e44dc528dc90d9f23f313937460561a6084b5e76b3ae438a055f993202"
+  },
+  "face-23.png": {
+    "cohort": "reference",
+    "source": "apex-16",
+    "image_sha256": "96ee3522fd31843241e9648eba7897e182dc5d31a4b4b85c51b4bb465a43cb6a"
+  },
+  "face-24.png": {
+    "cohort": "reference",
+    "source": "aerzte-19",
+    "image_sha256": "a966ffefc2f10c5b9320d7691075c4b9567eba0d8238a8a2362b55dc18f02b90"
+  },
+  "face-25.png": {
+    "cohort": "candidate",
+    "source": "face.04",
+    "image_sha256": "aa1e528b639247e2485688c7514d24de0c5bc58074acd73590c205f3dbb19c72"
+  },
+  "face-26.png": {
+    "cohort": "candidate",
+    "source": "face.13",
+    "image_sha256": "b0ff120dbbdf33625d1660c28a2a6482920895f7c06a3e5334967c1982c7858d"
+  },
+  "face-27.png": {
+    "cohort": "reference",
+    "source": "apex-03",
+    "image_sha256": "b441181ccdc45580b5886c46502a85439d0809637c43e472154c90fee259b279"
+  },
+  "face-28.png": {
+    "cohort": "reference",
+    "source": "apex-12",
+    "image_sha256": "c0f761e291a8162d7d8d375008f183bfdd47984e5097fa29dd56d9858666c6d9"
+  },
+  "face-29.png": {
+    "cohort": "candidate",
+    "source": "face.08",
+    "image_sha256": "c1190f5469a8218584726768495ca7f60a6c3e5d53e45894f64ad9b5a830b24f"
+  },
+  "face-30.png": {
+    "cohort": "reference",
+    "source": "apex-10",
+    "image_sha256": "c1a7a9e3e25de314b5c45093a1e410bcf216f6fe9dbf88d0d622b7b17f47389b"
+  },
+  "face-31.png": {
+    "cohort": "candidate",
+    "source": "face.09",
+    "image_sha256": "c4a0e149ec3e9a8a352eb2e7e547ce4b6c5292037d1a748e8d26525cab451b72"
+  },
+  "face-32.png": {
+    "cohort": "candidate",
+    "source": "face.05",
+    "image_sha256": "c9afbe4ef6f9b8a7125efe18624c4623107247c66cad4d942102d78243101410"
+  },
+  "face-33.png": {
+    "cohort": "candidate",
+    "source": "face.03",
+    "image_sha256": "e01f0c4ff92e83c3007220c472d54be654ec7b8e27374f2a1d582618d833dfa5"
+  },
+  "face-34.png": {
+    "cohort": "reference",
+    "source": "apex-09",
+    "image_sha256": "e6d5ecc6bdc130f2864ee32872fb916ad4186191af2d31ac3772f19d704a7747"
+  },
+  "face-35.png": {
+    "cohort": "candidate",
+    "source": "face.11",
+    "image_sha256": "ea426c72c5166b8639bb787ed26bcd8a72dd66e5feb52d220fc090ec82332cd7"
+  },
+  "face-36.png": {
+    "cohort": "candidate",
+    "source": "face.07",
+    "image_sha256": "f1ba538ef704270d149fb60a28fb7ea1b3fc174bd56e97e47a473c1148133406"
+  },
+  "face-37.png": {
+    "cohort": "reference",
+    "source": "apex-18",
+    "image_sha256": "f37395dbe57c863a6413225e7ce1c033ce55cd39b2b11d894d123c71d0605c9c"
+  },
+  "face-38.png": {
+    "cohort": "reference",
+    "source": "aerzte-09",
+    "image_sha256": "f55edc9448a2c8f3dcde18af35eab972d846c60695d46344b45c2187f47d4ee1"
+  },
+  "face-39.png": {
+    "cohort": "reference",
+    "source": "aerzte-13",
+    "image_sha256": "f8bcda53ac4bbff29580ab4acd0224f8fa38312c7eff62f41d6ee5d655c3249d"
+  },
+  "face-40.png": {
+    "cohort": "candidate",
+    "source": "face.06",
+    "image_sha256": "fb9334fc76d3716e599e614df5b7ed03d50f2d1e212a981899322008785013d8"
+  }
+}

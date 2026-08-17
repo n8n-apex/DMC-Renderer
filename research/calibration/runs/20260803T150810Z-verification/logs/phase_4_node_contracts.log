@@ -1,0 +1,14 @@
+✔ valid claim IDs ground numbers, quotes, credentials, and named outcomes (2.426875ms)
+✔ a number present in source text still fails without a claim ID (0.126875ms)
+✔ unsupported quote, credential, and named outcome fail independently (0.10925ms)
+✔ source ledger produces stable IDs and exact source spans (2.160375ms)
+✔ computed claim declares operands and recomputes its value (0.129417ms)
+✔ claim source text must match an exact source span (0.1755ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.630625

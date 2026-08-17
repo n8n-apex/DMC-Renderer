@@ -1,0 +1,13 @@
+{# Horizontal flex of stat cells. Each cell: a big accent number (.stat-value)
+   over an uppercase label (.stat-label). stats = list of {value, label} dicts.
+   Styling: .c-stat-strip + children. #}
+{% macro stat_strip(stats) -%}
+<div class="c-stat-strip">
+  {% for s in stats %}
+  <div class="c-stat-cell">
+    <div class="c-stat-value">{{ s.value }}</div>
+    <div class="c-stat-label">{{ s.label }}</div>
+  </div>
+  {% endfor %}
+</div>
+{%- endmacro %}

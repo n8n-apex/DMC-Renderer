@@ -1,0 +1,15 @@
+{# Vertical stack of stat cells — a column variant of stat_strip. Each cell:
+   a big accent number (.c-stat-value) over an uppercase label (.c-stat-label),
+   stacked top-to-bottom with a hairline divider between cells. Built for the
+   cover stat rail (overlaid on a dark scrim). stats = list of {value, label}.
+   on_dark=true colors the labels for a dark ground. Styling: .c-stat-rail. #}
+{% macro stat_rail(stats, on_dark=false) -%}
+<div class="c-stat-rail{% if on_dark %} c-stat-rail--on-dark{% endif %}">
+  {% for s in stats %}
+  <div class="c-stat-rail-cell">
+    <div class="c-stat-value">{{ s.value }}</div>
+    <div class="c-stat-label">{{ s.label }}</div>
+  </div>
+  {% endfor %}
+</div>
+{%- endmacro %}

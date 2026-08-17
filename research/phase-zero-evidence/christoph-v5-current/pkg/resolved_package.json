@@ -1,0 +1,1284 @@
+{
+  "version": "2.0",
+  "generated_at": "2026-08-02T19:25:25.535098Z",
+  "record_id": "CL-20260527-183949-LJN",
+  "brand": {
+    "brand_primary": "#243b53",
+    "brand_accent": "#d4622a",
+    "brand_neutral_dark": "#243b53",
+    "brand_neutral_mid": "#5E5E58",
+    "brand_neutral_light": "#efece4",
+    "font_heading": "Montserrat",
+    "font_body": "Source Sans 3",
+    "qr_target_url": "https://inventory-one.com",
+    "company_name_short": "Inventory ONE",
+    "company_url_display": "inventory-one.com"
+  },
+  "axes": {
+    "headline_type": "serif",
+    "palette": "dual_contrasting",
+    "accent_mechanic": "contrasting_hue",
+    "texture": "smooth",
+    "qr_enabled": false,
+    "density": "balanced",
+    "ground_mode": "light"
+  },
+  "brand_axes": {
+    "headline_type": "serif",
+    "ground_mode": "light",
+    "texture": "smooth",
+    "accent_mechanic": "contrasting_hue"
+  },
+  "provenance": {
+    "headline_type": "default",
+    "texture": "default",
+    "density": "default",
+    "ground_mode": "default",
+    "palette": "derived",
+    "accent_mechanic": "derived",
+    "qr_enabled": "default"
+  },
+  "fonts": {
+    "heading": {
+      "name": "Montserrat",
+      "path": "fonts/Montserrat[wght].ttf",
+      "source": "chassis_default"
+    },
+    "body": {
+      "name": "Source Sans 3",
+      "path": "fonts/SourceSans3[wght].ttf",
+      "source": "chassis_default"
+    }
+  },
+  "report_assets": [
+    {
+      "slot_id": "background_texture",
+      "image_type": "texture",
+      "path": "assets/report_background_texture.png",
+      "status": "generated",
+      "message": "fal cache hit (cd1047201c4f)",
+      "prompt": "Image generation stubbed for background_texture (texture, aspect 3:4); no brief style prompt available. Subject: a seamless full-bleed abstract background surface/texture.",
+      "negative_prompt": null
+    }
+  ],
+  "pages": [
+    {
+      "slot": 1,
+      "st_type": "ST-01",
+      "css_template": "cover",
+      "has_cta": false,
+      "page_numbers": "1",
+      "cover_validation": {
+        "headline_type": "Typ A — Etikett",
+        "headline_size_class": "short",
+        "awareness_level": 2,
+        "h_score": 9,
+        "s_score": 7,
+        "b_score": 1,
+        "disqualifications": [],
+        "warnings": [
+          "fewer than 3 bullets (got 0)",
+          "Typ A (Etikett) detected — verify brand is known; unknown brands should use Typ B (Diagnose)"
+        ],
+        "overall": "needs_review"
+      },
+      "data": {
+        "title": "Warum die Migration Ihrer Desktop-Software ins Web stagniert",
+        "subtitle": "Wie mittelständische Software-Hersteller mit der UX-First Modernisierungsmethode scheiternde Web-Projekte retten und Kundenabwanderung stoppen.",
+        "kicker_pills": [],
+        "proof_stats": [],
+        "author": {
+          "name": "Christoph Winter",
+          "role": "Gründer"
+        },
+        "titel": "Warum die Migration Ihrer Desktop-Software ins Web stagniert",
+        "untertitel": "Wie mittelständische Software-Hersteller mit der UX-First Modernisierungsmethode scheiternde Web-Projekte retten und Kundenabwanderung stoppen.",
+        "kicker": "Leitfaden für Geschäftsführer und CTOs",
+        "audience": "Leitfaden für Geschäftsführer und CTOs"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "founder_hero",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/1_founder.webp",
+          "drive_key": "founder",
+          "index": null,
+          "expected": "founder",
+          "warnings": [],
+          "slot_id": "founder",
+          "image_type": "portrait",
+          "aspect_ratio": "3x4"
+        }
+      ],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 2,
+      "st_type": "ST-02",
+      "css_template": "outlook",
+      "has_cta": false,
+      "page_numbers": "2-3",
+      "cover_validation": null,
+      "data": {
+        "title": "Der Code stimmt, aber das Projekt scheitert am Nutzer",
+        "body": "Mittelständische Software-Hersteller glauben oft, sie müssen ihre Desktop-Software eins zu eins im Web nachbauen. Doch 90 Prozent dieser Migrationsprojekte scheitern. Sie haben kein Entwickler-Problem, sondern ein UX-Problem: Es wird gebaut, was technisch einfach ist, statt was der Nutzer braucht.\n\nDieser Bericht zeigt Ihnen den Weg aus dem Nebel hin zu einer Web-Version, die Ihre Kunden wirklich bedienen können.",
+        "zielgruppe": [
+          "Warum das Eins-zu-eins-Nachbauen alter Desktop-Anwendungen im Web phänomenal scheitert",
+          "Wie Sie mit der UX-First Modernisierungsmethode entwickeln, statt ungesehen Code zu schreiben",
+          "Der Weg, wie ein validierter, klickbarer Prototyp Ihr Entwicklungsrisiko vor dem ersten Code minimiert"
+        ],
+        "titel": "Der Code stimmt, aber das Projekt scheitert am Nutzer",
+        "einleitung": "Mittelständische Software-Hersteller glauben oft, sie müssen ihre Desktop-Software eins zu eins im Web nachbauen. Doch 90 Prozent dieser Migrationsprojekte scheitern. Sie haben kein Entwickler-Problem, sondern ein UX-Problem: Es wird gebaut, was technisch einfach ist, statt was der Nutzer braucht.",
+        "ausblick_punkte": [
+          "Warum das Eins-zu-eins-Nachbauen alter Desktop-Anwendungen im Web phänomenal scheitert",
+          "Wie Sie mit der UX-First Modernisierungsmethode entwickeln, statt ungesehen Code zu schreiben",
+          "Der Weg, wie ein validierter, klickbarer Prototyp Ihr Entwicklungsrisiko vor dem ersten Code minimiert"
+        ],
+        "abschluss": "Dieser Bericht zeigt Ihnen den Weg aus dem Nebel hin zu einer Web-Version, die Ihre Kunden wirklich bedienen können.",
+        "viz": [
+          {
+            "preset": "donut",
+            "figure": "90 %",
+            "percent": 90.0
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 3,
+      "st_type": "ST-05",
+      "css_template": "about",
+      "has_cta": false,
+      "page_numbers": "4-5",
+      "cover_validation": null,
+      "data": {
+        "title": "Warum wir erst gestalten, bevor Ihre Entwickler die erste Zeile Code schreiben",
+        "body": "Seit über 20 Jahren dreht sich bei uns alles um Software-Usability und Ergonomie. Mittelständische Software-Hersteller kommen zu uns, wenn die Modernisierung ihrer Desktop-Systeme stagniert, weil technisch einwandfreier Code am Endnutzer vorbeigeht.\n\nMit der UX-First Modernisierungsmethode lösen wir das Entwicklungsrisiko auf. Statt direkt Datenbanken zu kopieren, beobachten wir die echten Arbeitsabläufe Ihrer Anwender. Erst wenn ein interaktiver, klickbarer Prototyp mit den Nutzern validiert ist, startet die schrittweise und risikoarme Migration.",
+        "stats": [
+          {
+            "value": "über 20",
+            "label": "Jahre Erfahrung im Bereich Software-Usability und Ergonomie"
+          },
+          {
+            "value": "8",
+            "label": "begleitete Kundenprojekte"
+          }
+        ],
+        "partners": [],
+        "credibility_points": [
+          "Über 20 Jahre Erfahrung im Bereich Software-Usability und Ergonomie",
+          "Zertifizierte UX-Professionals im Team",
+          "Bereits 8 erfolgreich begleitete Kundenprojekte"
+        ],
+        "titel": "Warum wir erst gestalten, bevor Ihre Entwickler die erste Zeile Code schreiben",
+        "einleitung": "Seit über 20 Jahren dreht sich bei uns alles um Software-Usability und Ergonomie. Mittelständische Software-Hersteller kommen zu uns, wenn die Modernisierung ihrer Desktop-Systeme stagniert, weil technisch einwandfreier Code am Endnutzer vorbeigeht.",
+        "angebot_text": "Mit der UX-First Modernisierungsmethode lösen wir das Entwicklungsrisiko auf. Statt direkt Datenbanken zu kopieren, beobachten wir die echten Arbeitsabläufe Ihrer Anwender. Erst wenn ein interaktiver, klickbarer Prototyp mit den Nutzern validiert ist, startet die schrittweise und risikoarme Migration.",
+        "vertrauenspunkte": [
+          "Über 20 Jahre Erfahrung im Bereich Software-Usability und Ergonomie",
+          "Zertifizierte UX-Professionals im Team",
+          "Bereits 8 erfolgreich begleitete Kundenprojekte"
+        ],
+        "kennzahlen": [
+          {
+            "wert": "über 20",
+            "label": "Jahre Erfahrung im Bereich Software-Usability und Ergonomie"
+          },
+          {
+            "wert": "8",
+            "label": "begleitete Kundenprojekte"
+          }
+        ],
+        "bildwunsch": {
+          "art": "portrait",
+          "zweck": "Zeigt den Gründer Christoph Winter im partnerschaftlichen Gespräch auf Augenhöhe."
+        },
+        "author": {
+          "name": "Christoph Winter",
+          "role": "Gründer"
+        }
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "team",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "team",
+          "index": null,
+          "expected": "team",
+          "warnings": [],
+          "slot_id": "about_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "4x3"
+        },
+        {
+          "slot_kind": "press_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "press-logo-*",
+          "index": null,
+          "expected": "press-logo-*",
+          "warnings": [],
+          "slot_id": "press_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "client_logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "client-logo-*",
+          "index": null,
+          "expected": "client-logo-*",
+          "warnings": [],
+          "slot_id": "client_logo",
+          "image_type": "logo",
+          "aspect_ratio": "3x2"
+        },
+        {
+          "slot_kind": "proof",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "proof-*",
+          "index": null,
+          "expected": "proof-*",
+          "warnings": [],
+          "slot_id": "proof",
+          "image_type": "photo",
+          "aspect_ratio": "4x5"
+        },
+        {
+          "slot_kind": "logo",
+          "source": "drive",
+          "status": "absent",
+          "path": null,
+          "drive_key": "logo",
+          "index": null,
+          "expected": "logo",
+          "warnings": [],
+          "slot_id": "about_logo",
+          "image_type": "logo",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 4,
+      "st_type": "ST-09",
+      "css_template": "status_quo",
+      "has_cta": false,
+      "page_numbers": "6-7",
+      "cover_validation": null,
+      "data": {
+        "title": "Technisch perfekt, aber am Anwender vorbei programmiert",
+        "body": "Nach anderthalb Jahren Entwicklung steht noch immer kein fertiges Produkt. Stattdessen stochern Sie im Nebel aus 347 offenen Features. Die Architektur steht, die Datenbanken sind migriert, doch bei der ersten Vorführung kommt der Satz, den kein CTO hören will: Das kann doch keiner bedienen.\n\nWenn Sie modernisieren, dürfen Sie nicht die Fehler der Vergangenheit im Web neu aufbauen. Es braucht einen anderen Weg, der beim Nutzer startet statt beim Code.",
+        "symptoms": [
+          "300.000 Euro verbrannt. Viel Geld ist in die neue Web-Version geflossen. Doch weil Masken einfach eins zu eins nachgebaut wurden, steht das Projekt kurz vor dem Neustart, und das Budget ist weg.",
+          "Drei Kündigungen wegen Stillstand. Bestandskunden warten ungeduldig auf die neue Software. Wenn die versprochene Web-Version einfach nicht kommt, wechseln die ersten Kunden frustriert zum Cloud-Wettbewerber.",
+          "Sechs Monate Einarbeitung. Die Planungssoftware ist so überladen, dass neue Mitarbeiter Monate brauchen, um sie zu verstehen. Der Vertrieb verliert wichtige Aufträge an agile Konkurrenten."
+        ],
+        "titel": "Technisch perfekt, aber am Anwender vorbei programmiert",
+        "einleitung": "Nach anderthalb Jahren Entwicklung steht noch immer kein fertiges Produkt. Stattdessen stochern Sie im Nebel aus 347 offenen Features. Die Architektur steht, die Datenbanken sind migriert, doch bei der ersten Vorführung kommt der Satz, den kein CTO hören will: Das kann doch keiner bedienen.",
+        "schmerzpunkte": [
+          {
+            "titel": "300.000 Euro verbrannt",
+            "beschreibung": "Viel Geld ist in die neue Web-Version geflossen. Doch weil Masken einfach eins zu eins nachgebaut wurden, steht das Projekt kurz vor dem Neustart, und das Budget ist weg."
+          },
+          {
+            "titel": "Drei Kündigungen wegen Stillstand",
+            "beschreibung": "Bestandskunden warten ungeduldig auf die neue Software. Wenn die versprochene Web-Version einfach nicht kommt, wechseln die ersten Kunden frustriert zum Cloud-Wettbewerber."
+          },
+          {
+            "titel": "Sechs Monate Einarbeitung",
+            "beschreibung": "Die Planungssoftware ist so überladen, dass neue Mitarbeiter Monate brauchen, um sie zu verstehen. Der Vertrieb verliert wichtige Aufträge an agile Konkurrenten."
+          }
+        ],
+        "ueberleitung": "Wenn Sie modernisieren, dürfen Sie nicht die Fehler der Vergangenheit im Web neu aufbauen. Es braucht einen anderen Weg, der beim Nutzer startet statt beim Code.",
+        "rechnung": {
+          "titel": "Was der Stillstand bereits gekostet hat",
+          "schritte": [
+            {
+              "wert": "347",
+              "einheit": "offene Features",
+              "label": "im Nebel entwickelt"
+            },
+            {
+              "wert": "6",
+              "einheit": "Monate",
+              "label": "Einarbeitung je neuem Mitarbeiter"
+            }
+          ],
+          "ergebnis": {
+            "wert": "300.000 €",
+            "label": "verbrannt, ohne fertiges Produkt"
+          }
+        },
+        "viz": [
+          {
+            "preset": "formula_ladder",
+            "titel": "Was der Stillstand bereits gekostet hat",
+            "schritte": [
+              {
+                "wert": "347",
+                "einheit": "offene Features",
+                "label": "im Nebel entwickelt"
+              },
+              {
+                "wert": "6",
+                "einheit": "Monate",
+                "label": "Einarbeitung je neuem Mitarbeiter"
+              }
+            ],
+            "ergebnis": {
+              "wert": "300.000 €",
+              "label": "verbrannt, ohne fertiges Produkt"
+            }
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [
+        {
+          "slot_id": "status_quo_scene",
+          "image_type": "scene",
+          "path": "assets/4_status_quo_scene.png",
+          "status": "generated",
+          "message": "fal cache hit (9ed717caaab1)",
+          "prompt": "Image generation stubbed for status_quo_scene (scene, aspect 16:9); no brief style prompt available. Subject: Technisch perfekt, aber am Anwender vorbei programmiert Nach anderthalb Jahren Entwicklung steht noch immer kein fertiges Produkt. Stattdessen stochern Sie im Nebel aus 347 offenen Features. Die Archi.",
+          "negative_prompt": null
+        }
+      ],
+      "components": []
+    },
+    {
+      "slot": 5,
+      "st_type": "ST-14",
+      "css_template": "false_beliefs",
+      "has_cta": false,
+      "page_numbers": "8-9",
+      "cover_validation": null,
+      "data": {
+        "title": "Drei Denkfehler, die Ihr Web-Projekt Millionen kosten können",
+        "body": "Wer ein gewachsenes Desktop-System ins Web bringen will, verlässt sich oft auf logisch klingende Annahmen. Doch genau diese vertrauten Pfade führen bei Modernisierungen fast immer in die Sackgasse.\n\nDie Modernisierung scheitert nicht an der Technik. Sie scheitert an der falschen Herangehensweise.",
+        "beliefs": [
+          {
+            "irrglaube": "\"Wir müssen nur unsere Entwickler oder Kunden fragen, wie die neue Web-Software aussehen soll\"",
+            "realitaet": "Nutzer reproduzieren nur das Alte. Du musst sie beobachten, nicht fragen.\n\nKundenfordern im Interview oft nur alte Knöpfe ein. Entwickler bauen, was technisch einfach ist. Das führt zu einer Abbruchquote von 90 Prozent.",
+            "quelle": null
+          },
+          {
+            "irrglaube": "\"Wir müssen das alte System eins zu eins nachbauen, damit die Nutzer sich zurechtfinden\"",
+            "realitaet": "Graue 90er-Jahre-Masken im Web nachbauen funktioniert phänomenal schlecht.\n\nAnwender erwarten moderne UX-Standards. Wer alte Masken eins zu eins ins Web kopiert, riskiert extreme Einarbeitungszeiten von weiterhin 6 Monaten.",
+            "quelle": null
+          },
+          {
+            "irrglaube": "\"Ein Modernisierungsprojekt muss als großes Big-Bang-Projekt gestartet werden, wo am Ende alles auf einmal neu ist\"",
+            "realitaet": "Big-Bang-Projekte sind der sichere Tod für jedes Softwareprojekt.\n\nLaut Deloitte scheitern 70 bis 75 Prozent dieser Riesen-Projekte. Agile iterative Ansätze hingegen erreichen eine Erfolgsquote von 80 Prozent.",
+            "quelle": null
+          }
+        ],
+        "titel": "Drei Denkfehler, die Ihr Web-Projekt Millionen kosten können",
+        "einleitung": "Wer ein gewachsenes Desktop-System ins Web bringen will, verlässt sich oft auf logisch klingende Annahmen. Doch genau diese vertrauten Pfade führen bei Modernisierungen fast immer in die Sackgasse.",
+        "irrtuemer": [
+          {
+            "irrtum": "\"Wir müssen nur unsere Entwickler oder Kunden fragen, wie die neue Web-Software aussehen soll\"",
+            "realitaet": "Nutzer reproduzieren nur das Alte. Du musst sie beobachten, nicht fragen.",
+            "erklaerung": "Kundenfordern im Interview oft nur alte Knöpfe ein. Entwickler bauen, was technisch einfach ist. Das führt zu einer Abbruchquote von 90 Prozent."
+          },
+          {
+            "irrtum": "\"Wir müssen das alte System eins zu eins nachbauen, damit die Nutzer sich zurechtfinden\"",
+            "realitaet": "Graue 90er-Jahre-Masken im Web nachbauen funktioniert phänomenal schlecht.",
+            "erklaerung": "Anwender erwarten moderne UX-Standards. Wer alte Masken eins zu eins ins Web kopiert, riskiert extreme Einarbeitungszeiten von weiterhin 6 Monaten."
+          },
+          {
+            "irrtum": "\"Ein Modernisierungsprojekt muss als großes Big-Bang-Projekt gestartet werden, wo am Ende alles auf einmal neu ist\"",
+            "realitaet": "Big-Bang-Projekte sind der sichere Tod für jedes Softwareprojekt.",
+            "erklaerung": "Laut Deloitte scheitern 70 bis 75 Prozent dieser Riesen-Projekte. Agile iterative Ansätze hingegen erreichen eine Erfolgsquote von 80 Prozent."
+          }
+        ],
+        "abschluss": "Die Modernisierung scheitert nicht an der Technik. Sie scheitert an der falschen Herangehensweise.",
+        "fakten": [
+          {
+            "figur": "90%",
+            "label": "Abbruchquote bei klassischen Modernisierungsprojekten",
+            "quelle": "(transcript)",
+            "icon": "warnung"
+          },
+          {
+            "figur": "70% to 75%",
+            "label": "Scheiternde Big-Bang-Projekte im Softwarebereich",
+            "quelle": "(Deloitte 2026)",
+            "icon": "chart"
+          },
+          {
+            "figur": "80%",
+            "label": "Erfolgsquote bei agilen, iterativen Projektansätzen",
+            "quelle": "(Deloitte 2026)",
+            "icon": "check"
+          }
+        ],
+        "viz": [
+          {
+            "preset": "icon_stat_row",
+            "items": [
+              {
+                "figur": "90%",
+                "label": "Abbruchquote bei klassischen Modernisierungsprojekten",
+                "text": null,
+                "quelle": "(transcript)",
+                "icon": "warnung"
+              },
+              {
+                "figur": "70% to 75%",
+                "label": "Scheiternde Big-Bang-Projekte im Softwarebereich",
+                "text": null,
+                "quelle": "(Deloitte 2026)",
+                "icon": "chart"
+              },
+              {
+                "figur": "80%",
+                "label": "Erfolgsquote bei agilen, iterativen Projektansätzen",
+                "text": null,
+                "quelle": "(Deloitte 2026)",
+                "icon": "check"
+              }
+            ]
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    },
+    {
+      "slot": 6,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "10",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Ein mittelständischer ERP-Hersteller aus der Logistik-Branche stand vor der Herausforderung, seine bewährte Desktop-Anwendung erfolgreich ins Web zu migrieren.",
+        "ausgangsproblem": "Das Migrationsprojekt stagnierte bereits seit 1,5 Jahren. Ohne klaren roten Faden oder Release-Plan stocherte das frustrierte Entwickler-Team bei der Modernisierung im Nebel.",
+        "ziel": "Um den Stillstand zu brechen, setzte der Geschäftsführer auf einen radikalen UX-Ansatz, statt weiter ohne validierte Basis Code zu schreiben.",
+        "loesung": "Im Rahmen der UX-First Modernisierungsmethode wurden echte Disponenten beforscht. Auf dieser Basis wurde erst ein interaktiver Prototyp gebaut und am Anwender validiert.",
+        "ergebnis_text": null,
+        "ergebnis_headline": "Nach nur drei Monaten stand der validierte Prototyp der Haupt-Workflows. Innerhalb von sechs weiteren Monaten brachte das Entwickler-Team die erste Web-Version an den Markt.",
+        "fallstudie_number": 1,
+        "ergebnis_metrics": [
+          {
+            "value": "1,5 Jahre",
+            "label": "Vorheriger Projektstillstand",
+            "wert": "1,5 Jahre"
+          },
+          {
+            "value": "3 Monate",
+            "label": "Dauer bis zum Prototyp",
+            "wert": "3 Monate"
+          },
+          {
+            "value": "6 Monate",
+            "label": "Markteinführung erste Version",
+            "wert": "6 Monate"
+          }
+        ],
+        "kunde": {
+          "name": null,
+          "funktion": "Geschäftsführer mittelständischer Software-Hersteller",
+          "company_url": null,
+          "initials": "NN"
+        },
+        "pullquote": {
+          "text": "Die haben anderthalb Jahre im Nebel gestochert. Wir haben dann innerhalb von drei Monaten einen interaktiven Prototyp gebaut. Das war wie ein Befreiungsschlag.",
+          "attribution": "Stefan, Inventory One"
+        },
+        "kurzportrait": "Ein mittelständischer ERP-Hersteller aus der Logistik-Branche stand vor der Herausforderung, seine bewährte Desktop-Anwendung erfolgreich ins Web zu migrieren.",
+        "wendepunkt": "Um den Stillstand zu brechen, setzte der Geschäftsführer auf einen radikalen UX-Ansatz, statt weiter ohne validierte Basis Code zu schreiben.",
+        "pullquote_attribution": "Stefan, Inventory One",
+        "vorher_nachher": {
+          "von": "1,5 Jahre",
+          "nach": "6 Monate",
+          "einheit": "Zeit",
+          "label": "Vom ewigen Projektstillstand zum echten Go-to-Market"
+        },
+        "bildwunsch": {
+          "art": "geraet_mockup_laptop",
+          "zweck": "Zeigt den interaktiven Prototyp der Dispositions-Maske auf einem Laptop"
+        },
+        "viz": [
+          {
+            "preset": "transform_arrow",
+            "title": "Vom ewigen Projektstillstand zum echten Go-to-Market",
+            "from": {
+              "value": "1,5 Jahre",
+              "label": "Zeit"
+            },
+            "to": {
+              "value": "6 Monate",
+              "label": "Zeit"
+            }
+          }
+        ],
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-2.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 1,
+          "expected": "case-study-1",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 7,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "11",
+      "cover_validation": null,
+      "data": {
+        "title": "Der validierte Entwurf verkürzt die Entwicklungszeit",
+        "body": "Die UX-First Modernisierungsmethode trennt Design von Code. Das zeigt der ERP-Hersteller in der Logistik: Nach drei Monaten stand der validierte, klickbare Prototyp. Erst auf dieser sicheren Basis entwickelte das Team und brachte die Web-Version in sechs Monaten an den Markt.\n\nWenn Ihre Entwickler ohne validierten Prototyp codieren, bauen Sie im Nebel und riskieren Monate an Arbeit.",
+        "key_insight": "Erst wenn der klickbare Prototyp der Haupt-Workflows mit echten Nutzern validiert ist, darf die Programmierung starten.",
+        "compare": null,
+        "titel": "Der validierte Entwurf verkürzt die Entwicklungszeit",
+        "kernaussage": "Erst wenn der klickbare Prototyp der Haupt-Workflows mit echten Nutzern validiert ist, darf die Programmierung starten.",
+        "erklaerung": "Die UX-First Modernisierungsmethode trennt Design von Code. Das zeigt der ERP-Hersteller in der Logistik: Nach drei Monaten stand der validierte, klickbare Prototyp. Erst auf dieser sicheren Basis entwickelte das Team und brachte die Web-Version in sechs Monaten an den Markt.",
+        "bezug": "Wenn Ihre Entwickler ohne validierten Prototyp codieren, bauen Sie im Nebel und riskieren Monate an Arbeit.",
+        "vorher_nachher": {
+          "von": "3",
+          "nach": "6",
+          "einheit": "Monate",
+          "label": "Vom validierten Prototyp zur produktiven ersten Web-Version am Markt"
+        },
+        "viz": [
+          {
+            "preset": "transform_arrow",
+            "title": "Vom validierten Prototyp zur produktiven ersten Web-Version am Markt",
+            "from": {
+              "value": "3",
+              "label": "Monate"
+            },
+            "to": {
+              "value": "6",
+              "label": "Monate"
+            }
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 8,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "12",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Ein Anbieter hochkomplexer Infrastruktur-Trassierungs-Software für Schienen- und Trassenbau stand vor enormen Usability-Hürden.",
+        "ausgangsproblem": "Die Software war extrem überladen. Neue Nutzer brauchten bis zu 6 Monate Einarbeitungszeit, und die veraltete UI-Technologie erschwerte den Vertrieb an jüngere Ingenieure.",
+        "ziel": "Die hohe Fehlerquote bei der Planung und die extrem zähe Einarbeitung neuer Mitarbeiter machten ein grundlegend vereinfachtes Web-Interface zwingend erforderlich.",
+        "loesung": "Neugestaltung der Kern-Workflows durch UX-Research. Die visuelle Komplexität wurde radikal reduziert und der Fokus nur auf die tatsächlich genutzten Funktionen gelegt.",
+        "ergebnis_text": null,
+        "ergebnis_headline": "Die Einarbeitungszeit für Endanwender schrumpfte drastisch, während die Fehlerquote signifikant sank und der Vertrieb das Produkt wieder erfolgreich verkaufen konnte.",
+        "fallstudie_number": 2,
+        "ergebnis_metrics": [
+          {
+            "value": "von 6 Monaten auf wenige Wochen",
+            "label": "Einarbeitungszeit",
+            "wert": "von 6 Monaten auf wenige Wochen"
+          },
+          {
+            "value": "signifikant gesenkt",
+            "label": "Fehlerquote unter Anwendern",
+            "wert": "signifikant gesenkt"
+          }
+        ],
+        "kunde": {
+          "name": null,
+          "funktion": "CTO Softwarehaus Schienen- und Trassenbau",
+          "company_url": null,
+          "initials": "NN"
+        },
+        "pullquote": {
+          "text": "Wir haben das Interface so vereinfacht, dass die Leute nach einer kurzen Einführung direkt fehlerfrei damit arbeiten konnten.",
+          "attribution": "Stefan, Inventory One"
+        },
+        "kurzportrait": "Ein Anbieter hochkomplexer Infrastruktur-Trassierungs-Software für Schienen- und Trassenbau stand vor enormen Usability-Hürden.",
+        "wendepunkt": "Die hohe Fehlerquote bei der Planung und die extrem zähe Einarbeitung neuer Mitarbeiter machten ein grundlegend vereinfachtes Web-Interface zwingend erforderlich.",
+        "pullquote_attribution": "Stefan, Inventory One",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-3.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 2,
+          "expected": "case-study-2",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 9,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "13",
+      "cover_validation": null,
+      "data": {
+        "title": "Echte Vereinfachung verkürzt die Einarbeitung von Monaten auf Wochen",
+        "body": "Wenn Anwender zuvor sechs Monate Einarbeitung brauchten und nach der Modernisierung sofort fehlerfrei arbeiten können, liegt das an weggelassenen Hürden. Die UX-First Modernisierungsmethode beweist: Wer Workflows vereinfacht, senkt die Fehlerquote signifikant.\n\nSolange Ihre Web-Version hochkomplex bleibt, verliert Ihr Vertrieb weiterhin Aufträge an jüngere Wettbewerber.",
+        "key_insight": "Nicht die Menge an Funktionen entscheidet über den Erfolg Ihrer Web-Migration, sondern die radikale Reduktion visueller Komplexität für den Endanwender.",
+        "compare": null,
+        "titel": "Echte Vereinfachung verkürzt die Einarbeitung von Monaten auf Wochen",
+        "kernaussage": "Nicht die Menge an Funktionen entscheidet über den Erfolg Ihrer Web-Migration, sondern die radikale Reduktion visueller Komplexität für den Endanwender.",
+        "erklaerung": "Wenn Anwender zuvor sechs Monate Einarbeitung brauchten und nach der Modernisierung sofort fehlerfrei arbeiten können, liegt das an weggelassenen Hürden. Die UX-First Modernisierungsmethode beweist: Wer Workflows vereinfacht, senkt die Fehlerquote signifikant.",
+        "bezug": "Solange Ihre Web-Version hochkomplex bleibt, verliert Ihr Vertrieb weiterhin Aufträge an jüngere Wettbewerber.",
+        "vorher_nachher": {
+          "von": "6",
+          "nach": "wenige",
+          "einheit": "Monate / Wochen",
+          "label": "Einarbeitungszeit für Endanwender bei der Trassenplanung"
+        },
+        "viz": [
+          {
+            "preset": "transform_arrow",
+            "title": "Einarbeitungszeit für Endanwender bei der Trassenplanung",
+            "from": {
+              "value": "6",
+              "label": "Monate / Wochen"
+            },
+            "to": {
+              "value": "wenige",
+              "label": "Monate / Wochen"
+            }
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 10,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "14",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Ein mittelständisches Dienstleistungsunternehmen mit 45 Mitarbeitenden verwaltet einen umfangreichen Bestand von insgesamt 600 Betriebsgegenständen.",
+        "ausgangsproblem": "Drei unübersichtliche Excel-Tabellen führten bei der jährlichen Inventur zu Chaos. Ganze 30 % aller Einträge in den Listen waren fehlerhaft oder schlicht veraltet.",
+        "ziel": "Die manuelle und fehleranfällige Verwaltung sollte durch ein zentrales, fehlerfreies und digitales System ersetzt werden.",
+        "loesung": "Einführung von Inventory ONE inklusive eines einmaligen Datenimports sowie der durchgängigen Kennzeichnung aller Gegenstände mit QR-Etiketten.",
+        "ergebnis_text": null,
+        "ergebnis_headline": "Die gesamte Jahresinventur wurde in nur vier Stunden abgeschlossen. Dem Steuerberater konnte ein vollständig fehlerfreies Protokoll übergeben werden.",
+        "fallstudie_number": 3,
+        "ergebnis_metrics": [
+          {
+            "value": "4 Stunden (vorher: mehrere Tage)",
+            "label": "Zeitaufwand Jahresinventur",
+            "wert": "4 Stunden (vorher: mehrere Tage)"
+          },
+          {
+            "value": "100 % (vorher: 70 %)",
+            "label": "Korrekte Datenbankeinträge",
+            "wert": "100 % (vorher: 70 %)"
+          }
+        ],
+        "kunde": {
+          "name": null,
+          "funktion": "Geschäftsführer Dienstleistungsunternehmen 45 MA",
+          "company_url": null,
+          "initials": "NN"
+        },
+        "pullquote": null,
+        "kurzportrait": "Ein mittelständisches Dienstleistungsunternehmen mit 45 Mitarbeitenden verwaltet einen umfangreichen Bestand von insgesamt 600 Betriebsgegenständen.",
+        "wendepunkt": "Die manuelle und fehleranfällige Verwaltung sollte durch ein zentrales, fehlerfreies und digitales System ersetzt werden.",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-4.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 3,
+          "expected": "case-study-3",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 11,
+      "st_type": "ST-07B",
+      "css_template": "theory",
+      "has_cta": false,
+      "page_numbers": "15",
+      "cover_validation": null,
+      "data": {
+        "title": "Präzision entsteht vor dem ersten Tastendruck",
+        "body": "Dienstleister, die sofort codieren, bauen Fehler fest in das System ein. Wenn Datenstrukturen und Abläufe im Vorfeld exakt definiert und validiert sind, schrumpft der operative Aufwand auf ein Minimum. Genau das zeigt die Jahresinventur in nur vier Stunden.\n\nWenn Ihre Entwickler ohne klaren, validierten Ablauf codieren, verbrennen Sie Zeit bei der Migration.",
+        "key_insight": "Ein korrektes Ergebnis ist keine Frage der Entwicklungszeit, sondern der strukturierten Vorbereitung ohne Code.",
+        "compare": null,
+        "titel": "Präzision entsteht vor dem ersten Tastendruck",
+        "kernaussage": "Ein korrektes Ergebnis ist keine Frage der Entwicklungszeit, sondern der strukturierten Vorbereitung ohne Code.",
+        "erklaerung": "Dienstleister, die sofort codieren, bauen Fehler fest in das System ein. Wenn Datenstrukturen und Abläufe im Vorfeld exakt definiert und validiert sind, schrumpft der operative Aufwand auf ein Minimum. Genau das zeigt die Jahresinventur in nur vier Stunden.",
+        "bezug": "Wenn Ihre Entwickler ohne klaren, validierten Ablauf codieren, verbrennen Sie Zeit bei der Migration."
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill",
+      "page_mode": "dark_divider"
+    },
+    {
+      "slot": 12,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "16",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Ein mittelständisches Bauunternehmen aus Nordrhein-Westfalen steuert Bauprojekte mit einem Team von sechs Polieren auf den Baustellen.",
+        "ausgangsproblem": "Werkzeuge wanderten unkontrolliert zwischen den Baustellen hin und her. Der aktuelle Standort ließ sich nur durch zeitaufwendige, ineffiziente Telefonate ermitteln.",
+        "ziel": "Um Werkzeugverluste zu stoppen, suchte die Geschäftsführung nach einer Möglichkeit, Standorte und Übergaben lückenlos und in Echtzeit zu dokumentieren.",
+        "loesung": "Die Poliere nutzen nun die Inventory ONE App, um jede Werkzeugausgabe und jede Weitergabe direkt auf der Baustelle per QR-Code-Scan digital zu erfassen.",
+        "ergebnis_text": null,
+        "ergebnis_headline": "Es herrscht vollständige Transparenz über den Verbleib aller Werkzeuge. Manuelle Suchen und koordinierende Telefonate zwischen den Polieren entfallen komplett.",
+        "fallstudie_number": 4,
+        "ergebnis_metrics": [
+          {
+            "value": "eliminiert",
+            "label": "Suchzeit",
+            "wert": "eliminiert"
+          },
+          {
+            "value": "100 % Echtzeit-Tracking",
+            "label": "Transparenz",
+            "wert": "100 % Echtzeit-Tracking"
+          }
+        ],
+        "kunde": {
+          "name": null,
+          "funktion": "Geschäftsführer Bauunternehmen 6 Poliere",
+          "company_url": null,
+          "initials": "NN"
+        },
+        "pullquote": null,
+        "kurzportrait": "Ein mittelständisches Bauunternehmen aus Nordrhein-Westfalen steuert Bauprojekte mit einem Team von sechs Polieren auf den Baustellen.",
+        "wendepunkt": "Um Werkzeugverluste zu stoppen, suchte die Geschäftsführung nach einer Möglichkeit, Standorte und Übergaben lückenlos und in Echtzeit zu dokumentieren.",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-5.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 4,
+          "expected": "case-study-4",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 13,
+      "st_type": "ST-07A",
+      "css_template": "case_study",
+      "has_cta": false,
+      "page_numbers": "17",
+      "cover_validation": null,
+      "data": {
+        "kurzportraet": "Ein Eventgastronom aus Hamburg verwaltet und plant umfangreiches Equipment für Veranstaltungen.",
+        "ausgangsproblem": "Material wurde mehrfach für denselben Termin verplant, Rückgaben erfolgten zu spät und vor Großevents herrschte Chaos und Hektik bei der Bestandsprüfung.",
+        "ziel": "Der Betrieb benötigte eine verlässliche Lösung, um die Planung und Verwaltung der Betriebsmittel fehlerfrei und digital abzuwickeln.",
+        "loesung": "Einführung einer digitalen Ausgabe- und Zuweisungslogik für alle Betriebsmittel über mobile QR-Code-Scans vor Ort.",
+        "ergebnis_text": null,
+        "ergebnis_headline": "Der gesamte Prozess wurde beschleunigt. Die zeitaufwendige Vorbereitung vor jedem Event schrumpfte von zwei Stunden auf einen Bruchteil zusammen.",
+        "fallstudie_number": 5,
+        "ergebnis_metrics": [
+          {
+            "value": "von 2 Stunden auf 20 Minuten",
+            "label": "Event-Vorbereitung",
+            "wert": "von 2 Stunden auf 20 Minuten"
+          },
+          {
+            "value": "83 %",
+            "label": "Zeitersparnis",
+            "wert": "83 %"
+          }
+        ],
+        "kunde": {
+          "name": null,
+          "funktion": "Geschäftsführer Eventgastronomie Hamburg",
+          "company_url": null,
+          "initials": "NN"
+        },
+        "pullquote": null,
+        "kurzportrait": "Ein Eventgastronom aus Hamburg verwaltet und plant umfangreiches Equipment für Veranstaltungen.",
+        "wendepunkt": "Der Betrieb benötigte eine verlässliche Lösung, um die Planung und Verwaltung der Betriebsmittel fehlerfrei und digital abzuwickeln.",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-1.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "client_portrait",
+          "source": "drive",
+          "status": "missing_required",
+          "path": null,
+          "drive_key": "case-study-{n}",
+          "index": 5,
+          "expected": "case-study-5",
+          "warnings": [],
+          "slot_id": "case_study_portrait",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 14,
+      "st_type": "ST-06",
+      "css_template": "mechanism",
+      "has_cta": false,
+      "page_numbers": "18-19",
+      "cover_validation": null,
+      "data": {
+        "title": "Erst die Validierung, dann der erste Klick im Code",
+        "body": "Die meisten IT-Dienstleister kopieren sofort die alte Datenbank und schreiben Code. Die UX-First Modernisierungsmethode geht den umgekehrten Weg: Hier wird erst entwickelt, wenn der fertige Workflow steht.",
+        "steps": [
+          {
+            "title": "User-Search",
+            "body": "Wir beobachten echte Endanwender bei der Arbeit und verstehen ihre tatsächlichen Workflows, statt nur theoretische Anforderungen abzufragen."
+          },
+          {
+            "title": "Prototyping",
+            "body": "Wir erstellen einen interaktiven, klickbaren Prototyp. So entsteht die gesamte Anwendung als Design-First-Entwurf, völlig frei von Code."
+          },
+          {
+            "title": "Iterative Validierung",
+            "body": "Der Prototyp wird sukzessive mit den echten Anwendern getestet und verfeinert, bis jeder Handgriff in der Praxis fehlerfrei sitzt."
+          },
+          {
+            "title": "Step-by-Step Migration",
+            "body": "Die alte Software wird Schritt für Schritt abgelöst und integriert, anstatt das gesamte System in einem riskanten Big-Bang-Release zu ersetzen."
+          }
+        ],
+        "ergebnis": "Das minimiert Ihr Entwicklungsrisiko. Denn Sie wissen schon vor dem Programmieren, dass Ihre neue Version funktioniert.",
+        "bars": [],
+        "metrics": [],
+        "titel": "Erst die Validierung, dann der erste Klick im Code",
+        "einleitung": "Die meisten IT-Dienstleister kopieren sofort die alte Datenbank und schreiben Code. Die UX-First Modernisierungsmethode geht den umgekehrten Weg: Hier wird erst entwickelt, wenn der fertige Workflow steht.",
+        "schritte": [
+          {
+            "titel": "User-Search",
+            "beschreibung": "Wir beobachten echte Endanwender bei der Arbeit und verstehen ihre tatsächlichen Workflows, statt nur theoretische Anforderungen abzufragen."
+          },
+          {
+            "titel": "Prototyping",
+            "beschreibung": "Wir erstellen einen interaktiven, klickbaren Prototyp. So entsteht die gesamte Anwendung als Design-First-Entwurf, völlig frei von Code."
+          },
+          {
+            "titel": "Iterative Validierung",
+            "beschreibung": "Der Prototyp wird sukzessive mit den echten Anwendern getestet und verfeinert, bis jeder Handgriff in der Praxis fehlerfrei sitzt."
+          },
+          {
+            "titel": "Step-by-Step Migration",
+            "beschreibung": "Die alte Software wird Schritt für Schritt abgelöst und integriert, anstatt das gesamte System in einem riskanten Big-Bang-Release zu ersetzen."
+          }
+        ],
+        "abschluss": "Das minimiert Ihr Entwicklungsrisiko. Denn Sie wissen schon vor dem Programmieren, dass Ihre neue Version funktioniert.",
+        "closing_redirect": "Das minimiert Ihr Entwicklungsrisiko. Denn Sie wissen schon vor dem Programmieren, dass Ihre neue Version funktioniert.",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-1.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [
+        "components/14_component_0.svg"
+      ]
+    },
+    {
+      "slot": 15,
+      "st_type": "ST-FAZIT",
+      "css_template": "summary",
+      "has_cta": false,
+      "page_numbers": "20-21",
+      "cover_validation": null,
+      "data": {
+        "title": "Die Migration scheitert nicht am Code, sondern am Verstehen",
+        "body": "Eine erfolgreiche Web-Migration kopiert kein altes System eins zu eins und folgt keinen starren Feature-Listen. Sie setzt an der Schnittstelle an, die über Erfolg oder Misserfolg entscheidet: dem echten Workflow der Anwender. Erst wenn dieser im Prototyp validiert ist, lohnt sich der Einsatz der Entwickler.",
+        "these": "Du hast kein Entwickler-Problem. Du hast ein UX-Problem. Die UX-First Modernisierungsmethode löst es, bevor der erste Code geschrieben wird.",
+        "kosten_des_nichtstuns": null,
+        "cta_url": null,
+        "titel": "Die Migration scheitert nicht am Code, sondern am Verstehen",
+        "zusammenfassung": "Eine erfolgreiche Web-Migration kopiert kein altes System eins zu eins und folgt keinen starren Feature-Listen. Sie setzt an der Schnittstelle an, die über Erfolg oder Misserfolg entscheidet: dem echten Workflow der Anwender. Erst wenn dieser im Prototyp validiert ist, lohnt sich der Einsatz der Entwickler.",
+        "kernbotschaft": "Du hast kein Entwickler-Problem. Du hast ein UX-Problem. Die UX-First Modernisierungsmethode löst es, bevor der erste Code geschrieben wird.",
+        "author": {
+          "name": "Christoph Winter",
+          "role": "Gründer"
+        }
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [
+        {
+          "slot_kind": "founder_hero",
+          "source": "drive",
+          "status": "resolved",
+          "path": "assets/15_founder.webp",
+          "drive_key": "founder",
+          "index": null,
+          "expected": "founder",
+          "warnings": [],
+          "slot_id": "founder",
+          "image_type": "portrait",
+          "aspect_ratio": "1x1"
+        }
+      ],
+      "assets": [
+        {
+          "slot_id": "fazit_background",
+          "image_type": "background",
+          "path": "assets/15_fazit_background.png",
+          "status": "generated",
+          "message": "fal cache hit (e40db56986fe)",
+          "prompt": "Image generation stubbed for fazit_background (background, aspect 3:4); no brief style prompt available. Subject: Die Migration scheitert nicht am Code, sondern am Verstehen Eine erfolgreiche Web-Migration kopiert kein altes System eins zu eins und folgt keinen starren Feature-Listen. Sie setzt an der Schnittstel.",
+          "negative_prompt": null
+        }
+      ],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 16,
+      "st_type": "ST-22",
+      "css_template": "collaboration",
+      "has_cta": true,
+      "page_numbers": "22",
+      "cover_validation": null,
+      "data": {
+        "title": "Der Weg zum funktionierenden Web-Produkt beginnt ohne Entwickler-Risiko",
+        "body": "Wir begleiten Sie schrittweise bei der Migration Ihrer Anwendung. Mit der UX-First Modernisierungsmethode entwickeln Sie erst, wenn der klickbare Prototyp von echten Anwendern erfolgreich getestet wurde.",
+        "steps": [
+          "Im ersten Schritt analysieren wir die Workflows Ihrer Nutzer.",
+          "Wir entwerfen die Kern-Masken neu und bauen einen interaktiven Prototyp.",
+          "Erst nach der Validierung durch Ihre Kunden startet die technische Umsetzung."
+        ],
+        "titel": "Der Weg zum funktionierenden Web-Produkt beginnt ohne Entwickler-Risiko",
+        "einleitung": "Wir begleiten Sie schrittweise bei der Migration Ihrer Anwendung. Mit der UX-First Modernisierungsmethode entwickeln Sie erst, wenn der klickbare Prototyp von echten Anwendern erfolgreich getestet wurde.",
+        "ablauf_text": "Im ersten Schritt analysieren wir die Workflows Ihrer Nutzer. Wir entwerfen die Kern-Masken neu und bauen einen interaktiven Prototyp. Erst nach der Validierung durch Ihre Kunden startet die technische Umsetzung.",
+        "produkt_bild": "file:///Users/utkarsh/Projects/richard/client_assets/christoph-winter/product-2.webp"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "layout_variant": "fill"
+    },
+    {
+      "slot": 17,
+      "st_type": "ST-03",
+      "css_template": "cta_hard",
+      "has_cta": true,
+      "page_numbers": "23",
+      "cover_validation": null,
+      "data": {
+        "title": "Sichern Sie Ihr Web-Projekt ab",
+        "body": "Sprechen Sie mit Christoph Winter über den UX-zentrierten Modernisierungs-Ansatz und beenden Sie das Experimentieren.",
+        "cta_url": null,
+        "cta_text": "Gespräch vereinbaren",
+        "titel": "Sichern Sie Ihr Web-Projekt ab",
+        "text": "Sprechen Sie mit Christoph Winter über den UX-zentrierten Modernisierungs-Ansatz und beenden Sie das Experimentieren.",
+        "button_text": "Gespräch vereinbaren",
+        "url": ""
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": []
+    }
+  ],
+  "slot_summary": {
+    "resolved": 2,
+    "missing_required": 5,
+    "absent": 5,
+    "total": 12,
+    "missing": [
+      {
+        "page_slot": 6,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-1"
+      },
+      {
+        "page_slot": 8,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-2"
+      },
+      {
+        "page_slot": 10,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-3"
+      },
+      {
+        "page_slot": 12,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-4"
+      },
+      {
+        "page_slot": 13,
+        "slot_id": "case_study_portrait",
+        "expected": "case-study-5"
+      }
+    ]
+  },
+  "validation": {
+    "copy_warnings": [
+      {
+        "page_slot": 2,
+        "page_type": "ST-02",
+        "field_name": "einleitung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird gebaut' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 2,
+        "page_type": "ST-02",
+        "field_name": "body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird gebaut' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 6,
+        "page_type": "ST-07A",
+        "field_name": "loesung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde erst ein interaktiver Prototyp gebaut' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 8,
+        "page_type": "ST-07A",
+        "field_name": "loesung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wurde radikal reduziert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 9,
+        "page_type": "ST-07B",
+        "field_name": "key_insight",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #2 in report) — max 1 per report; offending text: 'Nicht die Menge an Funktionen entscheidet über den Erfolg I…'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 10,
+        "page_type": "ST-07A",
+        "field_name": "wendepunkt",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'sollte' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 10,
+        "page_type": "ST-07A",
+        "field_name": "ziel",
+        "rule": "konjunktiv",
+        "detail": "Subjunctive 'sollte' found — Richard's style uses absolute statements",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-06",
+        "field_name": "schritte[2].beschreibung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird sukzessive mit den echten Anwendern getestet' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-06",
+        "field_name": "schritte[3].beschreibung",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird Schritt für Schritt abgelöst und integriert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-06",
+        "field_name": "steps[2].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird sukzessive mit den echten Anwendern getestet' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-06",
+        "field_name": "steps[3].body",
+        "rule": "passive_voice",
+        "detail": "Passive construction 'wird Schritt für Schritt abgelöst und integriert' — German B2B copy can use some passive but prefer active voice",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-FAZIT",
+        "field_name": "titel",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #3 in report) — max 1 per report; offending text: 'nicht am Code, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 15,
+        "page_type": "ST-FAZIT",
+        "field_name": "title",
+        "rule": "construction_limit_nicht_sondern",
+        "detail": "'Nicht … sondern …' construction (occurrence #4 in report) — max 1 per report; offending text: 'nicht am Code, sondern'",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 1,
+        "page_type": "ST-01",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~505 chars exceeds the ~500-char capacity estimate for ST-01 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 3,
+        "page_type": "ST-05",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~1860 chars exceeds the ~1600-char capacity estimate for ST-05 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 4,
+        "page_type": "ST-09",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~2516 chars exceeds the ~1400-char capacity estimate for ST-09 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 5,
+        "page_type": "ST-14",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~3069 chars exceeds the ~1500-char capacity estimate for ST-14 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      },
+      {
+        "page_slot": 14,
+        "page_type": "ST-06",
+        "field_name": "<page>",
+        "rule": "copy_overflow_risk",
+        "detail": "page copy ~2095 chars exceeds the ~1400-char capacity estimate for ST-06 — may overflow; shorten the copy or expect the renderer's overflow validator to flag it",
+        "severity": "warning"
+      }
+    ],
+    "layout_warnings": [
+      "page count mismatch: 17 pages in array, target is 24",
+      "slot 12 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
+      "slot 13 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')",
+      "stretch of 9+ consecutive dense pages starting at slot 1 — insert an Atemseite (ST-31/ST-32) for relief"
+    ],
+    "cover_overall": "needs_review",
+    "total_warnings": 22
+  },
+  "asset_summary": {
+    "total_required": 3,
+    "total_downloaded": 0,
+    "total_stubbed": 0,
+    "total_client_upload_needed": 0,
+    "total_failed": 0,
+    "total_generated": 3
+  },
+  "asset_warnings": []
+}

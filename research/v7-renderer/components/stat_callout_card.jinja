@@ -1,0 +1,14 @@
+{# Stat callout card: a small card carrying a big accent number over an uppercase
+   label, on a tint / bordered card. Designed to float beside body copy (ST-06).
+   All under the c-stat-callout namespace; the token-only look (the tint fill +
+   accent value) lives in styles/components.css.
+
+   value  the big accent figure (e.g. "30-50%")
+   label  the uppercase descriptor (e.g. "EFFIZIENZGEWINN")
+#}
+{% macro stat_callout_card(value, label) -%}
+<div class="c-stat-callout">
+  {% if value %}<div class="c-stat-callout__value">{{ value }}</div>{% endif %}
+  {% if label %}<div class="c-stat-callout__label">{{ label }}</div>{% endif %}
+</div>
+{%- endmacro %}

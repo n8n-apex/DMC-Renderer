@@ -484,9 +484,21 @@ async def main(use_fal: bool = False) -> int:
         f"got {len(scene_breathers)}/{len(st31_pages)}"
     )
     # ST-05 testimonials present + body trimmed to 2 paragraphs (copy-fit).
-    about_testimonials = (about_page.get("data") or {}).get("testimonials") or []
+    # US-609: the About section splits identity/proof — testimonials live on
+    # the PROOF continuation page.
+    about_proof = next(
+        (p for p in pkg["pages"]
+         if p["st_type"] == "ST-05" and p.get("continuation_role") == "proof"),
+        about_page,
+    )
+    about_identity = next(
+        (p for p in pkg["pages"]
+         if p["st_type"] == "ST-05" and p.get("continuation_role") == "identity"),
+        about_page,
+    )
+    about_testimonials = (about_proof.get("data") or {}).get("testimonials") or []
     assert len(about_testimonials) == 2, about_testimonials
-    about_body = (about_page.get("data") or {}).get("body") or ""
+    about_body = (about_identity.get("data") or {}).get("body") or ""
     assert isinstance(about_body, str) and about_body.count("\n\n") <= 1, (
         "ST-05 body must be trimmed to ≤2 paragraphs when testimonials bound"
     )

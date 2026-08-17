@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf') format('truetype');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--body:#3a4a5a;--rule:#cdc7ba;--teallight:#7FB7B3;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ===================== RIGHT NAVY PANEL ===================== */
+.panel{position:absolute;top:0;right:0;width:556px;height:1188px;background:var(--ink);overflow:hidden;}
+.panel .seam{position:absolute;top:0;bottom:0;left:0;width:4px;background:var(--teal);}
+
+/* framed founder portrait — native ar 0.821 (1_founder.jpg). box 392 x 477 keeps ratio */
+.frame{position:absolute;top:96px;left:82px;width:392px;height:477px;border:1px solid rgba(255,255,255,0.14);padding:11px;}
+.frame .img{width:100%;height:100%;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 16%/cover no-repeat;}
+.frame .tickmark{position:absolute;left:-1px;top:-1px;width:46px;height:4px;background:var(--teal);}
+
+.pcap{position:absolute;left:82px;top:608px;}
+.pcap .name{font-family:'SourceSerif',serif;font-size:32px;font-weight:560;letter-spacing:.005em;color:var(--cream);line-height:1;}
+.pcap .role{font-size:13px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#9db0bd;margin-top:12px;}
+
+/* credential wall in lower navy third */
+.creds{position:absolute;left:82px;right:64px;top:712px;}
+.creds .eb{display:flex;align-items:center;gap:16px;color:var(--teallight);font-size:13px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;}
+.creds .eb .tick{width:34px;height:2px;background:var(--teallight);}
+.creds ul{list-style:none;margin-top:24px;}
+.creds li{font-family:'SourceSerif',serif;font-size:26px;font-weight:480;color:var(--cream);letter-spacing:.005em;
+  padding:18px 0;border-top:1px solid rgba(255,255,255,0.12);}
+.creds li:first-child{border-top:none;}
+.creds li span{display:block;font-family:'SourceSans',sans-serif;font-size:12.5px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:#8298a8;margin-top:8px;}
+
+/* ===================== LEFT EDITORIAL FIELD ===================== */
+.stage{position:absolute;left:90px;top:90px;width:944px;}
+.eyebrow{display:flex;align-items:center;gap:18px;color:var(--teal);font-size:15px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:46px;height:2px;background:var(--teal);}
+.eyebrow .pg{margin-left:auto;color:#b3a998;letter-spacing:.2em;font-size:14px;}
+.headline{font-family:'SourceSerif',serif;color:var(--ink);font-weight:430;font-size:72px;line-height:1.05;letter-spacing:-0.014em;margin-top:34px;}
+.headline .teal{color:var(--teal);}
+.thesis{margin-top:34px;max-width:700px;font-size:21px;line-height:1.6;color:var(--body);font-weight:400;}
+.thesis .lead{color:var(--ink);font-weight:600;}
+
+/* ===================== GAUGE HERO ===================== */
+.hero{position:absolute;left:90px;top:498px;width:944px;display:flex;align-items:center;gap:52px;}
+.gauge-wrap{position:relative;width:380px;height:248px;flex-shrink:0;}
+.gauge-cap{position:absolute;left:0;top:-40px;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--body);}
+.gauge-center{position:absolute;left:0;right:0;top:104px;display:flex;flex-direction:column;align-items:center;}
+.gauge-center .num{font-family:'SourceSerif',serif;font-size:74px;font-weight:500;color:var(--ink);letter-spacing:-0.02em;line-height:.86;}
+.gauge-center .sub{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-top:14px;}
+
+/* KPI chip column to the right of the gauge */
+.chips{flex:1;display:flex;flex-direction:column;gap:18px;}
+.chip{border-left:3px solid var(--teal);background:rgba(46,62,80,0.045);padding:18px 26px;}
+.chip .v{font-family:'SourceSerif',serif;font-size:38px;font-weight:520;color:var(--ink);line-height:1;letter-spacing:-0.012em;}
+.chip .l{font-size:15px;font-weight:500;color:var(--body);letter-spacing:.01em;margin-top:9px;}
+
+/* ===================== QUOTE ===================== */
+.quote{position:absolute;left:90px;top:828px;width:780px;}
+.quote .hr{width:100%;height:1px;background:var(--rule);margin-bottom:34px;}
+.quote .mark{font-family:'SourceSerif',serif;font-size:60px;color:var(--teal);line-height:0.5;height:26px;}
+.quote p{font-family:'SourceSerif',serif;font-size:26px;line-height:1.44;color:var(--ink);font-weight:430;font-style:italic;margin-top:8px;max-width:740px;}
+.quote .attr{margin-top:16px;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);}
+
+/* ===================== FOOTER ===================== */
+.footrule{position:absolute;left:90px;width:944px;bottom:90px;height:1px;background:var(--rule);}
+.footer{position:absolute;left:90px;width:944px;bottom:54px;display:flex;align-items:center;justify-content:space-between;}
+.brandmark{font-family:'SourceSerif',serif;font-size:16px;font-weight:600;letter-spacing:.36em;color:var(--ink);}
+.pageno{font-family:'SourceSerif',serif;font-size:16px;color:var(--ink);font-weight:500;}
+</style>
+</head>
+<body>
+
+  <!-- ===== LEFT EDITORIAL FIELD ===== -->
+  <div class="stage">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS<span class="pg">/ 03</span></div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+    <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+  </div>
+
+  <!-- ===== GAUGE HERO + KPI CHIPS ===== -->
+  <div class="hero">
+    <div class="gauge-wrap">
+      <div class="gauge-cap">Realisierte Projekte</div>
+      <svg width="380" height="226" viewBox="0 0 380 226">
+        <!-- semicircular track -->
+        <path d="M 36 200 A 154 154 0 0 1 344 200" fill="none" stroke="#2E3E50" stroke-opacity="0.10" stroke-width="22" stroke-linecap="round"/>
+        <!-- teal fill (~94% of the arc, leaving the "+" headroom) -->
+        <path d="M 36 200 A 154 154 0 0 1 344 200" fill="none" stroke="#4A7C7E" stroke-width="22" stroke-linecap="round"
+              stroke-dasharray="455 484" pathLength="484"/>
+        <!-- end-cap pip -->
+        <circle cx="343" cy="194" r="6.5" fill="#4A7C7E"/>
+      </svg>
+      <div class="gauge-center">
+        <div class="num">100+</div>
+        <div class="sub">AI-Projekte</div>
+      </div>
+      <div class="gauge-ends"><span>0</span><span>100+</span></div>
+    </div>
+    <div class="chips">
+      <div class="chip"><div class="v">€200k+</div><div class="l">Einsparung pro Jahr</div></div>
+      <div class="chip"><div class="v">30&ndash;50%</div><div class="l">weniger Betriebskosten · ohne Mehr-Headcount</div></div>
+      <div class="chip"><div class="v">30 &rarr; 2 Min</div><div class="l">Onboarding · &minus;93 %</div></div>
+    </div>
+  </div>
+
+  <!-- ===== QUOTE ===== -->
+  <div class="quote">
+    <div class="hr"></div>
+    <div class="mark">&ldquo;</div>
+    <p>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</p>
+    <div class="attr">Kundenstimme</div>
+  </div>
+
+  <!-- ===== RIGHT NAVY PANEL ===== -->
+  <div class="panel">
+    <div class="seam"></div>
+    <div class="frame">
+      <div class="tickmark"></div>
+      <div class="img"></div>
+    </div>
+    <div class="pcap">
+      <div class="name">Jousef Murad</div>
+      <div class="role">Gründer · APEX</div>
+    </div>
+    <div class="creds">
+      <div class="eb"><span class="tick"></span>Vertrauen von</div>
+      <ul>
+        <li>Frese Recruiting<span>Personalberatung</span></li>
+        <li>Conesso GmbH<span>B2B-Vertrieb</span></li>
+        <li>Pure Media Marketing<span>Agentur</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footrule"></div>
+  <div class="footer">
+    <div class="brandmark">APEX</div>
+    <div class="pageno">03</div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+{# viz_facts - the FACTS family of the data-viz PRESET layer: the two devices the
+   reference decks lean on hardest.
+
+     icon_stat_row  one sourced fact, in a ROW of 3-5 (the contract's `fakten`
+                    shape). Frese p3 runs 5 across (500+ / 200+ / 10+ / 5 / 6),
+                    Martic p5 runs 3 (87.8% / 45 / 47%).
+     column_chart   a trend over time with the VALUE PRINTED ABOVE EACH BAR and
+                    the last (or named) bar carrying the accent. Frese p5,
+                    "Vakanzzeit-Treppe 2018-2025".
+
+   Brand-agnostic / token-only: every colour arrives as var(--token), the glyphs
+   come from icons.jinja and inherit currentColor, so neither macro carries a
+   literal of its own. Macros take (v, uid=0), matching the rest of the viz
+   families; the dispatch threads loop.index as uid. Neither macro emits an SVG
+   id, gradient, or clip path, so two equal figures on one page cannot collide by
+   construction.
+
+   The two laws from the contract, enforced here:
+     1. NOTHING IS FABRICATED. Every figure and source is printed VERBATIM as the
+        writer supplied it. Bar geometry is DERIVED from the same string via the
+        `num` filter, so a bar can never disagree with the numeral above it.
+     2. GRACEFUL AT EVERY HOP. A missing field omits its element; an empty or
+        unusable spec renders nothing at all. Adding a fact to a page can never
+        break a render. #}
+{% from 'icons.jinja' import icon %}
+
+{# icon_stat_row - a row of 3-5 fact cards (1-6 handled). Per card: a circled
+   line-icon, the big figure, a bold short label, the body text, and the source
+   line pinned to the figure it belongs to (contract: "Every figure keeps its
+   source INLINE, never detached").
+
+   Cards are equal-width flex children that wrap only when they must. The figure
+   steps DOWN the type ramp as the row gets denser (see [data-count] in viz.css):
+   a 40pt numeral is right for 2 cards and overflows a 5-card column, so the
+   count drives the tier. data-count carries the FILTERED card count, so the
+   CSS sizes what is actually drawn.
+
+   Graceful: a card with no `figur` is skipped (the figure IS the card); missing
+   text/quelle omit their line; an unknown or absent `icon` key drops the whole
+   badge rather than leaving an empty circle. `items` empty -> nothing renders. #}
+{% macro icon_stat_row(v, uid=0) %}
+{%- set items = (v.get('items') if v else none) or none -%}
+{%- set cards = (items | selectattr('figur') | list) if items else [] -%}
+{%- if cards -%}
+<figure class="c-viz c-viz-facts" role="img" aria-label="{% for it in cards %}{{ it.figur }} {{ it.label or '' }}; {% endfor %}">
+  <div class="c-viz-facts__row" data-count="{{ cards | length }}">
+  {%- for it in cards -%}
+    {%- set glyph = icon(it.icon, uid ~ '_' ~ loop.index) -%}
+    <div class="c-viz-facts__card">
+      {%- if glyph | trim %}<div class="c-viz-facts__badge">{{ glyph }}</div>{% endif -%}
+      <div class="c-viz-facts__figur">{{ it.figur }}</div>
+      {%- if it.label %}<div class="c-viz-facts__label">{{ it.label }}</div>{% endif -%}
+      {%- if it.text %}<div class="c-viz-facts__text">{{ it.text }}</div>{% endif -%}
+      {%- if it.quelle %}<div class="c-viz-facts__quelle">{{ it.quelle }}</div>{% endif -%}
+    </div>
+  {%- endfor -%}
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# column_chart - the trend device. Columns scaled to the max, each value printed
+   ABOVE its bar, each label below, one bar in the accent.
+
+   Geometry lives in a viewBox (0 0 320 180) with width:100%; height:auto, so the
+   chart scales to whatever column it lands in and can never overflow a fixed mm
+   height in print. Bars: baseline y=160, tallest bar 130 units, band = 320/n,
+   bar width 52% of its band capped at 34 units so a 2-point chart does not draw
+   two slabs. Text sizes are set in viz.css and land in USER units, so they scale
+   with the viewBox exactly like the donut's centre figure.
+
+   `wert` may be a German-formatted string ("1.200", "2,5"): the `num` filter
+   parses it (thousands dot, decimal comma) and the SAME string is printed
+   verbatim above the bar, so geometry and numeral cannot diverge. An entry whose
+   `wert` carries no digit at all is SKIPPED (a bar we cannot size is a bar we
+   must not invent).
+
+   `hervorheben` picks the accent bar: a string matches a point's `label`, an
+   integer indexes the DRAWN bars (identical to the input index unless an entry
+   was skipped), and the default is the LAST bar (the trend's punchline). An
+   out-of-range index falls back to the default rather than dropping the accent.
+
+   `einheit` is appended to each value when it is short (<= 4 chars, e.g. "%",
+   "Tage"); a longer unit becomes a caption under the title instead of bloating
+   every label. Graceful: no usable points -> nothing renders. #}
+{% macro column_chart(v, uid=0) %}
+{%- set punkte = (v.get('punkte') if v else none) or none -%}
+{%- set pts = [] -%}
+{%- if punkte -%}
+  {%- for p in punkte if p -%}
+    {%- if (p.wert | string | list | select('in', '0123456789') | list | length) > 0 -%}
+      {%- set _ = pts.append(p) -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- if pts -%}
+{%- set n = pts | length -%}
+{%- set m = pts | map(attribute='wert') | map('num') | list | max -%}
+{%- set base = 160 -%}
+{%- set maxh = 130 -%}
+{%- set band = 320.0 / n -%}
+{%- set bw = [band * 0.52, 34] | min -%}
+{%- set einheit = v.get('einheit') -%}
+{%- set unit_inline = einheit if (einheit and (einheit | string | length) <= 4) else '' -%}
+{%- set hl = namespace(i = n - 1) -%}
+{%- set hv = v.get('hervorheben') -%}
+{%- if hv is not none -%}
+  {%- if hv is number -%}
+    {%- if (hv | int) >= 0 and (hv | int) < n -%}{%- set hl.i = hv | int -%}{%- endif -%}
+  {%- else -%}
+    {%- for p in pts -%}
+      {%- if (p.label | string) == (hv | string) -%}{%- set hl.i = loop.index0 -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}
+<figure class="c-viz c-viz-col" role="img" aria-label="{{ v.titel or '' }} {% for p in pts %}{{ p.label or '' }}: {{ p.wert }} {{ einheit or '' }}; {% endfor %}">
+  {%- if v.titel %}<figcaption class="c-viz-col__title">{{ v.titel }}</figcaption>{% endif -%}
+  {%- if einheit and not unit_inline %}<div class="c-viz-col__unit">{{ einheit }}</div>{% endif -%}
+  <svg class="c-viz-col__svg" viewBox="0 0 320 180">
+  {%- for p in pts -%}
+    {%- set val = p.wert | num -%}
+    {%- set h = ([(val / m * maxh), 3] | max) if (m and val > 0) else 0 -%}
+    {%- set y = base - h -%}
+    {%- set cx = band * (loop.index0 + 0.5) -%}
+    {%- set is_hl = ' is-hl' if loop.index0 == hl.i else '' -%}
+    <rect class="c-viz-col__bar{{ is_hl }}" x="{{ (cx - bw / 2) | round(2) }}" y="{{ y | round(2) }}" width="{{ bw | round(2) }}" height="{{ h | round(2) }}"/>
+    <text class="c-viz-col__val{{ is_hl }}" x="{{ cx | round(2) }}" y="{{ (y - 4.5) | round(2) }}" text-anchor="middle">{{ p.wert }}{{ ' ' ~ unit_inline if unit_inline }}</text>
+    {%- if p.label %}<text class="c-viz-col__xlab" x="{{ cx | round(2) }}" y="{{ base + 14 }}" text-anchor="middle">{{ p.label }}</text>{% endif -%}
+  {%- endfor -%}
+    <line class="c-viz-col__axis" x1="0" y1="{{ base }}" x2="320" y2="{{ base }}"/>
+  </svg>
+  {%- if v.quelle %}<figcaption class="c-viz-col__quelle">{{ v.quelle }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}

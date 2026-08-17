@@ -1,0 +1,722 @@
+/* ST-07A — case-study page LAYOUT (Plan B flagship rebuild).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens). The component LOOK (pill / stat-strip / pull-quote / qr /
+ * section-label / media) is owned by the `c-` classes in styles/components.css
+ * (already in the shared <head>); this sheet only positions them and styles the
+ * page-local chrome (the two-column grid, the sidebar panel, the headline).
+ *
+ * Every rule is scoped under `.st-07a` (the assembler's per-page section class)
+ * so it cannot leak to other patterns and dedupes once across the ~5 ST-07A
+ * pages. WeasyPrint note: flexbox is weak for full-page columns, so the columns
+ * are a fixed table-layout (robust + battle-tested in the prior pattern).
+ *
+ * Accent discipline (§3.7): accent fires only via the components (pill fill,
+ * stat numbers, section-label rule, quote glyph, links) — never on body text.
+ */
+
+/* ---- header block: kicker pill → serif display headline → italic lede ---- */
+.st-07a .cs-header {
+  /* header→body gap: tightened one --space step (space-3→space-2) as part of
+     the page-overflow claw-back so the longest case study (slot 15) clears the
+     261mm content box with breathing room after the dark .cs-stats rail was
+     added. Token-snapped; applied to ALL ST-07A pages, not a per-slot hack. */
+  margin: 0 0 var(--space-2) 0;
+  /* anchor for the decorative ghost numeral (absolutely positioned in
+     components.css). overflow:hidden CLIPS the oversized faint digit to the
+     header box so it can never bleed onto / push the page (the deck is a fixed
+     20-page contract). The ghost is out-of-flow, so it adds NO height here. */
+  position: relative;
+  overflow: hidden;
+}
+/* ---- decorative ghost numeral: a faint oversized Fallstudie digit sitting in
+   the empty TOP-RIGHT whitespace of the header, BEHIND the in-flow text (DNA
+   §C1/§C6). z-index:-1 pushes it under the headline/kicker (a positioned
+   z-index:0 box would otherwise paint OVER them); the negative top crops the
+   glyph for an editorial oversized feel; it is clipped by the header's
+   overflow:hidden so it never collides with the dark stat rail (which lives
+   lower, in the main column) or overflows the page. Pure background texture. */
+.st-07a .cs-ghost { position: static; }
+.st-07a .cs-ghost .c-ghost-num {
+  top: -10mm;
+  right: -2mm;
+  z-index: -1;
+}
+.st-07a .cs-kicker {
+  margin: 0 0 var(--space-2) 0;
+}
+.st-07a .cs-headline {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-size: var(--type-display);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-2) 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.st-07a .cs-lede {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--type-h3);
+  line-height: 1.28;
+  color: var(--color-primary);
+  margin: 0;
+  max-width: 150mm;
+}
+.st-07a .cs-lede p { margin: 0 0 var(--space-2) 0; }
+.st-07a .cs-lede p:last-child { margin-bottom: 0; }
+
+/* ---- two-column body: sidebar (~30%) + main column ---- */
+.st-07a .cs-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.st-07a .cs-grid > tbody > tr > td { vertical-align: top; padding: 0; }
+.st-07a .cs-grid .cs-sidebar { width: 31%; }
+.st-07a .cs-grid .cs-gutter { width: var(--space-5); }
+.st-07a .cs-grid .cs-main { width: auto; }
+
+/* ---- sidebar: framed portrait → name/role → company link → QR + pull-quote ----
+   The portrait block is rendered by the pattern ONLY when a case_study_portrait
+   slot RESOLVED — so there is never an empty plate (owner decision; a missing
+   photo reflows the sidebar to the name block + QR/quote panel). DNA §C2: the
+   client face is LARGE + full-color, never tiny. */
+.st-07a .cs-portrait { margin: 0 0 var(--space-3) 0; }
+/* WeasyPrint 68.1 does NOT size a box from `aspect-ratio` alone (a background-image
+   div collapses to height:0), so the media_figure macro's ratio never takes. Give
+   the resolved portrait a concrete height here (page-local layout, not a component
+   restyle) so it reads as a tall ~4:5 client portrait. The sidebar is ~31% of the
+   content box (~55mm wide) → ~68mm tall at 4:5 — a prominent, named face. */
+.st-07a .cs-portrait .c-media-img { height: 66mm; aspect-ratio: auto; }
+.st-07a .cs-kunde { margin: 0 0 var(--space-4) 0; }
+.st-07a .cs-kunde-name {
+  font-family: var(--font-head);
+  font-size: var(--type-body);
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+.st-07a .cs-kunde-role {
+  font-family: var(--font-body);
+  font-size: var(--type-label);
+  color: var(--color-muted);
+  line-height: 1.3;
+  margin-top: var(--space-1);
+}
+.st-07a .cs-kunde-link {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-top: var(--space-1);
+}
+
+/* The sidebar panel: a --color-primary block carrying the QR + pull-quote.
+   on-dark text for the quote is supplied by the c-pull-quote--panel modifier. */
+.st-07a .cs-panel {
+  background-color: var(--color-ink);
+  padding: var(--space-4);
+}
+.st-07a .cs-panel-qr {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 var(--space-3) 0;
+}
+/* DNA §C6 (gap #8): the QR is SMALL + SECONDARY — the client portrait + name/URL
+   lead the sidebar, the QR is just a scan affordance on the panel. Shrunk from a
+   dominant 30mm square to a compact 18mm one (the white c-qr box; tokens only). */
+.st-07a .cs-panel-qr .c-qr {
+  width: 18mm;
+  height: 18mm;
+}
+/* thin divider between QR and the quote, token-colored on the dark panel */
+.st-07a .cs-panel-rule {
+  border: none;
+  border-top: 0.2mm solid var(--color-on-dark);
+  opacity: 0.25;
+  margin: 0 0 var(--space-4) 0;
+}
+
+/* ---- main column: stat strip → ordered body sections ----
+   DNA §C3 (gap #4): the 3-up big-number stat row is THE case-study signature
+   device and must read as a strong AUTHORITY rail, not a pale outline. So the
+   stat strip sits on a SOLID DARK --color-ink rail (a true dark panel for any
+   brand — APEX's mid-cyan primary would read pale here, so ink is chosen) with
+   the numbers + labels lifted to on-dark ink. The component's accent numerals
+   would low-contrast against the dark ground, so they brighten to on-dark and
+   the labels go on-dark/dimmed — scoped to .st-07a .cs-stats ONLY (page-local
+   layout, the component CSS in components.css is untouched and stays light for
+   every other pattern). The accent still fires elsewhere on the page (kicker
+   pill, section-label rules, sidebar panel, links). */
+.st-07a .cs-stats {
+  /* rail→first-section gap: tightened one --space step (space-3→space-2) in the
+     overflow claw-back. */
+  margin: 0 0 var(--space-2) 0;
+  background-color: var(--color-ink);
+  padding: var(--space-2) var(--space-4);   /* compact vertical: the dark rail
+     must not add enough height to push the longest case study (slot 15) onto a
+     2nd page. The vertical inset is tightened one --space step (space-3→space-2,
+     4mm→3mm top+bottom) so the dark rail keeps its solid-authority presence and
+     stays legible while clawing back ~2mm; the horizontal inset (space-4) still
+     frames the numbers. The on-dark numerals/labels below are unchanged. */
+}
+.st-07a .cs-stats .c-stat-value { color: var(--color-on-dark); }
+.st-07a .cs-stats .c-stat-label {
+  color: var(--color-on-dark);
+  opacity: 0.72;
+}
+.st-07a .cs-section { margin: 0 0 var(--space-2) 0; }
+.st-07a .cs-section:last-child { margin-bottom: 0; }
+.st-07a .cs-section .cs-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.32;
+  color: var(--color-body);
+}
+.st-07a .cs-section .cs-body p {
+  margin: 0 0 var(--space-2) 0;
+  hyphens: auto;
+}
+.st-07a .cs-section .cs-body p:last-child { margin-bottom: 0; }
+.st-07a .cs-section .cs-body strong { font-weight: 700; color: var(--color-ink); }
+
+/* data-driven chart SVG(s) (page["charts"] specs → appended chart components):
+   a CHART BAND that fills the case-study dead bottom band. Charts lay out
+   SIDE-BY-SIDE (flex row) rather than stacked, so two charts share ONE band
+   height (~half-column-width each → ~60mm tall) and fit the empty bottom
+   without overflowing onto a spill page. One chart fills the row full-width.
+   The pattern caps the count at 2 (CS_MAX_CHARTS). The SVG keeps its own
+   viewBox aspect ratio; we constrain it to its flex cell width. */
+.st-07a .cs-charts {
+  margin: var(--space-3) 0 0 0;
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-end;
+  justify-content: center;
+}
+.st-07a .cs-chart-svg { flex: 0 1 auto; min-width: 0; margin: 0; }
+/* Bound the chart HEIGHT (not width) so the side-by-side band fits the dead
+   bottom band without overflowing. `height` + `width:auto` keeps the SVG's
+   viewBox aspect ratio (no distortion) in WeasyPrint; max-width guards the cell. */
+.st-07a .cs-chart-svg svg { display: block; height: 46mm; width: auto; max-width: 100%; }
+/* data-viz PRESET band — a full-width row in the dead bottom region. Centered so
+   a single compact device (ring) reads as a deliberate unit, not adrift; a
+   full-width device (ba_bars sets width:100%) still spans the band. */
+.st-07a .cs-viz {
+  width: 100%;
+  margin-top: var(--space-4);
+  display: flex;
+  justify-content: center;
+}
+.st-07a .cs-viz .c-viz-ba { width: 100%; }
+
+/* ===================== BREATHING SPREAD (layout redesign) =====================
+   spread_story: the narrative ALONE, distributed whitespace, clean section units.
+   spread_proof: the data-viz as HERO on a COMPOSED ground (never a blank page). */
+.st-07a .cs-story { display: block; }
+.st-07a .cs-story-head { margin-bottom: 9mm; }
+.st-07a .cs-story-eyebrow {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary);
+  display: flex; gap: 5mm; align-items: baseline;
+}
+.st-07a .cs-story-org { color: var(--color-muted); letter-spacing: 0.05em; }
+.st-07a .cs-story-headline {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--type-h3);
+  line-height: 1.14; letter-spacing: -0.01em; color: var(--color-ink);
+  margin: 6mm 0 0 0; max-width: 150mm;
+}
+.st-07a .cs-story-lede {
+  font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
+  line-height: 1.45; color: var(--color-primary); margin-top: 5mm; max-width: 148mm;
+}
+.st-07a .cs-story-body { display: block; }
+.st-07a .cs-story-section { break-inside: avoid; margin-bottom: 9mm; }
+.st-07a .cs-story-section:last-child { margin-bottom: 0; }
+.st-07a .cs-story-section .cs-body {
+  font-family: var(--font-body); font-size: var(--type-body); line-height: 1.65;
+  color: var(--color-body); margin-top: 3mm; max-width: 150mm;
+}
+.st-07a .cs-story-viz {
+  break-inside: avoid; margin-top: 11mm; padding-top: 9mm;
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 28%, transparent);
+  max-width: 128mm;
+}
+.st-07a .cs-story-foot {
+  margin-top: 11mm; font-family: var(--font-head);
+  font-size: var(--type-caption); letter-spacing: 0.05em;
+}
+.st-07a .cs-story-foot a { color: var(--color-primary); text-decoration: none; }
+
+.st-07a .cs-proof { display: block; }
+/* the COMPOSED ground is a normal background ON the inner box (no absolute layer
+   that could extend the page) — soft corner glows + a diagonal tint so the viz
+   never sits on blank white. */
+.st-07a .cs-proof-inner {
+  min-height: 178mm; border-radius: 2mm;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  text-align: center; padding: 12mm 14mm;
+  background-image:
+    radial-gradient(55mm 55mm at 84% 13%, color-mix(in srgb, var(--color-accent) 17%, transparent), transparent 70%),
+    radial-gradient(82mm 82mm at 8% 93%, color-mix(in srgb, var(--color-primary) 13%, transparent), transparent 72%),
+    linear-gradient(165deg, color-mix(in srgb, var(--color-primary) 6%, transparent) 0%, transparent 52%);
+}
+.st-07a .cs-proof-head { display: flex; flex-direction: column; gap: 3mm; }
+.st-07a .cs-proof-eyebrow {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary);
+}
+.st-07a .cs-proof-title {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--type-h3);
+  color: var(--color-ink);
+}
+.st-07a .cs-proof-hero { width: 100%; display: flex; justify-content: center; }
+.st-07a .cs-proof-hero .c-viz-ba__bars { height: 48mm; }
+.st-07a .cs-proof-hero .c-viz-ba__row { gap: 22mm; justify-content: center; }
+/* the result narrative, left-set in a comfortable measure (centered prose reads
+   poorly); balances the hero visual above it. */
+.st-07a .cs-proof-result { max-width: 122mm; text-align: left; }
+.st-07a .cs-proof-result .cs-body {
+  font-family: var(--font-body); font-size: var(--type-body); line-height: 1.65;
+  color: var(--color-body); margin-top: 3mm;
+}
+.st-07a .cs-proof-stat-value {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--type-stat);
+  color: var(--color-primary); line-height: 1.05;
+}
+.st-07a .cs-proof-stat-label {
+  font-family: var(--font-head); font-size: var(--type-caption); letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--color-muted); margin-top: 2mm;
+}
+.st-07a .cs-proof-quote { max-width: 124mm; }
+
+/* =================== MAGAZINE modular interlock (layout system) ===================
+   Full-width header, then 2-column rows each pairing a copy block with the visual
+   that proves it (alternating sides via DOM order). Rows are clean units
+   (break-inside: avoid) that flow whole to a 2nd page; every viz sits on a
+   composed tint module, never on blank space. */
+.st-07a .cs-mag { display: block; }
+.st-07a .cs-mag-head { margin-bottom: 10mm; }
+.st-07a .cs-mag-eyebrow {
+  font-family: var(--font-head); font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary);
+  display: flex; gap: 5mm; align-items: baseline;
+}
+.st-07a .cs-mag-headline {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--type-h2);
+  line-height: 1.12; letter-spacing: -0.01em; color: var(--color-ink);
+  margin: 6mm 0 0 0; max-width: 165mm;
+}
+.st-07a .cs-mag-lede {
+  font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
+  line-height: 1.45; color: var(--color-primary); margin-top: 5mm; max-width: 158mm;
+}
+.st-07a .cs-mag-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 11mm; align-items: center;
+  break-inside: avoid; margin-bottom: 10mm;
+}
+.st-07a .cs-mag-text .cs-body {
+  font-family: var(--font-body); font-size: var(--type-body); line-height: 1.6;
+  color: var(--color-body); margin-top: 3mm;
+}
+.st-07a .cs-mag-viz {
+  background-image: linear-gradient(160deg,
+    color-mix(in srgb, var(--color-primary) 8%, transparent),
+    color-mix(in srgb, var(--color-accent) 5%, transparent));
+  border: 0.3mm solid color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border-radius: 2.5mm; padding: 8mm 7mm; min-height: 46mm;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.st-07a .cs-mag-viz .c-viz-ba__row { gap: 10mm; justify-content: center; }
+.st-07a .cs-mag-viz .c-viz-ba__bars { height: 36mm; }
+.st-07a .cs-mag-viz--proof {
+  background-image:
+    radial-gradient(60mm 40mm at 80% 12%, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 70%),
+    linear-gradient(160deg, color-mix(in srgb, var(--color-primary) 9%, transparent), transparent 60%);
+  gap: 7mm;
+}
+.st-07a .cs-mag-stat { text-align: center; }
+.st-07a .cs-mag-stat-value {
+  font-family: var(--font-display); font-weight: 700; font-size: var(--type-stat);
+  color: var(--color-primary); line-height: 1.05;
+}
+.st-07a .cs-mag-stat-label {
+  font-family: var(--font-head); font-size: var(--type-caption); letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--color-muted); margin-top: 2mm;
+}
+.st-07a .cs-mag-quote { max-width: 80mm; }
+.st-07a .cs-mag-foot {
+  margin-top: 6mm; font-family: var(--font-head); font-size: var(--type-caption);
+  letter-spacing: 0.05em;
+}
+.st-07a .cs-mag-foot a { color: var(--color-primary); text-decoration: none; }
+
+/* ======================================================================== *
+ * FILL VARIANT — the expert "authority panel" composition (niklas p8/p10/p12)
+ *
+ * Selected per-page via layout_variant="fill". A FULL-HEIGHT dark sidebar on
+ * the RIGHT runs edge-to-edge top→bottom (portrait-if-present → name/role/url
+ * → a VERTICAL big-number stat STACK → QR + pull-quote pinned to the bottom);
+ * the body sections flow in the wider LEFT column. The dark panel FILLS the
+ * right column REGARDLESS of how short the body is — that is what removes the
+ * dead bottom band that the standard layout leaves.
+ *
+ * HOW the full-height fill is guaranteed (WeasyPrint 68.1): the per-page
+ * section (.page.st-07a) is `position: relative` with `min-height: 261mm` (the
+ * A4 content box, set in the shared head). The dark panel is `position:
+ * absolute; top:0; right:0; bottom:0`, so it stretches to the FULL resolved
+ * content-box height for any body length — no table-height percentage games
+ * (which WeasyPrint resolves unreliably). The header + left body column get a
+ * right inset (panel width + gutter) so text never runs under the panel.
+ *
+ * Tokens ONLY — no hex / font / client literal. The dark ground is
+ * var(--color-ink); on-dark text is var(--color-on-dark); the big numbers fire
+ * var(--color-accent); the client URL fires var(--color-accent).
+ * ======================================================================== */
+
+/* The fill ROOT: a definite-height (= the A4 content box) relative box. The
+   definite height is REQUIRED so the absolutely-positioned dark panel can
+   resolve top:0/bottom:0 to the full page height (WeasyPrint 68.1 will NOT
+   stretch an abs box against a min-height container — verified). 261mm = 297 -
+   16(top) - 20(bottom) margins, matching the shared .page content box. The
+   left column (header + sections) is SHORTER than this on the apex case study
+   (the stats/QR/quote moved into the panel), so the fixed height never clips. */
+/* Case-study layout type: a 2-column GRID (wide narrative + narrow rail). The
+   rail is a normal grid cell sized by the grid row — NOT a fixed-height absolute
+   panel — so its content (stats + quote) can never overflow a capped box and
+   clip (the leaking-quote bug). The grid row grows to the taller column, and if
+   the whole case study exceeds one page it flows to a second page as whole
+   blocks (page count is not a constraint). */
+.st-07a .cs-fill-root {
+  display: grid;
+  grid-template-columns: 1fr 64mm;
+  grid-template-areas:
+    "head rail"
+    "main rail";
+  /* ADAPTIVE FILL: pin the grid to the A4 content box (matches .page min-height)
+     and give the narrative `main` row the remaining height (auto head + 1fr main).
+     The grid now fills the page, so the rail (grid-area rail, spanning both rows)
+     runs FULL HEIGHT and its space-between distributes head -> stats -> quote down
+     it, and the `main` cell becomes tall enough for the narrative to fill too.
+     This is what removes the dead bottom band when there is no portrait — the
+     fill no longer depends on a photo or on long body copy. 261mm = 297 - 16top
+     - 20bottom, the shared .page content box. */
+  grid-template-rows: auto 1fr;
+  /* 258mm = the 261mm A4 content box minus a ~3mm safety margin so sub-pixel
+     rounding never spills the page onto a 2nd sheet in WeasyPrint (the overflow
+     guard renders via WeasyPrint). The grid still fills ~99% of the height. */
+  min-height: 258mm;
+  column-gap: var(--space-5);
+  align-items: stretch;
+}
+.st-07a .cs-header--fill { grid-area: head; }
+.st-07a .cs-main--fill { grid-area: main; }
+
+/* the dark authority RAIL: content-sized, in flow (grid-area), stretching to the
+   narrative column's height. Stats flow from the top; the quote sits below them
+   with breathing room. No fixed height, no clipping. */
+.st-07a .cs-panelfill {
+  grid-area: rail;
+  align-self: stretch;
+  background-color: var(--color-ink);
+  /* material (Chromium): a brand-primary cast deepening down the rail + a faint
+     accent aurora at the top — the authority rail reads as lit material, not
+     flat ink. Token-derived (color-mix), additive over the background-color. */
+  background-image:
+    radial-gradient(circle at 80% 2%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 45%),
+    linear-gradient(170deg, transparent 25%,
+      color-mix(in srgb, var(--color-primary) 38%, transparent) 130%);
+  box-shadow: 0 3mm 10mm color-mix(in srgb, var(--color-neutral-dark) 22%, transparent);
+  color: var(--color-on-dark);
+  padding: var(--space-5) var(--space-4);
+  /* distribute head → stat stack → foot across the full panel height so the
+     oversized numbers occupy the middle band and the QR/quote sit at the
+     bottom — the vertical fill that mirrors the reference. */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* NOTE: deliberately NO `overflow: hidden` here. Clipping the panel box would
+     SLICE glyphs at the right edge (the original bug). Long values are made to
+     FIT instead — they WRAP (overflow-wrap on the value) and prose values step
+     DOWN a size via the `--long` modifier — so nothing ever needs clipping. The
+     abs-positioned panel still fills the content box top→bottom for the
+     dead-space win; box-sizing keeps padding inside the 64mm width. */
+  box-sizing: border-box;
+}
+
+/* the header in the fill layout flows at the top of the left column (no inset
+   beyond the root's reserved strip). The main body column follows it. */
+.st-07a .cs-header--fill { margin: 0 0 var(--space-2) 0; }
+/* fill header kicker + headline margins tightened one step (space-2→space-1)
+   to claw back vertical space in the left column without affecting the standard
+   variant (selectors are scoped to .cs-header--fill children). */
+.st-07a .cs-header--fill .cs-kicker { margin: 0 0 var(--space-1) 0; }
+.st-07a .cs-header--fill .cs-headline { margin: 0 0 var(--space-1) 0; }
+/* ADAPTIVE FILL: the narrative column distributes its sections down the full
+   `main` row height (justify-content: space-between) so the whitespace BREATHES
+   evenly between sections instead of pooling into a dead band at the bottom; the
+   body steps up to --type-lede with generous leading so the copy has presence
+   against the air. This fills the left column without a portrait, fabricated
+   content, or a duplicate bottom viz. */
+.st-07a .cs-main--fill {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* TIGHTEN the label to ITS body so each [label + body] reads as one unit. The
+   ruled label's own bottom spacing (rule padding + margin) must stay SMALLER
+   than the between-section gap that space-between creates, otherwise the label
+   floats toward the previous paragraph and detaches from its own (verified on
+   pixels). Scoped to the fill variant only. */
+.st-07a .cs-main--fill .c-section-label { margin-bottom: var(--space-1); }
+.st-07a .cs-main--fill .c-section-label--rule { padding-bottom: var(--space-1); }
+.st-07a .cs-main--fill .cs-section { margin: 0; }
+.st-07a .cs-main--fill .cs-section .cs-body {
+  font-size: var(--type-cta);
+  line-height: 1.55;
+}
+/* fill lede: slightly larger than body type to establish hierarchy in the wider
+   left column; uses --type-lede (12pt) — NOT --type-cta (11.5pt is too close
+   to body for a clear gap). */
+.st-07a .cs-lede--fill { font-size: var(--type-lede); }
+
+/* head block on the dark panel: portrait-if-present, then name/role/url */
+.st-07a .cs-panelfill-head { flex: 0 0 auto; }
+.st-07a .cs-portrait--fill { margin: 0 0 var(--space-3) 0; }
+.st-07a .cs-portrait--fill .c-media-img { height: 56mm; aspect-ratio: auto; }
+
+/* ---- client-matched social post (DNA §C2 "live social presence"): a COMPACT
+   renderer-drawn phone that REPLACES the static portrait in the case-study rail
+   (the planner's case_study_post binding). The rail is NARROW, so the phone is
+   sized to roughly the width of the portrait it replaces and its post photo is
+   shortened so the whole device fits the rail without overflowing the page.
+   Scoped to .st-07a so it never restyles the phone on the breather pages
+   (ST-31). Tokens only — the device chrome lives in .c-phone (components.css). */
+.st-07a .cs-socialpost { margin: 0 0 var(--space-3) 0; }
+/* standard rail: the sidebar is ~31% of the content box (~55mm wide). Size the
+   phone to fill that rail comfortably. */
+.st-07a .cs-socialpost .c-phone { width: 52mm; }
+/* the post photo is the tall element; shorten it so the phone (notch + header +
+   photo + foot) stays roughly as tall as the 56mm portrait it replaces and the
+   page does not overflow onto a 2nd sheet. */
+.st-07a .cs-socialpost .c-phone__photo { height: 38mm; }
+/* fill rail: the dark panel is 64mm wide (minus 2×6mm padding → ~52mm of inner
+   width). Size the phone JUST under that so the bezel sits inside the panel
+   (more specific than the standard rule above → wins for the fill variant). */
+.st-07a .cs-socialpost--fill .c-phone { width: 50mm; }
+.st-07a .cs-kunde--fill { margin: 0; }
+/* recolor the kunde block for the dark ground (name/role go on-dark; the url
+   keeps the accent fire). Page-local override of the light defaults above. */
+.st-07a .cs-kunde--fill .cs-kunde-name { color: var(--color-on-dark); }
+.st-07a .cs-kunde--fill .cs-kunde-role { color: var(--color-on-dark); opacity: 0.72; }
+/* the url keeps an accent tint but is LIFTED toward on-dark so it reads on the
+   dark panel (muted teal alone fails contrast on navy). */
+.st-07a .cs-kunde--fill .cs-kunde-link {
+  color: color-mix(in srgb, var(--color-accent) 50%, var(--color-on-dark));
+}
+
+/* the VERTICAL big-number stat STACK — the signature device. Oversized numbers
+   in the accent, small uppercase labels on-dark, a thin divider between cells.
+   This stack occupies the middle band of the panel and is the bulk of the dark
+   fill. */
+.st-07a .cs-statstack {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+}
+.st-07a .cs-statstack-cell {
+  padding-top: var(--space-2);
+  /* the thin rule above each metric carries the accent fire (Richard's rail
+     uses an accent hairline over each stat); the figures themselves stay white. */
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+.st-07a .cs-statstack-cell:first-child { border-top: none; padding-top: 0; }
+.st-07a .cs-statstack-value {
+  font-family: var(--font-head);
+  font-weight: 800;
+  /* The big-number authority, sized to the 64mm panel: display (32pt). A wide
+     currency figure like "> 200.000 €" overruns at display-xl (40pt) and wraps
+     its ">"/"€" onto stray lines; 32pt fits it cleanly and matches the transform
+     device's "to" figure for a consistent rail. */
+  font-size: var(--type-display);
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  /* WHITE figures for high contrast on the dark rail (matches Richard's rail);
+     the accent fires on the thin cell rule, not the numerals. No glow — crisp. */
+  color: var(--color-on-dark);
+  /* CLIP-PROOF wrapping: let a value break ANYWHERE it must so even a single
+     long token can never run past the panel edge (overflow-wrap:anywhere also
+     lets the box shrink to its content, unlike break-word). Numerals are short
+     and won't actually wrap; this is the safety net. */
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
+}
+/* --long: PROSE values (multi-word phrases, classified in patterns/st_07a.py).
+   At the big display-xl (40pt) size a 3-6 word German phrase OVERFLOWS the
+   ~64mm panel and clips at the right edge. Step DOWN to --type-h2 (15pt) with
+   a normal line-height so the phrase WRAPS to a few tidy lines fully inside the
+   panel — fitting is the hard requirement; numerals are untouched and stay big.
+   Tokens only (no literal sizes). */
+.st-07a .cs-statstack-value--long {
+  font-size: var(--type-h3);
+  line-height: 1.16;
+  letter-spacing: 0;
+}
+/* a leading comparator (">"/"<") on a figure: a small dimmed prefix so the
+   number itself reads as the hero and a wide value fits the narrow rail. */
+.st-07a .cs-fig-cmp {
+  font-size: var(--type-h2);
+  font-weight: 600;
+  opacity: 0.6;
+  margin-right: 0.08em;
+}
+
+.st-07a .cs-statstack-label {
+  font-family: var(--font-head);
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  color: var(--color-on-dark);
+  opacity: 0.78;
+  margin-top: var(--space-2);
+}
+
+/* before->after TRANSFORMATION device (a metric whose value is "FROM → TO",
+   e.g. reaction time "24 Std. → Minuten"). Richard's before/after archetype
+   (#3 in the infographic vocabulary): a gray status-quo bar collapsing to an
+   accent outcome bar, each capped by its verbatim figure + a vorher/nachher
+   micro-label. Replaces the old text-arrow glyph — a legible, scannable proof
+   device on the dark rail. Bar heights arrive inline (derived in
+   patterns/st_07a.py); tokens only, no client literals, no fabricated number. */
+.st-07a .cs-statstack-ba {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+.st-07a .cs-ba-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.st-07a .cs-ba-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  /* a bar LABEL, not a hero numeral — sized to stay on ONE line inside the
+     ~28mm half-column ("Minuten" overflows + breaks at the 20pt h2 size). */
+  font-size: var(--type-h3);
+  line-height: 1.0;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--color-on-dark);
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+.st-07a .cs-ba-num--after { color: var(--color-accent); }
+/* fixed-height track so both bars share a common baseline; the bar grows up
+   from the bottom to its inline height %. */
+.st-07a .cs-ba-track {
+  width: 100%;
+  height: 20mm;
+  display: flex;
+  align-items: flex-end;
+}
+.st-07a .cs-ba-bar {
+  width: 100%;
+  border-radius: 0.6mm 0.6mm 0 0;
+  min-height: 1mm;
+}
+.st-07a .cs-ba-bar--before {
+  background: color-mix(in srgb, var(--color-on-dark) 30%, transparent);
+}
+.st-07a .cs-ba-bar--after { background: var(--color-accent); }
+.st-07a .cs-ba-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.55;
+  margin-top: var(--space-2);
+}
+
+/* foot of the panel: pull-quote (on-dark, via the c-pull-quote--panel modifier)
+   then a small QR — pinned to the bottom by the panel's space-between. */
+.st-07a .cs-panelfill-foot { flex: 0 0 auto; }
+.st-07a .cs-panelfill-foot .c-pull-quote { margin: 0 0 var(--space-3) 0; }
+.st-07a .cs-panel-qr--fill {
+  display: flex;
+  justify-content: flex-start;
+}
+.st-07a .cs-panel-qr--fill .c-qr { width: 16mm; height: 16mm; }
+
+/* =====================================================================
+   casestudy_hero — A3-landscape SPREAD (Richard "Doppelseite"): ONE continuous
+   canvas read left->right. LEFT = the client story (kicker + serif result
+   headline + framed testimonial portrait + lede + Ausgangssituation/Loesung/
+   Ergebnis). RIGHT = the data-led PROOF (bar/gauge per the metric shape) + the
+   metric chips + the client quote. A hairline spine joins the halves so they
+   read as one canvas, not two pages. Flat-on-cream, token-only. ============= */
+.st-07a .csh { display: grid; grid-template-columns: 1.05fr 1fr; height: 100%; }
+.st-07a .csh-left  { display: flex; flex-direction: column; min-width: 0; padding-right: 13mm; }
+.st-07a .csh-right { display: flex; flex-direction: column; min-width: 0; padding-left: 13mm;
+  border-left: 0.3mm solid color-mix(in srgb, var(--color-muted) 34%, transparent); }
+
+.st-07a .csh-kicker { margin-bottom: var(--space-2); }
+.st-07a .csh-headline {
+  font-family: var(--font-display); font-size: var(--type-display); font-weight: 700;
+  line-height: 1.0; letter-spacing: -0.015em; color: var(--color-ink); margin: 0 0 var(--space-2) 0;
+}
+.st-07a .csh-portrait { margin: 0 0 var(--space-2) 0; }
+.st-07a .csh-portrait-img {
+  width: 100%; aspect-ratio: 2.35 / 1; object-fit: cover; object-position: center 32%;
+  display: block; border-radius: 1.5mm;
+}
+.st-07a .csh-portrait-cap { display: flex; flex-direction: column; margin-top: var(--space-1); }
+.st-07a .csh-pname { font-family: var(--font-head); font-weight: 700; font-size: var(--type-caption); color: var(--color-ink); }
+.st-07a .csh-prole { font-family: var(--font-head); font-size: var(--type-caption); color: var(--color-muted); }
+.st-07a .csh-lede {
+  font-family: var(--font-body); font-size: var(--type-caption); line-height: 1.3;
+  color: var(--color-body); margin: 0 0 var(--space-2) 0;
+}
+.st-07a .csh-narr { display: flex; flex-direction: column; gap: var(--space-2); }
+.st-07a .csh-sec { break-inside: avoid; }
+.st-07a .csh-body { font-family: var(--font-body); font-size: var(--type-caption); line-height: 1.3; color: var(--color-body); margin-top: 0.6mm; }
+
+.st-07a .csh-proof { display: flex; flex-direction: column; gap: var(--space-2); }
+.st-07a .csh-proof-viz { margin-top: var(--space-1); }
+.st-07a .csh-proof-metrics { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-3); }
+.st-07a .csh-pm { display: flex; flex-direction: column; }
+.st-07a .csh-pm-v { font-family: var(--font-head); font-weight: 800; font-size: var(--type-display); line-height: 1; color: var(--color-accent); }
+.st-07a .csh-pm-l { font-family: var(--font-head); font-size: var(--type-caption); line-height: 1.25; color: var(--color-muted); margin-top: var(--space-1); }
+.st-07a .csh-quote { margin-top: auto; padding-top: var(--space-4); }
+
+.st-07a .csh-quote-text {
+  font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
+  line-height: 1.32; color: var(--color-ink); margin: 0;
+  position: relative; padding-left: 8mm;
+}
+.st-07a .csh-quote-text::before {
+  content: "\201C"; position: absolute; left: 0; top: -2mm;
+  font-family: var(--font-display); font-size: 15mm; color: var(--color-accent); line-height: 1;
+}
+.st-07a .csh-quote-attr {
+  font-family: var(--font-head); font-size: var(--type-caption); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted);
+  margin-top: var(--space-2); padding-left: 8mm;
+}

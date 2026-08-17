@@ -1,0 +1,15 @@
+# Secrets — never commit.
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Onboard / render scratch output
+*.png
+dmc_onboard_*/
+dmc_render_*/
+
+.DS_Store

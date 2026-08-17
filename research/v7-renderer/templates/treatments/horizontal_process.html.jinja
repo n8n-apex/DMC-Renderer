@@ -1,0 +1,90 @@
+{# horizontal_process treatment (A3-landscape, archetype "process").
+
+   REBUILT 2026-07-13 to the ST-06 reference spread anatomy (a published
+   mechanism spread; a sibling spread confirms the family): NOT a row of flat
+   cards on a spine, but a THREE-ZONE spread:
+
+     LEFT  : the PRODUCT MOCKUP as the hero visual (the client's real pre-framed
+             device render), then the centered two-tone headline and the lede
+             (einleitung) beneath it.
+     MIDDLE: the NAVY NUMBERED-STEPS PANEL (Richard's signature device: a dark
+             rounded panel, oversized accent numerals 01..NN inline with a bold
+             on-dark title, the step body in on-dark text).
+     RIGHT : a FULL-HEIGHT navy rail carrying the payoff statement (td.result,
+             the mechanism's closing line) as a large on-dark serif statement,
+             and the CTA (label + brand URL) anchored at the rail foot.
+
+   Driven entirely by TreatmentData; every zone graceful-omits (no mockup ->
+   the left zone is headline+lede only; no result -> the rail leads with the
+   CTA). Token-only styling in styles/treatments/horizontal_process.css. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{% set hp_lede = (td.body[0] if td.body else none) or td.subhead %}
+{% set _brand_url = (ctx.brand.company_url_display if (ctx and ctx.brand) else '') or '' %}
+
+<div class="hp-grid">
+
+  {# ---- LEFT: mockup hero + headline + lede ---- #}
+  <div class="hp-left">
+    {% if td.images %}
+    <img class="hp-hero-mockup" src="{{ td.images[0] }}" alt=""/>
+    {% endif %}
+    <div class="hp-head">
+      {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+      {% if td.headline %}
+        {{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}
+      {% endif %}
+      {% if hp_lede %}<p class="hp-lede">{{ hp_lede }}</p>{% endif %}
+    </div>
+    {# generated SVG components (the ST-06 process-flow device) render as a band
+       under the lede, sized to the left column width. Graceful: only when
+       td.components is non-empty. #}
+    {% if td.components %}
+    <div class="hp-comps">
+      {% for c in td.components %}<div class="hp-comp">{{ c | safe }}</div>{% endfor %}
+    </div>
+    {% endif %}
+    {# any data-viz devices (gauge/donut/arrow) close the left zone #}
+    {% if td.viz %}
+    <div class="hp-viz">{{ render_viz(td.viz) }}</div>
+    {% endif %}
+  </div>
+
+  {# ---- MIDDLE: the navy numbered-steps panel ---- #}
+  {% if td.steps %}
+  <div class="hp-steps-panel">
+    {% for s in td.steps %}
+    <div class="hp-step">
+      <span class="hp-step-n">{{ '%02d' | format(loop.index) }}</span>
+      <div class="hp-step-text">
+        {% if s.title %}<span class="hp-step-title">{{ s.title }}</span>{% endif %}
+        {% if s.body %}<span class="hp-step-body">{{ s.body }}</span>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ---- RIGHT: navy payoff + CTA rail. The "Ergebnis" cap belongs to the payoff:
+     both render only when td.result carries text; without it the rail is
+     CTA-only and the modifier class centers the CTA vertically. ---- #}
+  {% set _has_result = td.result and td.result.text %}
+  <div class="hp-rail{% if not _has_result %} hp-rail--cta-only{% endif %}">
+    {% if _has_result %}
+    <div class="hp-rail-cap">Ergebnis</div>
+    <div class="hp-rail-payoff">
+      <p class="hp-rail-statement">{{ td.result.text }}</p>
+      {% if td.result.source %}<div class="hp-rail-source">{{ td.result.source }}</div>{% endif %}
+    </div>
+    {% endif %}
+    {% if _brand_url %}
+    <div class="hp-rail-cta">
+      <span class="hp-rail-cta-label">{{ (td.cta.text if td.cta else none) or 'Jetzt Termin vereinbaren' }}</span>
+      <span class="hp-rail-cta-url">{{ _brand_url }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+</div>

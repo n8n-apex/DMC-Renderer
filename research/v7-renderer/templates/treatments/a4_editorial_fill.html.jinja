@@ -1,0 +1,173 @@
+{# a4_editorial_fill treatment (A4-portrait). A real FILL layout for the text
+   page types (Outlook / About / Fazit / Collaboration) that previously fell back
+   to the legacy patterns and left a dead bottom band. Driven entirely by
+   TreatmentData (td); every block graceful-omits.
+
+   Composition = a DEFINITE-height flex column. The HEAD (hero headline) anchors
+   the top; the MID grows to own the page middle; a STAT rail + FOOT anchor the
+   bottom. The MID has two shapes so a page always FILLS rather than clumping:
+     LIST pages (ausblick / symptoms): a short lead-in line, then the numbered
+       items as LARGE editorial bands (oversized accent numerals) that spread to
+       fill the vertical slack -- the list IS the page body.
+     PROSE pages (About / Fazit): the running prose as a 2-column justified block
+       that grows to fill the middle.
+   A page with sparse data still reads as DESIGNED (a hero headline, big numerals,
+   an accent rule) rather than a dead bottom. Semantic tokens only in CSS. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{% set _items = td.list_items or [] %}
+{% set _use_list = (_items | length) >= 2 %}
+{% set _lede = td.subhead or (td.body[0] if td.body else none) %}
+{% set _body = td.body[1:] if (td.subhead is none and td.body) else td.body %}
+{# thin prose (few blocks) reads better as one WIDE lede-scale column than a
+   cramped 2-column split with orphan lines. #}
+{% set _prose_blocks = (_body | length) + (0 if _use_list else (_items | length)) %}
+{# a page whose ONLY middle payload is a quote (e.g. Fazit's thesis) would strand
+   that quote at the foot over a dead middle. Instead promote it to a CENTERED
+   hero statement that owns the page middle. #}
+{% set _hero_quote = (not (_body or _items)) and td.quote and td.quote.text %}
+{# THIN closing pages (a hero-quote, or thin prose with no stat foot) anchor the
+   bottom with a CTA url band -- Richard's signature closing device -- so a sparse
+   conclusion reads as a designed call-to-action, not a dead lower band. #}
+{% set _thin = _hero_quote or ((not _use_list) and _prose_blocks <= 2) %}
+{% set _brand_url = (ctx.brand.company_url_display if (ctx and ctx.brand) else '') or '' %}
+{% set _cta_anchor = _thin and (not td.stats) and _brand_url %}
+{# when a foot anchors the bottom, the mid flows from the lede (top-aligned) so
+   there is ONE framed gap above the foot, not a block floating between two gaps. #}
+{% set _has_foot = (td.quote and td.quote.text and not _hero_quote) or (td.cta and td.cta.url) or _cta_anchor %}
+{# PORTRAIT RAIL variant (the About page): a page whose ADAPTER declared the
+   portrait_rail intent renders a FULL-HEIGHT dark rail on the right -- the same
+   visual language as the case-study rail -- carrying the photo as a designed
+   PLATE, the identity, and the page's stats ON-DARK. The variant is decided
+   upstream (td.variant, set only by the About adapter), NEVER inferred here
+   from bare image presence: keying on td.image made the rail misfire on any
+   page whose slots happened to resolve a portrait (the ST-FAZIT regression). #}
+{% set _rail = td.image if td.variant == 'portrait_rail' else none %}
+
+<div class="ef-grid {{ 'has-rail' if _rail else '' }}">
+
+  {% if _rail %}
+  <div class="ef-rail">
+    <div class="ef-rail-photo-plate">
+      <div class="ef-rail-photo" style="background-image:url('{{ td.image }}');"></div>
+    </div>
+    {% if td.caption and (td.caption.name or td.caption.role) %}
+    <div class="ef-rail-ident">
+      {% if td.caption.name %}<div class="ef-rail-name">{{ td.caption.name }}</div>{% endif %}
+      {% if td.caption.role %}<div class="ef-rail-role">{{ td.caption.role }}</div>{% endif %}
+    </div>
+    {% endif %}
+    {% if td.stats %}
+    <div class="ef-rail-stats">
+      <div class="ef-rail-stats-cap">In Zahlen</div>
+      {% for s in td.stats %}
+      {# the rail column is ~55mm wide: a 40pt figure only fits ~8 glyphs, so
+         longer values take the statement style (h3, wraps cleanly). The check
+         reads the PRE-escape glyph count (value_len, recorded by _stat_pairs)
+         when present: escaped entities inflate (value | length) and would
+         demote a short printed figure. #}
+      {% set _vlen = s.value_len if s.value_len is defined else (s.value | length) %}
+      {% set _fig = s.value and _vlen <= 8 %}
+      <div class="ef-rail-stat {{ 'is-figure' if _fig else 'is-statement' }}">
+        {% if s.value %}<div class="ef-rail-stat-value">{{ s.value }}</div>{% endif %}
+        {% if s.label %}<div class="ef-rail-stat-label">{{ s.label }}</div>{% endif %}
+        {% if s.sub %}<div class="ef-rail-stat-source">{{ s.sub }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="ef-main">
+
+  <div class="ef-head">
+    {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+    {% if td.headline %}{{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}{% endif %}
+    {% if _lede %}<p class="ef-lede">{{ _lede }}</p>{% endif %}
+  </div>
+
+  <div class="ef-mid {{ 'is-prose' if not _use_list else 'is-list' }}{{ ' has-foot' if _has_foot else '' }}">
+    {% if _use_list %}
+      {% if _body %}<div class="ef-lead-in">{% for p in _body %}<p>{{ p }}</p>{% endfor %}</div>{% endif %}
+      <ol class="ef-list">
+        {% for it in _items %}
+        <li class="ef-list-item"><span class="ef-list-n">{{ '%02d' % loop.index }}</span><span class="ef-list-t">{{ it }}</span></li>
+        {% endfor %}
+      </ol>
+    {% elif _body or _items %}
+      {# prose filler; a lone credibility item (list len 1) folds in as a final
+         emphasized line so it is never lost. Wide single column when thin. #}
+      <div class="ef-body {{ 'is-wide' if _prose_blocks <= 2 else '' }}">
+        {% for p in _body %}<p>{{ p }}</p>{% endfor %}
+        {% if not _use_list %}{% for it in _items %}<p class="ef-body-lead">{{ it }}</p>{% endfor %}{% endif %}
+      </div>
+    {% elif _hero_quote %}
+      <blockquote class="ef-hero-quote">{{ td.quote.text }}</blockquote>
+      {% if td.quote.attribution %}<div class="ef-hero-quote-attr">{{ td.quote.attribution }}</div>{% endif %}
+    {% endif %}
+
+    {# HOST SLOT: the page's fal-GENERATED scene/background art as a designed
+       full-width photo band (previously produced-but-invisible on treated
+       pages: only legacy patterns painted scenes). #}
+    {% if td.scene %}
+    <div class="ef-sceneband" style="--ef-scene:url('{{ td.scene }}');"></div>
+    {% endif %}
+
+    {# HOST SLOT: the page's data-viz presets (transform arrows, donuts,
+       stat strips...) render as a device band in the middle of the page. #}
+    {% if td.viz %}
+    <div class="ef-vizband">{{ render_viz(td.viz) }}</div>
+    {% endif %}
+
+    {# HOST SLOT: the page's GENERATED component SVGs (preprocessor charts /
+       diagrams) + the client's REAL product shot when the writer asked for one
+       (bildwunsch -> produkt_bild). Without this band a treated page dropped
+       every generated device (the produced-but-invisible defect). #}
+    {% if td.components or td.images %}
+    <div class="ef-compband">
+      {% for img in td.images %}<img class="ef-product" src="{{ img }}" alt=""/>{% endfor %}
+      {% for svg in td.components %}<div class="ef-comp">{{ svg | safe }}</div>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  {% if td.stats and not _rail %}
+  <div class="ef-stats">
+    <div class="ef-stats-cap">In Zahlen</div>
+    <div class="ef-stats-row">
+      {% for s in td.stats %}
+      {# PRE-escape glyph count when recorded (see the rail note above). #}
+      {% set _vlen = s.value_len if s.value_len is defined else (s.value | length) %}
+      {% set _fig = s.value and _vlen <= 16 %}
+      <div class="ef-stat {{ 'is-figure' if _fig else 'is-statement' }}">
+        {% if s.value %}<div class="ef-stat-value">{{ s.value }}</div>{% endif %}
+        {% if s.label %}<div class="ef-stat-label">{{ s.label }}</div>{% endif %}
+        {% if s.sub %}<div class="ef-stat-source">{{ s.sub }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if td.quote and td.quote.text and not _hero_quote %}
+  <div class="ef-foot ef-quote">
+    <blockquote class="ef-quote-text">{{ td.quote.text }}</blockquote>
+    {% if td.quote.attribution %}<div class="ef-quote-attr">{{ td.quote.attribution }}</div>{% endif %}
+  </div>
+  {% elif td.cta and td.cta.url %}
+  <div class="ef-foot ef-cta">
+    <span class="ef-cta-label">{{ td.cta.text or 'Jetzt Termin vereinbaren' }}</span>
+    <span class="ef-cta-url">{{ td.cta.url }}</span>
+  </div>
+  {% elif _cta_anchor %}
+  <div class="ef-foot ef-cta">
+    <span class="ef-cta-label">{{ (td.cta.text if td.cta else none) or 'Jetzt Termin vereinbaren' }}</span>
+    <span class="ef-cta-url">{{ _brand_url }}</span>
+  </div>
+  {% endif %}
+  </div>{# /ef-main #}
+
+</div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;font-style:normal;}
+@font-face{font-family:'SourceSerifIt';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4-Italic%5Bopsz,wght%5D.ttf');font-weight:200 900;font-style:italic;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ============ TOP META ROW ============ */
+.eyebrow{position:absolute;left:64px;top:64px;display:flex;align-items:center;gap:16px;
+  color:var(--teal);font-size:14px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:40px;height:2px;background:var(--teal);}
+.kicker{position:absolute;right:64px;top:64px;font-size:13px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--body);}
+
+/* ============ QUOTE BLOCK ============ */
+.quote{position:absolute;left:64px;right:64px;top:150px;}
+.qmark{font-family:'SourceSerif',serif;font-size:150px;font-weight:600;color:var(--teal);
+  line-height:0.5;height:74px;letter-spacing:-.02em;}
+.qtext{font-family:'SourceSerifIt',serif;font-style:italic;font-weight:420;
+  font-size:48px;line-height:1.26;color:var(--ink);letter-spacing:-0.006em;margin-top:18px;max-width:700px;}
+.qtext .hl{color:var(--teal);}
+.attr{margin-top:34px;display:flex;align-items:center;gap:18px;}
+.attr .line{width:46px;height:2px;background:var(--teal);}
+.attr .lbl{font-size:13px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--teal);}
+
+/* ============ PROOF PHOTO (native square 1.007) ============ */
+.proof{position:absolute;left:64px;top:586px;width:712px;height:386px;
+  background:var(--ink);overflow:hidden;}
+.proof .img{position:absolute;inset:0;
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_2.png') center 30%/cover no-repeat;}
+.proof .seam{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal);z-index:2;}
+.proof::after{content:'';position:absolute;left:0;right:0;bottom:0;height:130px;z-index:1;
+  background:linear-gradient(to bottom,rgba(46,62,80,0) 0%,rgba(46,62,80,0.86) 100%);}
+.pcap{position:absolute;left:30px;bottom:24px;z-index:3;color:var(--cream);}
+.pcap .t{font-family:'SourceSerif',serif;font-size:21px;font-weight:520;letter-spacing:.005em;}
+.pcap .s{font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#aebecb;margin-top:7px;}
+
+/* ============ SAVINGS ROW ============ */
+.savings{position:absolute;left:64px;right:64px;top:1012px;display:flex;gap:0;border-top:1px solid var(--rule);padding-top:28px;}
+.sv{flex:1;}
+.sv:last-child{padding-left:44px;border-left:1px solid var(--rule);}
+.sv:first-child{padding-right:44px;}
+.sv .v{font-family:'SourceSerif',serif;font-size:50px;font-weight:520;color:var(--ink);line-height:1;letter-spacing:-0.012em;}
+.sv .v .u{color:var(--teal);}
+.sv .l{font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--body);margin-top:12px;}
+
+/* ============ FOOTER ============ */
+.footer{position:absolute;left:64px;right:64px;bottom:34px;display:flex;align-items:center;justify-content:space-between;}
+.brandmark{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.36em;color:var(--ink);}
+.pageno{font-family:'SourceSerif',serif;font-size:15px;color:var(--ink);font-weight:500;}
+</style>
+</head>
+<body>
+  <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+  <div class="kicker">Kundenstimmen</div>
+
+  <div class="quote">
+    <div class="qmark">&ldquo;</div>
+    <p class="qtext">In 90 Tagen ein vollautomatischer Workflow, der uns <span class="hl">20+ Stunden pro Woche</span> spart.</p>
+    <div class="attr"><span class="line"></span><span class="lbl">Kundenstimme</span></div>
+  </div>
+
+  <div class="proof">
+    <div class="img"></div>
+    <div class="seam"></div>
+    <div class="pcap">
+      <div class="t">Über 100 realisierte AI-Projekte</div>
+      <div class="s">Frese Recruiting · Conesso · Pure Media</div>
+    </div>
+  </div>
+
+  <div class="savings">
+    <div class="sv">
+      <div class="v"><span class="u">€</span>200k+</div>
+      <div class="l">Einsparung pro Jahr</div>
+    </div>
+    <div class="sv">
+      <div class="v">30&ndash;50<span class="u">%</span></div>
+      <div class="l">weniger Betriebskosten, ohne Mehr-Headcount</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="brandmark">APEX</div>
+    <div class="pageno">03</div>
+  </div>
+</body>
+</html>

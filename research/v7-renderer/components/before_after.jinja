@@ -1,0 +1,37 @@
+{# before_after — a TWIN comparison (Richard's "Ohne KI / Mit KI" archetype):
+   two side-by-side panels sharing a baseline. The LEFT (ohne) is the muted
+   status-quo; the RIGHT (mit) is the accent answer. Used when a page carries a
+   real qualitative contrast (ComparisonData.compare {ohne[], mit[]}) that did
+   NOT become a numeric chart. NO fabrication — only the literal supplied lists.
+
+   Token-only / brand-agnostic: muted vs accent headers, soft shadows + gradient
+   on the "mit" header come from tokens via color-mix. Host sizes .c-twincol.
+
+   DATA CONTRACT (diagram dict, kind == "before_after"):
+     ohne  : list of status-quo bullet strings (verbatim)
+     mit   : list of with-solution bullet strings (verbatim)
+     title : optional caption above the pair
+     ohne_label / mit_label : optional column headers (default Ohne / Mit)
+
+   Graceful: needs both non-empty lists, else renders nothing. #}
+{% macro before_after(diagram) %}
+{%- if diagram and diagram.kind == 'before_after' and diagram.ohne and diagram.mit -%}
+<figure class="c-twincol" role="img">
+  {%- if diagram.title %}<figcaption class="c-twincol__title">{{ diagram.title }}</figcaption>{% endif %}
+  <div class="c-twincol__row">
+    <div class="c-twincol__col c-twincol__col--ohne">
+      <div class="c-twincol__head">{{ diagram.ohne_label or 'Ohne' }}</div>
+      <ul class="c-twincol__list">
+        {% for it in diagram.ohne %}<li class="c-twincol__item">{{ it }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="c-twincol__col c-twincol__col--mit">
+      <div class="c-twincol__head">{{ diagram.mit_label or 'Mit' }}</div>
+      <ul class="c-twincol__list">
+        {% for it in diagram.mit %}<li class="c-twincol__item">{{ it }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</figure>
+{%- endif -%}
+{% endmacro %}

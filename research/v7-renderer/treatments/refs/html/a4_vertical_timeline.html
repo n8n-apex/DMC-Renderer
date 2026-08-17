@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--teal-light:#7FB7B3;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:840px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ===== HEADER ===== */
+.head{position:absolute;left:64px;top:72px;width:712px;}
+.eyebrow{display:flex;align-items:center;gap:16px;color:var(--teal);font-size:14px;font-weight:600;letter-spacing:.34em;text-transform:uppercase;}
+.eyebrow .tick{width:40px;height:2px;background:var(--teal);}
+.headline{font-family:'SourceSerif',serif;color:var(--ink);font-weight:430;font-size:52px;line-height:1.05;letter-spacing:-0.012em;margin-top:26px;}
+.headline .teal{color:var(--teal);}
+.thesis{margin-top:24px;max-width:600px;font-size:16.5px;line-height:1.62;color:var(--body);font-weight:400;}
+.thesis .lead{color:var(--ink);font-weight:600;}
+.headrule{width:712px;height:1px;background:var(--rule);margin-top:34px;}
+
+/* ===== TIMELINE ===== */
+.timeline{position:absolute;left:64px;top:386px;width:712px;}
+/* the vertical spine */
+.spine{position:absolute;left:31px;top:14px;bottom:14px;width:2px;background:var(--rule);}
+.spine .fill{position:absolute;left:0;top:0;width:2px;height:100%;
+  background:linear-gradient(to bottom,var(--teal) 0%,var(--teal) 78%,var(--rule) 100%);}
+
+.step{position:relative;display:flex;min-height:148px;padding-bottom:36px;}
+.step:last-child{padding-bottom:0;min-height:auto;}
+
+/* node + index sit on the spine */
+.node{position:relative;width:64px;flex:0 0 64px;}
+.dot{position:absolute;left:18px;top:6px;width:28px;height:28px;border-radius:50%;
+  background:var(--cream);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;z-index:2;}
+.dot::after{content:'';width:12px;height:12px;border-radius:50%;background:var(--teal);}
+.step:last-child .dot{background:var(--teal);}
+.step:last-child .dot::after{background:var(--cream);}
+
+/* body of each row */
+.row{flex:1;padding-left:24px;padding-top:0;}
+.rowtop{display:flex;align-items:baseline;gap:18px;}
+.idx{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.18em;color:var(--teal);text-transform:uppercase;}
+.title{font-family:'SourceSerif',serif;font-size:30px;font-weight:480;color:var(--ink);line-height:1;letter-spacing:-0.01em;}
+.desc{margin-top:13px;font-size:15.5px;line-height:1.55;color:var(--body);max-width:430px;}
+
+/* small figure pinned to the right of each row */
+.fig{position:absolute;right:0;top:2px;text-align:right;width:160px;}
+.fig .v{font-family:'SourceSerif',serif;font-size:32px;font-weight:520;color:var(--teal);line-height:1;letter-spacing:-0.01em;}
+.fig .k{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--body);margin-top:8px;}
+
+/* ===== QUOTE STRIP (above footer) ===== */
+.quote{position:absolute;left:64px;right:64px;bottom:118px;border-top:1px solid var(--rule);padding-top:26px;display:flex;align-items:flex-start;gap:22px;}
+.quote .mark{font-family:'SourceSerif',serif;font-size:60px;color:var(--teal);line-height:0.5;height:26px;flex:0 0 auto;}
+.quote .qbody{flex:1;}
+.quote p{font-family:'SourceSerif',serif;font-size:20px;line-height:1.4;color:var(--ink);font-weight:430;font-style:italic;max-width:560px;}
+.quote .attr{margin-top:12px;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);}
+
+/* ===== FOOTER ===== */
+.footer{position:absolute;left:64px;bottom:48px;width:712px;display:flex;align-items:center;justify-content:space-between;}
+.brandmark{font-family:'SourceSerif',serif;font-size:15px;font-weight:600;letter-spacing:.36em;color:var(--ink);}
+.foot-mid{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--body);}
+.pageno{font-family:'SourceSerif',serif;font-size:15px;color:var(--ink);font-weight:500;}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="eyebrow"><span class="tick"></span>ÜBER UNS</div>
+    <h1 class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+    <p class="thesis"><span class="lead">Wachstumsprobleme in B2B sind selten Umsatzprobleme.</span> Sie sind Automatisierungsprobleme.</p>
+    <div class="headrule"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="spine"><div class="fill"></div></div>
+
+    <div class="step">
+      <div class="node"><div class="dot"></div></div>
+      <div class="row">
+        <div class="rowtop"><span class="idx">01</span><span class="title">Audit</span></div>
+        <p class="desc">Wir kartieren jeden manuellen Schritt und legen die Engpässe offen, die Wachstum ausbremsen.</p>
+        <div class="fig"><div class="v">100+</div><div class="k">AI-Projekte</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="node"><div class="dot"></div></div>
+      <div class="row">
+        <div class="rowtop"><span class="idx">02</span><span class="title">Bereinigung</span></div>
+        <p class="desc">Redundante Prozesse werden entfernt, Daten konsolidiert und Abläufe standardisiert.</p>
+        <div class="fig"><div class="v">−93%</div><div class="k">Onboarding-Zeit</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="node"><div class="dot"></div></div>
+      <div class="row">
+        <div class="rowtop"><span class="idx">03</span><span class="title">Automatisierung</span></div>
+        <p class="desc">Wiederkehrende Aufgaben übernimmt ein AI-Workflow, der ohne Mehr-Headcount skaliert.</p>
+        <div class="fig"><div class="v">20+</div><div class="k">Std / Woche</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="node"><div class="dot"></div></div>
+      <div class="row">
+        <div class="rowtop"><span class="idx">04</span><span class="title">Betrieb</span></div>
+        <p class="desc">Der Betrieb läuft selbsttragend &ndash; 30&ndash;50% geringere Betriebskosten, dauerhaft überwacht.</p>
+        <div class="fig"><div class="v">€200k+</div><div class="k">Einsparung / Jahr</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <div class="mark">&ldquo;</div>
+    <div class="qbody">
+      <p>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.</p>
+      <div class="attr">Kundenstimme</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="brandmark">APEX</div>
+    <div class="foot-mid">Audit · Bereinigung · Automatisierung · Betrieb</div>
+    <div class="pageno">03</div>
+  </div>
+</body>
+</html>

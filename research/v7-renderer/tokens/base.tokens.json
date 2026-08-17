@@ -1,0 +1,106 @@
+{
+  "$comment": "Universal DMC design constants. NO client values. Cited: type ← DMC_InDesign_Spec_v1.md L183/L243; spacing ← 08_DMC_Design_System_v2 margins. FONTS: bundled OFL faces that ACTUALLY LOAD in WeasyPrint+fontconfig — Source Serif 4 (display) + Source Sans 3 (head/body). Montserrat/Fraunces/Playfair were format-4-cmap-only → fontconfig computes an EMPTY charset → 'No match' → headlines silently fell back to system PT-Serif/Hiragino. Root cause + fix: plan 2026-06-03-renderer-phase-A.",
+  "space": {
+    "1": {
+      "$value": "2mm"
+    },
+    "2": {
+      "$value": "3mm"
+    },
+    "3": {
+      "$value": "4mm"
+    },
+    "4": {
+      "$value": "6mm"
+    },
+    "5": {
+      "$value": "8mm"
+    },
+    "6": {
+      "$value": "12mm"
+    },
+    "7": {
+      "$value": "16mm"
+    },
+    "8": {
+      "$value": "24mm"
+    }
+  },
+  "type": {
+    "source": {
+      "$value": "7.5pt"
+    },
+    "caption": {
+      "$value": "8.5pt"
+    },
+    "eyebrow": {
+      "$value": "9.5pt"
+    },
+    "label": {
+      "$value": "9.5pt"
+    },
+    "body": {
+      "$value": "10.5pt"
+    },
+    "cta": {
+      "$value": "11.5pt"
+    },
+    "lede": {
+      "$value": "12pt"
+    },
+    "h3": {
+      "$value": "14pt"
+    },
+    "pullquote": {
+      "$value": "18pt"
+    },
+    "h2": {
+      "$value": "20pt"
+    },
+    "signature": {
+      "$value": "28pt"
+    },
+    "display": {
+      "$value": "32pt"
+    },
+    "display-xl": {
+      "$value": "40pt"
+    },
+    "stat": {
+      "$value": "40pt"
+    },
+    "stat-xl": {
+      "$value": "60pt"
+    },
+    "hero": {
+      "$value": "48pt"
+    },
+    "$comment": "Type ramp B. Canon: DMC_InDesign_Spec_v1 MODUL 4 (H1 28-40 def 32, H2 18-22, H3 13-15, big-stat 48-72); 08_DMC_Design_System_v2 E.3. Tiers (asc): source 7.5, caption 8.5, eyebrow/label 9.5, body 10.5, cta 11.5, lede 12, h3 14, pullquote 18, h2 20, signature 28, display 32, display-xl/stat 40, hero 48, stat-xl 60."
+  },
+  "color": {
+    "body": {
+      "$value": "#333333"
+    },
+    "on-dark": {
+      "$value": "#FFFFFF"
+    }
+  },
+  "font": {
+    "sans-head": {
+      "$value": "'Source Sans 3', 'Source Sans Pro', sans-serif"
+    },
+    "sans-body": {
+      "$value": "'Source Sans 3', 'Source Sans Pro', sans-serif"
+    },
+    "serif": {
+      "$value": "'Source Serif 4', Georgia, serif"
+    }
+  },
+  "$extra-bundled-families": [
+    "Inter",
+    "Source Serif Pro",
+    "Source Sans Pro",
+    "Montserrat",
+    "Playfair Display"
+  ]
+}

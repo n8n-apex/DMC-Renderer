@@ -1,0 +1,12 @@
+{# Quotation: an accent quote-glyph, the italic quote, and an accent uppercase
+   attribution line. on_panel=true (default) = styled for a dark --color-primary
+   panel (on-dark text); else styled for a light ground. Styling: .c-pull-quote. #}
+{% macro pull_quote(text, attribution='', on_panel=true) -%}
+<figure class="c-pull-quote{% if on_panel %} c-pull-quote--panel{% else %} c-pull-quote--ground{% endif %}">
+  <span class="c-pull-quote-glyph" aria-hidden="true">&ldquo;</span>
+  <blockquote class="c-pull-quote-text">{{ text }}</blockquote>
+  {% if attribution %}
+  <figcaption class="c-pull-quote-attr">{{ attribution }}</figcaption>
+  {% endif %}
+</figure>
+{%- endmacro %}

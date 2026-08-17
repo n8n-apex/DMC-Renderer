@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:'SS4';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SS3';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');
+  font-weight:200 900;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:#F6F3ED;
+  font-family:'SS3',sans-serif;
+  color:#2E3E50;
+  position:relative;
+  overflow:hidden;
+}
+.canvas{position:absolute;inset:0;width:1680px;height:1188px;}
+
+.eyebrow{
+  position:absolute;left:90px;top:88px;
+  font-family:'SS3';font-weight:600;font-size:17px;
+  letter-spacing:.42em;color:#4A7C7E;text-transform:uppercase;
+}
+.eyebrow .pg{color:#cdc7ba;margin-left:18px;letter-spacing:.3em;}
+.toprule{position:absolute;left:90px;top:124px;width:1500px;height:1px;background:#cdc7ba;}
+.kicker{
+  position:absolute;right:90px;top:84px;
+  font-family:'SS3';font-weight:600;font-size:13px;
+  letter-spacing:.32em;color:#9a958a;text-transform:uppercase;
+}
+
+.bigmark{
+  position:absolute;left:60px;top:120px;
+  font-family:'SS4';font-weight:600;font-size:440px;line-height:.7;
+  color:#4A7C7E;opacity:.15;z-index:0;
+}
+
+.quotewrap{position:absolute;left:148px;top:256px;width:1010px;z-index:2;}
+.quote{
+  font-family:'SS4';font-weight:430;font-size:91px;line-height:1.085;
+  letter-spacing:-.012em;color:#2E3E50;
+}
+.quote .em{color:#4A7C7E;font-style:italic;font-weight:500;}
+.quote .lead{margin-left:-4px;}
+
+.attrib{position:absolute;left:150px;top:720px;z-index:2;}
+.attrib .line{width:54px;height:2px;background:#4A7C7E;margin-bottom:20px;}
+.attrib .role{
+  font-family:'SS3';font-weight:600;font-size:18px;
+  letter-spacing:.04em;color:#2E3E50;
+}
+.attrib .sub{
+  font-family:'SS3';font-weight:400;font-size:16px;
+  letter-spacing:.02em;color:#3a4a5a;margin-top:5px;
+}
+
+.stat{
+  position:absolute;left:150px;bottom:150px;z-index:2;
+  display:flex;align-items:flex-end;gap:24px;
+}
+.stat .num{
+  font-family:'SS4';font-weight:600;font-size:104px;line-height:.82;
+  color:#2E3E50;letter-spacing:-.02em;
+}
+.stat .num .u{font-size:46px;color:#4A7C7E;font-weight:600;}
+.stat .meta{padding-bottom:12px;}
+.stat .meta .big{
+  font-family:'SS3';font-weight:600;font-size:17px;
+  letter-spacing:.02em;color:#2E3E50;
+}
+.stat .meta .small{
+  font-family:'SS3';font-weight:400;font-size:15px;color:#3a4a5a;
+  margin-top:3px;max-width:230px;line-height:1.4;
+}
+
+.photo{
+  position:absolute;right:90px;bottom:104px;
+  width:491px;height:640px;overflow:hidden;background:#F6F3ED;z-index:1;
+}
+.photo img{
+  width:491px;height:640px;object-fit:cover;
+  object-position:center top;display:block;
+}
+.photo .tick{
+  position:absolute;left:-1px;top:-1px;width:46px;height:46px;
+  border-top:3px solid #4A7C7E;border-left:3px solid #4A7C7E;
+}
+.photocap{
+  position:absolute;right:90px;bottom:56px;width:491px;
+  font-family:'SS3';font-weight:600;font-size:13px;letter-spacing:.18em;
+  text-transform:uppercase;color:#9a958a;text-align:left;z-index:2;
+}
+
+.partners{
+  position:absolute;left:150px;bottom:56px;z-index:2;
+  font-family:'SS3';font-weight:500;font-size:14px;
+  letter-spacing:.06em;color:#9a958a;
+}
+.partners .lab{
+  color:#4A7C7E;font-weight:600;letter-spacing:.18em;font-size:12px;
+  text-transform:uppercase;margin-right:16px;
+}
+.partners .dot{color:#cdc7ba;margin:0 10px;}
+
+.botrule{position:absolute;left:90px;bottom:88px;width:960px;height:1px;background:#cdc7ba;}
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="eyebrow">ÜBER UNS<span class="pg">SEITE 3</span></div>
+  <div class="kicker">Kundenstimme</div>
+  <div class="toprule"></div>
+
+  <div class="bigmark">&ldquo;</div>
+
+  <div class="quotewrap">
+    <div class="quote">
+      <span class="lead">In 90 Tagen ein</span> <span class="em">vollautomatischer&nbsp;Workflow</span>, der&nbsp;uns <span class="em">20+&nbsp;Stunden</span> pro&nbsp;Woche&nbsp;spart.
+    </div>
+  </div>
+
+  <div class="attrib">
+    <div class="line"></div>
+    <div class="role">Kundenstimme</div>
+    <div class="sub">APEX B2B-Automatisierung · 90-Tage-Programm</div>
+  </div>
+
+  <div class="stat">
+    <div class="num">100<span class="u">+</span></div>
+    <div class="meta">
+      <div class="big">AI-Projekte</div>
+      <div class="small">umgesetzt für wachsende B2B-Teams</div>
+    </div>
+  </div>
+
+  <div class="botrule"></div>
+  <div class="partners">
+    <span class="lab">Partner</span>Frese Recruiting<span class="dot">·</span>Conesso GmbH<span class="dot">·</span>Pure Media Marketing
+  </div>
+
+  <div class="photo">
+    <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/3_proof_0.png" alt="">
+    <div class="tick"></div>
+  </div>
+  <div class="photocap">Vor-Ort-Partnerschaft</div>
+
+</div>
+</body>
+</html>

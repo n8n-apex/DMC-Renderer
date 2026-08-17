@@ -65,6 +65,25 @@ def _idx_of(pkg, st_type: str) -> int:
     raise AssertionError(f"no non-continuation {st_type}")
 
 
+def _page_of(pkg, st_type: str, role=None) -> dict:
+    """The page with `st_type`; when `role` is given it must also match
+    continuation_role (US-604: ST-02/ST-05/ST-06/ST-FAZIT span continuation
+    pages). With role=None a NON-continuation page is preferred, then the first
+    page of that type."""
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) != st_type:
+            continue
+        if role is None:
+            if not pg.get("continuation_index"):
+                return pg
+        elif pg.get("continuation_role") == role:
+            return pg
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) == st_type:
+            return pg
+    raise AssertionError(f"no {st_type} page (role={role!r}) in the apex fixture")
+
+
 def _st_by_idx(pkg):
     return [str(pg.get("st_type")) for pg in pkg.pages]
 
@@ -72,18 +91,13 @@ def _st_by_idx(pkg):
 ELIGIBLE_IDX = ()      # computed per-package in the fixture-dependent tests
 LEGACY_BY_DESIGN_IDX = ()
 BYPASS_IDX = ()
-# The editorial A3 HERO is now the ABOUT page (ST-05, idx 2): its rich data (the
-# 30-50% figure, the 100+/€200k+ figures, and the partner wall) is what the A3
-# editorial spread was designed for. The founder-identity fallback supplies its
-# portrait + name + role (it has no portrait of its own).
-HERO_IDX = 2
+# US-604: the editorial ABOUT hero (ST-05) now spans TWO continuation pages
+# (identity + proof), and the ST-06 framework spans intro + result. Both are
+# continuation-bypassed by the stylist (their sections' own patterns render
+# them), so the deck has NO treated A3 page. The 5 case studies (ST-07A) are
+# the A3-capable pages that remain: they stay A4 single pages (a4_case_study)
+# unless an explicit ST-07C Doppelseite signal promotes one to the deck tail.
 A3_TREATMENTS = {"editorial", "glass_card", "split_portrait"}
-# The FRAMEWORK page (ST-06, idx 15) is promoted to A3 for the horizontal_process
-# flow (an A3-only "process" treatment that needs the wide sheet). So the deck now
-# has TWO A3 pages: the About editorial (idx 2) and the framework flow (idx 15),
-# still within the A3 cap of 3.
-FRAMEWORK_IDX = 15
-A3_INDICES = [HERO_IDX, FRAMEWORK_IDX]
 
 
 @pytest.fixture(scope="module")
@@ -158,16 +172,26 @@ def test_all_eligible_pages_get_a_treatment(pkg, ctx, assignments):
         assert a.page_format in treatment.formats
 
 
-def test_hero_is_a3_editorial(pkg, ctx, assignments):
+def test_hero_is_a3_editorial(pkg, ctx):
     """2026-07-13: the A3 HERO PROMOTION IS SUSPENDED. A mid-deck A3-landscape
     named page makes Chromium's mixed-size print compress the surrounding A4
     pages to ~71% (verified by bisect on the christoph deck; blanket-pinning
     every section made it universal). Until the engine prints per-format and
     merges, the About page renders on A4 via the fill treatment (which carries
-    the injected founder portrait). When the engine fix lands, restore the old
-    expectation: editorial [a3]."""
-    hero = assignments[HERO_IDX]
-    assert hero.st_type == "ST-05", f"hero idx {HERO_IDX} st_type {hero.st_type}"
+    the injected founder portrait). US-604: the apex ST-05 section now spans
+    TWO continuation pages (identity + proof), which the stylist bypasses — so
+    this pins the suspension on a SYNTHETIC non-continuation ST-05 page carrying
+    the same data + the package's founder identity (the exact view the
+    assembler renders for a single-page About)."""
+    import copy
+    hero_page = copy.deepcopy(_page_of(pkg, "ST-05", role="identity"))
+    for k in ("page_id", "section_id", "continuation_index",
+              "continuation_role", "section_page_count"):
+        hero_page.pop(k, None)
+    # the deck's founder identity (cover) makes the About page hero-eligible.
+    pages = [pkg.pages[0], hero_page]
+    hero = assign(pages, ctx)[1]
+    assert hero.st_type == "ST-05", f"hero st_type {hero.st_type}"
     assert hero.page_format == "a4"
     assert hero.treatment == "a4_editorial_fill", f"about -> {hero.treatment}"
     assert "suspended" in (hero.reason or ""), hero.reason
@@ -189,42 +213,38 @@ def test_a3_pages_are_about_and_framework(pkg, ctx, assignments):
 
 
 def test_st07a_no_longer_editorial(pkg, ctx, assignments):
-    """The ST-07A case-study pages no longer route to the A3 editorial: every
-    ST-07A page is an A4 case treatment (idx 11, which used to be the editorial
-    hero, is now an A4 treatment). The editorial hero moved to the About page."""
-    for idx in (6, 8, 11, 13, 14):
+    """The ST-07A case-study pages never route to the A3 editorial: every
+    ST-07A page is an A4 case treatment (the former editorial hero is now an A4
+    treatment). US-604 shifted the case studies' indices, so they are located by
+    type (the 5 ST-07A pages)."""
+    case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
+    assert len(case_indices) == 5, f"expected 5 case studies; got {case_indices}"
+    for idx in case_indices:
         a = assignments[idx]
         assert a.st_type == "ST-07A"
         assert a.treatment != "editorial", f"idx {idx} still editorial"
         assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
-    # specifically idx 11 (the former hero) is now A4 and not editorial.
-    assert assignments[11].treatment != "editorial"
 
 
 def test_best_fit_singletons(pkg, ctx, assignments):
     """Best-fit-first picks each page's richest fitting BUILT treatment (subject
-    to deck-wide dedup). The singleton best-fits below are unused before their
-    page, so they land on their first BUILT fitting candidate:
-      idx 1  ST-02 -> a4_editorial_fill. a4_bi_dashboard leads the candidate
-             list but is a metadata-only STUB (no template): assigning it raised
-             TemplateNotFound at render and silently dropped the page to the
-             flat legacy pattern (the 2026-07-13 ST-02 regression). candidate_fits
-             now requires the template to be BUILT, so a stub is never assigned;
-             when a4_bi_dashboard's template is authored it re-enters
-             automatically and this expectation flips back to the dashboard.
-      idx 2  ST-05 -> a4_editorial_fill [a4] (the A3 hero is SUSPENDED; the
-             About page renders on A4 with the injected founder portrait)
-      idx 15/16 ST-06 -> continuation-bypassed (US-604: the section now
-             spans intro + result pages rendered by the ST-06 pattern)
-      idx 19 ST-22 -> a4_vertical_timeline (ST-22 stays A4; its own #1)
+    to deck-wide dedup). US-604: ST-02/ST-05/ST-06/ST-FAZIT now span continuation
+    pages (context/evidence, identity/proof, intro/result, close/result), so
+    those sections are continuation-bypassed by the stylist:
+      ST-02 / ST-05  -> continuation-bypassed (the section's own patterns
+             render the pages; a4_bi_dashboard / a4_editorial_fill for the
+             pre-continuation single pages are no longer assigned)
+      ST-06          -> continuation-bypassed (intro + result)
+      ST-22          -> a4_vertical_timeline (ST-22 stays A4; its own #1)
     """
-    assert assignments[1].treatment == "a4_editorial_fill"
-    assert assignments[2].treatment == "a4_editorial_fill"
-    assert assignments[2].page_format == "a4"
-    st06 = [a for a in assignments if a.st_type == "ST-06"]
-    assert len(st06) == 2 and all(a.treatment is None for a in st06), (
-        "ST-06 continuation pages must be bypassed"
-    )
+    # ST-02 and ST-05 pages are all continuation-bypassed.
+    for st in ("ST-02", "ST-05", "ST-06"):
+        pages = [a for a in assignments if a.st_type == st]
+        assert pages, f"{st} pages missing from assignments"
+        assert all(a.treatment is None for a in pages), (
+            f"{st} continuation pages must be bypassed"
+        )
+        assert all(a.page_format is None for a in pages)
     # ST-22 keeps the A4 vertical timeline (it is NOT promoted to A3).
     st22 = [a for a in assignments if a.st_type == "ST-22"]
     assert st22 and st22[0].treatment == "a4_vertical_timeline"
@@ -232,16 +252,18 @@ def test_best_fit_singletons(pkg, ctx, assignments):
 
 
 def test_adjacent_case_studies_share_the_case_treatment(pkg, ctx, assignments):
-    """Adjacent ST-07A case studies (idx 13, 14) BOTH use a4_case_study.
+    """The 5 ST-07A case studies ALL use a4_case_study (the adjacent tail pair
+    included).
 
     A report's case studies must all share the SAME case layout (design rule:
     never mix case variants within one report), so the case treatment is EXEMPT
     from the no-adjacent-repeat variety rule that applies to other page types."""
-    a13 = assignments[13]
-    a14 = assignments[14]
-    assert a13.treatment == "a4_case_study"
-    assert a14.treatment == "a4_case_study"
-    assert a13.page_format == "a4" and a14.page_format == "a4"
+    case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
+    assert len(case_indices) == 5
+    for idx in case_indices:
+        a = assignments[idx]
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
+        assert a.page_format == "a4"
 
 
 def test_deterministic(pkg, ctx):
@@ -277,10 +299,20 @@ def test_needs_image_gate(pkg, ctx, assignments):
 
     # the ST-07A case studies all use a4_case_study (needs_image=False, so it
     # renders whether or not a portrait resolves); they are never assigned a
-    # needs_image treatment (split_portrait / editorial).
-    for idx in (6, 8, 13, 14):
+    # needs_image treatment (split_portrait / editorial). US-604 shifted the
+    # case-study indices, so they are located by type; idx 13 (the Frese hero
+    # with the resolved portrait) is the exception, excluded here.
+    case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
+    portrait_less = [
+        idx for idx in case_indices
+        if not any(s.get("slot_id") == "case_study_portrait"
+                   and s.get("status") == "resolved"
+                   for s in (pkg.pages[idx].get("slots") or []))
+    ]
+    assert portrait_less, "expected portrait-less ST-07A case studies"
+    for idx in portrait_less:
         a = assignments[idx]
-        assert a.treatment == "a4_case_study"
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
         treatment = get_treatment(a.treatment)
         assert treatment is not None and not treatment.needs_image
 
@@ -337,11 +369,12 @@ def test_a3_cap():
 
 
 def test_audit_lines(pkg, ctx, assignments):
-    """audit_lines returns one readable line per page (20 for apex), each naming
+    """audit_lines returns one readable line per page (24 for apex), each naming
     the page index and its decision."""
     lines = audit_lines(assignments)
-    # US-604/605: the apex package now has 22 pages (ST-06 + FAZIT continuations).
-    assert len(lines) == len(pkg.pages) == 22
+    # US-604/605: the apex package now has 24 pages (ST-02/ST-05/ST-06/FAZIT
+    # continuations).
+    assert len(lines) == len(pkg.pages) == 24
     for idx, line in enumerate(lines):
         # each line names its page (folio-ish index) and st_type
         assert assignments[idx].st_type in line

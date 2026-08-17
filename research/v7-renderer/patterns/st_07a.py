@@ -156,6 +156,48 @@ def _transform_bar_heights(frm: str, to: str) -> tuple[int, int]:
     return max(round(fn / m * 100), floor), max(round(tn / m * 100), floor)
 
 
+def _wall_stats(stats: list[dict], viz) -> list[dict]:
+    """US-609: the wall (infographic cells) shows ONLY the metrics the dash's
+    device does NOT display — a stat_strip owns its items, other presets own
+    the hero figure. Normalized compare (leading '>', case) so '> 200.000 €'
+    matches '200.000 €'. The wall fills the spread's space without
+    duplicating the dash (the p7 audit saw the same figures twice)."""
+    owned: set[str] = set()
+    for v in viz or []:
+        if not isinstance(v, dict):
+            continue
+        preset = v.get("preset")
+        if preset == "stat_strip":
+            for it in v.get("items") or []:
+                owned.add(str(it.get("value") or "").lower().lstrip(">").strip())
+        elif preset in ("donut", "completion_ring", "gauge"):
+            fig = v.get("figure") or v.get("center") or v.get("value")
+            if fig:
+                owned.add(str(fig).lower().lstrip(">").strip())
+        elif preset == "transform_arrow":
+            to = (v.get("to") or {}).get("value")
+            if to:
+                owned.add(str(to).lower().lstrip(">").strip())
+        elif preset == "bar_compare":
+            for pair in v.get("pairs") or []:
+                for side in ("before", "after"):
+                    val = ((pair.get(side) or {}).get("value") if isinstance(pair, dict) else None)
+                    if val:
+                        owned.add(str(val).lower().lstrip(">").strip())
+    if not owned:
+        return stats
+
+    def _norm(s) -> str:
+        # NBSP-normalize: the wall's processed values carry non-breaking spaces
+        # while the viz JSON uses plain spaces — they must compare equal.
+        return (
+            str(s or "").lower().lstrip(">").strip()
+            .replace("\xa0", " ").replace("\u00a0", " ")
+        )
+
+    return [s for s in stats if _norm(s.get("value")) not in owned]
+
+
 def render(page: dict, ctx: RenderContext) -> PageFragment:
     """Render the ST-07A case-study page as a PageFragment.
 
@@ -370,6 +412,12 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         layout_variant=layout_variant,
         chart_svgs=chart_svgs,
         viz=viz,
+        # US-609: the wall cells = the stats the dash's device does NOT own.
+        # A stat_strip device owns its items; the other presets own the hero
+        # figure. Computed in Python (jinja loop scoping breaks in-template
+        # dedup). The wall is what fills the spread's negative space without
+        # duplicating the dash.
+        kpi_stats=_wall_stats(stats, viz),
         panel_texture_uri=panel_texture_uri,
         kicker_label=kicker_label,
         # The bare Fallstudie number drives the decorative ghost numeral (a faint

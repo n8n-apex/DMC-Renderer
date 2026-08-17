@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DMC frozen report</title>
+  <style>{{ css | safe }}</style>
+</head>
+<body data-contract-id="{{ contract_id }}"{{ axis_attributes | default("") | safe }}>
+{{ fragments_html | safe }}
+</body>
+</html>

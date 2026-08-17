@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "dmc_print_test",
+  "version": "1.0.0",
+  "pdf_standard": "PDF/A-2b",
+  "icc_path": "../tests/fixtures/srgb.icc",
+  "icc_sha256": "acc4bc8644423b5f69649dab843dc8f64def4c1f5e9d602bf8d63acf5f2458c0",
+  "color_space": "RGB",
+  "bleed_mm": 0,
+  "crop_marks": false,
+  "minimum_image_dpi": 72,
+  "maximum_total_area_coverage_percent": 300,
+  "font_policy": "embed_all",
+  "transparency_policy": "preserve",
+  "flattening_policy": "none",
+  "preserve_searchable_text": true,
+  "production_allowed": false
+}

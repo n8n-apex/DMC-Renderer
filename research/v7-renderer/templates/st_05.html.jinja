@@ -1,0 +1,98 @@
+{# ST-05 — about / "über uns" page (Phase 4b: dark positioning panel + §C4 proof
+   gallery + v2.0 slots[] photos). DATA comes pre-shaped from patterns/st_05.py;
+   this template only COMPOSES the macro library on the token-themed .st-05 layout
+   (styles/st_05.css). Fragment only — no <html>/<head>/<style>/@page/@font-face/
+   :root (those live in the head).
+
+   Structure (DNA §D ABOUT recipe):
+     1) header — a small uppercase eyebrow + a large serif heading (var(--font-
+        display) — the §18 serif/sans contrast against the sans body).
+     2) ab-lead — the positioning STATEMENT (the body's first paragraph) on a DARK
+        authority panel (--color-primary ground + --color-on-primary text, §C3).
+        The About page anchors here, not on a pale tint.
+     3) ab-grid — a two-column body: the REST of the about prose beside a sidebar
+        carrying an OPTIONAL framed portrait + the stat trio "in Zahlen"
+        (stat_strip stacked into 3 big accent numbers) + a credibility list.
+     4) ab-proof — the §C4 social-proof PROOF GALLERY: a framed full-color row of
+        the resolved `proof` photos under a "Referenzen" label.
+     5) ab-logos — the "bekannt aus" grayscale logo wall (or its partner-NAME text
+        fallback when no logo art).
+   Each block is emitted only when its data is present (graceful). #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'section_label.jinja' import section_label %}
+{% from 'stat_strip.jinja' import stat_strip %}
+{% from 'media_figure.jinja' import media_figure %}
+{% from 'logo_wall.jinja' import logo_wall %}
+{% from 'proof_gallery.jinja' import proof_gallery %}
+
+<div class="ab-header">
+  {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+  {% if title %}<h1 class="ab-headline">{{ title }}</h1>{% endif %}
+</div>
+
+{% if lead_html %}
+<div class="ab-lead">{{ lead_html }}</div>
+{% endif %}
+
+<table class="ab-grid">
+  <tbody>
+    <tr>
+      <td class="ab-main">
+        {% if body_html %}<div class="ab-body">{{ body_html }}</div>{% endif %}
+      </td>
+      <td class="ab-gutter"></td>
+      <td class="ab-side">
+        {% if portrait_uri %}
+        <div class="ab-portrait">
+          {{ media_figure(portrait_uri, alt=portrait_alt, ratio='4x3', frame=true) }}
+          {% if portrait_caption %}<div class="ab-portrait-cap">{{ portrait_caption }}</div>{% endif %}
+        </div>
+        {% endif %}
+        {% if stats %}
+        <div class="ab-stats">
+          {% if stats_label %}{{ section_label(stats_label) }}{% endif %}
+          {{ stat_strip(stats) }}
+        </div>
+        {% endif %}
+        {# The credibility bullet list is redundant when testimonial cards are
+           present (the cards carry the proof — real quote + metric + name), so it
+           is dropped to give the cards room (the decram). #}
+        {% if credibility and not testimonials %}
+        <ul class="ab-cred">
+          {% for c in credibility %}<li class="ab-cred-item">{{ c }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% if testimonials %}
+{# Designed client TESTIMONIAL cards (real quote + metric + name) — the §C4 social
+   proof, shown WHOLE. These are the dedicated quote-card graphics (preferred over
+   raw cropped social photos). #}
+<div class="ab-testimonials">
+  {% if testimonials_label %}{{ section_label(testimonials_label) }}{% endif %}
+  <div class="ab-testimonials__row">
+    {% for src in testimonials %}
+    <span class="ab-testimonials__card" role="img" style="background-image:url('{{ src }}');"></span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% if proof_photos %}
+{# Real PROOF / "Referenzen" photos (DNA §C4 social proof): a framed full-color row
+   of the resolved `proof` slots. Rendered IN ADDITION to the testimonial cards —
+   the cards carry the QUOTES, these carry the real client/deal MOMENTS — so both
+   layers of proof land on the About page. Graceful: empty → nothing. #}
+<div class="ab-proof">
+  {{ proof_gallery(proof_photos, label=proof_label) }}
+</div>
+{% endif %}
+
+{% if logos or partner_names %}
+<div class="ab-logos">
+  {% if logos_label %}{{ section_label(logos_label) }}{% endif %}
+  {{ logo_wall(logos, names=partner_names) }}
+</div>
+{% endif %}

@@ -1,0 +1,24 @@
+{# Horizontal flow diagram: a row of connected step boxes joined by accent arrow
+   (→) connectors. Each box: a number + a short title + an optional short body +
+   an optional duration line. A compact "Schritt 1 → N" overview. Used by ST-06
+   (mechanism) and ST-22 (collaboration). All under the c-hflow namespace; the
+   token-only look lives in styles/components.css.
+
+   steps  list of dicts: {n, title, body, dauer} — body/dauer optional. The body
+          here is a SHORT plain string (not markdown); titles are short.
+#}
+{% macro horizontal_flow(steps) -%}
+{% if steps %}
+<div class="c-hflow">
+  {% for s in steps %}
+  <div class="c-hflow__step">
+    <div class="c-hflow__num">{{ s.n if s.n is defined and s.n else loop.index }}</div>
+    {% if s.title %}<div class="c-hflow__title">{{ s.title }}</div>{% endif %}
+    {% if s.body %}<div class="c-hflow__body">{{ s.body }}</div>{% endif %}
+    {% if s.dauer %}<div class="c-hflow__dauer">{{ s.dauer }}</div>{% endif %}
+  </div>
+  {% if not loop.last %}<div class="c-hflow__arrow" aria-hidden="true">&rarr;</div>{% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+{%- endmacro %}

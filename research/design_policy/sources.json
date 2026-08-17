@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "source_id": "typeui",
+      "repository_url": "https://github.com/bergside/typeui.git",
+      "commit_sha": "2a977f1f6616ae8a5ea84a478ca35601c67f4322",
+      "license": "MIT",
+      "license_path": "LICENSE.md",
+      "license_snapshot_path": "vendor/typeui/LICENSE.md",
+      "retrieval_date": "2026-08-03",
+      "files": [
+        {"upstream_path": "LICENSE.md", "local_snapshot_path": "vendor/typeui/LICENSE.md", "sha256": "bfee67a9e15a0565055fc1dd44662e74609b5786fd775907f550106cdd512999"},
+        {"upstream_path": "README.md", "local_snapshot_path": "vendor/typeui/README.md", "sha256": "55c34c9ec83bab9808b8b0abc3087603421a77bafd064b4781f345dd752677ee"},
+        {"upstream_path": "registry-examples/editorial.png", "local_snapshot_path": "vendor/typeui/registry-examples/editorial.png", "sha256": "72d9f0b14652e44b7350ef6d4cc05fd9c50a59045b9e31556e7dee8e6bc90bde"},
+        {"upstream_path": "registry-examples/publication.png", "local_snapshot_path": "vendor/typeui/registry-examples/publication.png", "sha256": "011c871befa523ece91505c7ce17070ec8d01b98a276638161df4b7ffd3b7949"},
+        {"upstream_path": "skills/fundamentals/SKILL.md", "local_snapshot_path": "vendor/typeui/skills/fundamentals/SKILL.md", "sha256": "af01b69d592b2294093b94c376617836961b28a0ba21d9c080241c189422b32e"},
+        {"upstream_path": "skills/fundamentals/spacing-principles.md", "local_snapshot_path": "vendor/typeui/skills/fundamentals/spacing-principles.md", "sha256": "fc21239ef82756d4a5c091de0422efbb6c9134016e0bfc32bd24252b9cf32395"},
+        {"upstream_path": "skills/fundamentals/typography-principles.md", "local_snapshot_path": "vendor/typeui/skills/fundamentals/typography-principles.md", "sha256": "030852cd1cc9ffed33c97d9bb2323b030ad53c4bdb1231dcd6ad29dc9591743f"},
+        {"upstream_path": "skills/fundamentals/ui-principles.md", "local_snapshot_path": "vendor/typeui/skills/fundamentals/ui-principles.md", "sha256": "b115daacd152499cdc510450caaad159cbf77d3c630fde708f788ff8e9aa4495"}
+      ]
+    },
+    {
+      "source_id": "typeui-public-registry",
+      "repository_url": "https://github.com/bergside/awesome-design-skills.git",
+      "commit_sha": "f631a09b4fcc0166f2e2c1a8c81906ef680c57e8",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_snapshot_path": "vendor/typeui-public-registry/LICENSE",
+      "retrieval_date": "2026-08-03",
+      "files": [
+        {"upstream_path": "LICENSE", "local_snapshot_path": "vendor/typeui-public-registry/LICENSE", "sha256": "56e2dc0100744b958d87e5fc790f4e5ed2b5f483d6f2cbade4b6f7a0f5a03862"},
+        {"upstream_path": "skills/editorial/SKILL.md", "local_snapshot_path": "vendor/typeui-public-registry/skills/editorial/SKILL.md", "sha256": "132941e9dcc911519004605a49543f93e00dc2dec249790dbbdbe2fa810ed348"},
+        {"upstream_path": "skills/editorial/DESIGN.md", "local_snapshot_path": "vendor/typeui-public-registry/skills/editorial/DESIGN.md", "sha256": "623b3da2e61c5744da42318fd20680bd674a15aa91ba48be36f3e0fed9aaa949"}
+      ]
+    },
+    {
+      "source_id": "designer-skills",
+      "repository_url": "https://github.com/Owl-Listener/designer-skills.git",
+      "commit_sha": "acc3e574b36ef2895268a176dbae886e1b845ae0",
+      "license": "MIT",
+      "license_path": "LICENSE",
+      "license_snapshot_path": "vendor/designer-skills/LICENSE",
+      "retrieval_date": "2026-08-03",
+      "files": [
+        {"upstream_path": "LICENSE", "local_snapshot_path": "vendor/designer-skills/LICENSE", "sha256": "1400d572fb60897f7970a763fb73d1aa7804b71bad41bf6e45061de7b7a09ac1"},
+        {"upstream_path": "visual-critique/skills/critique-composition/SKILL.md", "local_snapshot_path": "vendor/designer-skills/visual-critique/skills/critique-composition.md", "sha256": "a79c59f708955aad2b838290c9f86a99de619b0ac1ad081cdfbd076fe6a2f3a6"},
+        {"upstream_path": "visual-critique/skills/critique-information-density/SKILL.md", "local_snapshot_path": "vendor/designer-skills/visual-critique/skills/critique-information-density.md", "sha256": "9cf21397f90ac59d061f9bf31cbfb597d9df983efb598a441d0874177b27448f"},
+        {"upstream_path": "visual-critique/skills/critique-typography/SKILL.md", "local_snapshot_path": "vendor/designer-skills/visual-critique/skills/critique-typography.md", "sha256": "98781ab1a54ed63d576081b2664e61037b3a1840f2b57b357ecd484a8a0538cb"},
+        {"upstream_path": "visual-critique/skills/critique-visual-hierarchy/SKILL.md", "local_snapshot_path": "vendor/designer-skills/visual-critique/skills/critique-visual-hierarchy.md", "sha256": "b150e4216d089670c7129a3ed20461bf29d57c8cd43ebd34ce42c7b63910a2dd"},
+        {"upstream_path": "visual-critique/skills/critique-color/SKILL.md", "local_snapshot_path": "vendor/designer-skills/visual-critique/skills/critique-color.md", "sha256": "ef1db6f54f88f0c2dd84d7075f0c3dffcd7824a73d2297a47f81abb0946990d4"},
+        {"upstream_path": "design-systems/skills/design-system-governance/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-systems/skills/design-system-governance.md", "sha256": "7d54227f9040b9ce2938a436d4196b37269ebcc99d163693fe72988c38e5d8bd"},
+        {"upstream_path": "design-systems/skills/design-token/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-systems/skills/design-token.md", "sha256": "a3bc44f9075f86831545536e41713f76e9b5e049bc0b7bbf34323c567bb060e0"},
+        {"upstream_path": "design-systems/skills/pattern-library/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-systems/skills/pattern-library.md", "sha256": "0d161913f25fbdaad9f0eafb92dfa9951dfd7e6e7e6c654cd833ce84e6fae8ef"},
+        {"upstream_path": "ui-design/skills/data-visualization/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/data-visualization.md", "sha256": "89bbc75b428909a84070f89f9923a0fd370e9b7482c0ffabbefdb966e48f2ea6"},
+        {"upstream_path": "ui-design/skills/layout-grid/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/layout-grid.md", "sha256": "f8d58fd55a08d04ca6db68eb62075b78ea433ffcdc59f3727fc5ad5533d77f28"},
+        {"upstream_path": "ui-design/skills/readable-measure/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/readable-measure.md", "sha256": "2f2c0594229eb12e3cda34930274210bb081330de40cd390e0e97ef62b845ce7"},
+        {"upstream_path": "ui-design/skills/spacing-system/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/spacing-system.md", "sha256": "5fd2c466daa40140fe8f9adb7c90309407b85b088cdb67fdf82645abc9f6cda2"},
+        {"upstream_path": "ui-design/skills/typography-scale/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/typography-scale.md", "sha256": "c63a3fc7381943dc5bb4aab730a8b671f9c1ea32c71d508357eae9b1d3fed52b"},
+        {"upstream_path": "ui-design/skills/visual-hierarchy/SKILL.md", "local_snapshot_path": "vendor/designer-skills/ui-design/skills/visual-hierarchy.md", "sha256": "cfeb299d5b720903a2db0a785ecc088f6db800b3113096b7147053143f23bc6c"},
+        {"upstream_path": "design-ops/skills/handoff-spec/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-ops/skills/handoff-spec.md", "sha256": "be7d93b411edb6799d2fb013d4ed9505babb411079da837e34e2c5a7f3ba2101"},
+        {"upstream_path": "design-ops/skills/design-review-process/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-ops/skills/design-review-process.md", "sha256": "079958f2a87ca0d42a4101decafb3d358f83f0c639503a01edcc092c0d30243c"},
+        {"upstream_path": "design-ops/skills/design-qa-checklist/SKILL.md", "local_snapshot_path": "vendor/designer-skills/design-ops/skills/design-qa-checklist.md", "sha256": "8560fd1f0af904011516ad477776986e1f25cc317d683a49d643ca72e6262246"}
+      ]
+    }
+  ]
+}

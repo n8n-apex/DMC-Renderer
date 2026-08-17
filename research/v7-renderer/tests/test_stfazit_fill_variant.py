@@ -46,6 +46,18 @@ FAZIT_INDEX = 17  # pages[17] is the apex ST-FAZIT summary/closing page
 FAZIT_PNG = "report-p18.png"  # pages[17] → report-p18
 
 
+def _find_page(pkg, st_type: str) -> dict:
+    """Find the (first, non-continuation) page of st_type — the ST-06 section
+    expansion (US-604) shifted fixed indices, so lookups are type-based."""
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) == st_type and not pg.get("continuation_index"):
+            return pg
+    for pg in pkg.pages:
+        if str(pg.get("st_type")) == st_type:
+            return pg
+    raise AssertionError(f"no {st_type} page")
+
+
 def _apex_ctx() -> RenderContext:
     pkg = load_package(APEX)
     return RenderContext(
@@ -63,7 +75,7 @@ def _apex_fazit_page() -> dict:
     package (and never the on-disk fixture).
     """
     pkg = load_package(APEX)
-    page = copy.deepcopy(pkg.pages[FAZIT_INDEX])
+    page = copy.deepcopy(_find_page(pkg, "ST-FAZIT"))
     assert str(page.get("st_type")) == "ST-FAZIT"
     return page
 

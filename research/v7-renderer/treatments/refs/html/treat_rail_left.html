@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:"SourceSerif";
+  src:url("file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf") format("truetype");
+  font-weight:200 900;
+}
+@font-face{
+  font-family:"SourceSans";
+  src:url("file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf") format("truetype");
+  font-weight:200 900;
+}
+:root{
+  --cream:#F6F3ED;
+  --ink:#2E3E50;
+  --teal:#4A7C7E;
+  --teal-lift:#6FA6A8;   /* teal raised for legibility ON navy */
+  --body:#3a4a5a;
+  --rule:#cdc7ba;
+  --on-dark:#F6F3ED;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:var(--cream);
+  font-family:"SourceSans",sans-serif;
+  color:var(--body);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+  overflow:hidden;
+}
+.page{position:relative;width:1680px;height:1188px;}
+
+/* ============ LEFT AUTHORITY RAIL (navy ink, ~32%) ============ */
+.rail{
+  position:absolute;left:0;top:0;
+  width:538px;height:1188px;
+  background:var(--ink);
+  color:var(--on-dark);
+  padding:92px 60px 80px 90px;
+  display:flex;flex-direction:column;
+}
+/* faint texture: hairline keyline framing the rail interior */
+.rail::after{
+  content:"";position:absolute;left:34px;top:34px;right:24px;bottom:34px;
+  border:1px solid rgba(246,243,237,.08);pointer-events:none;
+}
+.rail-head{display:flex;align-items:baseline;justify-content:space-between;}
+.rail-label{
+  font-family:"SourceSans",sans-serif;
+  font-weight:600;font-size:13px;
+  letter-spacing:.34em;text-transform:uppercase;
+  color:var(--teal-lift);
+}
+.rail-year{
+  font-family:"SourceSans",sans-serif;
+  font-weight:500;font-size:12px;letter-spacing:.2em;
+  color:rgba(246,243,237,.45);
+}
+.rail-hr{height:1px;background:rgba(246,243,237,.18);margin-top:20px;}
+
+/* stat stack */
+.stats{margin-top:60px;display:flex;flex-direction:column;gap:46px;}
+.stat{position:relative;padding-left:28px;}
+.stat::before{
+  content:"";position:absolute;left:0;top:8px;bottom:5px;
+  width:3px;background:var(--teal-lift);
+}
+.stat .fig{
+  font-family:"SourceSerif",serif;font-weight:500;
+  font-size:72px;line-height:.9;color:#ffffff;letter-spacing:-.015em;
+}
+.stat .lab{
+  font-family:"SourceSans",sans-serif;font-weight:500;
+  font-size:14.5px;letter-spacing:.05em;
+  color:rgba(246,243,237,.72);margin-top:11px;
+}
+
+/* dashboard-grade savings bar tying the €200k / cost figures together */
+.savings{margin-top:50px;}
+.sav-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(246,243,237,.55);margin-bottom:14px;
+}
+.sav-head .pct{color:var(--teal-lift);font-weight:700;letter-spacing:.08em;font-size:12px;}
+.sav-track{
+  height:13px;width:100%;background:rgba(246,243,237,.12);
+  border-radius:2px;overflow:hidden;display:flex;
+}
+.sav-fill{height:100%;width:60%;background:var(--teal-lift);border-radius:2px 0 0 2px;}
+.sav-scale{
+  display:flex;justify-content:space-between;margin-top:9px;
+  font-family:"SourceSans",sans-serif;font-weight:500;font-size:10.5px;
+  letter-spacing:.08em;color:rgba(246,243,237,.42);
+}
+
+/* method steps, quiet, mid-rail */
+.method{margin-top:54px;}
+.method-head{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(246,243,237,.45);margin-bottom:22px;
+}
+.m-row{display:flex;align-items:baseline;gap:16px;padding:11px 0;border-top:1px solid rgba(246,243,237,.1);}
+.m-row:last-child{border-bottom:1px solid rgba(246,243,237,.1);}
+.m-no{
+  font-family:"SourceSerif",serif;font-weight:500;font-size:16px;
+  color:var(--teal-lift);width:20px;flex:0 0 20px;
+}
+.m-txt{
+  font-family:"SourceSans",sans-serif;font-weight:500;font-size:14px;
+  color:rgba(246,243,237,.8);letter-spacing:.01em;
+}
+
+/* quote block pinned at bottom */
+.quote-wrap{margin-top:auto;padding-top:48px;}
+.quote-mark{
+  font-family:"SourceSerif",serif;font-size:80px;line-height:.4;
+  color:var(--teal-lift);height:36px;display:block;
+}
+.quote{
+  font-family:"SourceSerif",serif;font-style:italic;font-weight:400;
+  font-size:22px;line-height:1.5;color:var(--on-dark);margin-top:8px;max-width:380px;
+}
+.quote-by{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--teal-lift);
+  margin-top:20px;display:flex;align-items:center;gap:12px;
+}
+.quote-by::before{content:"";width:20px;height:1px;background:rgba(246,243,237,.4);}
+
+/* ============ MAIN AREA (cream) ============ */
+.main{
+  position:absolute;left:538px;top:0;
+  width:1142px;height:1188px;
+  padding:92px 90px 84px 96px;
+}
+.folio{
+  position:absolute;right:90px;top:100px;
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:13px;
+  letter-spacing:.24em;color:#9a9486;
+}
+.eyebrow{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:14px;
+  letter-spacing:.36em;text-transform:uppercase;color:var(--teal);
+  display:flex;align-items:center;gap:18px;
+}
+.eyebrow::after{content:"";flex:0 0 70px;height:1px;background:var(--rule);}
+.headline{
+  font-family:"SourceSerif",serif;font-weight:430;
+  font-size:66px;line-height:1.07;color:var(--ink);
+  letter-spacing:-.014em;margin-top:32px;max-width:880px;
+}
+.headline .teal{color:var(--teal);}
+.thesis{
+  font-family:"SourceSans",sans-serif;font-weight:400;
+  font-size:21px;line-height:1.62;color:var(--body);
+  margin-top:32px;max-width:540px;
+}
+.thesis .em{color:var(--ink);font-weight:600;}
+
+/* transformation micro-strip, left column, clear of photo (photo left edge ~abs970) */
+.transform{
+  position:absolute;left:96px;bottom:236px;
+  display:flex;flex-direction:column;gap:30px;
+  padding-top:32px;border-top:1px solid var(--rule);width:340px;
+}
+.tf-eyebrow{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.24em;text-transform:uppercase;color:#9a9486;
+  position:absolute;top:-7px;left:0;background:var(--cream);padding-right:14px;
+}
+.tf-item .tf-lab{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:11px;
+  letter-spacing:.18em;text-transform:uppercase;color:#7a8794;margin-bottom:8px;
+}
+.tf-row{display:flex;align-items:baseline;}
+.tf-from{font-family:"SourceSerif",serif;font-weight:400;font-size:23px;color:var(--body);opacity:.5;}
+.tf-arrow{font-family:"SourceSans",sans-serif;font-size:16px;color:var(--teal);margin:0 13px;font-weight:600;}
+.tf-to{font-family:"SourceSerif",serif;font-weight:600;font-size:29px;color:var(--ink);}
+.tf-delta{
+  font-family:"SourceSans",sans-serif;font-weight:700;font-size:11.5px;
+  color:var(--teal);margin-left:13px;letter-spacing:.04em;
+  border:1px solid var(--teal);border-radius:2px;padding:2px 6px;align-self:center;
+}
+
+/* founder photo low-right, native aspect 1.562, framed with a teal foot-rule */
+.photo{position:absolute;right:90px;bottom:108px;}
+.photo .frame{
+  position:relative;display:block;
+  box-shadow:0 18px 44px rgba(46,62,80,.18);
+}
+.photo .frame::after{
+  content:"";position:absolute;left:-1px;right:-1px;bottom:-12px;height:4px;background:var(--teal);
+}
+.photo img{display:block;}
+.photo .cap{
+  font-family:"SourceSans",sans-serif;font-weight:600;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--body);
+  margin-top:24px;display:flex;align-items:center;gap:12px;
+}
+.photo .cap .role{color:#9a9486;font-weight:500;}
+
+/* partner credit, quiet, baseline of main area */
+.partners{
+  position:absolute;left:96px;bottom:60px;
+  font-family:"SourceSans",sans-serif;font-weight:500;font-size:12px;
+  letter-spacing:.1em;color:#9a9486;
+}
+.partners .name{color:var(--body);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== LEFT AUTHORITY RAIL ===== -->
+  <div class="rail">
+    <div class="rail-head">
+      <div class="rail-label">In Zahlen</div>
+      <div class="rail-year">2024 / 25</div>
+    </div>
+    <div class="rail-hr"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="fig">100+</div>
+        <div class="lab">AI-Projekte umgesetzt</div>
+      </div>
+      <div class="stat">
+        <div class="fig">&euro;200k+</div>
+        <div class="lab">Einsparung pro Jahr</div>
+      </div>
+    </div>
+
+    <!-- dashboard money/cost bar -->
+    <div class="savings">
+      <div class="sav-head"><span>Betriebskosten</span><span class="pct">&minus;30&ndash;50%</span></div>
+      <div class="sav-track"><div class="sav-fill"></div></div>
+      <div class="sav-scale"><span>vorher</span><span>nachher</span></div>
+    </div>
+
+    <!-- method, quiet 3-step -->
+    <div class="method">
+      <div class="method-head">Vorgehen</div>
+      <div class="m-row"><div class="m-no">1</div><div class="m-txt">Audit &amp; Engpass-Diagnose</div></div>
+      <div class="m-row"><div class="m-no">2</div><div class="m-txt">Automatisierung &amp; KI-Integration</div></div>
+      <div class="m-row"><div class="m-no">3</div><div class="m-txt">Skalierung ohne Mehr-Headcount</div></div>
+    </div>
+
+    <div class="quote-wrap">
+      <span class="quote-mark">&ldquo;</span>
+      <div class="quote">In 90&nbsp;Tagen ein vollautomatischer Workflow, der uns 20+&nbsp;Stunden pro Woche spart.</div>
+      <div class="quote-by">Kundenstimme</div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN AREA ===== -->
+  <div class="main">
+    <div class="folio">03</div>
+    <div class="eyebrow">&Uuml;ber uns</div>
+
+    <h1 class="headline">&Uuml;ber 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+
+    <p class="thesis">Wachstumsprobleme in B2B sind selten Umsatzprobleme. <span class="em">Sie sind Automatisierungsprobleme.</span></p>
+
+    <!-- transformation strip -->
+    <div class="transform">
+      <div class="tf-eyebrow">Was sich &auml;ndert</div>
+      <div class="tf-item">
+        <div class="tf-lab">Reaktionszeit</div>
+        <div class="tf-row">
+          <div class="tf-from">24&nbsp;Std</div>
+          <div class="tf-arrow">&rarr;</div>
+          <div class="tf-to">Minuten</div>
+        </div>
+      </div>
+      <div class="tf-item">
+        <div class="tf-lab">Onboarding</div>
+        <div class="tf-row">
+          <div class="tf-from">30&nbsp;Min</div>
+          <div class="tf-arrow">&rarr;</div>
+          <div class="tf-to">2&nbsp;Min</div>
+          <div class="tf-delta">&minus;93%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- partners -->
+    <div class="partners">Im Einsatz bei&nbsp;&nbsp;<span class="name">Frese Recruiting</span> &middot; <span class="name">Conesso GmbH</span> &middot; <span class="name">Pure Media Marketing</span></div>
+
+    <!-- founder photo, native aspect 1179x755 -> 620x397 -->
+    <div class="photo">
+      <div class="frame">
+        <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png" width="620" height="397" alt="Gr&uuml;nder">
+      </div>
+      <div class="cap">Jousef Murad&nbsp;&nbsp;<span class="role">Gr&uuml;nder, APEX</span></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

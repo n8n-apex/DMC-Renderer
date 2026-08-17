@@ -1,0 +1,818 @@
+{
+  "decisions": [
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "anchor": "fits",
+            "headline": "near_limit",
+            "narrative": "fits"
+          },
+          "capacity_violations": {
+            "anchor": [],
+            "headline": [],
+            "narrative": []
+          },
+          "elimination_reasons": [],
+          "family_id": "editorial_lead",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 3.0
+        }
+      ],
+      "face_id": "face.01",
+      "selected": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "photo_bleed"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "anchor": "fits",
+            "headline": "near_limit",
+            "narrative": "fits"
+          },
+          "capacity_violations": {
+            "anchor": [],
+            "headline": [],
+            "narrative": []
+          },
+          "elimination_reasons": [],
+          "family_id": "editorial_lead",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 0.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": -6.0
+          },
+          "total_score": -6.0
+        }
+      ],
+      "face_id": "face.02",
+      "selected": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "photo_bleed"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "anchor": "fits",
+            "headline": "near_limit",
+            "narrative": "fits"
+          },
+          "capacity_violations": {
+            "anchor": [],
+            "headline": [],
+            "narrative": []
+          },
+          "elimination_reasons": [],
+          "family_id": "editorial_lead",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 0.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": -6.0
+          },
+          "total_score": -6.0
+        },
+        {
+          "capacity_statuses": {
+            "proof_wall": "does_not_fit",
+            "trust_header": "does_not_fit"
+          },
+          "capacity_violations": {
+            "proof_wall": [
+              "region_capacity_missing"
+            ],
+            "trust_header": [
+              "region_capacity_missing"
+            ]
+          },
+          "elimination_reasons": [
+            "minimum_claim_evidence_missing",
+            "illegal_asset_class",
+            "region_capacity_missing"
+          ],
+          "family_id": "evidence_wall",
+          "family_version": "1.1.0",
+          "feasible": false,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.03",
+      "selected": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "photo_bleed"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "anchor": "fits",
+            "headline": "near_limit",
+            "narrative": "fits"
+          },
+          "capacity_violations": {
+            "anchor": [],
+            "headline": [],
+            "narrative": []
+          },
+          "elimination_reasons": [],
+          "family_id": "editorial_lead",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 0.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": -6.0
+          },
+          "total_score": -6.0
+        },
+        {
+          "capacity_statuses": {
+            "mechanism": "does_not_fit",
+            "principle": "does_not_fit"
+          },
+          "capacity_violations": {
+            "mechanism": [
+              "region_capacity_missing"
+            ],
+            "principle": [
+              "region_capacity_missing"
+            ]
+          },
+          "elimination_reasons": [
+            "region_capacity_missing"
+          ],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": false,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.04",
+      "selected": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "photo_bleed"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "beliefs": "fits",
+            "opening": "fits"
+          },
+          "capacity_violations": {
+            "beliefs": [],
+            "opening": []
+          },
+          "elimination_reasons": [],
+          "family_id": "false_belief_stack",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.05",
+      "selected": {
+        "family_id": "false_belief_stack",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "card_grid"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "case_story": "fits",
+            "evidence_rail": "fits"
+          },
+          "capacity_violations": {
+            "case_story": [],
+            "evidence_rail": []
+          },
+          "elimination_reasons": [],
+          "family_id": "case_narrative",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.06",
+      "selected": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "left_rail"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "mechanism": "fits",
+            "principle": "fits"
+          },
+          "capacity_violations": {
+            "mechanism": [],
+            "principle": []
+          },
+          "elimination_reasons": [],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.07",
+      "selected": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_band"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "mechanism": "fits",
+            "principle": "fits"
+          },
+          "capacity_violations": {
+            "mechanism": [],
+            "principle": []
+          },
+          "elimination_reasons": [],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 0.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": -6.0
+          },
+          "total_score": -6.0
+        }
+      ],
+      "face_id": "face.08",
+      "selected": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_band"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "mechanism": "fits",
+            "principle": "fits"
+          },
+          "capacity_violations": {
+            "mechanism": [],
+            "principle": []
+          },
+          "elimination_reasons": [],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 0.0,
+            "family_switch_bonus": 0.0,
+            "repeat_penalty": -6.0
+          },
+          "total_score": -6.0
+        }
+      ],
+      "face_id": "face.09",
+      "selected": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_band"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "case_story": "fits",
+            "evidence_rail": "fits"
+          },
+          "capacity_violations": {
+            "case_story": [],
+            "evidence_rail": []
+          },
+          "elimination_reasons": [],
+          "family_id": "case_narrative",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.10",
+      "selected": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "left_rail"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "mechanism": "fits",
+            "principle": "fits"
+          },
+          "capacity_violations": {
+            "mechanism": [],
+            "principle": []
+          },
+          "elimination_reasons": [],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.11",
+      "selected": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_band"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "case_story": "fits",
+            "evidence_rail": "fits"
+          },
+          "capacity_violations": {
+            "case_story": [],
+            "evidence_rail": []
+          },
+          "elimination_reasons": [],
+          "family_id": "case_narrative",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.12",
+      "selected": {
+        "family_id": "case_narrative",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "left_rail"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "mechanism": "fits",
+            "principle": "fits"
+          },
+          "capacity_violations": {
+            "mechanism": [],
+            "principle": []
+          },
+          "elimination_reasons": [],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.13",
+      "selected": {
+        "family_id": "theory_interpretation",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_band"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "method_frame": "fits",
+            "steps": "fits"
+          },
+          "capacity_violations": {
+            "method_frame": [],
+            "steps": []
+          },
+          "elimination_reasons": [],
+          "family_id": "mechanism_spread",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.14",
+      "selected": {
+        "family_id": "mechanism_spread",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "horizontal_spread"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "proof_wall": "fits",
+            "trust_header": "fits"
+          },
+          "capacity_violations": {
+            "proof_wall": [],
+            "trust_header": []
+          },
+          "elimination_reasons": [],
+          "family_id": "evidence_wall",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.15",
+      "selected": {
+        "family_id": "evidence_wall",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "logo_wall"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "payoff": "fits",
+            "synthesis": "fits"
+          },
+          "capacity_violations": {
+            "payoff": [],
+            "synthesis": []
+          },
+          "elimination_reasons": [],
+          "family_id": "summary_synthesis",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.16",
+      "selected": {
+        "family_id": "summary_synthesis",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "comparison_dashboard"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "objection_frame": "fits",
+            "responses": "fits"
+          },
+          "capacity_violations": {
+            "objection_frame": [],
+            "responses": []
+          },
+          "elimination_reasons": [],
+          "family_id": "objection_response",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.17",
+      "selected": {
+        "family_id": "objection_response",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "numbered_ladder"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "commitment": "fits",
+            "pathway": "fits"
+          },
+          "capacity_violations": {
+            "commitment": [],
+            "pathway": []
+          },
+          "elimination_reasons": [],
+          "family_id": "collaboration_pathway",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 2.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 4.0
+        }
+      ],
+      "face_id": "face.18",
+      "selected": {
+        "family_id": "collaboration_pathway",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "guided_path"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "anchor": "fits",
+            "headline": "near_limit",
+            "narrative": "fits"
+          },
+          "capacity_violations": {
+            "anchor": [],
+            "headline": [],
+            "narrative": []
+          },
+          "elimination_reasons": [],
+          "family_id": "editorial_lead",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        },
+        {
+          "capacity_statuses": {
+            "mechanism": "does_not_fit",
+            "principle": "does_not_fit"
+          },
+          "capacity_violations": {
+            "mechanism": [
+              "region_capacity_missing"
+            ],
+            "principle": [
+              "region_capacity_missing"
+            ]
+          },
+          "elimination_reasons": [
+            "region_capacity_missing"
+          ],
+          "family_id": "theory_interpretation",
+          "family_version": "1.1.0",
+          "feasible": false,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.19",
+      "selected": {
+        "family_id": "editorial_lead",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "photo_bleed"
+      }
+    },
+    {
+      "backtracking_signals": [
+        "try_variant",
+        "try_family"
+      ],
+      "considered": [
+        {
+          "capacity_statuses": {
+            "closing_statement": "near_limit",
+            "identity_close": "fits"
+          },
+          "capacity_violations": {
+            "closing_statement": [],
+            "identity_close": []
+          },
+          "elimination_reasons": [],
+          "family_id": "closing_cta",
+          "family_version": "1.1.0",
+          "feasible": true,
+          "score_components": {
+            "cadence_novelty": 3.0,
+            "family_switch_bonus": 2.0,
+            "repeat_penalty": 0.0
+          },
+          "total_score": 5.0
+        }
+      ],
+      "face_id": "face.20",
+      "selected": {
+        "family_id": "closing_cta",
+        "family_version": "1.1.0",
+        "policy_id": "dmc-composition-scoring",
+        "policy_version": "1.0.0",
+        "variant_id": "brand_pause"
+      }
+    }
+  ],
+  "policy_id": "dmc-composition-scoring",
+  "policy_version": "1.0.0",
+  "registry_version": "1.1.0",
+  "schema_version": "3.0"
+}

@@ -1,0 +1,12 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+@page a3-landscape { size: A3 landscape; margin: 18mm; }
+@page a4-portrait  { size: A4 portrait;  margin: 16mm; }
+*{margin:0;box-sizing:border-box;}
+.page{ break-after: page; height: 100%; font-family: sans-serif; padding: 10mm; }
+.page.format-a3{ page: a3-landscape; background:#e8eef0; }
+.page.format-a4{ page: a4-portrait;  background:#f3efe7; }
+h1{font-size:40pt;}
+</style></head><body>
+<section class="page format-a3"><h1>A3 landscape page</h1><p>should be 420 x 297 mm</p></section>
+<section class="page format-a4"><h1>A4 portrait page</h1><p>should be 210 x 297 mm</p></section>
+</body></html>

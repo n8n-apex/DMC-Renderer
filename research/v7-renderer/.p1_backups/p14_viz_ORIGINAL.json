@@ -1,0 +1,31 @@
+{
+ "layout_variant": null,
+ "viz": [
+  {
+   "preset": "ba_bars",
+   "unit": "Min",
+   "pairs": [
+    {
+     "label": "Onboarding pro Kunde",
+     "before": {
+      "value": "30"
+     },
+     "after": {
+      "value": "2"
+     },
+     "delta": "−93 %"
+    },
+    {
+     "label": "Copywriting pro Asset",
+     "before": {
+      "value": "60"
+     },
+     "after": {
+      "value": "5"
+     },
+     "delta": "−92 %"
+    }
+   ]
+  }
+ ]
+}

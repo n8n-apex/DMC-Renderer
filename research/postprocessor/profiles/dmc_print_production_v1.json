@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "dmc_print_production_v1",
+  "version": "0.0.0",
+  "status": "awaiting_printer_approval",
+  "production_allowed": false,
+  "pdf_standard": { "value": null, "required_from": "printer" },
+  "icc_path": { "value": null, "required_from": "printer" },
+  "icc_sha256": { "value": null, "required_from": "printer" },
+  "color_space": { "value": null, "required_from": "printer" },
+  "bleed_mm": { "value": null, "required_from": "printer" },
+  "crop_marks": { "value": null, "required_from": "printer" },
+  "minimum_image_dpi": { "value": null, "required_from": "printer" },
+  "maximum_total_area_coverage_percent": { "value": null, "required_from": "printer" },
+  "font_policy": { "value": null, "required_from": "printer" },
+  "transparency_policy": { "value": null, "required_from": "printer" },
+  "flattening_policy": { "value": null, "required_from": "printer" },
+  "preserve_searchable_text": { "value": null, "required_from": "printer" }
+}

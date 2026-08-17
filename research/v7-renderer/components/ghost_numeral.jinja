@@ -1,0 +1,18 @@
+{# ghost_numeral — an OVERSIZED, faint "ghost" numeral used as DECORATION
+   (DNA §C1/§C6). Richard's decks set a big, low-opacity outline/solid numeral
+   behind or beside a section's real number (e.g. a faint giant "3" behind a
+   "FALLSTUDIE 03" kicker, or behind a numbered step). It is pure ornament:
+   marked aria-hidden (never announced) and styled position:absolute +
+   pointer-events:none in styles/components.css (.c-ghost-num) so it NEVER affects
+   layout flow / page height.
+
+   USAGE CONTRACT (the caller owns placement): because it is absolutely
+   positioned, every place that USES it MUST sit in a `position:relative` parent
+   and offset/clip it so it cannot push content or overflow the page.
+
+   Brand-agnostic: tokens ONLY — the size comes from var(--type-hero), the faint
+   fill from var(--color-accent), the face from var(--font-display). No hex /
+   font / client literal here or in the CSS. #}
+{% macro ghost_numeral(n) -%}
+<span class="c-ghost-num" aria-hidden="true">{{ n }}</span>
+{%- endmacro %}

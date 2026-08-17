@@ -1,0 +1,54 @@
+{# ST-09 — status-quo page (Plan B rebuild, grammar P-4). DATA comes pre-shaped
+   from patterns/st_09.py; this template only COMPOSES the macro library on the
+   token-themed .st-09 layout (styles/st_09.css). Fragment only — no
+   <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
+
+   Structure: a serif display heading + intro lede, an optional status-quo scene
+   banner (media_figure), a two-column grid of numbered symptom blocks
+   (numbered_block — big accent numeral + bold title + body), and a closing tint
+   insight panel (callout_panel) with the reassurance that the symptoms share one
+   fixable cause. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'media_figure.jinja' import media_figure %}
+{% from 'numbered_block.jinja' import numbered_block %}
+{% from 'callout_panel.jinja' import callout_panel %}
+{% from 'diagram.jinja' import diagram as render_diagram %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+<div class="sq-header">
+  {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
+  {% if title %}<h1 class="sq-headline">{{ title }}</h1>{% endif %}
+  {% if diagram %}{{ render_diagram(diagram) }}{% endif %}
+  {% if intro_html %}<div class="sq-intro">{{ intro_html }}</div>{% endif %}
+</div>
+
+{% if scene_uri %}
+<div class="sq-banner">
+  {{ media_figure(scene_uri, alt=scene_alt, ratio='16x9') }}
+</div>
+{% endif %}
+
+{% if symptoms %}
+<div class="sq-grid">
+  {% for s in symptoms %}
+  <div class="sq-cell">
+    {{ numbered_block(s.n, s.title, s.body_html) }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if viz %}
+{# data-viz PRESET band (verbatim grounded figure from the curation step) — a
+   single hero magnitude that crystallizes the status-quo cost. Absent → nothing. #}
+<div class="sq-viz c-viz-island"{% if panel_texture_uri %} style="background-image: linear-gradient(150deg, color-mix(in srgb, var(--color-ink) 14%, transparent), color-mix(in srgb, var(--color-ink) 40%, transparent)), url('{{ panel_texture_uri }}');"{% endif %}>
+  <span class="c-viz-island__seam" aria-hidden="true"></span>
+  {{ render_viz(viz) }}
+</div>
+{% endif %}
+
+{% if callout_html %}
+<div class="sq-callout">
+  {{ callout_panel(callout_html, label=callout_label) }}
+</div>
+{% endif %}

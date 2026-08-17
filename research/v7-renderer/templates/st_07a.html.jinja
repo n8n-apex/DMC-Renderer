@@ -234,11 +234,14 @@
      client quote sits on cream beneath the panel (legible ink, never on dark). #}
   {% set _v = (viz[0] if viz and viz[0] is mapping else none) %}
   {% set _vp = (_v.preset if _v else '') %}
-  {% set _has_device = _vp in ('donut','bar_compare','transform_arrow','gauge','completion_ring') %}
-  {% set _kpi_stats = stats if _has_device else (stats[1:] if stats else []) %}
-  {% set _hero_stat = none if _has_device else (stats[0] if stats else none) %}
+  {# US-609: the DASH hosts the device — INCLUDING stat_strip. The wall
+     (_kpi_stats) is computed in the PATTERN (Python — jinja loop scoping
+     breaks in-template dedup) and shows ONLY the metrics the device does not
+     own. #}
+  {% set _has_device = _vp in ('donut','bar_compare','transform_arrow','gauge','completion_ring','stat_strip') %}
+  {% set _kpi_stats = kpi_stats if kpi_stats is defined else (stats if _has_device else (stats[1:] if stats else [])) %}
   <div class="csh-right">
-    <div class="csh-dash"{% if panel_texture_uri %} style="background-image: linear-gradient(150deg, color-mix(in srgb, var(--color-ink) 14%, transparent), color-mix(in srgb, var(--color-ink) 40%, transparent)), url('{{ panel_texture_uri }}');"{% endif %}>
+    <div class="csh-dash"{% if panel_texture_uri %} style="background-image: linear-gradient(150deg, color-mix(in srgb, var(--color-ink) 8%, transparent), color-mix(in srgb, var(--color-ink) 26%, transparent)), url('{{ panel_texture_uri }}');"{% endif %}>
       <span class="csh-dash-seam" aria-hidden="true"></span>
       <div class="csh-dash-head">
         <span class="csh-dash-eyebrow">Das Ergebnis</span>
@@ -304,6 +307,17 @@
             </div>
           </div>
         </div>
+        {% elif _vp == 'stat_strip' and _v and _v['items'] %}
+        {# US-609: a stat_strip device renders INSIDE the dash (its items are
+           the dash's data display) — no other band re-renders them. #}
+        <div class="csh-dev csh-dev-strip">
+          {% for _it in _v['items'] %}
+          <div class="csh-strip-item">
+            <span class="csh-strip-v">{{ _it.value }}</span>
+            {% if _it.label %}<span class="csh-strip-l">{{ _it.label }}</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
         {% elif _hero_stat %}
         <div class="csh-dev csh-dev-promote">
           <span class="csh-promote-v">{{ _hero_stat.value }}</span>
@@ -332,7 +346,11 @@
        carrying (_kpi_stats = stats minus the hero's figure). #}
     {% if (viz and not _has_device) or _kpi_stats %}
     <div class="csh-infographics">
-      {% if viz and viz[0] is mapping and not _has_device %}
+      {# US-609: the viz band renders ONLY when the wall has NO cells — a
+         stat_strip's items + the metric cells would DUPLICATE the same
+         figures (the p7 audit saw '> 200.000 €' twice). The cells own the
+         data when present; the band is the fallback for device-only pages. #}
+      {% if viz and viz[0] is mapping and not _has_device and not _kpi_stats %}
       <div class="csh-infographic-viz">
         {% from 'viz.jinja' import viz as render_viz %}
         {{ render_viz(viz) }}

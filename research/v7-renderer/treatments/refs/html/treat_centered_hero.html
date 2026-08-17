@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{
+  font-family:'SS4';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');
+  font-weight:200 900;
+}
+@font-face{
+  font-family:'SS3';
+  src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');
+  font-weight:200 900;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{
+  background:#F6F3ED;
+  font-family:'SS3',sans-serif;
+  color:#3a4a5a;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  overflow:hidden;
+}
+.page{
+  position:absolute;
+  inset:0;
+  padding:96px 130px 96px 130px;
+}
+
+/* ---- top meta row ---- */
+.meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  border-bottom:1px solid #cdc7ba;
+  padding-bottom:18px;
+}
+.eyebrow{
+  font-family:'SS3';
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:5px;
+  color:#4A7C7E;
+  text-transform:uppercase;
+}
+.meta-right{
+  font-family:'SS3';
+  font-weight:500;
+  font-size:14px;
+  letter-spacing:3px;
+  color:#8a8576;
+  text-transform:uppercase;
+}
+
+/* ---- centered headline ---- */
+.headline{
+  text-align:center;
+  margin-top:54px;
+}
+.headline h1{
+  font-family:'SS4';
+  font-weight:430;
+  font-size:64px;
+  line-height:1.06;
+  letter-spacing:-0.5px;
+  color:#2E3E50;
+}
+.headline h1 .teal{color:#4A7C7E;}
+.thesis{
+  text-align:center;
+  margin:30px auto 0;
+  max-width:760px;
+  font-family:'SS4';
+  font-weight:380;
+  font-style:italic;
+  font-size:21px;
+  line-height:1.5;
+  color:#586878;
+}
+
+/* ---- center stage : 3 columns symmetric ---- */
+.stage{
+  display:grid;
+  grid-template-columns:1fr 470px 1fr;
+  align-items:center;
+  margin-top:58px;
+  column-gap:64px;
+}
+
+/* left supporting column (stats) */
+.col-left{
+  text-align:right;
+  padding-right:8px;
+}
+.stat-block{margin-bottom:46px;}
+.stat-block:last-child{margin-bottom:0;}
+.stat-num{
+  font-family:'SS4';
+  font-weight:500;
+  font-size:62px;
+  line-height:0.95;
+  color:#2E3E50;
+  letter-spacing:-1px;
+}
+.stat-cap{
+  font-family:'SS3';
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:#8a8576;
+  margin-top:9px;
+}
+.stat-sub{
+  font-family:'SS3';
+  font-weight:400;
+  font-size:14px;
+  color:#6a7686;
+  margin-top:3px;
+}
+
+/* center focal donut */
+.focal{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.donut-wrap{position:relative;width:430px;height:430px;}
+.donut-center{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.donut-num{
+  font-family:'SS4';
+  font-weight:500;
+  font-size:92px;
+  line-height:0.9;
+  color:#2E3E50;
+  letter-spacing:-2px;
+}
+.donut-num .pct{font-size:48px;font-weight:400;color:#4A7C7E;vertical-align:8px;margin-left:2px;}
+.donut-label{
+  font-family:'SS3';
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#8a8576;
+  margin-top:16px;
+}
+.donut-tag{
+  margin-top:38px;
+  font-family:'SS3';
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:#4A7C7E;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.donut-tag .dash{width:34px;height:1.5px;background:#cdc7ba;}
+
+/* right supporting column (photo + quote) */
+.col-right{
+  text-align:left;
+  padding-left:8px;
+}
+.photo-box{
+  width:330px;
+  border-radius:2px;
+  overflow:hidden;
+  box-shadow:0 14px 34px rgba(46,62,80,0.16);
+}
+.photo-box img{display:block;width:100%;height:auto;}
+.quote{
+  margin-top:26px;
+  max-width:330px;
+}
+.quote p{
+  font-family:'SS4';
+  font-weight:400;
+  font-style:italic;
+  font-size:18px;
+  line-height:1.45;
+  color:#2E3E50;
+}
+.quote p .qmark{color:#4A7C7E;font-style:normal;font-size:24px;font-weight:600;}
+.quote .attr{
+  font-family:'SS3';
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:#8a8576;
+  margin-top:12px;
+}
+
+/* ---- bottom partner rail ---- */
+.footer{
+  position:absolute;
+  left:130px;
+  right:130px;
+  bottom:74px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid #cdc7ba;
+  padding-top:20px;
+}
+.partners{
+  font-family:'SS3';
+  font-weight:500;
+  font-size:14px;
+  letter-spacing:1px;
+  color:#6a7686;
+}
+.partners .sep{color:#cdc7ba;margin:0 12px;}
+.brand{
+  font-family:'SS4';
+  font-weight:600;
+  font-size:18px;
+  letter-spacing:4px;
+  color:#2E3E50;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="meta">
+    <div class="eyebrow">Über uns</div>
+    <div class="meta-right">APEX &nbsp;·&nbsp; B2B Automatisierung</div>
+  </div>
+
+  <div class="headline">
+    <h1>Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></h1>
+    <p class="thesis">Wachstumsprobleme in B2B sind selten Umsatzprobleme. Sie sind Automatisierungsprobleme.</p>
+  </div>
+
+  <div class="stage">
+
+    <div class="col-left">
+      <div class="stat-block">
+        <div class="stat-num">100+</div>
+        <div class="stat-cap">AI-Projekte</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">€200k+</div>
+        <div class="stat-cap">Einsparung</div>
+        <div class="stat-sub">pro Jahr</div>
+      </div>
+    </div>
+
+    <div class="focal">
+      <div class="donut-wrap">
+        <svg width="430" height="430" viewBox="0 0 430 430">
+          <circle cx="215" cy="215" r="168" fill="none" stroke="#e4ded2" stroke-width="30"/>
+          <circle cx="215" cy="215" r="168" fill="none" stroke="#4A7C7E" stroke-width="30"
+                  stroke-linecap="round"
+                  stroke-dasharray="1055.6"
+                  stroke-dashoffset="580.6"
+                  transform="rotate(-90 215 215)"/>
+        </svg>
+        <div class="donut-center">
+          <div class="donut-num">30–50<span class="pct">%</span></div>
+          <div class="donut-label">Betriebskosten</div>
+        </div>
+      </div>
+      <div class="donut-tag"><span class="dash"></span>Reduktion pro Mandat<span class="dash"></span></div>
+    </div>
+
+    <div class="col-right">
+      <div class="photo-box">
+        <img src="file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.png" alt="Gründer">
+      </div>
+      <div class="quote">
+        <p><span class="qmark">„</span>In 90 Tagen ein vollautomatischer Workflow, der uns 20+ Stunden pro Woche spart.“</p>
+        <div class="attr">— Kundenstimme</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="partners">Frese Recruiting <span class="sep">·</span> Conesso GmbH <span class="sep">·</span> Pure Media Marketing</div>
+    <div class="brand">03</div>
+  </div>
+
+</div>
+</body>
+</html>

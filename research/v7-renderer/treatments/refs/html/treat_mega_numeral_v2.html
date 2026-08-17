@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:'SourceSerif';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSerif4%5Bopsz,wght%5D.ttf');font-weight:200 900;}
+@font-face{font-family:'SourceSans';src:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fonts/SourceSans3%5Bwght%5D.ttf');font-weight:200 900;}
+:root{--cream:#F6F3ED;--ink:#2E3E50;--teal:#4A7C7E;--body:#3a4a5a;--rule:#cdc7ba;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1680px;height:1188px;}
+body{background:var(--cream);font-family:'SourceSans',sans-serif;color:var(--body);position:relative;overflow:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ---- top frame ---- */
+.eyebrow{position:absolute;top:78px;left:90px;font-weight:600;font-size:16px;letter-spacing:0.42em;color:var(--teal);text-transform:uppercase;}
+.eyebrow::before{content:'';display:inline-block;width:40px;height:2px;background:var(--teal);vertical-align:middle;margin-right:18px;margin-bottom:4px;}
+.pageno{position:absolute;top:74px;right:90px;font-family:'SourceSerif';font-style:italic;font-size:19px;color:#9a9482;}
+.toprule{position:absolute;top:118px;left:90px;right:90px;height:1px;background:var(--rule);}
+
+/* ---- LEFT: the mega numeral, contained in its own zone ---- */
+.mega{position:absolute;left:80px;top:300px;font-family:'SourceSerif';font-weight:600;font-size:340px;line-height:0.78;color:var(--ink);letter-spacing:-0.03em;white-space:nowrap;}
+.mega .plus{color:var(--teal);}
+.numrule{position:absolute;left:96px;top:560px;width:700px;height:1px;background:var(--rule);}
+.mega-label{position:absolute;left:96px;top:586px;font-weight:700;font-size:23px;letter-spacing:0.26em;text-transform:uppercase;color:var(--ink);}
+.mega-label .sub{display:block;margin-top:12px;font-weight:400;letter-spacing:0.01em;text-transform:none;font-size:18px;line-height:1.5;color:#6b7280;max-width:600px;}
+/* supporting KPI pair, low-left */
+.kpi{position:absolute;left:96px;top:792px;display:flex;gap:90px;}
+.kpi .item{display:flex;flex-direction:column;}
+.kpi .num{font-family:'SourceSerif';font-weight:600;font-size:64px;line-height:1;color:var(--ink);}
+.kpi .num em{font-style:normal;color:var(--teal);}
+.kpi .cap{margin-top:12px;font-weight:600;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:#6b7280;}
+
+/* ---- vertical divider ---- */
+.vrule{position:absolute;left:1006px;top:188px;width:1px;height:828px;background:var(--rule);}
+
+/* ---- RIGHT rail ---- */
+.rail{position:absolute;right:90px;top:200px;width:520px;}
+.headline{font-family:'SourceSerif';font-weight:500;font-size:44px;line-height:1.12;color:var(--ink);letter-spacing:-0.01em;}
+.headline .teal{color:var(--teal);}
+.thesis{margin-top:28px;font-family:'SourceSerif';font-style:italic;font-weight:400;font-size:21px;line-height:1.5;color:var(--body);padding-left:22px;border-left:2px solid var(--teal);}
+
+.founder{position:absolute;right:90px;top:512px;width:404px;height:492px;overflow:hidden;box-shadow:0 16px 38px rgba(46,62,80,0.18);
+  background:url('file:///Users/utkarsh/Projects/richard/research/v7-renderer/fixtures/apex/assets/1_founder.jpg') center 18%/cover no-repeat;}
+.founder-cap{position:absolute;right:90px;top:1018px;width:404px;font-weight:400;font-size:14px;letter-spacing:0.02em;color:#6b7280;}
+.founder-cap b{color:var(--ink);font-weight:700;}
+
+/* ---- bottom transformation strip ---- */
+.bottomrule{position:absolute;left:90px;right:90px;top:1062px;height:1px;background:var(--rule);}
+.transform{position:absolute;left:90px;top:1096px;display:flex;gap:60px;align-items:center;}
+.transform .t{font-size:15px;color:#6b7280;display:flex;align-items:baseline;gap:10px;}
+.transform .t .lab{font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.transform .t .from{font-family:'SourceSerif';color:#9a9482;}
+.transform .t .arr{color:var(--teal);font-weight:700;}
+.transform .t .to{font-family:'SourceSerif';font-weight:600;color:var(--teal);font-size:18px;}
+.transform .t .d{color:var(--teal);font-weight:700;}
+.partners{position:absolute;right:90px;top:1098px;font-weight:600;font-size:13px;letter-spacing:0.10em;color:#9a9482;text-transform:uppercase;}
+</style>
+</head>
+<body>
+  <div class="eyebrow">Über uns</div>
+  <div class="pageno">Seite 03</div>
+  <div class="toprule"></div>
+
+  <!-- MEGA NUMERAL (own zone) -->
+  <div class="mega">100<span class="plus">+</span></div>
+  <div class="numrule"></div>
+  <div class="mega-label">AI-Projekte ausgeliefert
+    <span class="sub">Mehr als hundert produktive Automatisierungen im B2B-Betrieb — ohne zusätzliches Headcount.</span>
+  </div>
+  <div class="kpi">
+    <div class="item"><div class="num">€200k<em>+</em></div><div class="cap">Einsparung / Jahr</div></div>
+    <div class="item"><div class="num">30–50<em>%</em></div><div class="cap">Betriebskosten</div></div>
+  </div>
+
+  <div class="vrule"></div>
+
+  <!-- RIGHT rail -->
+  <div class="rail">
+    <div class="headline">Über 100 AI-Projekte.<br><span class="teal">Betrieb ohne Flaschenhals.</span></div>
+    <div class="thesis">Wachstumsprobleme in B2B sind selten Umsatzprobleme. Sie sind Automatisierungsprobleme.</div>
+  </div>
+  <div class="founder"></div>
+  <div class="founder-cap"><b>Jousef Murad</b> · Gründer, APEX</div>
+
+  <!-- bottom strip -->
+  <div class="bottomrule"></div>
+  <div class="transform">
+    <div class="t"><span class="lab">Reaktionszeit</span> <span class="from">24 Std</span> <span class="arr">→</span> <span class="to">Minuten</span></div>
+    <div class="t"><span class="lab">Onboarding</span> <span class="from">30 Min</span> <span class="arr">→</span> <span class="to">2 Min</span> <span class="d">−93%</span></div>
+  </div>
+  <div class="partners">Frese Recruiting · Conesso GmbH · Pure Media Marketing</div>
+</body>
+</html>

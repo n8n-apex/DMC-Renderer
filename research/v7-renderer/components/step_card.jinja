@@ -1,0 +1,19 @@
+{# Step card: a numbered mechanism stage — a big accent numeral beside a bold
+   title + body, in a thin token-bordered card. The horizontal sibling of
+   numbered_block, but BOXED (a discrete step). Used by ST-06 (the mechanism /
+   how-it-works page). All under the c-step-card namespace; the token-only look
+   lives in styles/components.css.
+
+   n          big accent numeral (int or string)
+   title      bold step title
+   body_html  pre-rendered body HTML (markdown → HTML by the pattern)
+#}
+{% macro step_card(n, title, body_html) -%}
+<div class="c-step-card">
+  <div class="c-step-card__num">{{ n }}</div>
+  <div class="c-step-card__text">
+    {% if title %}<div class="c-step-card__title">{{ title }}</div>{% endif %}
+    {% if body_html %}<div class="c-step-card__body">{{ body_html }}</div>{% endif %}
+  </div>
+</div>
+{%- endmacro %}

@@ -1,0 +1,19 @@
+{
+  "family_hashes": {
+    "editorial_lead@1.4.0": "ca8794618c18ac929eff41f65a0ec88a541d3776a67850ed977e80afea929266",
+    "false_belief_stack@1.3.0": "e5a308bf0c8088fe90be352307e503f0a2ac70e4f78a28fc334081d507259986",
+    "case_narrative@1.4.0": "005ebeea85c430174ee3fa221b38495eeec20cb9ed7087dfaee97dc6af51b30a",
+    "theory_interpretation@1.5.0": "9667b60bee1d2bda6a35a080773da65d738833cbfffdbd80bf83b370b5cdb89e",
+    "mechanism_spread@1.4.0": "3629f7ed4a0dda1ae8d92c0f4725072dd8795386851477c3f0bc69fd616e8fcc",
+    "summary_synthesis@1.4.0": "576f41279ca126d2c7210af7f719d5129f05018c24c20be37e1aa6c971e351a8",
+    "objection_response@1.3.0": "d793f870deac7e1cea629586d33eb70cdfb2c244d2c304627c0afe22f6cec350",
+    "collaboration_pathway@1.4.0": "d70f73b457d691cd495b80d23f2b2e72a9f63a4300f45d752481f47a19594fb5",
+    "evidence_wall@1.4.0": "db05a899e8f175387ea4a8fc030520a360385ac310ffbbfa151b3b7fa47021a1",
+    "closing_cta@1.6.0": "58caf3e285767fbc795f4e3b635fa95f0af3f86ea702a949954f207e08fb2c9d"
+  },
+  "registry_content_hash": "1c1441365c680ad834d79494d29d9a0612401f22fa9dc671aa60f0a4c5920c4c",
+  "registry_id": "dmc",
+  "registry_version": "1.7.0",
+  "schema_version": "1.0",
+  "regenerated_reason": "Capacity audit against the reference atlas: 8 of 10 families could already hold Richard's densest page of their kind, but theory_interpretation (510 words vs his 521) and closing_cta (175 vs his 209) would have REFUSED his own work. Both widened to his measured maximum plus 10 percent headroom. Unlike the pixel policy, these numbers were broadly sound; the audit found two real gaps rather than a systematic mis-calibration. Registry 1.5.0 -> 1.7.0."
+}

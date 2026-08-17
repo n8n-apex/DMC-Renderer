@@ -417,11 +417,16 @@ def test_apply_lands_bindings_and_stages_files(tmp_path: Path) -> None:
         assert bg["image_type"] == "scene"
         assert bg["path"].startswith("assets/ig_")
 
-    # testimonials on about + body trimmed to 2 paras
-    about = _page(out, 3)
-    assert len(about["data"]["testimonials"]) == 2
-    assert all(t.startswith("assets/ig_") for t in about["data"]["testimonials"])
-    assert about["data"]["body"].count("\n\n") == 1  # 2 paragraphs
+    # testimonials on the About PROOF page + body trimmed on the IDENTITY page
+    # (US-609: the About section splits identity/proof).
+    about_pages = [p for p in out["pages"] if p["slot"] == 3]
+    about_proof = next((p for p in about_pages
+                        if p.get("continuation_role") == "proof"), about_pages[0])
+    about_identity = next((p for p in about_pages
+                           if p.get("continuation_role") == "identity"), about_pages[0])
+    assert len(about_proof["data"]["testimonials"]) == 2
+    assert all(t.startswith("assets/ig_") for t in about_proof["data"]["testimonials"])
+    assert about_identity["data"]["body"].count("\n\n") == 1  # 2 paragraphs
 
     # case study post on slot 12
     case = _page(out, 12)

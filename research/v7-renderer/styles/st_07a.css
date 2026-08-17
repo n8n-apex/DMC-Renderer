@@ -679,6 +679,14 @@
    box is the same 261mm as A4 (identical margins), so the grid + the right
    dashboard's space-between distribute across the full sheet. */
 .st-07a.format-a3 .csh { height: 260mm; }
+/* US-609: the A3 spread sheet needs a visible atmosphere — the whisper ground
+   alone reads flat at print scale (the reviewer's P13=1). A soft radial
+   brand-wash + the grain tile gives the wide sheet intentional depth. */
+.st-07a.format-a3 {
+  background-image:
+    radial-gradient(120% 90% at 82% 8%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 60%),
+    radial-gradient(90% 70% at 8% 92%, color-mix(in srgb, var(--color-ink) 5%, transparent), transparent 55%);
+}
 /* Left column: the kicker/headline/portrait/lede keep their natural top flow;
    only the NARRATIVE flex-grows and spreads its sections through the sheet's
    bottom half (space-between on the whole column would air out the top). */
@@ -931,7 +939,7 @@
   margin-top: 1.2mm;
 }
 
-.st-07a .csh-quote { margin-top: var(--space-3); flex: none; }
+.st-07a .csh-quote { margin-top: var(--space-2); flex: none; }
 
 .st-07a .csh-quote-text {
   font-family: var(--font-display); font-style: italic; font-size: var(--type-lede);
@@ -976,7 +984,7 @@
   /* the DIRECTOR data band (user 2026-08-16): fills the A3 right rail's bottom
      with the page's REAL metrics as big editorial gold numerals — a data WALL,
      not small cells. flex column so the cells distribute down the band. */
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
   padding-top: var(--space-2);
   display: flex;
@@ -1000,6 +1008,9 @@
   flex: none;
   min-width: 0;
   padding-top: var(--space-3);
+  /* US-609: right padding so long values ('skalierbar ohne Headcount')
+     never touch the page trim (the raster edge-read looked clipped). */
+  padding-right: var(--space-3);
   border-top: 0.25mm solid color-mix(in srgb, var(--color-muted) 40%, transparent);
 }
 .st-07a .csh-infographic-value {
@@ -1019,4 +1030,31 @@
   color: var(--color-muted);
   margin-top: 2mm;
   max-width: 46mm;
+}
+
+/* US-609: the stat_strip device inside the dash — its items are the dash's
+   data display (no other band re-renders them). */
+.st-07a .csh-dev-strip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.st-07a .csh-strip-item {
+  display: flex;
+  flex-direction: column;
+}
+.st-07a .csh-strip-v {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--type-display-xl);
+  line-height: 1;
+  color: var(--color-accent);
+}
+.st-07a .csh-strip-l {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--color-on-dark) 65%, transparent);
+  margin-top: 1.2mm;
 }

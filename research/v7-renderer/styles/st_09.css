@@ -92,6 +92,15 @@
 /* Phase-B reflow: tighten callout margin (--space-2→--space-1) and reduce padding
    (scoped override of the global --space-4 callout padding). */
 .st-09 .sq-callout { margin: var(--space-1) 0 0 0; }
+/* US-609: the status-quo page's last band (the reassurance callout) must
+   resolve to the sheet bottom — a definite-height page column distributes
+   the slack so the callout closes the sheet instead of leaving a 25-30%
+   bottom void (the audit's recurring finding). */
+.page.st-09 {
+  display: flex;
+  flex-direction: column;
+}
+.page.st-09 .sq-callout { margin-top: auto; }
 .st-09 .sq-callout .c-callout-panel {
   break-inside: avoid;
   padding: var(--space-3);

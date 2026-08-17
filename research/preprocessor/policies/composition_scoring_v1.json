@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "policy_id": "dmc-composition-scoring",
+  "version": "1.2.0",
+  "weights": {
+    "cadence_novelty": 1.0,
+    "family_switch_bonus": 2.0,
+    "repeat_penalty": -6.0,
+    "tone_alignment": 3.0,
+    "density_fit": 2.0,
+    "evidence_density_fit": 2.0,
+    "chart_opportunity_fit": 1.5,
+    "asset_availability_fit": 2.5,
+    "variant_alignment": 1.0
+  },
+  "tie_breakers": [
+    "family_id",
+    "family_version",
+    "variant_id"
+  ],
+  "density_band_target_words": {
+    "light": 120,
+    "moderate": 220,
+    "dense": 300,
+    "very_dense": 360
+  },
+  "feature_affinities": {
+    "imagery_density": {
+      "sparse": [
+        "rail",
+        "narrow",
+        "restrained",
+        "prose",
+        "secondary"
+      ],
+      "moderate": [],
+      "rich": [
+        "photo",
+        "image",
+        "bleed",
+        "field",
+        "gallery",
+        "matrix",
+        "wall",
+        "cards"
+      ]
+    },
+    "brand_energy": {
+      "restrained": [
+        "secondary",
+        "restrained",
+        "narrow",
+        "quiet"
+      ],
+      "balanced": [],
+      "expressive": [
+        "primary",
+        "bleed",
+        "repeated",
+        "upper",
+        "bold"
+      ]
+    },
+    "chart_opportunity": {
+      "none": [],
+      "low": [],
+      "moderate": [
+        "dashboard",
+        "rating",
+        "diagram"
+      ],
+      "high": [
+        "dashboard",
+        "rating",
+        "matrix",
+        "chart",
+        "comparison",
+        "band"
+      ]
+    },
+    "density_band": {
+      "light": [
+        "photo",
+        "bleed",
+        "field",
+        "image",
+        "upper"
+      ],
+      "moderate": [],
+      "dense": [
+        "rail",
+        "prose",
+        "secondary",
+        "narrow",
+        "stays",
+        "proof",
+        "anchor",
+        "argument"
+      ],
+      "very_dense": [
+        "rail",
+        "prose",
+        "secondary",
+        "narrow",
+        "stays",
+        "proof",
+        "anchor",
+        "argument"
+      ]
+    }
+  }
+}

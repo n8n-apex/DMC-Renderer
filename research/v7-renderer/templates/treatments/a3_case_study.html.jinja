@@ -1,0 +1,105 @@
+{# a3_case_study treatment (A3-landscape, archetype "case_study").
+
+   Renders one ST-07A case study as an A3 spread, mirroring the editorial A3
+   scaffold. Driven ENTIRELY by TreatmentData (td):
+
+     LEFT cream field (~60%): the NARRATIVE: eyebrow ("FALLSTUDIE 0N") + two-tone
+       result headline (ergebnis_headline) + kurzportraet lede + the labeled
+       sections (Ausgangsproblem / Wendepunkt / Loesung). Ends well above the
+       curved marble footer (no metrics here, so nothing collides).
+
+     RIGHT navy-marble column (~40%): the DASHBOARD: an optional client portrait,
+       then the RESULT metrics on dark (a real-percent donut ring from td.viz +
+       big KPI callouts), then the client PULL-QUOTE. The three blocks distribute
+       down the column so it fills top-to-bottom with no empty void, portrait or
+       not.
+
+   Reuses the navy-marble asset + curved footer geometry + the viz macro. CSS:
+   styles/treatments/a3_case_study.css (semantic tokens only). Graceful-omit. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+{# metrics: a ring may only render with a REAL percent, so only a READY donut
+   spec on td.viz (it carries the true percent; writer-v4 routes %-kennzahlen
+   there, mirroring editorial's td.viz fallback) can drive the RING. Nothing is
+   computed from a bare %-stat: without a spec it stays in the plain KPI list,
+   never a fabricated arc. #}
+{% set ring_specs = [] %}
+{% for v in (td.viz or []) %}
+  {% if not ring_specs and v.preset == 'donut' %}
+    {% set _ = ring_specs.append(v) %}
+  {% endif %}
+{% endfor %}
+{% set kpis = td.stats or [] %}
+
+{% set _marble = ctx.resolve_report_asset(("panel_texture",), ("panel_texture",)) %}
+
+<div class="cs-grid"{% if _marble %} style="--panel-marble: url('{{ _marble }}');"{% endif %}>
+
+  {# curved marble footer (same designed object as editorial) #}
+  <div class="cs-footer" aria-hidden="true">
+    <div class="cs-footer-fill"></div>
+    <svg class="cs-footer-edge" viewBox="0 0 1200 200" preserveAspectRatio="none">
+      <path class="cs-edge-lo" d="M0 107 C 175 43 345 27 515 37 C 770 52 985 73 1200 81" fill="none"/>
+      <path class="cs-edge-hi" d="M0 104 C 175 40 345 24 515 34 C 770 49 985 70 1200 78" fill="none"/>
+    </svg>
+  </div>
+
+  {# ---- LEFT: the cream narrative field (head + sections) ---- #}
+  <div class="cs-field">
+    <div class="cs-field-head">
+      {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+      {% if td.headline %}{{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}{% endif %}
+      {% if td.subhead %}<p class="cs-lede">{{ td.subhead }}</p>{% endif %}
+    </div>
+
+    {% if td.sections %}
+    <div class="cs-field-mid">
+      {% for sec in td.sections %}
+      <div class="cs-section">
+        {% if sec.label %}<div class="cs-section-label">{{ sec.label }}</div>{% endif %}
+        {% if sec.text %}<p class="cs-section-text">{{ sec.text }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  {# ---- RIGHT: the navy dashboard column (portrait? + metrics + quote) ---- #}
+  <div class="cs-column">
+    {% if td.image %}
+    <div class="cs-portrait" style="background-image:url('{{ td.image }}');"></div>
+    {% endif %}
+
+    {% if ring_specs or kpis %}
+    <div class="cs-dash">
+      <div class="cs-dash-cap">Ergebnis</div>
+      <div class="cs-metrics">
+        {% if ring_specs %}
+        <div class="cs-ring" aria-label="Ergebnis-Kennzahl">{{ render_viz(ring_specs) }}</div>
+        {% endif %}
+        {% if kpis %}
+        <div class="cs-kpis">
+          {% for s in kpis %}
+          <div class="cs-kpi">
+            {% if s.value %}<span class="cs-kpi-value">{{ s.value }}</span>{% endif %}
+            {% if s.label %}<span class="cs-kpi-label">{{ s.label }}</span>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if td.quote and td.quote.text %}
+    <div class="cs-quote">
+      <span class="cs-quote-mark" aria-hidden="true">&#8222;</span>
+      <blockquote class="cs-quote-text">{{ td.quote.text }}</blockquote>
+      {% if td.quote.attribution %}<div class="cs-quote-attr">{{ td.quote.attribution }}</div>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+</div>

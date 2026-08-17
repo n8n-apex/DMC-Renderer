@@ -45,7 +45,12 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 297mm;                 /* full A4 portrait height (margin:0 page) */
+  height: 297mm;                     /* US-609: EXACT sheet height (not min) —
+                                        a min-height full-bleed cover left a
+                                        sub-pixel residual that Chromium
+                                        fragmented into a trailing blank sheet
+                                        (every deck rendered +1 page). */
+  min-height: 297mm;
   background-color: var(--color-ink);
   overflow: hidden;
 }

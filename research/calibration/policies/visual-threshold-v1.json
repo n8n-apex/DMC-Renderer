@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "policy_id": "dmc-visual-threshold",
+  "version": "1.0.0",
+  "status": "unapproved_draft",
+  "rubric_version": null,
+  "threshold": null,
+  "derivation": {
+    "ratings_dataset_sha256": null,
+    "derivation_code_sha256": null,
+    "formula": "threshold = mean(reference overall) - pooled_std(reference overall, candidate overall); pooled_std = sqrt(((n_ref - 1) * var_ref + (n_cand - 1) * var_cand) / (n_ref + n_cand - 2)) with sample variances; result clamped to [1, 5] and rounded to 3 decimals"
+  },
+  "approved_by": null,
+  "approved_at": null,
+  "notes": "Every value is explicitly null because ZERO blind human ratings exist as of 2026-08-06. This file is the policy Task 4's VisualReviewEvidenceV3 flow will hash (threshold_policy_sha256 = SHA-256 of this file's bytes) once real values land. The path to real values: (1) two independent human raters blind-rate reference and candidate faces into research/quality_loop/calibration/ratings.jsonl per ratings.schema.json; (2) derive_visual_threshold_policy in research/quality_loop/reference_rubric_v3.py fills threshold, rubric_version, and both derivation hashes, producing status derived_unapproved; (3) a named human approves by setting status approved with approved_by and approved_at. require_calibrated_threshold_policy refuses anything below approved. No code path may fabricate ratings or skip these steps."
+}

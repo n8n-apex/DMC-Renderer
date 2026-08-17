@@ -1,0 +1,27 @@
+{# url_band — a FULL-WIDTH band carrying the URL as LARGE type: a button-like
+   CTA bar (checklist #15, the "giant URL"). The summary page (ST-FAZIT) uses the
+   default accent-tint band on a light content page; the back cover (ST-03) uses
+   the `--on-ground` variant — an oversized URL in on-dark ink directly on the
+   saturated brand ground (where an accent-tint plate would muddy the saturated
+   field). An OPTIONAL label sits above the URL as a small uppercase kicker.
+
+   Token-only by construction: this macro emits ONLY structure + the text; the
+   band fill / the large URL type / the on-ground recolor live in the .c-url-band
+   classes (styles/components.css), so the band stays brand-agnostic. The URL is
+   an anchor; its href is scheme-prefixed here (the displayed text stays the bare
+   URL the data carried). Graceful: an empty url renders nothing.
+
+   url        the URL — shown verbatim, sized LARGE (the hero element).
+   label      OPTIONAL small uppercase kicker above the URL.
+   on_ground  false (default) = the accent-tint band (light content page);
+              true            = oversized on-dark URL on a saturated ground (the
+                                back cover) — no tint plate, the URL is the hero. #}
+{% macro url_band(url, label='', on_ground=false) -%}
+{% if url %}
+{% set href = url if '://' in url else 'https://' ~ url %}
+<a class="c-url-band{% if on_ground %} c-url-band--on-ground{% endif %}" href="{{ href }}">
+  {% if label %}<span class="c-url-band__label">{{ label }}</span>{% endif %}
+  <span class="c-url-band__url">{{ url }}</span>
+</a>
+{% endif %}
+{%- endmacro %}

@@ -1,0 +1,273 @@
+/* ST-FAZIT — summary / Zusammenfassung page LAYOUT (Plan B rebuild, P-9).
+ *
+ * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * NO client string. Colors + fonts arrive at render time via the token layer
+ * (compile_tokens); the header title + the These statement size off
+ * var(--font-display), which resolves to the SERIF face when the brand's axis is
+ * headline_type=serif (the apex deck IS serif) — set against the sans
+ * var(--font-body) recap prose, that serif/sans pairing is the §18 contrast. The
+ * These / cost / URL-band LOOK lives in the `c-these` / `c-cost-block` /
+ * `c-url-band` classes in styles/components.css (already in the shared head);
+ * this sheet only paints the header band + positions the stacked devices.
+ *
+ * Every rule is scoped under `.st-fazit` (the assembler's per-page section class)
+ * so it cannot leak. A NORMAL (non-bleed) content page: the recap argument is
+ * dense (slot 18 carries a long synthesis), so the header band, body, These, cost
+ * block and URL band stack with modest --space-* rhythm so the whole summary fits
+ * the 261mm content box on one sheet.
+ *
+ * Accent discipline (§3.7): accent fires only via the components (the These
+ * left-rule, the cost figure, the URL band fill) + the header eyebrow — never on
+ * the recap body copy.
+ */
+
+/* ---- header band: a small uppercase eyebrow over a large serif summary title,
+   on a SOLID --color-primary band so the summary opens with a strong anchor. The
+   title reads in on-dark ink over the primary ground. ---- */
+.st-fazit .fz-header {
+  background-color: var(--color-ink);
+  padding: var(--space-4) var(--space-5);
+  margin: 0 0 var(--space-4) 0;
+}
+.st-fazit .fz-eyebrow {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-on-dark);
+  opacity: 0.85;
+  margin: 0 0 var(--space-2) 0;
+}
+.st-fazit .fz-title {
+  font-family: var(--font-display);      /* serif via the headline_type axis */
+  font-weight: 700;
+  font-size: var(--type-display);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--color-on-dark);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+/* ---- recap body: the synthesis prose in the sans body face. Justified with
+   hyphenation so the long recap sets cleanly; primary-inked first paragraph reads
+   as a lede, then settles to body ink. ---- */
+.st-fazit .fz-body {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--density-lead, 1.42);
+  color: var(--color-body);
+  margin: 0 0 var(--space-4) 0;
+}
+.st-fazit .fz-body p {
+  margin: 0 0 var(--density-para, var(--space-2)) 0;
+  text-align: justify;
+  hyphens: auto;
+}
+.st-fazit .fz-body p:first-child {
+  margin-top: 0;
+  color: var(--color-ink);
+}
+.st-fazit .fz-body p:last-child { margin-bottom: 0; }
+.st-fazit .fz-body strong { font-weight: 700; color: var(--color-ink); }
+
+/* ---- These pull-statement: the report's thesis, set off above the cost block.
+   break-inside:avoid keeps it whole. ---- */
+.st-fazit .fz-these {
+  margin: 0 0 var(--space-4) 0;
+}
+.st-fazit .fz-these .c-these { break-inside: avoid; }
+
+/* data-viz PRESET proof band — centered market-proof unit below the thesis. */
+.st-fazit .fz-viz {
+  margin: 0 0 var(--space-4) 0;
+  display: flex;
+  justify-content: center;
+  break-inside: avoid;
+}
+
+/* ---- cost block (cost of inaction): the figure-led plate. ---- */
+.st-fazit .fz-cost {
+  margin: 0 0 var(--space-4) 0;
+}
+.st-fazit .fz-cost .c-cost-block { break-inside: avoid; }
+
+/* ---- URL band: the full-width giant-URL CTA closing the page. break-inside:avoid
+   keeps the button bar whole on the sheet. ---- */
+.st-fazit .fz-cta {
+  margin: 0;
+}
+.st-fazit .fz-cta .c-url-band { break-inside: avoid; }
+
+/* ======================================================================== *
+ * FILL VARIANT — the closing-page composition (DNA §C3)
+ *
+ * Selected per-page via layout_variant="fill". The summary/closing page is
+ * recomposed to FILL the sheet: the upper flow (header band → recap body → the
+ * These thesis as a large accent-ruled pull-statement → the cost-of-inaction as
+ * an OVERSIZED big-number stat) is DISTRIBUTED to fill the upper content height,
+ * and a FULL-WIDTH DARK CTA band is PINNED to the BOTTOM carrying the cta_url as
+ * the single biggest element (white/accent on the dark ground). The dark band
+ * fills the lower portion and ends the report on a strong note — that bottom
+ * fill is what removes the big empty band the standard stack leaves.
+ *
+ * HOW the bottom-pinned fill is guaranteed (WeasyPrint 68.1): .fz-fill-root is a
+ * `position: relative` box with a DEFINITE `height: 261mm` (the A4 content box).
+ * The dark CTA band is `position: absolute; left:0; right:0; bottom:0`, so it
+ * resolves bottom:0 against the definite-height root and sits flush at the page
+ * bottom for ANY content length (WeasyPrint will NOT stretch/pin an abs box
+ * against a min-height container — only a definite height). The upper flow is a
+ * flex column with bottom padding reserving the band's strip so text never runs
+ * under it.
+ *
+ * Tokens ONLY — no hex / font / client literal. The dark ground is
+ * var(--color-ink); on-dark text is var(--color-on-dark); the big cost numeral
+ * fires var(--color-accent); the giant URL goes on-dark (white) so it POPS as
+ * the page's hero on the dark band.
+ * ======================================================================== */
+
+/* the fill ROOT: a definite-height (= the A4 content box) relative box. The
+   definite height is REQUIRED so the absolutely-positioned dark CTA band can
+   resolve bottom:0 to the page bottom (verified WeasyPrint 68.1 behaviour).
+   261mm = 297 - 16(top) - 20(bottom) margins, matching the shared .page box. */
+.st-fazit .fz-fill-root {
+  position: relative;
+  height: 261mm;
+}
+
+/* the upper flow: header → body → thesis → big-number cost, DISTRIBUTED across
+   the height ABOVE the pinned CTA band (the band's strip is reserved by the
+   bottom padding so the flow never runs under it). space-between spreads the
+   blocks so the upper region is filled rather than top-clustered. */
+.st-fazit .fz-fill-flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-bottom: 62mm;       /* reserve the bottom strip for the dark closing strip (54mm band + gap) */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* the header band keeps the solid-primary anchor but no bottom margin (the flex
+   gap is owned by space-between). */
+.st-fazit .fz-header--fill { margin: 0; }
+
+/* the recap body in the fill flow: same prose treatment, margin owned by flex. */
+.st-fazit .fz-body--fill { margin: 0; }
+
+/* the These thesis as a LARGE accent-ruled pull-statement — stepped UP from the
+   standard h2 to the display size so it reads as the editorial centerpiece of
+   the closing page (the c-these component supplies the serif/accent-rule look;
+   this only sizes it up for the fill composition). */
+.st-fazit .fz-these--fill { margin: 0; }
+.st-fazit .fz-these--fill .c-these {
+  font-size: var(--type-h2);
+  line-height: 1.22;
+}
+
+/* the cost-of-inaction as an OVERSIZED big-number stat (DNA §C3 big-number
+   authority): a small uppercase label, a HUGE accent figure, and the prose note
+   below. Replaces the standard tinted cost plate with a number-led callout that
+   carries vertical weight in the fill composition. */
+.st-fazit .fz-cost--fill { margin: 0; }
+.st-fazit .fz-bignum { margin: 0; }
+.st-fazit .fz-bignum-label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-2) 0;
+}
+.st-fazit .fz-bignum-value {
+  font-family: var(--font-display);   /* serif figure via the headline axis */
+  font-weight: 800;
+  font-size: var(--type-display-xl);  /* OVERSIZED — the big-number authority */
+  line-height: 0.98;
+  letter-spacing: -0.01em;
+  color: var(--color-accent);
+  margin: 0;
+}
+.st-fazit .fz-bignum-note {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: var(--color-body);
+  margin: var(--space-2) 0 0 0;
+  max-width: 150mm;
+}
+.st-fazit .fz-bignum-note strong { font-weight: 700; color: var(--color-ink); }
+
+/* the FULL-WIDTH DARK closing STRIP pinned to the bottom: a solid --color-ink
+   stripe running edge-to-edge, a tasteful dark rhythm-beat that ends the report.
+   It is a closing STRIP (~46mm), NOT a half-page slab — the URL is a PROPORTIONATE
+   CTA breadcrumb, not the page hero (the ST-03 back cover owns the QR + primary
+   booking CTA; a 48pt URL repeated here read as a crude billboard). Pinned
+   bottom:0 against the definite-height root so it sits flush at the page bottom. */
+.st-fazit .fz-cta-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 54mm;
+  background-color: var(--color-ink);
+  padding: var(--space-4) var(--space-5);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+/* the closing URL on the dark strip: PROPORTIONATE (--type-h2 / 20pt), matching
+   the redesigned ST-03 back cover — a tasteful CTA breadcrumb in on-dark ink, NOT
+   a 48pt billboard. (Inherits the component default; pinned explicit here so the
+   intent is auditable and cannot regress to --type-hero.) */
+.st-fazit .fz-cta-band .c-url-band--on-ground .c-url-band__url {
+  font-size: var(--type-h2);
+  line-height: 1.1;
+}
+.st-fazit .fz-cta-cluster { flex: 0 1 auto; text-align: right; }
+
+/* ---- founder sign-off (the SIGNED close): a circular founder avatar + byline on
+   the left of the dark strip, the human anchor that ends the report. Token-only. */
+.st-fazit .fz-signoff {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 0 1 auto;
+}
+.st-fazit .fz-signoff__avatar {
+  display: block;
+  width: 34mm;
+  height: 34mm;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center 22%;   /* bias to the face (portrait crop) */
+  background-repeat: no-repeat;
+  border: 0.3mm solid var(--color-on-dark);
+}
+.st-fazit .fz-signoff__name {
+  font-family: var(--font-display);   /* serif via the headline axis */
+  font-weight: 700;
+  font-size: var(--type-signature);   /* 28pt — a confident signature */
+  line-height: 1.0;
+  color: var(--color-on-dark);
+  margin: 0 0 1mm 0;
+}
+.st-fazit .fz-signoff__role {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.06em;
+  color: var(--color-on-dark);
+  opacity: 0.7;
+  margin: 0;
+}

@@ -156,7 +156,8 @@ def test_default_package_pages_have_no_identity_keys() -> None:
                                    "continuation_role", "section_page_count")):
             identity_slots.add(page.get("slot"))
             assert page.get("continuation_index") is not None
-    # US-605: ST-06 (16) AND ST-FAZIT (18) are expanded in the apex fixture
-    assert identity_slots == {16, 18}, (
-        f"expected slots 16 (ST-06) + 18 (ST-FAZIT) expanded; got {identity_slots}"
+    # US-609: ST-02 (2), ST-05 (3), ST-06 (16), ST-FAZIT (18) expand in the
+    # apex fixture (their copy exceeds one sheet).
+    assert identity_slots == {2, 3, 16, 18}, (
+        f"expected slots 2/3/16/18 expanded; got {identity_slots}"
     )

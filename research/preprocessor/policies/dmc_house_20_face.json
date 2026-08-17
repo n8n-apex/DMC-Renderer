@@ -1,0 +1,22 @@
+{
+  "profile_id": "dmc_house_20_face",
+  "schema_version": "3.0",
+  "face_count": 20,
+  "case_count": 3,
+  "min_theory_faces": 2,
+  "required_roles": [
+    "cover",
+    "outlook",
+    "about",
+    "status_quo",
+    "false_beliefs",
+    "summary",
+    "objections",
+    "collaboration",
+    "cta"
+  ],
+  "require_trust_evidence": true,
+  "cover_must_be_first": true,
+  "cta_must_be_last": true,
+  "exception_policy": "A different profile_id requires approved_by and reason."
+}

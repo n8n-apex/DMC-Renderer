@@ -1,0 +1,35 @@
+{# ST-31 / ST-32 — Atemseite / breathing page (Plan B rebuild). DATA comes
+   pre-shaped from patterns/st_31.py; this template only COMPOSES the geo_shapes
+   overlay on the token-themed full-bleed .st-31 layout (styles/st_31.css).
+   Fragment only — no <html>/<head>/<style>/@page/@font-face/:root (those live in
+   the head).
+
+   Structure: a single full-bleed atmospheric block (br-bleed) carrying the brand
+   texture/gradient asset as a cover background (or a token gradient ground when
+   no asset), with a low-opacity token-colored geometric accent overlay
+   (geo_shapes — a quiet logo motif) and an OPTIONAL short centered statement. A
+   deliberate pacing page. Checklist hits: #22 atmospheric/breathing page, #20
+   low-opacity geometric shapes.
+
+   WeasyPrint: the bleed block carries an explicit min-height (the full A4 sheet)
+   so its background paints (an abspos inset:0 bg child paints 0 ink); the
+   geo_shapes container + the optional statement are real children, so the block
+   is never empty (an empty min-height-only flex box would not paint). #}
+{% from 'geo_shapes.jinja' import geo_shapes %}
+{% from 'phone_mockup.jinja' import phone_mockup %}
+
+<div class="br-bleed{% if not has_ground %} br-bleed--gradient{% elif photo_ground %} br-bleed--photo{% endif %}"{{ ground_style }}>
+  {# the atmospheric darken is ALWAYS painted (not gated on a phrase): it turns the
+     ground — even a pale placeholder gradient — into a deliberate deep brand field
+     (a designed pacing beat, like the back cover), never a washed-out blank page.
+     Painted FIRST so the geo motif + any statement read ABOVE it. #}
+  <div class="br-scrim"></div>
+  {{ geo_shapes(variant) }}
+  <div class="br-center">
+    {% if has_social %}
+    {# "live social presence": a renderer-drawn phone showing the founder's real
+       IG post, centred on the deep brand ground (the geo motif frames it). #}
+    <div class="br-phone">{{ phone_mockup(social_photo, avatar_uri=social_avatar, handle=social_handle, caption=social_caption, posts=(social_grid or None)) }}</div>
+    {% elif phrase %}<p class="br-phrase">{{ phrase|e }}</p>{% endif %}
+  </div>
+</div>

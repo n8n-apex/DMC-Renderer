@@ -1,0 +1,94 @@
+{# viz_magnitude — MAGNITUDE family (stat strip / money bar / mega numeral / KPI
+   card / ranked bars) of the data-viz PRESET layer. Brand-agnostic / token-only:
+   every colour via var(--token) + color-mix; the figure is the icon system
+   (display numerals on the warm ground / dark glass). Macros take (v, uid=0). The
+   figure is ALWAYS shown VERBATIM; any bar width is DERIVED from the same string
+   via the `num` filter so geometry can never diverge from the shown numeral.
+   Graceful: missing required fields → renders nothing. #}
+
+{# stat_strip — a row of 2-4 big-figure cells (value + small label). The
+   at-a-glance proof band: each item.value shown VERBATIM, label beneath. The
+   strip wraps on a narrow column. #}
+{% macro stat_strip(v, uid=0) %}
+{%- set items = (v.get('items') if v else none) or none -%}
+{%- if items and (items | selectattr('value') | list) -%}
+<figure class="c-viz c-viz-strip" role="img" aria-label="{% for it in items %}{{ it.value }} {{ it.label or '' }}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-strip__title">{{ v.title }}</figcaption>{% endif -%}
+  <div class="c-viz-strip__row">
+  {%- for it in items if it.value -%}
+    <div class="c-viz-strip__cell">
+      <span class="c-viz-strip__value">{{ it.value }}</span>
+      {%- if it.label %}<span class="c-viz-strip__label">{{ it.label }}</span>{% endif -%}
+    </div>
+  {%- endfor -%}
+  </div>
+  {%- if v.source %}<figcaption class="c-viz-strip__source">{{ v.source }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# money_bar — a single currency figure as a hero on a horizontal accent bar; the
+   value (e.g. "€700 bis €800 Millionen") shown VERBATIM, label beneath. The bar
+   is a constant full-width device (a €-figure has no second operand to scale
+   against), so NO fabricated proportion. #}
+{% macro money_bar(v, uid=0) %}
+{%- if v and v.value -%}
+<figure class="c-viz c-viz-money" role="img" aria-label="{{ v.value }} {{ v.label or '' }}">
+  {%- if v.title %}<figcaption class="c-viz-money__title">{{ v.title }}</figcaption>{% endif -%}
+  <div class="c-viz-money__bar">
+    <span class="c-viz-money__value">{{ v.value }}</span>
+  </div>
+  {%- if v.label %}<div class="c-viz-money__label">{{ v.label }}</div>{% endif -%}
+  {%- if v.source %}<div class="c-viz-money__source">{{ v.source }}</div>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# mega_numeral — ONE oversized hero figure (value shown VERBATIM) with a small
+   label beneath. The single-number magnitude device. fitfs is NOT used (the
+   numeral is the page hero, sized by CSS); long values wrap via the label. #}
+{% macro mega_numeral(v, uid=0) %}
+{%- if v and v.value -%}
+<figure class="c-viz c-viz-mega" role="img" aria-label="{{ v.value }} {{ v.label or '' }}">
+  <span class="c-viz-mega__value">{{ v.value }}</span>
+  {%- if v.label %}<span class="c-viz-mega__label">{{ v.label }}</span>{% endif -%}
+  {%- if v.source %}<span class="c-viz-mega__source">{{ v.source }}</span>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# kpi_card — a dark-glass card carrying one figure (value VERBATIM) + label, with
+   an optional small caption (e.g. a source). The boxed variant of mega_numeral. #}
+{% macro kpi_card(v, uid=0) %}
+{%- if v and v.value -%}
+<figure class="c-viz c-viz-kpi" role="img" aria-label="{{ v.value }} {{ v.label or '' }}">
+  <span class="c-viz-kpi__value">{{ v.value }}</span>
+  {%- if v.label %}<span class="c-viz-kpi__label">{{ v.label }}</span>{% endif -%}
+  {%- if v.source %}<span class="c-viz-kpi__source">{{ v.source }}</span>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}
+
+{# ranked_bars — a horizontal ranking: items[] of {figure, label}, each bar width
+   DERIVED from its figure's leading number (num filter) scaled to the max, floored
+   to a visible 8%. The figure (e.g. "30 Min") shown VERBATIM at the bar's end. #}
+{% macro ranked_bars(v, uid=0) %}
+{%- set items = (v.get('items') if v else none) or none -%}
+{%- if items and (items | selectattr('figure') | list) -%}
+{%- set nums = items | map(attribute='figure') | map('num') | list -%}
+{%- set m = nums | max -%}
+<figure class="c-viz c-viz-ranked" role="img" aria-label="{% for it in items %}{{ it.label }}: {{ it.figure }}; {% endfor %}">
+  {%- if v.title %}<figcaption class="c-viz-ranked__title">{{ v.title }}</figcaption>{% endif -%}
+  <ol class="c-viz-ranked__list">
+  {%- for it in items if it.figure -%}
+    {%- set w = ((((it.figure | num) / m * 100) if m else 0) | round(0, 'floor') | int, 8) | max -%}
+    <li class="c-viz-ranked__row">
+      <span class="c-viz-ranked__label">{{ it.label }}</span>
+      <span class="c-viz-ranked__track"><span class="c-viz-ranked__bar" style="width:{{ w }}%"></span><span class="c-viz-ranked__figure">{{ it.figure }}</span></span>
+    </li>
+  {%- endfor -%}
+  </ol>
+  {%- if v.source %}<figcaption class="c-viz-ranked__source">{{ v.source }}</figcaption>{% endif -%}
+</figure>
+{%- endif -%}
+{% endmacro %}

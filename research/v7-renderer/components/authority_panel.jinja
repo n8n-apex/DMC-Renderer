@@ -1,0 +1,23 @@
+{# Authority panel: the recurring SOLID DARK "authority" beat (DNA §C3, gap #4).
+   A reusable dark panel — CTA panels, case-study stat rails, positioning /
+   "Über-uns" statements, mechanism recaps, header bands. NEVER a pale
+   accent-tint: a true dark ground (--color-ink) or the saturated brand
+   (--color-primary) with luminance-derived light text. Mirrors the structure
+   /quality of dark_recap_panel.jinja; the token-only look lives in
+   styles/components.css under the c-authority namespace.
+
+   body      pre-rendered body HTML (the pattern does markdown → HTML)
+   eyebrow   optional small uppercase/letter-spaced kicker above the heading
+   heading   optional display heading (var(--font-display) in CSS)
+   tone      retained for call-site compatibility but NO LONGER alters the
+             markup: ink-vs-primary ground is recipe-driven via the compiled
+             --color-panel token (Phase A theme-lock), not a CSS modifier class.
+             The panel reads as the dark ground by default.
+#}
+{% macro authority_panel(body, eyebrow='', heading='', tone='ink') -%}
+<div class="c-authority">
+  {% if eyebrow %}<div class="c-authority__eyebrow">{{ eyebrow }}</div>{% endif %}
+  {% if heading %}<div class="c-authority__heading">{{ heading }}</div>{% endif %}
+  {% if body %}<div class="c-authority__body">{{ body }}</div>{% endif %}
+</div>
+{%- endmacro %}

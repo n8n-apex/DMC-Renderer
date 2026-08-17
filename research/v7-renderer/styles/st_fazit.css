@@ -190,10 +190,10 @@
    standard h2 to the display size so it reads as the editorial centerpiece of
    the closing page (the c-these component supplies the serif/accent-rule look;
    this only sizes it up for the fill composition). */
-.st-fazit .fz-these--fill { margin: 0; }  /* US-605: split pages have room — the thesis keeps its designed size */
+.st-fazit .fz-these--fill { margin: 0; }  /* US-605: split pages have room — the thesis is the close page's centerpiece */
 .st-fazit .fz-these--fill .c-these {
-  font-size: var(--type-h2);
-  line-height: 1.22;
+  font-size: var(--type-display);
+  line-height: 1.18;
 }
 
 /* the cost-of-inaction as an OVERSIZED big-number stat (DNA §C3 big-number
@@ -224,11 +224,11 @@
 }
 .st-fazit .fz-bignum-note {
   font-family: var(--font-body);
-  font-size: var(--type-body);
-  line-height: 1.4;
+  font-size: var(--type-lede);
+  line-height: 1.42;
   color: var(--color-body);
-  margin: var(--space-2) 0 0 0;
-  max-width: 150mm;
+  margin: var(--space-3) 0 0 0;
+  max-width: 160mm;
 }
 .st-fazit .fz-bignum-note strong { font-weight: 700; color: var(--color-ink); }
 

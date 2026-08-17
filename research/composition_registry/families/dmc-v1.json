@@ -1,0 +1,1851 @@
+{
+  "schema_version": "1.0",
+  "registry_id": "dmc",
+  "version": "1.7.0",
+  "families": [
+    {
+      "family_id": "editorial_lead",
+      "version": "1.4.0",
+      "semantic_promise": "Frame one major argument with an anchored proof or identity signal.",
+      "supported_roles": [
+        "cover",
+        "outlook",
+        "about",
+        "status_quo"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "editorial_lead",
+        "authority_dashboard",
+        "recognition_grid"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "headline",
+          "semantic_purpose": "primary argument",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 48,
+          "allowed_element_kinds": [
+            "heading"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 6,
+              "target_words": 16,
+              "max_words": 28,
+              "max_wrapped_lines": 5,
+              "min_font_pt": 28,
+              "max_font_pt": 48
+            },
+            {
+              "language": "en",
+              "min_words": 6,
+              "target_words": 18,
+              "max_words": 32,
+              "max_wrapped_lines": 5,
+              "min_font_pt": 28,
+              "max_font_pt": 48
+            }
+          ]
+        },
+        {
+          "region_id": "narrative",
+          "semantic_purpose": "structured editorial body",
+          "required": true,
+          "width_mm": 108,
+          "height_mm": 188,
+          "allowed_element_kinds": [
+            "body",
+            "quote",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 120,
+              "target_words": 300,
+              "max_words": 480,
+              "max_wrapped_lines": 118,
+              "min_font_pt": 9.5,
+              "max_font_pt": 12
+            },
+            {
+              "language": "en",
+              "min_words": 130,
+              "target_words": 320,
+              "max_words": 510,
+              "max_wrapped_lines": 118,
+              "min_font_pt": 9.5,
+              "max_font_pt": 12
+            }
+          ]
+        },
+        {
+          "region_id": "anchor",
+          "semantic_purpose": "identity or proof anchor",
+          "required": true,
+          "width_mm": 56,
+          "height_mm": 112,
+          "allowed_element_kinds": [
+            "composition_breakdown",
+            "formula_ladder",
+            "group",
+            "grouped_comparison",
+            "image",
+            "share",
+            "stat",
+            "time_series"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 0,
+              "target_words": 24,
+              "max_words": 70,
+              "max_wrapped_lines": 20,
+              "min_font_pt": 8,
+              "max_font_pt": 28
+            },
+            {
+              "language": "en",
+              "min_words": 0,
+              "target_words": 28,
+              "max_words": 78,
+              "max_wrapped_lines": 20,
+              "min_font_pt": 8,
+              "max_font_pt": 28
+            }
+          ],
+          "max_items": 4,
+          "image_aspect_ratio_min": 0.65,
+          "image_aspect_ratio_max": 1.8
+        }
+      ],
+      "supported_asset_classes": [
+        "identity",
+        "proof",
+        "context",
+        "logo",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 6,
+        "min_assets": 0,
+        "max_assets": 4
+      },
+      "typography_bounds": [
+        {
+          "role": "display",
+          "min_pt": 28,
+          "max_pt": 48,
+          "min_line_height": 0.92,
+          "max_line_height": 1.08
+        },
+        {
+          "role": "body",
+          "min_pt": 9.5,
+          "max_pt": 12,
+          "min_line_height": 1.35,
+          "max_line_height": 1.6
+        },
+        {
+          "role": "label",
+          "min_pt": 7,
+          "max_pt": 10,
+          "min_line_height": 1.1,
+          "max_line_height": 1.35
+        }
+      ],
+      "grid_rules": [
+        "14 to 18 mm outer margin",
+        "headline spans narrative and anchor only when anchor remains visible"
+      ],
+      "theme_affordances": [
+        "light editorial",
+        "photo led",
+        "dark cover"
+      ],
+      "cadence_tags": [
+        "framing",
+        "authority",
+        "dense_prose"
+      ],
+      "accessibility_constraints": [
+        "body text at least 9.5 pt",
+        "anchor cannot reduce narrative reading order"
+      ],
+      "known_failures": [
+        "undivided prose exceeds narrative line capacity",
+        "weak or missing anchor makes the composition visually unbalanced"
+      ],
+      "atlas_face_ids": [
+        "apex-02",
+        "buchagentur-02",
+        "niklas-02",
+        "aerzte-02"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "proof_rail",
+          "semantic_delta": "proof stays secondary to the argument",
+          "geometry_delta": "narrow right anchor rail"
+        },
+        {
+          "variant_id": "photo_bleed",
+          "semantic_delta": "context image shares framing responsibility",
+          "geometry_delta": "upper photo field with lower narrative",
+          "envelope_scale": 0.62
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "false_belief_stack",
+      "version": "1.3.0",
+      "semantic_promise": "Turn repeated reader objections into fast-entry belief and rebuttal units.",
+      "supported_roles": [
+        "false_beliefs"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "objection_stack",
+        "numbered_beliefs"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "opening",
+          "semantic_purpose": "belief-system frame",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 48,
+          "allowed_element_kinds": [
+            "heading",
+            "body"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 12,
+              "target_words": 45,
+              "max_words": 90,
+              "max_wrapped_lines": 20,
+              "min_font_pt": 10,
+              "max_font_pt": 32
+            },
+            {
+              "language": "en",
+              "min_words": 14,
+              "target_words": 50,
+              "max_words": 100,
+              "max_wrapped_lines": 20,
+              "min_font_pt": 10,
+              "max_font_pt": 32
+            }
+          ]
+        },
+        {
+          "region_id": "beliefs",
+          "semantic_purpose": "numbered objection and rebuttal units",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 190,
+          "allowed_element_kinds": [
+            "body",
+            "composition_breakdown",
+            "group",
+            "grouped_comparison",
+            "heading",
+            "process",
+            "share",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 180,
+              "target_words": 360,
+              "max_words": 500,
+              "max_wrapped_lines": 118,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11
+            },
+            {
+              "language": "en",
+              "min_words": 190,
+              "target_words": 390,
+              "max_words": 530,
+              "max_wrapped_lines": 118,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11
+            }
+          ],
+          "max_items": 8,
+          "preferred_element_kind": "process"
+        }
+      ],
+      "supported_asset_classes": [
+        "proof",
+        "context",
+        "decoration",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 8,
+        "min_assets": 0,
+        "max_assets": 2
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 38,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 8.8,
+          "max_pt": 11,
+          "min_line_height": 1.3,
+          "max_line_height": 1.55
+        },
+        {
+          "role": "numeric",
+          "min_pt": 24,
+          "max_pt": 64,
+          "min_line_height": 0.9,
+          "max_line_height": 1
+        }
+      ],
+      "grid_rules": [
+        "equal entry treatment for repeated beliefs",
+        "rebuttal remains adjacent to its objection"
+      ],
+      "theme_affordances": [
+        "light numbered rows",
+        "dark belief cards",
+        "accent numerals"
+      ],
+      "cadence_tags": [
+        "repetition",
+        "diagnosis",
+        "dense_modules"
+      ],
+      "accessibility_constraints": [
+        "objection and rebuttal reading order must be explicit",
+        "card contrast must pass body-text threshold"
+      ],
+      "known_failures": [
+        "more than eight units become visually undifferentiated",
+        "long rebuttals overflow equal-height cards"
+      ],
+      "atlas_face_ids": [
+        "apex-05",
+        "alexander-05",
+        "niklas-06",
+        "aerzte-07"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "numbered_rows",
+          "semantic_delta": "editorial reading is primary",
+          "geometry_delta": "single stacked column with large numerals"
+        },
+        {
+          "variant_id": "card_grid",
+          "semantic_delta": "scan comparison is primary",
+          "geometry_delta": "two-column repeated cards",
+          "envelope_scale": 0.78
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "case_narrative",
+      "version": "1.4.0",
+      "semantic_promise": "Present one client transformation with inseparable identity and outcome proof.",
+      "supported_roles": [
+        "case_study"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "case_narrative",
+        "human_proof"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "case_story",
+          "semantic_purpose": "starting condition, intervention, and outcome",
+          "required": true,
+          "width_mm": 112,
+          "height_mm": 230,
+          "allowed_element_kinds": [
+            "body",
+            "comparison",
+            "composition_breakdown",
+            "formula_ladder",
+            "grouped_comparison",
+            "heading",
+            "process",
+            "share",
+            "source",
+            "time_series"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 130,
+              "target_words": 230,
+              "max_words": 330,
+              "max_wrapped_lines": 92,
+              "min_font_pt": 9.2,
+              "max_font_pt": 12
+            },
+            {
+              "language": "en",
+              "min_words": 140,
+              "target_words": 250,
+              "max_words": 350,
+              "max_wrapped_lines": 92,
+              "min_font_pt": 9.2,
+              "max_font_pt": 12
+            }
+          ]
+        },
+        {
+          "region_id": "evidence_rail",
+          "semantic_purpose": "client identity, quote, and result evidence",
+          "required": true,
+          "width_mm": 52,
+          "height_mm": 230,
+          "allowed_element_kinds": [
+            "composition_breakdown",
+            "formula_ladder",
+            "group",
+            "grouped_comparison",
+            "image",
+            "qr",
+            "quote",
+            "share",
+            "source",
+            "stat",
+            "time_series"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 20,
+              "target_words": 55,
+              "max_words": 105,
+              "max_wrapped_lines": 32,
+              "min_font_pt": 8,
+              "max_font_pt": 26
+            },
+            {
+              "language": "en",
+              "min_words": 24,
+              "target_words": 62,
+              "max_words": 115,
+              "max_wrapped_lines": 32,
+              "min_font_pt": 8,
+              "max_font_pt": 26
+            }
+          ],
+          "max_items": 6,
+          "image_aspect_ratio_min": 0.7,
+          "image_aspect_ratio_max": 1.5
+        }
+      ],
+      "supported_asset_classes": [
+        "identity",
+        "proof",
+        "product",
+        "logo",
+        "qr",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 1,
+        "max_claims": 8,
+        "min_assets": 1,
+        "max_assets": 5
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 38,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 9.2,
+          "max_pt": 12,
+          "min_line_height": 1.35,
+          "max_line_height": 1.6
+        },
+        {
+          "role": "numeric",
+          "min_pt": 20,
+          "max_pt": 42,
+          "min_line_height": 0.9,
+          "max_line_height": 1
+        }
+      ],
+      "grid_rules": [
+        "asymmetric narrative and evidence split",
+        "all three cases in one report use the same rail side"
+      ],
+      "theme_affordances": [
+        "light narrative with dark rail",
+        "light embedded evidence",
+        "accent result rail"
+      ],
+      "cadence_tags": [
+        "human_proof",
+        "evidence",
+        "case"
+      ],
+      "accessibility_constraints": [
+        "identity proof requires useful alt text",
+        "quote attribution stays with quote"
+      ],
+      "known_failures": [
+        "missing identity evidence makes the case structurally incomplete",
+        "too many large metrics collapse the evidence rail"
+      ],
+      "atlas_face_ids": [
+        "apex-08",
+        "buchagentur-08",
+        "alexander-08",
+        "werkzeug-10",
+        "niklas-08",
+        "aerzte-08"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "right_rail",
+          "semantic_delta": "story leads before proof",
+          "geometry_delta": "two-thirds story with right evidence rail"
+        },
+        {
+          "variant_id": "left_rail",
+          "semantic_delta": "identity proof opens the face",
+          "geometry_delta": "left evidence rail with right narrative"
+        },
+        {
+          "variant_id": "story_column",
+          "semantic_delta": "a sparse case reads as one narrative column",
+          "geometry_delta": "no rail; evidence runs as a full-width band beneath the story",
+          "envelope_scale": 0.71
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "theory_interpretation",
+      "version": "1.5.0",
+      "semantic_promise": "Explain why evidence generalizes through one dominant explanatory mechanism.",
+      "supported_roles": [
+        "theory",
+        "status_quo"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "interpretation",
+        "diagram",
+        "comparison"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "principle",
+          "semantic_purpose": "generalizable argument",
+          "required": true,
+          "width_mm": 82,
+          "height_mm": 224,
+          "allowed_element_kinds": [
+            "heading",
+            "body",
+            "quote",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 100,
+              "target_words": 210,
+              "max_words": 404,
+              "max_wrapped_lines": 88,
+              "min_font_pt": 9.2,
+              "max_font_pt": 12
+            },
+            {
+              "language": "en",
+              "min_words": 110,
+              "target_words": 230,
+              "max_words": 424,
+              "max_wrapped_lines": 88,
+              "min_font_pt": 9.2,
+              "max_font_pt": 12
+            }
+          ]
+        },
+        {
+          "region_id": "mechanism",
+          "semantic_purpose": "single explanatory visual mechanism",
+          "required": true,
+          "width_mm": 82,
+          "height_mm": 224,
+          "allowed_element_kinds": [
+            "comparison",
+            "composition_breakdown",
+            "group",
+            "grouped_comparison",
+            "image",
+            "process",
+            "share",
+            "source",
+            "stat",
+            "time_series"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 20,
+              "target_words": 90,
+              "max_words": 170,
+              "max_wrapped_lines": 54,
+              "min_font_pt": 8.5,
+              "max_font_pt": 26
+            },
+            {
+              "language": "en",
+              "min_words": 24,
+              "target_words": 100,
+              "max_words": 185,
+              "max_wrapped_lines": 54,
+              "min_font_pt": 8.5,
+              "max_font_pt": 26
+            }
+          ],
+          "max_items": 8,
+          "image_aspect_ratio_min": 0.7,
+          "image_aspect_ratio_max": 2.2
+        }
+      ],
+      "supported_asset_classes": [
+        "proof",
+        "process",
+        "product",
+        "context",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 10,
+        "min_assets": 0,
+        "max_assets": 4
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 38,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 9.2,
+          "max_pt": 12,
+          "min_line_height": 1.35,
+          "max_line_height": 1.6
+        },
+        {
+          "role": "label",
+          "min_pt": 7.5,
+          "max_pt": 10,
+          "min_line_height": 1.1,
+          "max_line_height": 1.35
+        }
+      ],
+      "grid_rules": [
+        "one visual mechanism owns the explanatory field",
+        "visual labels remain adjacent to their marks"
+      ],
+      "theme_affordances": [
+        "light diagram field",
+        "split comparison",
+        "dark divider"
+      ],
+      "cadence_tags": [
+        "interpretation",
+        "visual_explanation",
+        "cognitive_shift"
+      ],
+      "accessibility_constraints": [
+        "diagram meaning must survive text extraction",
+        "color cannot be the only comparison signal"
+      ],
+      "known_failures": [
+        "two competing diagrams destroy hierarchy",
+        "diagram without source evidence becomes decoration"
+      ],
+      "atlas_face_ids": [
+        "apex-09",
+        "buchagentur-11",
+        "alexander-13",
+        "werkzeug-11",
+        "niklas-11",
+        "aerzte-11"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "diagram_split",
+          "semantic_delta": "visual model carries the explanation",
+          "geometry_delta": "equal principle and diagram columns"
+        },
+        {
+          "variant_id": "comparison_band",
+          "semantic_delta": "contrast carries the explanation",
+          "geometry_delta": "top principle with full-width lower comparison",
+          "envelope_scale": 0.52
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "mechanism_spread",
+      "version": "1.4.0",
+      "semantic_promise": "Make a three-to-six-stage delivery mechanism understandable as one ordered path.",
+      "supported_roles": [
+        "mechanism"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "mechanism",
+        "process"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "method_frame",
+          "semantic_purpose": "method thesis and outcome",
+          "required": true,
+          "width_mm": 80,
+          "height_mm": 220,
+          "allowed_element_kinds": [
+            "body",
+            "composition_breakdown",
+            "formula_ladder",
+            "heading",
+            "share",
+            "source",
+            "stat"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 60,
+              "target_words": 130,
+              "max_words": 220,
+              "max_wrapped_lines": 58,
+              "min_font_pt": 9.2,
+              "max_font_pt": 32
+            },
+            {
+              "language": "en",
+              "min_words": 65,
+              "target_words": 145,
+              "max_words": 235,
+              "max_wrapped_lines": 58,
+              "min_font_pt": 9.2,
+              "max_font_pt": 32
+            }
+          ]
+        },
+        {
+          "region_id": "steps",
+          "semantic_purpose": "ordered delivery stages",
+          "required": true,
+          "width_mm": 250,
+          "height_mm": 220,
+          "allowed_element_kinds": [
+            "process",
+            "group",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 100,
+              "target_words": 210,
+              "max_words": 330,
+              "max_wrapped_lines": 84,
+              "min_font_pt": 8.8,
+              "max_font_pt": 12
+            },
+            {
+              "language": "en",
+              "min_words": 110,
+              "target_words": 230,
+              "max_words": 350,
+              "max_wrapped_lines": 84,
+              "min_font_pt": 8.8,
+              "max_font_pt": 12
+            }
+          ],
+          "max_items": 6,
+          "preferred_element_kind": "process"
+        }
+      ],
+      "supported_asset_classes": [
+        "process",
+        "product",
+        "context",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 8,
+        "min_assets": 0,
+        "max_assets": 3
+      },
+      "typography_bounds": [
+        {
+          "role": "display",
+          "min_pt": 26,
+          "max_pt": 42,
+          "min_line_height": 0.92,
+          "max_line_height": 1.08
+        },
+        {
+          "role": "body",
+          "min_pt": 8.8,
+          "max_pt": 12,
+          "min_line_height": 1.3,
+          "max_line_height": 1.55
+        },
+        {
+          "role": "numeric",
+          "min_pt": 20,
+          "max_pt": 48,
+          "min_line_height": 0.9,
+          "max_line_height": 1
+        }
+      ],
+      "grid_rules": [
+        "ordered stages share one baseline",
+        "A3 gutter does not split a stage label from its outcome"
+      ],
+      "theme_affordances": [
+        "light pathway",
+        "alternating step field",
+        "dark method anchor"
+      ],
+      "cadence_tags": [
+        "process",
+        "ordered",
+        "conversion"
+      ],
+      "accessibility_constraints": [
+        "stage order is encoded in DOM order",
+        "arrows are redundant with step numbers"
+      ],
+      "known_failures": [
+        "more than six stages become an unreadable process map",
+        "A4 variant fails when every step contains long prose"
+      ],
+      "atlas_face_ids": [
+        "buchagentur-13",
+        "alexander-14",
+        "werkzeug-16",
+        "niklas-14",
+        "aerzte-13"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "horizontal_spread",
+          "semantic_delta": "the complete journey reads at once",
+          "geometry_delta": "A3 horizontal sequence",
+          "envelope_scale": 0.8
+        },
+        {
+          "variant_id": "stacked_path",
+          "semantic_delta": "individual outcomes receive more space",
+          "geometry_delta": "A4 vertical sequence"
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "summary_synthesis",
+      "version": "1.4.0",
+      "semantic_promise": "Consolidate the report thesis and cost of inaction without introducing new evidence.",
+      "supported_roles": [
+        "summary"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "synthesis",
+        "comparison"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "synthesis",
+          "semantic_purpose": "central thesis and consequence",
+          "required": true,
+          "width_mm": 108,
+          "height_mm": 228,
+          "allowed_element_kinds": [
+            "heading",
+            "body",
+            "quote",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 150,
+              "target_words": 280,
+              "max_words": 420,
+              "max_wrapped_lines": 104,
+              "min_font_pt": 9.2,
+              "max_font_pt": 13
+            },
+            {
+              "language": "en",
+              "min_words": 165,
+              "target_words": 305,
+              "max_words": 445,
+              "max_wrapped_lines": 104,
+              "min_font_pt": 9.2,
+              "max_font_pt": 13
+            }
+          ]
+        },
+        {
+          "region_id": "payoff",
+          "semantic_purpose": "remembered comparison or cost of inaction",
+          "required": true,
+          "width_mm": 56,
+          "height_mm": 228,
+          "allowed_element_kinds": [
+            "comparison",
+            "composition_breakdown",
+            "formula_ladder",
+            "group",
+            "grouped_comparison",
+            "image",
+            "share",
+            "source",
+            "stat"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 8,
+              "target_words": 45,
+              "max_words": 110,
+              "max_wrapped_lines": 34,
+              "min_font_pt": 8,
+              "max_font_pt": 36
+            },
+            {
+              "language": "en",
+              "min_words": 10,
+              "target_words": 50,
+              "max_words": 120,
+              "max_wrapped_lines": 34,
+              "min_font_pt": 8,
+              "max_font_pt": 36
+            }
+          ],
+          "max_items": 5
+        }
+      ],
+      "supported_asset_classes": [
+        "proof",
+        "identity",
+        "context",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 8,
+        "min_assets": 0,
+        "max_assets": 3
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 24,
+          "max_pt": 42,
+          "min_line_height": 0.94,
+          "max_line_height": 1.12
+        },
+        {
+          "role": "body",
+          "min_pt": 9.2,
+          "max_pt": 13,
+          "min_line_height": 1.35,
+          "max_line_height": 1.6
+        },
+        {
+          "role": "numeric",
+          "min_pt": 22,
+          "max_pt": 44,
+          "min_line_height": 0.9,
+          "max_line_height": 1
+        }
+      ],
+      "grid_rules": [
+        "payoff remains visually distinct from synthesis prose",
+        "no new claim appears after the synthesis begins"
+      ],
+      "theme_affordances": [
+        "light editorial",
+        "dark divider",
+        "portrait supported"
+      ],
+      "cadence_tags": [
+        "synthesis",
+        "deceleration",
+        "payoff"
+      ],
+      "accessibility_constraints": [
+        "cost comparison includes text labels",
+        "reading order remains thesis before payoff"
+      ],
+      "known_failures": [
+        "new evidence on the summary breaks source coverage",
+        "oversized payoff crowds out the synthesis"
+      ],
+      "atlas_face_ids": [
+        "apex-14",
+        "buchagentur-15",
+        "alexander-16",
+        "werkzeug-18",
+        "niklas-16",
+        "aerzte-16"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "proof_rail",
+          "semantic_delta": "one remembered proof anchors the close",
+          "geometry_delta": "narrow payoff rail"
+        },
+        {
+          "variant_id": "comparison_dashboard",
+          "semantic_delta": "economic contrast carries the conclusion",
+          "geometry_delta": "upper synthesis with lower comparison",
+          "envelope_scale": 0.72
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "objection_response",
+      "version": "1.3.0",
+      "semantic_promise": "Remove final decision friction through explicit objection and response pairs.",
+      "supported_roles": [
+        "objections"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "objection_response",
+        "q_and_a"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "objection_frame",
+          "semantic_purpose": "decision context and transition",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 45,
+          "allowed_element_kinds": [
+            "heading",
+            "body"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 8,
+              "target_words": 30,
+              "max_words": 65,
+              "max_wrapped_lines": 14,
+              "min_font_pt": 10,
+              "max_font_pt": 32
+            },
+            {
+              "language": "en",
+              "min_words": 10,
+              "target_words": 34,
+              "max_words": 72,
+              "max_wrapped_lines": 14,
+              "min_font_pt": 10,
+              "max_font_pt": 32
+            }
+          ]
+        },
+        {
+          "region_id": "responses",
+          "semantic_purpose": "objection and response pairs",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 194,
+          "allowed_element_kinds": [
+            "body",
+            "composition_breakdown",
+            "group",
+            "grouped_comparison",
+            "heading",
+            "process",
+            "share",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 150,
+              "target_words": 280,
+              "max_words": 390,
+              "max_wrapped_lines": 104,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11.5
+            },
+            {
+              "language": "en",
+              "min_words": 165,
+              "target_words": 305,
+              "max_words": 415,
+              "max_wrapped_lines": 104,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11.5
+            }
+          ],
+          "max_items": 8,
+          "preferred_element_kind": "process"
+        }
+      ],
+      "supported_asset_classes": [
+        "proof",
+        "source",
+        "decoration"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 8,
+        "min_assets": 0,
+        "max_assets": 2
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 36,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 8.8,
+          "max_pt": 11.5,
+          "min_line_height": 1.3,
+          "max_line_height": 1.55
+        },
+        {
+          "role": "label",
+          "min_pt": 7.5,
+          "max_pt": 10,
+          "min_line_height": 1.1,
+          "max_line_height": 1.35
+        }
+      ],
+      "grid_rules": [
+        "each response remains attached to its objection",
+        "repeated units preserve equal entry hierarchy"
+      ],
+      "theme_affordances": [
+        "numbered ladder",
+        "two-column response cards",
+        "comparison plus objections"
+      ],
+      "cadence_tags": [
+        "friction_removal",
+        "scan",
+        "conversion"
+      ],
+      "accessibility_constraints": [
+        "question and answer semantics are explicit",
+        "numbering does not replace text labels"
+      ],
+      "known_failures": [
+        "more than eight objections produce low-information repetition",
+        "long responses exceed equal-card capacity"
+      ],
+      "atlas_face_ids": [
+        "apex-15",
+        "buchagentur-17",
+        "alexander-15",
+        "werkzeug-15",
+        "niklas-17",
+        "aerzte-17"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "numbered_ladder",
+          "semantic_delta": "sequential reassurance is primary",
+          "geometry_delta": "single vertical ladder"
+        },
+        {
+          "variant_id": "response_grid",
+          "semantic_delta": "rapid scanning is primary",
+          "geometry_delta": "two-column paired cards",
+          "envelope_scale": 0.85
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "collaboration_pathway",
+      "version": "1.4.0",
+      "semantic_promise": "Show what working together means as an ordered set of commitments and outcomes.",
+      "supported_roles": [
+        "collaboration"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "process",
+        "collaboration_pathway"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "commitment",
+          "semantic_purpose": "partnership promise and final result",
+          "required": true,
+          "width_mm": 64,
+          "height_mm": 224,
+          "allowed_element_kinds": [
+            "body",
+            "composition_breakdown",
+            "heading",
+            "share",
+            "stat"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 35,
+              "target_words": 80,
+              "max_words": 145,
+              "max_wrapped_lines": 42,
+              "min_font_pt": 9,
+              "max_font_pt": 30
+            },
+            {
+              "language": "en",
+              "min_words": 40,
+              "target_words": 90,
+              "max_words": 160,
+              "max_wrapped_lines": 42,
+              "min_font_pt": 9,
+              "max_font_pt": 30
+            }
+          ]
+        },
+        {
+          "region_id": "pathway",
+          "semantic_purpose": "five or six collaboration stages",
+          "required": true,
+          "width_mm": 100,
+          "height_mm": 224,
+          "allowed_element_kinds": [
+            "process",
+            "group",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 140,
+              "target_words": 240,
+              "max_words": 350,
+              "max_wrapped_lines": 90,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11.5
+            },
+            {
+              "language": "en",
+              "min_words": 155,
+              "target_words": 265,
+              "max_words": 375,
+              "max_wrapped_lines": 90,
+              "min_font_pt": 8.8,
+              "max_font_pt": 11.5
+            }
+          ],
+          "max_items": 6,
+          "preferred_element_kind": "process"
+        }
+      ],
+      "supported_asset_classes": [
+        "process",
+        "identity",
+        "context",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 6,
+        "min_assets": 0,
+        "max_assets": 3
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 38,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 8.8,
+          "max_pt": 11.5,
+          "min_line_height": 1.3,
+          "max_line_height": 1.55
+        },
+        {
+          "role": "numeric",
+          "min_pt": 18,
+          "max_pt": 40,
+          "min_line_height": 0.9,
+          "max_line_height": 1
+        }
+      ],
+      "grid_rules": [
+        "stage order remains continuous",
+        "commitment rail cannot interrupt the pathway"
+      ],
+      "theme_affordances": [
+        "light step cards",
+        "horizontal process",
+        "dark commitment rail"
+      ],
+      "cadence_tags": [
+        "ordered",
+        "reassurance",
+        "conversion"
+      ],
+      "accessibility_constraints": [
+        "stage order is explicit without arrows",
+        "outcomes are not encoded by color alone"
+      ],
+      "known_failures": [
+        "more than six stages create unreadable compression",
+        "process labels without outcomes feel procedural rather than valuable"
+      ],
+      "atlas_face_ids": [
+        "apex-16",
+        "buchagentur-18",
+        "alexander-17",
+        "werkzeug-19",
+        "niklas-18",
+        "aerzte-18"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "step_cards",
+          "semantic_delta": "each commitment receives equal weight",
+          "geometry_delta": "five or six repeated cards",
+          "envelope_scale": 0.8
+        },
+        {
+          "variant_id": "guided_path",
+          "semantic_delta": "journey continuity is primary",
+          "geometry_delta": "one connected path with outcome rail"
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "evidence_wall",
+      "version": "1.4.0",
+      "semantic_promise": "Make a real trust bundle legible as cumulative proof without fabricating authority.",
+      "supported_roles": [
+        "trust_proof",
+        "about"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "evidence_wall",
+        "authority_dashboard"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "trust_header",
+          "semantic_purpose": "proof category and aggregate signal",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 44,
+          "allowed_element_kinds": [
+            "heading",
+            "source",
+            "stat"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 5,
+              "target_words": 20,
+              "max_words": 55,
+              "max_wrapped_lines": 12,
+              "min_font_pt": 9,
+              "max_font_pt": 34
+            },
+            {
+              "language": "en",
+              "min_words": 6,
+              "target_words": 24,
+              "max_words": 62,
+              "max_wrapped_lines": 12,
+              "min_font_pt": 9,
+              "max_font_pt": 34
+            }
+          ]
+        },
+        {
+          "region_id": "proof_wall",
+          "semantic_purpose": "reviews, logos, credentials, or results",
+          "required": true,
+          "width_mm": 172,
+          "height_mm": 198,
+          "allowed_element_kinds": [
+            "composition_breakdown",
+            "distribution",
+            "evidence_gallery",
+            "group",
+            "image",
+            "logo_wall",
+            "proof_wall",
+            "quote",
+            "share",
+            "source",
+            "stat"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 20,
+              "target_words": 180,
+              "max_words": 650,
+              "max_wrapped_lines": 132,
+              "min_font_pt": 7.5,
+              "max_font_pt": 12
+            },
+            {
+              "language": "en",
+              "min_words": 24,
+              "target_words": 200,
+              "max_words": 690,
+              "max_wrapped_lines": 132,
+              "min_font_pt": 7.5,
+              "max_font_pt": 12
+            }
+          ],
+          "max_items": 12,
+          "image_aspect_ratio_min": 0.5,
+          "image_aspect_ratio_max": 3.5
+        }
+      ],
+      "supported_asset_classes": [
+        "proof",
+        "identity",
+        "logo",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 1,
+        "max_claims": 16,
+        "min_assets": 1,
+        "max_assets": 12
+      },
+      "typography_bounds": [
+        {
+          "role": "heading",
+          "min_pt": 22,
+          "max_pt": 38,
+          "min_line_height": 0.95,
+          "max_line_height": 1.15
+        },
+        {
+          "role": "body",
+          "min_pt": 7.5,
+          "max_pt": 12,
+          "min_line_height": 1.25,
+          "max_line_height": 1.5
+        },
+        {
+          "role": "caption",
+          "min_pt": 7,
+          "max_pt": 9.5,
+          "min_line_height": 1.1,
+          "max_line_height": 1.35
+        }
+      ],
+      "grid_rules": [
+        "proof units share a visible grouping system",
+        "source attribution remains attached to each proof unit"
+      ],
+      "theme_affordances": [
+        "review wall",
+        "logo wall",
+        "authority dashboard"
+      ],
+      "cadence_tags": [
+        "trust",
+        "proof_density",
+        "pause"
+      ],
+      "accessibility_constraints": [
+        "review screenshots require transcribed alt text",
+        "logos do not replace named organization text"
+      ],
+      "known_failures": [
+        "generic marks cannot substitute for client logos",
+        "review screenshots without source provenance are unusable"
+      ],
+      "atlas_face_ids": [
+        "buchagentur-19",
+        "alexander-18",
+        "alexander-19",
+        "niklas-19",
+        "aerzte-19"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "review_wall",
+          "semantic_delta": "customer voice is primary",
+          "geometry_delta": "repeated quote and rating cards",
+          "envelope_scale": 0.75
+        },
+        {
+          "variant_id": "logo_wall",
+          "semantic_delta": "breadth of known clients is primary",
+          "geometry_delta": "logo matrix with restrained header",
+          "envelope_scale": 0.75
+        },
+        {
+          "variant_id": "stacked_proof",
+          "semantic_delta": "few proofs read as a vertical stack, not a grid",
+          "geometry_delta": "single column of large proof cards, header inline",
+          "envelope_scale": 0.27
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    },
+    {
+      "family_id": "closing_cta",
+      "version": "1.6.0",
+      "semantic_promise": "Close on one clear action with the lightest information load in the report.",
+      "supported_roles": [
+        "cta",
+        "brand_breather"
+      ],
+      "dominant_mechanisms": [
+        "editorial",
+        "closing_cta",
+        "brand_pause"
+      ],
+      "formats": [
+        "a4",
+        "a3"
+      ],
+      "regions": [
+        {
+          "region_id": "closing_statement",
+          "semantic_purpose": "final promise and action",
+          "required": true,
+          "width_mm": 150,
+          "height_mm": 144,
+          "allowed_element_kinds": [
+            "heading",
+            "body",
+            "qr"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 20,
+              "target_words": 65,
+              "max_words": 153,
+              "max_wrapped_lines": 34,
+              "min_font_pt": 12,
+              "max_font_pt": 48
+            },
+            {
+              "language": "en",
+              "min_words": 22,
+              "target_words": 72,
+              "max_words": 163,
+              "max_wrapped_lines": 34,
+              "min_font_pt": 12,
+              "max_font_pt": 48
+            }
+          ]
+        },
+        {
+          "region_id": "identity_close",
+          "semantic_purpose": "URL, identity, or contextual close",
+          "required": true,
+          "width_mm": 150,
+          "height_mm": 82,
+          "allowed_element_kinds": [
+            "image",
+            "heading",
+            "body",
+            "qr",
+            "source"
+          ],
+          "capacities": [
+            {
+              "language": "de",
+              "min_words": 0,
+              "target_words": 12,
+              "max_words": 78,
+              "max_wrapped_lines": 12,
+              "min_font_pt": 8,
+              "max_font_pt": 24
+            },
+            {
+              "language": "en",
+              "min_words": 0,
+              "target_words": 14,
+              "max_words": 84,
+              "max_wrapped_lines": 12,
+              "min_font_pt": 8,
+              "max_font_pt": 24
+            }
+          ],
+          "max_items": 3,
+          "image_aspect_ratio_min": 0.6,
+          "image_aspect_ratio_max": 2.4
+        }
+      ],
+      "supported_asset_classes": [
+        "identity",
+        "context",
+        "decoration",
+        "logo",
+        "qr",
+        "source"
+      ],
+      "evidence_bounds": {
+        "min_claims": 0,
+        "max_claims": 3,
+        "min_assets": 0,
+        "max_assets": 3
+      },
+      "typography_bounds": [
+        {
+          "role": "display",
+          "min_pt": 30,
+          "max_pt": 64,
+          "min_line_height": 0.9,
+          "max_line_height": 1.08
+        },
+        {
+          "role": "body",
+          "min_pt": 10,
+          "max_pt": 14,
+          "min_line_height": 1.3,
+          "max_line_height": 1.55
+        },
+        {
+          "role": "label",
+          "min_pt": 8,
+          "max_pt": 11,
+          "min_line_height": 1.1,
+          "max_line_height": 1.35
+        }
+      ],
+      "grid_rules": [
+        "one action dominates the face",
+        "brand breather variant contains no competing CTA"
+      ],
+      "theme_affordances": [
+        "solid dark close",
+        "photo close",
+        "light editorial close",
+        "brand pause"
+      ],
+      "cadence_tags": [
+        "light",
+        "action",
+        "close"
+      ],
+      "accessibility_constraints": [
+        "URL is present as text",
+        "QR never becomes the only action path"
+      ],
+      "known_failures": [
+        "multiple calls to action destroy the close",
+        "dense explanatory copy violates CTA capacity"
+      ],
+      "atlas_face_ids": [
+        "apex-18",
+        "apex-20",
+        "buchagentur-20",
+        "alexander-20",
+        "werkzeug-20",
+        "niklas-20",
+        "aerzte-20"
+      ],
+      "design_policy_ids": [
+        "hierarchy.one-dominant-mechanism",
+        "density.capacity-before-composition",
+        "tokens.no-arbitrary-values",
+        "typography.readable-measure",
+        "rhythm.spacing-scale",
+        "dataviz.truthful-static-encoding"
+      ],
+      "variants": [
+        {
+          "variant_id": "solid_close",
+          "semantic_delta": "action is isolated from context",
+          "geometry_delta": "single high-contrast statement field"
+        },
+        {
+          "variant_id": "photo_close",
+          "semantic_delta": "human or industry context supports action",
+          "geometry_delta": "full-bleed image with protected action field"
+        },
+        {
+          "variant_id": "brand_pause",
+          "semantic_delta": "visual pause only",
+          "geometry_delta": "near-empty brand field"
+        },
+        {
+          "variant_id": "single_statement",
+          "semantic_delta": "the close is one sentence and one action",
+          "geometry_delta": "centred statement over a full-bleed ground, identity as a footer rule",
+          "envelope_scale": 0.24
+        }
+      ],
+      "calibration_status": "corpus_tested"
+    }
+  ]
+}
