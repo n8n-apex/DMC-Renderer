@@ -534,3 +534,34 @@ def _master_spread_xml(first: Page | None) -> str:
         f'{first.width_pt}" ItemTransform="1 0 0 1 0 0"/>'
         "</MasterSpread>"
     )
+
+
+def package_delivery(
+    idml_path: Path,
+    zip_path: Path,
+    *,
+    extra_files: list[Path] | None = None,
+) -> Path:
+    """Assemble the MAIL-READY delivery unit: a ZIP with the IDML, its Links
+    folder, and optional extra files (PDF/PNGs).
+
+    Why a ZIP: the IDML's images are LINKED (href="Links/<file>"), so the
+    Links folder must travel with the file or InDesign shows missing images.
+    A single ZIP is the attachment n8n can mail or upload to Drive.
+    """
+    idml_path = Path(idml_path)
+    zip_path = Path(zip_path)
+    zip_path.parent.mkdir(parents=True, exist_ok=True)
+    links_dir = idml_path.parent / "Links"
+
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.write(idml_path, idml_path.name)
+        if links_dir.exists():
+            for f in sorted(links_dir.iterdir()):
+                if f.is_file():
+                    z.write(f, f"Links/{f.name}")
+        for extra in extra_files or []:
+            extra = Path(extra)
+            if extra.exists():
+                z.write(extra, extra.name)
+    return zip_path

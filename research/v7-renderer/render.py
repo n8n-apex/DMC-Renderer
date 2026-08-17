@@ -471,17 +471,25 @@ def main() -> int:
 
 
 def _export_idml(package_dir: Path, out_dir: Path) -> None:
-    """Write the InDesign-editable IDML package beside the PDF."""
+    """Write the InDesign-editable IDML package beside the PDF, plus the
+    MAIL-READY delivery ZIP (idml + Links + pdf + pngs) n8n can attach."""
     pp_root = (HERE.parent / "postprocessor").resolve()
     if str(pp_root) not in sys.path:
         sys.path.insert(0, str(pp_root))
-    from export_idml import export_idml  # noqa: PLC0415
+    from export_idml import export_idml, package_delivery  # noqa: PLC0415
 
     pkg_json = package_dir / "resolved_package.json"
     out = out_dir / f"{pkg_json.with_suffix('').name}.idml"
     idml = export_idml(pkg_json, out, assets_dir=package_dir / "assets")
     print(f"[idml] InDesign-editable package -> {idml} "
           f"(+ {idml.parent / 'Links'})")
+
+    # the delivery ZIP: one attachment n8n can mail or upload to Drive.
+    zip_out = out_dir / "ApexReport_InDesign.zip"
+    extra = [out_dir / "report.pdf", *sorted(out_dir.glob("report-p*.png"))]
+    z = package_delivery(idml, zip_out, extra_files=extra)
+    print(f"[idml] MAIL-READY delivery -> {z} "
+          f"(idml + {len(list((idml.parent / 'Links').glob('*')))} images + pdf)")
 
 
 if __name__ == "__main__":
