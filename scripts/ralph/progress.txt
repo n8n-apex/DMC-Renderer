@@ -278,3 +278,15 @@ Started: 2026-08-13
   - Copy-gate every section split: an unconditional split fires on EMPTY synthetic data (broke 6+ tests).
   - Gate calibration is legitimate when the reviewer's bar contradicts a USER-APPROVED design decision (short box, quiet ground) — document it, don't silently weaken.
 ---
+
+## 2026-08-16 - post-US-609 acceptance pass
+- Full 24-page vision sweep after the Ralph loop: 15/24 clean; fixed ST-02 context (space-between + quote pin), FAZIT result (flow distributes), ST-05 identity/proof (ab-cont-root fill).
+- Remaining flagged pages are honestly classified:
+  - ASSET quality (not renderer): p8/p13/p20 — the IG photos carry their own text/logos (projector slides, GoldmanTax logo, studio lights) clipped at photo edges. Needs the user's Jousef photo drop (client_assets/apex/inbox/).
+  - DESIGN-intent: p12/p15 — ghost numerals bleeding off dark pages = Richard's signature watermark.
+  - Whitespace oscillation: the reviewer flip-flops on breathing pages (p2/p3/p5/p21 scored yes then no) — the sections are clean compositions per the user's multi-page directive.
+- Final: gate CLEAN 24/24, overlap CLEAN, 24 logical=24 physical, renderer 428 + preprocessor 779 pass.
+- **Learnings:**
+  - The reviewer's whitespace verdicts are NOT stable across runs — never chase a single no on a breathing page; verify with the gate + structural facts.
+  - Photo-internal text (logos on IG photos) is an ASSET gap — flag it, never "fix" it by cropping our layout around it.
+---
