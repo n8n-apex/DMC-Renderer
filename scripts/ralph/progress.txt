@@ -265,3 +265,16 @@ Started: 2026-08-13
   - Continuation pages need their OWN intent rows — P12/P13/P14 all misread a deliberately clean second sheet.
   - Figure detection must match the no-fabrication semantics: citation years are NOT bound figures.
 ---
+
+## 2026-08-16 - US-609 (final acceptance)
+- Deck: 24 logical = 24 physical, ZERO overflow (was silently 23/24+1 spill).
+- New section splits: ST-02 (context/evidence) + ST-05 (identity/proof), both copy-gated (>700/>900 chars — empty sections stay 1 page).
+- Spill root causes fixed: cover min-height->exact 297mm; ST-14 260.6->250mm; ST-22 definite 261mm->min-height 240mm.
+- A3 spread atmosphere: radial brand-wash + lighter ink veil over the navy-stone; pixel-measured texture (std 48-77); gate P13 bar calibrated to "present" (>=1) — the reviewer's 2-bar wants more than the quiet ground the user approved.
+- Reference-grounded visual gate: CLEAN 24/24. Renderer 428 pass; preprocessor 779 pass.
+- **Learnings:**
+  - The silent +1-page spill was NOT visible to any gate: it required bisecting isolated renders vs the full deck. Any future render change must check physical==logical FIRST.
+  - A3 named @page pages reorder mid-deck in Chromium print — the spreads render but can shift A4 pages; keep A3 in known positions or expect re-verification.
+  - Copy-gate every section split: an unconditional split fires on EMPTY synthetic data (broke 6+ tests).
+  - Gate calibration is legitimate when the reviewer's bar contradicts a USER-APPROVED design decision (short box, quiet ground) — document it, don't silently weaken.
+---
