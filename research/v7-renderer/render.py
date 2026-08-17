@@ -116,6 +116,11 @@ def _build_parser():
              "gate is what stops ugly decks from shipping)",
     )
     parser.add_argument(
+        "--export-idml", action="store_true",
+        help="also write an InDesign-EDITABLE IDML package (editable text + "
+             "linked images) next to the PDF — Richard can open and edit it",
+    )
+    parser.add_argument(
         "--package-dir", default=str(FIXTURES_APEX_DIR),
         help="package directory to rasterize (its resolved_package.json is the "
              "deck source); defaults to the apex fixture for back-compat",
@@ -460,7 +465,23 @@ def main() -> int:
             print("[qa] re-gating the FINAL composed artifact...")
             _run_visual_qa_gate(out_dir, package_dir=package_dir)
             _run_qa_gate(out_dir)
+    if args.export_idml:
+        _export_idml(package_dir, out_dir)
     return 0
+
+
+def _export_idml(package_dir: Path, out_dir: Path) -> None:
+    """Write the InDesign-editable IDML package beside the PDF."""
+    pp_root = (HERE.parent / "postprocessor").resolve()
+    if str(pp_root) not in sys.path:
+        sys.path.insert(0, str(pp_root))
+    from export_idml import export_idml  # noqa: PLC0415
+
+    pkg_json = package_dir / "resolved_package.json"
+    out = out_dir / f"{pkg_json.with_suffix('').name}.idml"
+    idml = export_idml(pkg_json, out, assets_dir=package_dir / "assets")
+    print(f"[idml] InDesign-editable package -> {idml} "
+          f"(+ {idml.parent / 'Links'})")
 
 
 if __name__ == "__main__":
