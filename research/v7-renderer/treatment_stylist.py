@@ -539,19 +539,20 @@ def assign(
                     cap_note = f" (a3 cap {max_a3} hit, fell back to a4)"
             elif st_type == _ST_CASE_STUDY and _wants_explicit_a3(page):
                 # ST-07C exception: an upstream signal promotes THIS case study to
-                # the A3 Doppelseite. Honour it only when the page sits in the
-                # deck-tail safe zone, the cap allows, and the A3 case treatment
-                # fits; otherwise the case stays A4 (its default a4_case_study
-                # still leads the a4-filtered candidate list).
-                if index < a3_tail_start:
-                    cap_note = (
-                        f" (a3 declined: mid-deck index {index}, tail zone"
-                        f" starts at {a3_tail_start})"
-                    )
-                elif a3_used < max_a3 and candidate_fits(page, ctx, _CS_A3):
+                # the A3 Doppelseite. An EXPLICIT package `page_format: "a3"` is
+                # the preprocessor's authoritative decision (validated upstream):
+                # honoured regardless of the mid-deck tail rule (that rule gates
+                # AUTO-promotions only; a conflicting A4 treatment on an a3 page
+                # produced the tp-chrome overlap defect). The A3 cap + data fit
+                # still apply; if they fail, the page stays NATIVE (untreated),
+                # never a conflicting a4_case_study.
+                if candidate_fits(page, ctx, _CS_A3):
+                    # explicit a3 is the preprocessor's authoritative decision:
+                    # NOT subject to the auto-promotion cap (the cap guards
+                    # guessed promotions; an explicit signal is upstream-validated).
                     page_format = _A3
-                elif a3_used >= max_a3:
-                    cap_note = f" (a3 cap {max_a3} hit, fell back to a4)"
+                else:
+                    cap_note = " (a3_case_study data fit failed, left native)" 
 
         # 3. filter candidates to the ones that fit at the chosen format. A HERO
         #    page that has no portrait of its own borrows the founder identity for

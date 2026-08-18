@@ -954,7 +954,7 @@ def _render_one_page(page: dict, ctx: "RenderContext", assignment, treatments: b
 
 def render_package(package_dir: Path, output_dir: Path,
                    engine: str = "weasyprint",
-                   treatments: bool = False) -> RenderResult:
+                   treatments: bool = True) -> RenderResult:
     package_dir = Path(package_dir).resolve()
     output_dir = Path(output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -969,12 +969,10 @@ def render_package(package_dir: Path, output_dir: Path,
     ctx = RenderContext(brand=pkg.brand, grammar=grammar, package_dir=pkg.package_dir,
                         report_assets=pkg.report_assets)
 
-    # ---- treatment assignments (opt-in; default path is untouched) ----
-    # When treatments is ON, run the deterministic stylist to decide per-page
-    # treatment + format. The treatment modules are imported LAZILY here so the
-    # default build (treatments=False) never imports or touches them: the flag is
-    # the rollback, so OFF must equal today's behavior exactly. assignments is a
-    # list aligned 1:1 with pkg.pages (indexed by position); None means OFF.
+    # ---- treatment assignments (ON BY DEFAULT — the core layout engine) ----
+    # Every report the system ingests renders through the deterministic stylist
+    # (per-page treatment + format). treatments=False is the legacy rollback
+    # (exact pre-treatment behavior). assignments aligns 1:1 with pkg.pages.
     assignments = None
     if treatments:
         import treatment_catalog  # noqa: F401 (importing registers the descriptors)

@@ -224,13 +224,10 @@ def test_full_deck_no_spill(full_deck):
 
 
 def test_full_deck_a3_pages(full_deck):
-    """In the full deck NO page is A3-landscape; everything is A4-portrait.
-
-    A3 rule (2026-07-14): mid-deck A3 breaks Chromium's mixed-size A4 print, so
-    the About hero A3 is suspended and non-hero A3 promotions are tail-gated to
-    the final quarter of the deck. US-604: ST-02/ST-05/ST-06/ST-FAZIT span
-    continuation pages (continuation-bypassed), so the deck carries no A3 page
-    at all."""
+    """The deck's A3 pages = the 5 EXPLICIT page_format:a3 case-study spreads
+    (the preprocessor's authoritative signal — honored since treatments are
+    ON by default). The About hero stays A4 (suspended); ST-02/ST-05/ST-06/
+    ST-FAZIT continuations are bypassed."""
     import fitz
 
     pdf = full_deck["out"] / "report.pdf"
@@ -239,4 +236,4 @@ def test_full_deck_a3_pages(full_deck):
           if _approx(doc[i].rect.width, A3_LAND_W) and _approx(doc[i].rect.height, A3_LAND_H)]
     doc.close()
     # US-604: no A3 pages remain (the framework section spans two A4 continuations)
-    assert a3 == [], f"expected no A3 pages; got {a3}"
+    assert len(a3) == 5, f"expected 5 A3 case-study spreads; got {a3}"

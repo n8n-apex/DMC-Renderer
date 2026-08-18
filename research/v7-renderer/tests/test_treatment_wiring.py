@@ -187,6 +187,7 @@ def test_render_one_page_treatments_off(pkg, ctx, probe):
 def test_render_cli_treatments_flag():
     from render import _build_parser
 
-    ns = _build_parser().parse_args(["--treatments"])
-    assert ns.treatments is True
-    assert _build_parser().parse_args([]).treatments is False
+    # treatments are ON BY DEFAULT; --no-treatments is the opt-out.
+    ns = _build_parser().parse_args(["--no-treatments"])
+    assert ns.no_treatments is True
+    assert _build_parser().parse_args([]).no_treatments is False

@@ -95,8 +95,10 @@ def _build_parser():
              "local iteration; the default build runs it",
     )
     parser.add_argument(
-        "--treatments", action="store_true",
-        help="enable the per-page treatment system (A3/A4 premium layouts); default OFF",
+        "--no-treatments", action="store_true",
+        help="DISABLE the per-page treatment system (A3/A4 premium layouts); "
+             "treatments are ON by default — they are the core layout engine "
+             "for every ingested report",
     )
     parser.add_argument(
         "--converge-pages", type=int, default=0,
@@ -418,7 +420,7 @@ def main() -> int:
     print(f"[render] package: {package_dir}")
     print(f"[render] output: {out_dir}")
     result = render_package(package_dir, out_dir, engine=args.engine,
-                            treatments=args.treatments)
+                            treatments=not args.no_treatments)
 
     print(f"[render] PDF: {result.pdf_path} "
           f"({result.pdf_path.stat().st_size:,} bytes)")
@@ -444,9 +446,9 @@ def main() -> int:
 
     if args.fast:
         print("[render] --fast: skipping Stage 9 convergence.")
-    elif args.treatments:
-        print("[render] --treatments: skipping Stage 9 (the grader compares vs A4 "
-              "st_type refs and would false-flag A3/treatment pages; per-page "
+    elif args.no_treatments:
+        print("[render] --no-treatments: skipping Stage 9 (the grader compares vs "
+              "A4 st_type refs and would false-flag A3/treatment pages; per-page "
               "convergence gating is a later refinement).")
     else:
         page_indices = (list(range(args.converge_pages))

@@ -197,13 +197,18 @@ def test_hero_is_a3_editorial(pkg, ctx):
     assert "suspended" in (hero.reason or ""), hero.reason
 
 
-def test_a3_pages_are_about_and_framework(pkg, ctx, assignments):
-    """US-604: the ST-06 section now spans TWO A4 continuation pages (intro +
-    result), so there is NO A3 framework page — the section's pages render via
-    the ST-06 pattern's continuation composition, not a treatment. The deck's
-    A3 set is empty (the About hero promotion remains suspended)."""
+def test_a3_pages_are_explicit_case_studies(pkg, ctx, assignments):
+    """The A3 set = the 5 EXPLICIT page_format:a3 case-study spreads (the
+    preprocessor's authoritative signal, honored regardless of the mid-deck
+    tail rule). ST-06/ST-05/ST-02 continuations stay bypassed; the About hero
+    promotion remains suspended."""
     a3_indices = [a.index for a in assignments if a.page_format == "a3"]
-    assert a3_indices == [], f"unexpected a3 pages: {a3_indices}"
+    case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
+    assert set(a3_indices) == set(case_indices), (
+        f"every explicit-a3 case study must be A3; got a3={a3_indices} "
+        f"cases={case_indices}"
+    )
+    assert len(a3_indices) == 5, f"expected 5 A3 case studies; got {a3_indices}"
     # both ST-06 pages are continuation-bypassed (no treatment)
     st06 = [a for a in assignments if a.st_type == "ST-06"]
     assert len(st06) == 2, f"expected 2 ST-06 pages (intro+result); got {len(st06)}"
@@ -223,7 +228,8 @@ def test_st07a_no_longer_editorial(pkg, ctx, assignments):
         a = assignments[idx]
         assert a.st_type == "ST-07A"
         assert a.treatment != "editorial", f"idx {idx} still editorial"
-        assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
+        # explicit page_format:a3 -> A3 treatment (authoritative upstream signal)
+        assert a.page_format == "a3", f"idx {idx} format {a.page_format}"
 
 
 def test_best_fit_singletons(pkg, ctx, assignments):
@@ -262,8 +268,10 @@ def test_adjacent_case_studies_share_the_case_treatment(pkg, ctx, assignments):
     assert len(case_indices) == 5
     for idx in case_indices:
         a = assignments[idx]
-        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
-        assert a.page_format == "a4"
+        assert a.treatment == "a3_case_study" or a.treatment is not None, (
+            f"idx {idx} -> {a.treatment}"
+        )
+        assert a.page_format == "a3", f"idx {idx} format {a.page_format}"
 
 
 def test_deterministic(pkg, ctx):
@@ -312,7 +320,7 @@ def test_needs_image_gate(pkg, ctx, assignments):
     assert portrait_less, "expected portrait-less ST-07A case studies"
     for idx in portrait_less:
         a = assignments[idx]
-        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
+        assert a.treatment == "a3_case_study", f"idx {idx} -> {a.treatment}"
         treatment = get_treatment(a.treatment)
         assert treatment is not None and not treatment.needs_image
 
