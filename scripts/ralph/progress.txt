@@ -306,3 +306,15 @@ Started: 2026-08-13
   - Every XML must be well-formed or InDesign rejects the whole package; validate with ElementTree before shipping.
   - Story text needs XML-escaping (copy contains &, <, >, quotes).
 ---
+
+## 2026-08-18 - Treatments ON BY DEFAULT (user directive)
+- User: "the treatment system is a very important component in the entire pipeline so it should be on by default for each of the report JSONs the system ingests."
+- render_package(treatments=True) default; CLI --treatments -> --no-treatments opt-out.
+- Stylist honors EXPLICIT page_format:a3 case studies regardless of mid-deck tail rule + A3 cap (the preprocessor's authoritative signal; a conflicting a4_case_study on an a3 page produced the tp-chrome overlap defect the gate caught).
+- 5 A3 case studies now render a3_case_study; About/outlook/process get editorial_fill/vertical_timeline treatments.
+- Overlap gate CLEAN, 24pp; renderer 431 + preprocessor 779 pass.
+- **Learnings:**
+  - Explicit upstream signals (page_format:a3) must override stylist auto-promotion guards (tail rule, A3 cap) — the guards exist for GUESSED promotions.
+  - When a treatment doesn't fit (data fit fails), the page stays NATIVE (untreated), never a conflicting-format fallback.
+  - The overlap gate is what catches treatment chrome vs content collisions — keep it mandatory.
+---
