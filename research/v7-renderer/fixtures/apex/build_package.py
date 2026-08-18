@@ -74,26 +74,29 @@ def _load(name: str) -> dict:
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Parse build_package CLI flags.
 
-    Default (no flag) keeps the OFFLINE reproducible path (`_build_asset_plan`,
-    pre-baked images, no keys). `--fal` switches to the REAL `generate_assets`
-    (Nano Banana) for the generate-class imagery + textures.
+    Default (no flag) runs the REAL `generate_assets` (Nano Banana) for the
+    generate-class imagery + textures (fal ON by default — the generator must
+    create the mockups/elements/graphics for every render, matching the live
+    `/render` path). `--no-fal` keeps the OFFLINE reproducible path
+    (`_build_asset_plan`, pre-baked images, no keys).
     """
     parser = argparse.ArgumentParser(
         description=(
-            "Regenerate fixtures/apex/resolved_package.json. Offline by "
-            "default; --fal generates imagery + textures via fal Nano Banana."
+            "Regenerate fixtures/apex/resolved_package.json. Generates imagery "
+            "via fal Nano Banana by default; --no-fal is the offline path."
         )
     )
     parser.add_argument(
-        "--fal",
-        action="store_true",
+        "--no-fal",
+        dest="fal",
+        action="store_false",
         help=(
-            "Generate the generate-class assets (cover_hero, status_quo_scene, "
-            "fazit_background, background_texture, atmospheric_gradient) via the "
-            "real fal/Nano Banana generator using FAL_KEY from .env. Without "
-            "this flag the build is offline and re-feeds the pre-baked images."
+            "OFFLINE path: re-feed the pre-baked generate-class assets "
+            "(cover_hero, status_quo_scene, fazit_background, background_texture, "
+            "atmospheric_gradient). No network, no keys, reproducible."
         ),
     )
+    parser.set_defaults(fal=True)
     return parser.parse_args(argv)
 
 

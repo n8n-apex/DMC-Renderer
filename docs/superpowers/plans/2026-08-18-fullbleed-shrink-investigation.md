@@ -67,8 +67,22 @@ Evidence chain:
 - ✅ All suites pass (renderer + preprocessor).
 
 ## Leftover (next task, separate): the fal generator "not working" question.
-The default render uses pre-baked fixture assets (offline reproducible path).
-fal generation runs only in `build_package.py --fal` or the live `/render`.
-Not a bug; a deliberate offline default. Wiring fal into the default render is
-a separate decision (spends credits per render).
+RESOLVED 2026-08-18: the default fixture build (`build_package.py`) was offline
+by default with `--fal` opt-in, so `render.py` on the fixture never generated
+new graphics. Flipped the default: **fal runs ON by default** (`--no-fal` =
+offline reproducible path), matching the live `/render` path (main.py, which
+always calls `generate_assets`). Ran it: **generated 9 assets, 0 failed** —
+including 5 NEW case-study scene images (`7/9/12/14/15_case_scene.png`, fresh
+fal art bound to the 5 ST-07A pages) + regenerated cover hero / status-quo
+scene / atmospheric gradient. Cache is content-addressed on prompt, so
+deterministic builds reuse cached generations (no repeat spend).
+
+⚠️ **OPENROUTER KEY LIMIT (user action needed)**: the reference-grounded visual
+gate now fails with `HTTP 402` — the `OPENROUTER_API_KEY` in
+`research/preprocessor/.env` has hit its usage/credit limit (requested 65536
+tokens, only 63426 affordable). The gate correctly fails CLOSED (never silently
+passes). The deck is structurally clean (overlap CLEAN, 25 logical = 25
+physical, real content); to run the vision gate, raise the key's limit or add
+credits at https://openrouter.ai/settings/keys, then re-run
+`cd research/v7-renderer && source .venv/bin/activate && python render.py --fast`.
 
