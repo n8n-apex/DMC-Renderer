@@ -782,15 +782,15 @@ body {{
 .page.treatment-a4_case_study,
 .page[data-page-mode] { border-top: none; border-bottom: none; }
 .page.tp-rail { border-top-color: transparent; border-bottom: none; }
-/* FULL-BLEED SHEET CLAMP. Every bleed page (cover / breathers / back cover /
-   dark beats / rail sections) sets its ground to the full 297mm sheet, which
-   leaves its fragment at ~297.1mm inside a 297mm page area: a knife edge
-   Chromium resolves per deck by luck (the christoph cover fit; the apex cover
-   spilled a blank second sheet, and every later page shifted with it). The
-   0.5mm clamp + clip is invisible at trim and makes the fit deterministic for
-   ANY deck. Same rule the rail sections use. */
+/* FULL-BLEED SHEET FIX (US-2026-08-18, root cause). The 296.5mm clamp was
+   intended to prevent a spill, but a fixed sub-sheet height on the WRAPPER
+   makes Chromium's print pass SCALE the sheet-height child down to ~92%
+   (observed: cover/breathers/back rendered with a 25-40% white bottom band,
+   every full-bleed page, deterministic). The verified fix (minimal repro):
+   the wrapper needs `height: 100%` so the sheet-height child fills the sheet
+   at FULL scale — no implicit shrink, no spill. The clip is retained (safe). */
 .page.st-01, .page.st-31, .page.st-32, .page.st-03, .page[data-page-mode] {
-  height: 296.5mm;
+  height: 100%;
   min-height: 0;
   overflow: hidden;
 }

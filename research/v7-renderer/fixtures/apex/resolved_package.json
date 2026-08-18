@@ -679,6 +679,73 @@
       "data": {
         "title": "Dein Unternehmen wächst. Deine Prozesse nicht.",
         "body": "Du hast Kunden. Du hast ein Team. Du hast Umsatz. Und trotzdem läuft jeden Montag dasselbe Programm: manuelle Listen, offene Tickets, Anfragen, die niemand beantwortet hat. Manuelle Prozesse fressen in deutschen B2B-Beratungen 25–30 % der gesamten Betriebskosten (BCG, 2025).\n\nDas ist kein Disziplinproblem. Es ist kein Personalmanagement-Problem. Es ist ein Strukturproblem. Dein Unternehmen wurde gebaut für die Größe, die es hatte, nicht für die Größe, die es haben will. Jeder neue Kunde erhöht nicht nur den Umsatz, sondern auch den manuellen Overhead. Jede neue Anfrage landet als Aufgabe bei jemandem, der bereits ausgelastet ist. Die Folge: Burnout betrifft heute rund 50 % aller Wissensarbeiter (BCG, 2024). Was du täglich siehst, sind die Symptome dieses Strukturfehlers.\n\nDiese Symptome sind kein Zufall. Sie haben eine gemeinsame Ursache, und die lässt sich beheben, ohne dein Team zu ersetzen oder dein System neu zu bauen.",
+        "viz": [
+          {
+            "preset": "mega_numeral",
+            "value": "50 %",
+            "label": "der Wissensarbeiter sind heute von Burnout betroffen"
+          }
+        ]
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [],
+      "section_id": "section.4",
+      "page_id": "section.4.page.1",
+      "continuation_index": 1,
+      "continuation_role": "context",
+      "section_page_count": 2,
+      "director_brief": {
+        "client_slug": "apex",
+        "report_id": "APEX-R1",
+        "page_key": "section.4.page.1",
+        "section_id": "section.4",
+        "st_type": "ST-09",
+        "selected_reference": null,
+        "rationale": "ST-09 has no matching reference in the catalog; page scored alone",
+        "visual_job": "status quo problem",
+        "must_show": [],
+        "must_not_imply": [
+          "new metric",
+          "fake interface",
+          "real customer photograph",
+          "price"
+        ],
+        "page_arc": [
+          {
+            "page": 1,
+            "role": "context"
+          }
+        ],
+        "region_plan": [
+          {
+            "region": "main",
+            "role": "main",
+            "bounds": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "renderer_devices": [
+          "mega_numeral",
+          "stat_strip",
+          "numbered_block"
+        ]
+      }
+    },
+    {
+      "slot": 4,
+      "st_type": "ST-09",
+      "css_template": "status_quo",
+      "has_cta": false,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
         "symptoms": [
           {
             "title": "Montagmorgen kostet drei Stunden Überblick",
@@ -705,23 +772,22 @@
             "body": "Jedes Asset, jede E-Mail, jeder Post wird manuell produziert. Eine Stunde pro Stück. Das Team kommt nicht hinterher, Kampagnen verzögern sich um Wochen, und qualifizierte Inbound-Leads bleiben aus."
           }
         ],
-        "viz": [
-          {
-            "preset": "mega_numeral",
-            "value": "50 %",
-            "label": "der Wissensarbeiter sind heute von Burnout betroffen"
-          }
-        ]
+        "title": "Dein Unternehmen wächst. Deine Prozesse nicht."
       },
       "charts": [],
       "social_proof": null,
       "slots": [],
       "assets": [],
       "components": [],
+      "section_id": "section.4",
+      "page_id": "section.4.page.2",
+      "continuation_index": 2,
+      "continuation_role": "evidence",
+      "section_page_count": 2,
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
-        "page_key": "slot.4",
+        "page_key": "section.4.page.2",
         "section_id": "section.4",
         "st_type": "ST-09",
         "selected_reference": null,
@@ -737,11 +803,7 @@
         "page_arc": [
           {
             "page": 1,
-            "role": "problem"
-          },
-          {
-            "page": 2,
-            "role": "reassurance"
+            "role": "evidence"
           }
         ],
         "region_plan": [
@@ -2975,7 +3037,7 @@
       }
     ],
     "layout_warnings": [
-      "page count mismatch: 24 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
+      "page count mismatch: 25 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
       "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
       "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
     ],

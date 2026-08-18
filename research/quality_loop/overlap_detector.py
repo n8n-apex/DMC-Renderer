@@ -43,6 +43,14 @@ def detect_overlaps(sections: list[dict]) -> list[dict]:
             # overlapping panel — the Richard section-number watermark.
             if str(child.get("z_index", "")).strip().endswith("-1"):
                 continue
+            # the rail treatments re-draw their own header/folio chrome inside
+            # the section (tp-chrome-top/bottom) because they route to the
+            # suppressed `bleed` named page — the SAME furniture the @page
+            # margin boxes paint on normal pages (which this detector never
+            # sees). It is decorative page chrome, not a content panel; a flow
+            # element under it is the padding zone, not a collision.
+            if str(child.get("cls", "")).startswith("tp-chrome"):
+                continue
             if child.get("position") == "absolute":
                 panels.append(child)
             else:

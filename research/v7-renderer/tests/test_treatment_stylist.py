@@ -197,18 +197,22 @@ def test_hero_is_a3_editorial(pkg, ctx):
     assert "suspended" in (hero.reason or ""), hero.reason
 
 
-def test_a3_pages_are_explicit_case_studies(pkg, ctx, assignments):
-    """The A3 set = the 5 EXPLICIT page_format:a3 case-study spreads (the
-    preprocessor's authoritative signal, honored regardless of the mid-deck
-    tail rule). ST-06/ST-05/ST-02 continuations stay bypassed; the About hero
-    promotion remains suspended."""
+def test_no_a3_pages_mixed_size_breaks_print(pkg, ctx, assignments):
+    """US-2026-08-18: NO page is A3. A mid-deck A3 named page makes Chromium's
+    mixed-size print compress EVERY A4 page to ~92% (proven: the cover,
+    breathers and back cover rendered with 25-40% white bottom bands — the
+    exact measured defect). All 5 case studies (ST-07A) render A4
+    (a4_case_study); the explicit upstream a3 signal is overridden and
+    recorded in the reason."""
     a3_indices = [a.index for a in assignments if a.page_format == "a3"]
+    assert a3_indices == [], f"A3 pages must not exist (mixed-size print defect); got {a3_indices}"
     case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
-    assert set(a3_indices) == set(case_indices), (
-        f"every explicit-a3 case study must be A3; got a3={a3_indices} "
-        f"cases={case_indices}"
-    )
-    assert len(a3_indices) == 5, f"expected 5 A3 case studies; got {a3_indices}"
+    assert len(case_indices) == 5, f"expected 5 case studies; got {case_indices}"
+    for idx in case_indices:
+        a = assignments[idx]
+        assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
+        assert "a3 signal overridden" in (a.reason or ""), f"idx {idx} reason missing override note"
     # both ST-06 pages are continuation-bypassed (no treatment)
     st06 = [a for a in assignments if a.st_type == "ST-06"]
     assert len(st06) == 2, f"expected 2 ST-06 pages (intro+result); got {len(st06)}"
@@ -221,15 +225,16 @@ def test_st07a_no_longer_editorial(pkg, ctx, assignments):
     """The ST-07A case-study pages never route to the A3 editorial: every
     ST-07A page is an A4 case treatment (the former editorial hero is now an A4
     treatment). US-604 shifted the case studies' indices, so they are located by
-    type (the 5 ST-07A pages)."""
+    type (the 5 ST-07A pages). US-2026-08-18: they are a4_case_study (never a3)."""
     case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
     assert len(case_indices) == 5, f"expected 5 case studies; got {case_indices}"
     for idx in case_indices:
         a = assignments[idx]
         assert a.st_type == "ST-07A"
         assert a.treatment != "editorial", f"idx {idx} still editorial"
-        # explicit page_format:a3 -> A3 treatment (authoritative upstream signal)
-        assert a.page_format == "a3", f"idx {idx} format {a.page_format}"
+        # explicit page_format:a3 signal -> overridden to A4 (mixed-size fix)
+        assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
 
 
 def test_best_fit_singletons(pkg, ctx, assignments):
@@ -263,15 +268,14 @@ def test_adjacent_case_studies_share_the_case_treatment(pkg, ctx, assignments):
 
     A report's case studies must all share the SAME case layout (design rule:
     never mix case variants within one report), so the case treatment is EXEMPT
-    from the no-adjacent-repeat variety rule that applies to other page types."""
+    from the no-adjacent-repeat variety rule that applies to other page types.
+    US-2026-08-18: A4 always (the a3 mixed-size print defect)."""
     case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
     assert len(case_indices) == 5
     for idx in case_indices:
         a = assignments[idx]
-        assert a.treatment == "a3_case_study" or a.treatment is not None, (
-            f"idx {idx} -> {a.treatment}"
-        )
-        assert a.page_format == "a3", f"idx {idx} format {a.page_format}"
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
+        assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
 
 
 def test_deterministic(pkg, ctx):
@@ -320,7 +324,7 @@ def test_needs_image_gate(pkg, ctx, assignments):
     assert portrait_less, "expected portrait-less ST-07A case studies"
     for idx in portrait_less:
         a = assignments[idx]
-        assert a.treatment == "a3_case_study", f"idx {idx} -> {a.treatment}"
+        assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
         treatment = get_treatment(a.treatment)
         assert treatment is not None and not treatment.needs_image
 
@@ -381,8 +385,9 @@ def test_audit_lines(pkg, ctx, assignments):
     the page index and its decision."""
     lines = audit_lines(assignments)
     # US-604/605: the apex package now has 24 pages (ST-02/ST-05/ST-06/FAZIT
-    # continuations).
-    assert len(lines) == len(pkg.pages) == 24
+    # continuations). US-2026-08-18: the ST-09 split (context/evidence) adds a
+    # 25th page.
+    assert len(lines) == len(pkg.pages) == 25
     for idx, line in enumerate(lines):
         # each line names its page (folio-ish index) and st_type
         assert assignments[idx].st_type in line

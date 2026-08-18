@@ -312,6 +312,27 @@
   border-top: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
   padding: var(--space-4) 0;
 }
+/* US-2026-08-18: a LONG list of rich items (>=4, e.g. ST-09's 5 symptoms each
+   carrying a title + body) is too tall for a single column of equal bands and
+   clipped against the foot. It becomes a DENSE 2-COLUMN GRID (Richard's
+   symptom/point grid) so 5 items fit in 3 compact rows. */
+.page.treatment-a4_editorial_fill .ef-list.is-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--space-7);
+  row-gap: var(--space-4);
+  align-content: start;
+}
+.page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-item {
+  flex: 0 0 auto;
+  border-top: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  align-items: flex-start;
+  padding: var(--space-3) 0;
+}
+.page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-t {
+  font-size: var(--type-body);
+  line-height: 1.45;
+}
 .page.treatment-a4_editorial_fill .ef-list-item:last-child {
   border-bottom: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
 }

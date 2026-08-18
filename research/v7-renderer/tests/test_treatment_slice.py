@@ -213,7 +213,8 @@ def test_full_deck_no_spill(full_deck):
     the continuation sections) fits its sheet in the real product."""
     res = full_deck["res"]
     # US-604/605: apex is now 24 pages (ST-02/ST-05/ST-06/FAZIT continuations).
-    assert res.page_count == 24, f"apex deck is 24 pages; got {res.page_count}"
+    # US-2026-08-18: the ST-09 split (context/evidence) adds a 25th page.
+    assert res.page_count == 25, f"apex deck is 25 pages; got {res.page_count}"
     assert len(res.png_paths) == res.page_count, (
         f"physical pages {len(res.png_paths)} != logical {res.page_count} "
         f"-- a section overflowed its sheet in the full deck"
@@ -224,10 +225,11 @@ def test_full_deck_no_spill(full_deck):
 
 
 def test_full_deck_a3_pages(full_deck):
-    """The deck's A3 pages = the 5 EXPLICIT page_format:a3 case-study spreads
-    (the preprocessor's authoritative signal — honored since treatments are
-    ON by default). The About hero stays A4 (suspended); ST-02/ST-05/ST-06/
-    ST-FAZIT continuations are bypassed."""
+    """US-2026-08-18: NO page is A3. A mid-deck A3 named page makes Chromium's
+    mixed-size print compress EVERY A4 page to ~92% (proven: the cover,
+    breathers and back cover rendered with 25-40% white bottom bands — the
+    exact measured defect). All case studies render A4; the explicit upstream
+    a3 signal is overridden by the stylist (recorded in the reason)."""
     import fitz
 
     pdf = full_deck["out"] / "report.pdf"
@@ -235,5 +237,4 @@ def test_full_deck_a3_pages(full_deck):
     a3 = [i for i in range(doc.page_count)
           if _approx(doc[i].rect.width, A3_LAND_W) and _approx(doc[i].rect.height, A3_LAND_H)]
     doc.close()
-    # US-604: no A3 pages remain (the framework section spans two A4 continuations)
-    assert len(a3) == 5, f"expected 5 A3 case-study spreads; got {a3}"
+    assert len(a3) == 0, f"expected NO A3 pages (mixed-size print defect); got {a3}"

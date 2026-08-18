@@ -222,6 +222,12 @@ def _gate_rows_for_stype(st_type: str) -> list[str]:
         # cards) — P07 alone (the reviewer sees the cards, not a numeric
         # device; demanding one would be wrong).
         return ["P07"]
+    if st == "ST-09-EVIDENCE":
+        # ST-09 evidence continuation: the status-quo symptoms grid IS the
+        # page's device (real symptom cards — Richard's point-grid). Its
+        # honest bar is density (the grid must read as a packed wall, not a
+        # floating handful) — never a numeric figure.
+        return ["P12"]
     if st == "ST-31":
         return ["P14", "P13"]        # breathers: photo treatment + atmosphere
     if st in ("ST-01", "ST-03"):
@@ -340,8 +346,17 @@ def _run_visual_qa_gate(out_dir: Path, *, package_dir: Path | None = None,
         if _is_cont and _st == "ST-05" and (
                 (page_objs[i].get("continuation_role") or "") == "proof"):
             _st = "ST-05-PROOF"
-        rows = _gate_rows_for_stype("ST-CONT" if _is_cont and _st != "ST-05-PROOF"
-                                    else _st)
+        elif _is_cont and _st == "ST-09" and (
+                (page_objs[i].get("continuation_role") or "") == "evidence"):
+            # ST-09-EVIDENCE: the status-quo symptoms grid IS the page's device
+            # (a dense grid of real symptom cards — Richard's point-grid). It
+            # is not a numeric figure page; gate on density only (P12), never a
+            # bound figure (the symptoms' "12-24 Stunden" durations are prose,
+            # not a device — the ?figures regex misfires on them).
+            _st = "ST-09-EVIDENCE"
+        rows = _gate_rows_for_stype(
+            "ST-CONT" if (_is_cont and _st not in ("ST-05-PROOF", "ST-09-EVIDENCE"))
+            else _st)
         # US-608: normalize decorated IDs (P11*/P11*?figures) to the real
         # rubric IDs the prompt/client know, and resolve their thresholds.
         clean_rows: list[tuple[str, int]] = []

@@ -33,10 +33,16 @@
    conclusion reads as a designed call-to-action, not a dead lower band. #}
 {% set _thin = _hero_quote or ((not _use_list) and _prose_blocks <= 2) %}
 {% set _brand_url = (ctx.brand.company_url_display if (ctx and ctx.brand) else '') or '' %}
-{% set _cta_anchor = _thin and (not td.stats) and _brand_url %}
+{# US-2026-08-18: ANY page with no bottom foot (no quote/cta/stats) gets the
+   URL-band anchor: the mid prose grows, and the brand URL closes the sheet
+   instead of leaving a 25-30% dead band below the text (the gate's P12 flag
+   on the status-quo page). The brand URL is real package data, never
+   fabricated. #}
+{% set _cta_anchor = (not _has_foot_direct) and (not td.stats) and _brand_url %}
 {# when a foot anchors the bottom, the mid flows from the lede (top-aligned) so
    there is ONE framed gap above the foot, not a block floating between two gaps. #}
-{% set _has_foot = (td.quote and td.quote.text and not _hero_quote) or (td.cta and td.cta.url) or _cta_anchor %}
+{% set _has_foot_direct = (td.quote and td.quote.text and not _hero_quote) or (td.cta and td.cta.url) %}
+{% set _has_foot = _has_foot_direct or _cta_anchor %}
 {# PORTRAIT RAIL variant (the About page): a page whose ADAPTER declared the
    portrait_rail intent renders a FULL-HEIGHT dark rail on the right -- the same
    visual language as the case-study rail -- carrying the photo as a designed
@@ -92,7 +98,7 @@
   <div class="ef-mid {{ 'is-prose' if not _use_list else 'is-list' }}{{ ' has-foot' if _has_foot else '' }}">
     {% if _use_list %}
       {% if _body %}<div class="ef-lead-in">{% for p in _body %}<p>{{ p }}</p>{% endfor %}</div>{% endif %}
-      <ol class="ef-list">
+      <ol class="ef-list{{ ' is-grid' if (_items | length) >= 4 else '' }}">
         {% for it in _items %}
         <li class="ef-list-item"><span class="ef-list-n">{{ '%02d' % loop.index }}</span><span class="ef-list-t">{{ it }}</span></li>
         {% endfor %}

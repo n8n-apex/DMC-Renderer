@@ -613,23 +613,25 @@ def test_st09_rebuild_composes_numbered_blocks_and_callout() -> None:
     """The rebuilt ST-09 (status-quo) is a serif heading + intro, a series of
     numbered symptom blocks (numbered_block), and a mega-numeral insight viz
     (c-viz-mega), composed from the macro library on the .st-09 layout.
-    Loads the REAL apex status-quo page (slot 4)."""
+    US-2026-08-18: the apex ST-09 section now spans context (body+viz) and
+    evidence (symptoms) continuation pages, so the symptoms live on the
+    evidence page."""
     from patterns import st_09
+    # the context page: title + body + the mega-numeral insight viz
     page = _load_fixture_page("ST-09")
     frag = st_09.render(page, _ctx(APEX_FIXTURE))
     assert isinstance(frag, PageFragment)
     _no_head_css(frag)
     assert ".st-09" in frag.css, "fragment CSS must be scoped to .st-09"
-
-    # Signature devices: numbered symptom blocks + a mega-numeral insight viz.
-    assert "c-numbered-block" in frag.html, "numbered symptom blocks missing"
-    assert "c-numbered-block__num" in frag.html, "big accent numeral missing"
     assert "c-viz-mega" in frag.html, "mega-numeral insight viz missing"
-
-    # Real status-quo content flows through.
     assert "Dein Unternehmen wächst. Deine Prozesse nicht." in frag.html   # title
-    assert "Montagmorgen kostet drei Stunden" in frag.html                 # symptom 1
-    assert "Marketing-Pipeline ist chronisch leer" in frag.html            # symptom 6
+    # the evidence page: the numbered symptom blocks
+    ev = _load_fixture_continuation("ST-09", "evidence")
+    frag_ev = st_09.render(ev, _ctx(APEX_FIXTURE))
+    assert "c-numbered-block" in frag_ev.html, "numbered symptom blocks missing"
+    assert "c-numbered-block__num" in frag_ev.html, "big accent numeral missing"
+    assert "Montagmorgen kostet drei Stunden" in frag_ev.html             # symptom 1
+    assert "Marketing-Pipeline ist chronisch leer" in frag_ev.html        # symptom 6
     # NOTE: the old fal "status_quo_scene" background was intentionally pruned
     # (the AI scenes were removed; the page's hero visual is now the code-drawn
     # mega-numeral viz asserted above), so no scene-asset assertion here.

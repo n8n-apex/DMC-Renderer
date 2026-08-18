@@ -210,3 +210,11 @@
   margin: var(--space-5) 0;
 }
 .page.treatment-a4_vertical_timeline .tl-viz .c-viz { max-width: 170mm; }
+
+/* US-2026-08-18: pin the viz/quote foot to the sheet bottom so a timeline with
+   fewer rows (or a short quote) never leaves a 30% dead band below: the foot
+   resolves the sheet, the steps' space-between owns the upper rhythm. */
+.page.treatment-a4_vertical_timeline .tl-viz,
+.page.treatment-a4_vertical_timeline .tl-quote {
+  margin-top: auto;
+}

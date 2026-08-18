@@ -30,7 +30,7 @@ from stages.validate_copy import _collect_all_strings
 # Semantic roles a continuation page may carry (whole-block roles).
 _SEMANTIC_ROLES = ("intro", "mechanism", "proof", "result", "close")
 
-# Narrative copy fields per ST type — the blocks that must NEVER be split
+# Narrative copy fields per ST type : the blocks that must NEVER be split
 # mid-content. Each block moves to ONE page as a whole.
 _COPY_FIELDS_BY_ST: dict[str, list[str]] = {
     "ST-06": ["title", "body", "steps", "ergebnis"],
@@ -38,17 +38,18 @@ _COPY_FIELDS_BY_ST: dict[str, list[str]] = {
         "kurzportraet", "ausgangsproblem", "ziel", "loesung",
         "ergebnis_text", "ergebnis_metrics", "pullquote", "kunde", "viz",
     ],
+    "ST-09": ["title", "body", "symptoms", "viz"],
 }
 
 # The fields that are "block collections" (each item is atomic) per ST.
-_STEP_FIELD: dict[str, str] = {"ST-06": "steps", "ST-07A": ""}
+_STEP_FIELD: dict[str, str] = {"ST-06": "steps", "ST-07A": "", "ST-09": "symptoms"}
 
 # Page 1 of an ST-06 carries the intro + the first half of the steps;
 # page 2 carries the rest + the result. Semantic, never mid-step.
 _ST06_PAGE1_STEPS_RATIO = 0.5  # round up: page 1 = ceil(ratio * n)
 
 # ST types whose budget is for an A3 SPREAD (the sheet already carries ~2x an
-# A4 page's capacity). A spread is the section's multi-page allocation —
+# A4 page's capacity). A spread is the section's multi-page allocation :
 # splitting it further would fabricate pages, not compose them. The budget
 # check is skipped (no split) for these.
 _SPREAD_ST_TYPES: frozenset[str] = frozenset({"ST-07A"})
@@ -159,6 +160,44 @@ def _split_st07a(page: PlannedPage, budget: int) -> list[PlannedPage]:
     return [p1, p2]
 
 
+def _split_st09(page: PlannedPage) -> list[PlannedPage]:
+    """ST-09 (Status Quo): a 3-paragraph body + 6 rich symptoms + a viz
+    exceed one A4 sheet (verified US-2026-08-18: the 6 symptom cards
+    overflowed the editorial-fill mid and were clipped against the foot).
+    Split at the semantic context/evidence boundary: page 1 = title + body
+    (the context), page 2 = the symptoms (the evidence). Real data."""
+    data = page.data
+    sid = _section_id(page.slot)
+    context_fields = ("title", "body", "viz")
+    evidence_fields = ("symptoms",)
+
+    def _pick(fields) -> dict:
+        return {f: data[f] for f in fields if f in data and data[f] not in (None, "", [])}
+
+    def _mk(index: int, role: str, d: dict) -> PlannedPage:
+        # both halves carry the section's TITLE (the section identity, not
+        # fabrication) so the continuation renders its own heading and the
+        # treated a4_editorial_fill contract ("headline") is met.
+        if data.get("title") and "title" not in d:
+            d = dict(d)
+            d["title"] = data["title"]
+        return PlannedPage(
+            slot=page.slot, st_type=page.st_type, css_template=page.css_template,
+            components=list(page.components) if index == 1 else [],
+            has_cta=page.has_cta,
+            data=d,
+            page_numbers=page.page_numbers if index == 1 else None,
+            layout_variant=page.layout_variant,
+            page_format=page.page_format,
+            section_id=sid, page_id=_page_id(sid, index),
+            continuation_index=index, continuation_role=role,
+            section_page_count=2,
+        )
+
+    return [_mk(1, "context", _pick(context_fields)),
+            _mk(2, "evidence", _pick(evidence_fields))]
+
+
 def _split_st02(page: PlannedPage) -> list[PlannedPage]:
     """ST-02 (Outlook): the 1544-char recap + the market-proof viz + the
     target-audience block exceed one sheet (verified: ST-02 alone rendered 2
@@ -240,7 +279,7 @@ def _split_fazit(page: PlannedPage) -> list[PlannedPage]:
         "author": data.get("author"),
     }
     # the market-proof viz rides with the BODY page: its figures ("58%",
-    # "61%") are grounded in the recap prose — the no-fabrication guard
+    # "61%") are grounded in the recap prose : the no-fabrication guard
     # requires the figures on the same page that displays them.
     page2_data = {
         "body": data.get("body"),
@@ -276,7 +315,7 @@ def split_section(page: PlannedPage) -> list[PlannedPage]:
         return [page]
     if page.st_type in _SPREAD_ST_TYPES and page.page_format == "a3":
         # A3 spread = the section's multi-page allocation (Richard's
-        # Doppelseite). It is NOT split — see module note.
+        # Doppelseite). It is NOT split : see module note.
         return [page]
     total = _copy_len(page.data)
     if page.st_type == "ST-02":
@@ -309,4 +348,11 @@ def split_section(page: PlannedPage) -> list[PlannedPage]:
         return _split_st06(page, budget)
     if page.st_type == "ST-07A":
         return _split_st07a(page, budget)
+    if page.st_type == "ST-09":
+        # US-2026-08-18: 3-para body + 6 rich symptoms + viz exceed one A4
+        # sheet (verified: the 6 symptom cards clipped against the foot on the
+        # editorial-fill single page). Split context/evidence when heavy.
+        if total > 900:
+            return _split_st09(page)
+        return [page]
     return [page]  # no semantic split rule yet -> honest single page

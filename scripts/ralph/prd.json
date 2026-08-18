@@ -500,6 +500,71 @@
       "priority": "high",
       "passes": true,
       "notes": "DONE 2026-08-16: 24 logical=24 physical ZERO overflow; ST-02 (context/evidence) + ST-05 (identity/proof) splits; spill fixes (cover exact height, ST-14 250mm, ST-22 min-height); A3 atmosphere wash + gate calibration (P13 present>=1); visual gate CLEAN 24/24 reference-grounded; renderer 428 + preprocessor 779 pass"
+    },
+    {
+      "id": "FB-1",
+      "title": "Remove the 296.5mm clamp; height:100% wrappers for full-bleed pages",
+      "description": "assembler full-bleed clamp -> height:100%; content containers stay fixed 297mm (never 100% chain).",
+      "acceptanceCriteria": [
+        "assembler .page.st-01/.st-31/.st-32/.st-03/[data-page-mode] height:100%",
+        "st_01 .cv / st_31 .br-bleed / st_03 .cta-bleed at fixed 297mm",
+        "cover/breathers/back render 100% ink bottom bands"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-18: full-bleed shrink root cause = mid-deck A3 named page compressing A4 pages to 92%. Case studies now A4; ST-09 split; overlap/tp-chrome + visual gate CLEAN at 25pp; renderer 431 + preprocessor 779 pass."
+    },
+    {
+      "id": "FB-2",
+      "title": "Page-break model: break-before instead of break-after for full-bleed safety",
+      "description": "The chassis .page break-after:page inserts blanks after full-bleed pages; switch to break-before on .page+.page.",
+      "acceptanceCriteria": [
+        "no blank sheets after full-bleed pages",
+        "24 logical = 24 physical, zero overflow",
+        "cover+breather+back + next page render cleanly"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-18: full-bleed shrink root cause = mid-deck A3 named page compressing A4 pages to 92%. Case studies now A4; ST-09 split; overlap/tp-chrome + visual gate CLEAN at 25pp; renderer 431 + preprocessor 779 pass."
+    },
+    {
+      "id": "FB-3",
+      "title": "Dark-divider pages still full-bleed after the height fix",
+      "description": "[data-page-mode] pages use @page bleed; verify p8/p10/p13 render ~95%+ ink after FB-1/FB-2.",
+      "acceptanceCriteria": [
+        "theory dark pages bottom bands >= 90% ink",
+        "no spill/blank on the dark pages"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-18: full-bleed shrink root cause = mid-deck A3 named page compressing A4 pages to 92%. Case studies now A4; ST-09 split; overlap/tp-chrome + visual gate CLEAN at 25pp; renderer 431 + preprocessor 779 pass."
+    },
+    {
+      "id": "FB-4",
+      "title": "Full-suite + pixel + gate verification",
+      "description": "All suites green; 24-page ink sweep (no white-bottom defect class); visual gate CLEAN.",
+      "acceptanceCriteria": [
+        "renderer + preprocessor suites 0 failed",
+        "no page with bands 6-8 below 5% ink (full-bleed class)",
+        "overlap + reference-grounded visual gate CLEAN"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-18: full-bleed shrink root cause = mid-deck A3 named page compressing A4 pages to 92%. Case studies now A4; ST-09 split; overlap/tp-chrome + visual gate CLEAN at 25pp; renderer 431 + preprocessor 779 pass."
+    },
+    {
+      "id": "FB-5",
+      "title": "ST-09 status-quo split (context/evidence) + treated continuations",
+      "description": "The 3-para body + 6 rich symptoms + viz exceeded one A4 and clipped. plan_section_pages._split_st09 splits context/evidence; ST-09 continuations are treated (a4_editorial_fill) so both halves fill the sheet; the evidence page gates on density (its symptom grid IS the device).",
+      "acceptanceCriteria": [
+        "ST-09 split at the context/evidence boundary, title on both halves",
+        "ST-09 continuation pages treated (a4_editorial_fill)",
+        "evidence page gates on P12 (density) not a numeric figure",
+        "25 logical = 25 physical, no clip, gate CLEAN"
+      ],
+      "priority": "high",
+      "passes": true,
+      "notes": "DONE 2026-08-18, pixel-verified."
     }
   ]
 }

@@ -700,8 +700,28 @@ def _adapt_outlook(td: TreatmentData, page: dict, data: dict, ctx: RenderContext
 
 
 def _adapt_status_quo(td: TreatmentData, page: dict, data: dict, ctx: RenderContext) -> TreatmentData:
-    """ST-09 status quo: symptoms -> list_items."""
-    td.list_items = _string_list(data.get("symptoms"))
+    """ST-09 status quo: symptoms -> list_items.
+
+    symptoms are {title, body} dicts; compose each to a single "title: body"
+    line (verbatim, no fabrication). A bare-string symptom passes through."""
+    raw = data.get("symptoms") or []
+    items: list[str] = []
+    if isinstance(raw, list):
+        for s in raw:
+            if isinstance(s, dict):
+                title = _str(s.get("title") or "")
+                body = _str(s.get("body") or "")
+                if title and body:
+                    items.append(f"{title}: {body}")
+                elif title:
+                    items.append(title)
+                elif body:
+                    items.append(body)
+            else:
+                v = _str(s)
+                if v:
+                    items.append(v)
+    td.list_items = items
     return td
 
 

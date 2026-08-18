@@ -482,7 +482,13 @@ def assign(
         # section's first page's composition. Leave them untreated (the
         # section's own pattern renders them) and reset adjacency so the next
         # treated page isn't blocked.
-        if page.get("continuation_index") is not None:
+        # US-2026-08-18 (ST-09): EXCEPTION : the ST-09 split (context/evidence)
+        # halves render SPARSE through the legacy st_09 pattern (a body-only
+        # context page and a symptoms-only evidence page each leave the sheet
+        # half-empty; verified on pixels). The a4_editorial_fill treatment
+        # handles BOTH shapes well (prose fill + the dense symptom grid), so
+        # ST-09 continuation pages ARE treated.
+        if page.get("continuation_index") is not None and st_type != "ST-09":
             assignments.append(
                 PageAssignment(
                     index, slot, st_type, None, None,
@@ -538,21 +544,14 @@ def assign(
                 elif a3_used >= max_a3:
                     cap_note = f" (a3 cap {max_a3} hit, fell back to a4)"
             elif st_type == _ST_CASE_STUDY and _wants_explicit_a3(page):
-                # ST-07C exception: an upstream signal promotes THIS case study to
-                # the A3 Doppelseite. An EXPLICIT package `page_format: "a3"` is
-                # the preprocessor's authoritative decision (validated upstream):
-                # honoured regardless of the mid-deck tail rule (that rule gates
-                # AUTO-promotions only; a conflicting A4 treatment on an a3 page
-                # produced the tp-chrome overlap defect). The A3 cap + data fit
-                # still apply; if they fail, the page stays NATIVE (untreated),
-                # never a conflicting a4_case_study.
-                if candidate_fits(page, ctx, _CS_A3):
-                    # explicit a3 is the preprocessor's authoritative decision:
-                    # NOT subject to the auto-promotion cap (the cap guards
-                    # guessed promotions; an explicit signal is upstream-validated).
-                    page_format = _A3
-                else:
-                    cap_note = " (a3_case_study data fit failed, left native)" 
+                # US-2026-08-18: an explicit `page_format: "a3"` is NOT honored
+                # as an A3 promotion. The mixed-size print defect is PROVEN by
+                # investigation: a mid-deck A3 named page makes Chromium
+                # compress EVERY A4 page to ~92% (the cover/breathers rendered
+                # with 25-40% white bottoms : the exact measured defect).
+                # Until the engine prints per-format and merges, ALL case
+                # studies render A4 (a4_case_study leads the candidate list).
+                cap_note = " (a3 signal overridden: mixed-size A3 compresses A4 pages - render A4)" 
 
         # 3. filter candidates to the ones that fit at the chosen format. A HERO
         #    page that has no portrait of its own borrows the founder identity for
