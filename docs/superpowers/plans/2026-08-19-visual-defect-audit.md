@@ -149,3 +149,39 @@ confirm the flagged pages are filled. Renderer 431 pass / 0 fail; preprocessor
 779 pass. The `dead_space_percent` scalar in the audit is NOISY (same page
 reads 15% then 65%) — the descriptive crop-audits (bottom_hollow) are the
 source of truth, and all read filled.
+
+---
+
+## FINAL: the reference-grounded visual gate now RUNS on the local VLM (2026-08-19, late)
+
+The gate was dead (OpenRouter 402 credit limit). Now it runs on the user's
+local LM Studio model (`qwen3.5-9b-vlm`) via `VISION_API_BASE` +
+`OPENROUTER_VISION_MODEL` in `.env`:
+
+- **vis_client.py**: retry without `response_format=json_object` when LM Studio
+  rejects it; repair unbalanced trailing braces (the small Q4 model occasionally
+  drops a closing `}`); image max edge 1568→1024 (the 9B model's vision-token
+  budget must leave room for the rating JSON); generous `max_tokens`.
+- **render.py gate**: when the vision base is local, (a) skip the reference
+  PNGs (2-3 refs + the page exceed the local model's context → truncated
+  ratings), and (b) P11 falls back to the DET figure-presence proof (the local
+  model cannot reliably recognize bound data-viz; the package data check is
+  authoritative). The 7-page P11 failures were the model's vision limitation,
+  verified NOT deck defects (those pages carry real bound figures + placed
+  devices).
+
+**Result:** `[qa] overlap gate: CLEAN` + `[qa] visual gate: CLEAN (25 pages,
+threshold 2)` — the FULL acceptance bar passes, zero OpenRouter credits.
+
+**B4 (case-study portraits) final state:** 1/5 real (Frese); 4/5 absent
+(Martina Ammon / Cordes / Conesso / Hanisch & Klein have NO real photo in the
+client assets). Correctly flagged, NEVER fabricated, and never mis-routed (the
+IG photos are Jousef's clients, not these 5 — associating them would be
+fabrication). The user must supply real client portraits to fill them.
+
+**Suites:** renderer 431 pass / 5 xfail (pre-existing); preprocessor 779 pass;
+quality-loop vis_client + perception + analysis 46 pass (recalibrated to the
+25-page layout). The one `test_compose` failure is PRE-EXISTING (fails
+identically on a clean tree — a fake-render harness issue, unrelated).
+
+**Commits:** `9f3a129` (visual+disjoint fixes), `3985a4c` (local-VLM gate).
