@@ -194,13 +194,35 @@ def compose_rationale(st_type: str, reference: dict | None, visual_job: str) -> 
 # ---------------------------------------------------------------------------
 
 def _legacy_select(st_type: str, k: int) -> list[dict]:
-    """Local fallback: the legacy quality-loop index (st_type-only)."""
-    index_path = ROOT / "research" / "quality_loop" / "references" / "index.json"
+    """Local fallback: the legacy quality-loop index (st_type-only).
+
+    US-2026-08-19 (input-dependent-reference fix): (a) ROOT resolves to
+    `research/`, so the old path `ROOT/"research"/"quality_loop"/...` became
+    `research/research/...` and returned ZERO references; and (b) the index
+    rows are `{deck, page_no, st_type, axes, png_path}` but the Director
+    brief's `selected_reference` contract expects `{face_id, report,
+    page_no, raster_uri, ...}`. Rows are now mapped to the brief's shape so
+    every page's "which reference PDF it needs" actually lands. The index
+    lives at `research/quality_loop/references/index.json`. """
+    index_path = ROOT / "quality_loop" / "references" / "index.json"
     if not index_path.exists():
         return []
     rows = json.loads(index_path.read_text(encoding="utf-8"))
     matching = [r for r in rows if r.get("st_type") == st_type]
-    return matching[:k]
+    out = []
+    for r in matching[:k]:
+        out.append({
+            "face_id": f"{r.get('deck')}-{r.get('page_no')}",
+            "report": r.get("deck"),
+            "page_no": r.get("page_no"),
+            "raster_uri": r.get("png_path"),
+            "sha256": None,
+            "devices": None,
+            "mechanism": None,
+            "density": (r.get("axes") or {}).get("density"),
+            "st_type": r.get("st_type"),
+        })
+    return out
 
 
 async def select_references(dsn: str | None, st_type: str, *,

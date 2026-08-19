@@ -144,8 +144,22 @@
         "page_key": "slot.1",
         "section_id": "section.1",
         "st_type": "ST-01",
-        "selected_reference": null,
-        "rationale": "ST-01 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-1",
+          "report": "niklas",
+          "page_no": 1,
+          "raster_uri": "references/pages/niklas/p1.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p1 (face None) for ST-01: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -230,8 +244,22 @@
         "page_key": "section.2.page.1",
         "section_id": "section.2",
         "st_type": "ST-02",
-        "selected_reference": null,
-        "rationale": "ST-02 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-2",
+          "report": "niklas",
+          "page_no": 2,
+          "raster_uri": "references/pages/niklas/p2.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p2 (face None) for ST-02: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -295,8 +323,22 @@
         "page_key": "section.2.page.2",
         "section_id": "section.2",
         "st_type": "ST-02",
-        "selected_reference": null,
-        "rationale": "ST-02 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-2",
+          "report": "niklas",
+          "page_no": 2,
+          "raster_uri": "references/pages/niklas/p2.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p2 (face None) for ST-02: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -467,8 +509,22 @@
         "page_key": "section.3.page.1",
         "section_id": "section.3",
         "st_type": "ST-05",
-        "selected_reference": null,
-        "rationale": "ST-05 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-17",
+          "report": "niklas",
+          "page_no": 17,
+          "raster_uri": "references/pages/niklas/p17.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p17 (face None) for ST-05: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [
           "100+",
@@ -634,8 +690,22 @@
         "page_key": "section.3.page.2",
         "section_id": "section.3",
         "st_type": "ST-05",
-        "selected_reference": null,
-        "rationale": "ST-05 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-17",
+          "report": "niklas",
+          "page_no": 17,
+          "raster_uri": "references/pages/niklas/p17.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p17 (face None) for ST-05: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -713,8 +783,22 @@
         "page_key": "section.4.page.1",
         "section_id": "section.4",
         "st_type": "ST-09",
-        "selected_reference": null,
-        "rationale": "ST-09 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "buchagentur-3",
+          "report": "buchagentur",
+          "page_no": 3,
+          "raster_uri": "references/pages/buchagentur/p3.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "dense_editorial"
+          }
+        },
+        "rationale": "selected buchagentur p3 (face None) for ST-09: matches a4 format, dense_editorial density; visual job 'status quo problem'",
         "visual_job": "status quo problem",
         "must_show": [],
         "must_not_imply": [
@@ -800,8 +884,22 @@
         "page_key": "section.4.page.2",
         "section_id": "section.4",
         "st_type": "ST-09",
-        "selected_reference": null,
-        "rationale": "ST-09 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "buchagentur-3",
+          "report": "buchagentur",
+          "page_no": 3,
+          "raster_uri": "references/pages/buchagentur/p3.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "dense_editorial"
+          }
+        },
+        "rationale": "selected buchagentur p3 (face None) for ST-09: matches a4 format, dense_editorial density; visual job 'status quo problem'",
         "visual_job": "status quo problem",
         "must_show": [],
         "must_not_imply": [
@@ -904,8 +1002,22 @@
         "page_key": "slot.5",
         "section_id": "section.5",
         "st_type": "ST-14",
-        "selected_reference": null,
-        "rationale": "ST-14 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-6",
+          "report": "niklas",
+          "page_no": 6,
+          "raster_uri": "references/pages/niklas/p6.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p6 (face None) for ST-14: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -1104,8 +1216,22 @@
         "page_key": "slot.7",
         "section_id": "section.7",
         "st_type": "ST-07A",
-        "selected_reference": null,
-        "rationale": "ST-07A has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-8",
+          "report": "niklas",
+          "page_no": 8,
+          "raster_uri": "references/pages/niklas/p8.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p8 (face None) for ST-07A: matches a4 format, punchy_5050 density; visual job 'transformation'",
         "visual_job": "transformation",
         "must_show": [
           "24 Std. → Minuten",
@@ -1188,8 +1314,22 @@
         "page_key": "slot.8",
         "section_id": "section.8",
         "st_type": "ST-07B",
-        "selected_reference": null,
-        "rationale": "ST-07B has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-7",
+          "report": "niklas",
+          "page_no": 7,
+          "raster_uri": "references/pages/niklas/p7.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p7 (face None) for ST-07B: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -1314,8 +1454,22 @@
         "page_key": "slot.9",
         "section_id": "section.9",
         "st_type": "ST-07A",
-        "selected_reference": null,
-        "rationale": "ST-07A has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-8",
+          "report": "niklas",
+          "page_no": 8,
+          "raster_uri": "references/pages/niklas/p8.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p8 (face None) for ST-07A: matches a4 format, punchy_5050 density; visual job 'completion'",
         "visual_job": "completion",
         "must_show": [
           "6 von 6",
@@ -1405,8 +1559,22 @@
         "page_key": "slot.10",
         "section_id": "section.10",
         "st_type": "ST-07B",
-        "selected_reference": null,
-        "rationale": "ST-07B has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-7",
+          "report": "niklas",
+          "page_no": 7,
+          "raster_uri": "references/pages/niklas/p7.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p7 (face None) for ST-07B: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -1607,8 +1775,22 @@
         "page_key": "slot.12",
         "section_id": "section.12",
         "st_type": "ST-07A",
-        "selected_reference": null,
-        "rationale": "ST-07A has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-8",
+          "report": "niklas",
+          "page_no": 8,
+          "raster_uri": "references/pages/niklas/p8.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p8 (face None) for ST-07A: matches a4 format, punchy_5050 density; visual job 'transformation'",
         "visual_job": "transformation",
         "must_show": [
           "von bis zu 24 Stunden auf Minuten",
@@ -1698,8 +1880,22 @@
         "page_key": "slot.13",
         "section_id": "section.13",
         "st_type": "ST-07B",
-        "selected_reference": null,
-        "rationale": "ST-07B has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-7",
+          "report": "niklas",
+          "page_no": 7,
+          "raster_uri": "references/pages/niklas/p7.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p7 (face None) for ST-07B: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -1829,8 +2025,22 @@
         "page_key": "slot.14",
         "section_id": "section.14",
         "st_type": "ST-07A",
-        "selected_reference": null,
-        "rationale": "ST-07A has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-8",
+          "report": "niklas",
+          "page_no": 8,
+          "raster_uri": "references/pages/niklas/p8.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p8 (face None) for ST-07A: matches a4 format, punchy_5050 density; visual job 'transformation'",
         "visual_job": "transformation",
         "must_show": [
           "von 30 auf 2 Minuten",
@@ -1986,8 +2196,22 @@
         "page_key": "slot.15",
         "section_id": "section.15",
         "st_type": "ST-07A",
-        "selected_reference": null,
-        "rationale": "ST-07A has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-8",
+          "report": "niklas",
+          "page_no": 8,
+          "raster_uri": "references/pages/niklas/p8.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p8 (face None) for ST-07A: matches a4 format, punchy_5050 density; visual job 'transformation'",
         "visual_job": "transformation",
         "must_show": [
           "von fragmentiert auf unified End-to-End",
@@ -2085,8 +2309,22 @@
         "page_key": "section.16.page.1",
         "section_id": "section.16",
         "st_type": "ST-06",
-        "selected_reference": null,
-        "rationale": "ST-06 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "buchagentur-9",
+          "report": "buchagentur",
+          "page_no": 9,
+          "raster_uri": "references/pages/buchagentur/p9.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "dense_editorial"
+          }
+        },
+        "rationale": "selected buchagentur p9 (face None) for ST-06: matches a4 format, dense_editorial density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -2169,8 +2407,22 @@
         "page_key": "section.16.page.2",
         "section_id": "section.16",
         "st_type": "ST-06",
-        "selected_reference": null,
-        "rationale": "ST-06 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "buchagentur-9",
+          "report": "buchagentur",
+          "page_no": 9,
+          "raster_uri": "references/pages/buchagentur/p9.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "dense_editorial"
+          }
+        },
+        "rationale": "selected buchagentur p9 (face None) for ST-06: matches a4 format, dense_editorial density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -2319,8 +2571,22 @@
         "page_key": "section.18.page.1",
         "section_id": "section.18",
         "st_type": "ST-FAZIT",
-        "selected_reference": null,
-        "rationale": "ST-FAZIT has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-16",
+          "report": "niklas",
+          "page_no": 16,
+          "raster_uri": "references/pages/niklas/p16.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p16 (face None) for ST-FAZIT: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -2415,8 +2681,22 @@
         "page_key": "section.18.page.2",
         "section_id": "section.18",
         "st_type": "ST-FAZIT",
-        "selected_reference": null,
-        "rationale": "ST-FAZIT has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-16",
+          "report": "niklas",
+          "page_no": 16,
+          "raster_uri": "references/pages/niklas/p16.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p16 (face None) for ST-FAZIT: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -2535,8 +2815,22 @@
         "page_key": "slot.19",
         "section_id": "section.19",
         "st_type": "ST-22",
-        "selected_reference": null,
-        "rationale": "ST-22 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-18",
+          "report": "niklas",
+          "page_no": 18,
+          "raster_uri": "references/pages/niklas/p18.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p18 (face None) for ST-22: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
@@ -2622,8 +2916,22 @@
         "page_key": "slot.20",
         "section_id": "section.20",
         "st_type": "ST-03",
-        "selected_reference": null,
-        "rationale": "ST-03 has no matching reference in the catalog; page scored alone",
+        "selected_reference": {
+          "face_id": "niklas-20",
+          "report": "niklas",
+          "page_no": 20,
+          "raster_uri": "references/pages/niklas/p20.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "punchy_5050"
+          }
+        },
+        "rationale": "selected niklas p20 (face None) for ST-03: matches a4 format, punchy_5050 density; visual job 'support'",
         "visual_job": "support",
         "must_show": [],
         "must_not_imply": [
