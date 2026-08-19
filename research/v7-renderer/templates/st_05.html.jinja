@@ -25,7 +25,7 @@
 {% from 'logo_wall.jinja' import logo_wall %}
 {% from 'proof_gallery.jinja' import proof_gallery %}
 
-{% if continuation_role %}<div class="ab-cont-root">{% endif %}
+{% if continuation_role %}<div class="ab-cont-root{% if continuation_role == 'proof' %} ab-cont-root--proof{% endif %}"{% if continuation_role == 'proof' %} data-proof{% endif %}>{% endif %}
 <div class="ab-header">
   {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
   {% if title %}<h1 class="ab-headline">{{ title }}</h1>{% endif %}
@@ -93,11 +93,15 @@
   </div>
 </div>
 {% endif %}
-{% if proof_photos %}
+{% if proof_photos and not (continuation_role == "proof" and testimonials) %}
 {# Real PROOF / "Referenzen" photos (DNA §C4 social proof): a framed full-color row
    of the resolved `proof` slots. Rendered IN ADDITION to the testimonial cards —
    the cards carry the QUOTES, these carry the real client/deal MOMENTS — so both
-   layers of proof land on the About page. Graceful: empty → nothing. #}
+   layers of proof land on the About page. Graceful: empty → nothing.
+   US-2026-08-19 (p5 duplicate): on the PROOF continuation WITH testimonial
+   cards the small photo gallery is DROPPED (the enlarged cards ARE the page's
+   hero; the gallery's small thumbnails duplicated the same people). When a
+   client has NO testimonials the gallery remains the honest fallback. #}
 <div class="ab-proof">
   {{ proof_gallery(proof_photos, label=proof_label) }}
 </div>

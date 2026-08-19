@@ -403,6 +403,17 @@
   justify-content: center;
   margin: var(--space-5) 0;
 }
+/* US-2026-08-19 (p6 50% clip): the mega_numeral device (--type-display-xl)
+   overflowed the .ef-mid's hidden bottom and the "50 %" figure was clipped.
+   Scoped to a size that fits the mid so the hero figure renders whole. */
+.page.treatment-a4_editorial_fill .ef-vizband .c-viz-mega__value {
+  font-size: var(--type-h2);
+  line-height: 1;
+}
+.page.treatment-a4_editorial_fill .ef-vizband .c-viz-mega__label {
+  font-size: var(--type-body);
+  max-width: 90mm;
+}
 .page.treatment-a4_editorial_fill .ef-vizband .c-viz { max-width: 176mm; }
 /* the device band SHRINKS with the column (floored at 32mm) rather than
    holding its natural height and being clipped mid-frame by the mid's

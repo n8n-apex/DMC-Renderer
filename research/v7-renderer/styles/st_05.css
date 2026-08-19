@@ -244,6 +244,21 @@
   border-radius: 0;
   box-shadow: none;
 }
+/* US-2026-08-19 (p5 enlarged testimonials): on the PROOF continuation the two
+   client testimonial cards (Aramaz + Bildungsfabrik, 1080x1350 HD) are the
+   page's hero. They enlarge to a LARGE near-full-height 4:5 spread (~84mm
+   wide each, side by side) so the real client proof is legible and prominent —
+   not the previous small 36.8mm thumbnails (the user: "why aren't they
+   enlarged... at least two images can come onto one page with high
+   definition"). The row distributes them across the sheet. */
+.st-05 .ab-cont-root[data-proof] .ab-testimonials__row {
+  gap: var(--space-7);
+  justify-content: center;
+}
+.st-05 .ab-cont-root[data-proof] .ab-testimonials__card {
+  width: 84mm;
+  height: 105mm;
+}
 
 /* ---- "bekannt aus" logo wall: a full-width grayscale band below the body. The
    grayscale tiles / quiet name-chip fallback come from the c-logo-wall component;

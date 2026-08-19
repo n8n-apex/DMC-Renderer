@@ -149,6 +149,20 @@
   justify-content: space-around;
 }
 .st-14 .fb-proof-viz .c-viz { flex: 0 1 auto; min-width: 0; }
+/* US-2026-08-19 (p8 % alignment): the stat_strip values (30–50% / 40–45% /
+   90%) were centered, so the % signs landed at different x positions (each
+   value's width differs). Right-align the values + tabular numerals so all
+   the % signs sit on ONE vertical column. */
+.st-14 .fb-proof-viz .c-viz-strip__value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.st-14 .fb-proof-viz .c-viz-strip__cell {
+  min-width: 0;
+}
+.st-14 .fb-proof-viz .c-viz-strip__label {
+  text-align: left;
+}
 .st-14 .fb-proof-stats {
   flex: 0 1 auto;
   display: flex;
@@ -163,6 +177,10 @@
   font-size: var(--type-h3);   /* compact tile inside the shared proof band */
   line-height: 1.15;
   color: var(--color-ink);
+  /* US-2026-08-19 (p8 % alignment): "30-50 %" / "40-45 %" wrapped so the %
+     landed on a second line at different heights. Nowrap keeps the figure + %
+     on one baseline, so the tiles align. */
+  white-space: nowrap;
 }
 .st-14 .fb-proof-label {
   font-family: var(--font-body);

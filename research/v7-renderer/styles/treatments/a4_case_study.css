@@ -114,6 +114,26 @@
 .page.treatment-a4_case_study .cs4-devices .c-viz { max-width: 118mm; }
 .page.treatment-a4_case_study .cs4-comp svg { max-width: 100%; height: auto; }
 .page.treatment-a4_case_study .cs4-devices .c-viz .c-viz-donut { transform: scale(0.75); transform-origin: top left; }
+/* US-2026-08-19 (p15/p17 infographic-overlap): the A->B arrow device
+   (c-viz-arrow, --type-stat numerals + "24 Std -> Minute" / "30 Min -> 2 Min")
+   was taller than the compact devices band and overflowed onto the narrative
+   above (clipped, but the lower glyphs painted over the text). Scope the arrow
+   down so it fits the band whole. */
+.page.treatment-a4_case_study .cs4-devices .c-viz-arrow {
+  padding: var(--space-3) var(--space-4);
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz-arrow__num {
+  font-size: var(--type-h2);
+  line-height: 1;
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz-arrow__cap {
+  font-size: var(--type-caption);
+  line-height: 1.2;
+  margin-top: 1.5mm;
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz-arrow__glyph {
+  font-size: var(--type-body);
+}
 /* US-2026-08-19 (overlap fix): the giant stat-strip device (--type-stat-xl
    values) overflowed the compact devices band and painted over the narrative
    above it in the real print pass. Scope the strip's values/labels down so the

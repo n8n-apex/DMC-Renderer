@@ -27,16 +27,28 @@
      Richard's kickers are FLAT sharp labels with a short accent underline. */
   border-radius: 0;
   border-bottom: 0.5mm solid var(--color-accent);
+  /* US-2026-08-19 (p1 pill balance): the pill text must CENTER inside its
+     bordered box so the left/right gaps are equal (the bordered --outline/
+     --solid variants inherit this). Without it the text sat left-aligned with
+     uneven margins. */
+  text-align: center;
 }
 .c-pill--outline {
   color: var(--color-accent);
   border: 0.35mm solid var(--color-accent);
   background: transparent;
+  /* US-2026-08-19 (text-in-box root cause): the base pill is a FLAT label with
+     only a bottom rule; the --outline variant swaps to a FULL border but kept
+     zero horizontal padding, so the text touched the box's left/right edges
+     (no negative space — the cover's "PROZESSAUTOMATISIERUNG" pills ran to
+     their borders). A bordered box needs horizontal breathing room. */
+  padding: 0 var(--space-3);
 }
 .c-pill--solid {
   color: var(--color-on-accent);
   background: var(--color-accent);
   border: 0.35mm solid var(--color-accent);
+  padding: 0 var(--space-3);
 }
 
 /* ---- eyebrow: small uppercase letter-spaced label ---- */
@@ -261,9 +273,13 @@
 .c-numbered-block__reality {
   /* US-507: the audit flagged the accent bars "misaligned with the myth
      headers' left edge" (the inset padding broke the grid). The bar now
-     aligns flush with the block edge; the label carries the inset. */
+     aligns flush with the block edge.
+     US-2026-08-19 (p8 text-touches-bar): removing the inset entirely made the
+     reality TEXT sit directly on the 0.8mm bar with zero gap (cramped). The
+     text needs a small breathing gap AFTER the bar; the bar itself stays
+     flush with the block edge. */
   margin-top: var(--space-2);
-  padding-left: 0;
+  padding-left: 3mm;
   border-left: 0.8mm solid var(--color-accent);
 }
 .c-numbered-block__reality-label {

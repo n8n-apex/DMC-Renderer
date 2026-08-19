@@ -307,11 +307,20 @@ def shared_head_css(
         _bk_url = (getattr(brand, "company_url_display", "") or "").replace("\\", "").replace("'", "\\'")
         _page_chrome = f"""
   @top-left {{
+    content: none;
+  }}
+  /* US-2026-08-19 (header-clip root cause): the running-header wordmark was
+     in @top-left, bounded by the 18mm left margin (~51px), but "APEX
+     CONSULTING" renders 104px — Chromium clipped the leading P. Moved to the
+     wide @top-center (spans the content width) so the wordmark is never cut.
+     Aligned left within the box for a clean editorial running head. */
+  @top-center {{
     content: '{_wm}';
     font-family: var(--font-head); font-weight: 600; font-size: 6.5pt;
     letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--color-primary);
     vertical-align: bottom; padding-bottom: 1.4mm;
+    text-align: left;
   }}
   /* US-501 (Richard grammar): the top-right header CTA ("Trage dich zu einem
      kostenlosen Erstgespräch ein...") is REMOVED. Richard's decks keep the
@@ -329,19 +338,22 @@ def shared_head_css(
      per-box border-top: the boxes size to content, so three separate borders
      rendered as a BROKEN 3-segment rule (the 2026-07-13 footer-alignment
      critique). Identical line-height + padding-top puts all three baselines
-     on one level; the folio alone carries the accent. */
+     on one level; the folio alone carries the accent.
+     US-2026-08-19 (footer-clip root cause): the wordmark ("APEX CONSULTING",
+     104px at 6.5pt) was in the @bottom-left box, which is bounded by the
+     18mm LEFT MARGIN (~51px) — Chromium CLIPPED the P and G at the box edge
+     (measured: wordmark 104px > box 51px). Same for the URL. The margin-box
+     structure cannot hold wide text in the side margins. The wordmark + URL
+     now live in the WIDE @bottom-center box (spans the 178mm content width,
+     easily holds both at ~225px combined) and the folio stays right. */
   @bottom-left {{
-    content: '{_wm}';
-    font-family: var(--font-head); font-weight: 600; font-size: 6.5pt;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--color-muted);
-    line-height: 9pt;
-    vertical-align: top; padding-top: 1.8mm; margin-bottom: 7mm;
+    content: none;
   }}
   @bottom-center {{
-    content: '{_bk_url}';
+    content: '{_wm} · {_bk_url}';
     font-family: var(--font-head); font-weight: 500; font-size: 6.5pt;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--color-muted);
     line-height: 9pt;
     vertical-align: top; padding-top: 1.8mm; margin-bottom: 7mm;
