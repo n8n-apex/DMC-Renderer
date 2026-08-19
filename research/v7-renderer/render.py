@@ -380,8 +380,28 @@ def _run_visual_qa_gate(out_dir: Path, *, package_dir: Path | None = None,
                 clean_rows.append((row.rstrip("?"), 1))
             else:
                 clean_rows.append((row, threshold))
+        # US-2026-08-19 (local-model P11): a LOCAL vision model (LM Studio Q4)
+        # cannot reliably recognize bound data-viz (it scores a stat-strip/
+        # magnitude device 0 on P11 even though the package DET-check proves the
+        # bound figure exists — verified: p6/p12/p22/p24 carry real figures and
+        # placed devices). When the vision base is local, P11 falls back to the
+        # DET figure-presence proof (the data check above), which is
+        # authoritative: the renderer placed the device, the data carries the
+        # bound number. The vision P11 (a taste re-check) is only meaningful on
+        # the strong OpenRouter models.
+        _local_vision = "localhost" in str(getattr(client, "_api_base", ""))
+        if _local_vision:
+            clean_rows = [r for r in clean_rows if r[0] != "P11"]
         # US-608: pass the page's reference PNGs + Director brief metadata.
+        # US-2026-08-19 (local-model gate): a LOCAL vision model (LM Studio, a
+        # 9B Q4 quant) has a small context window — 2-3 reference images +
+        # the page exceed it, so the ratings truncate/fail (the same page
+        # scores 3 solo but 0 with references). When the vision base is local
+        # we score SOLO (the compositional review is the same; the reference
+        # library is a context-luxury for the large OpenRouter models).
         _refs = _ref_pngs_by_type.get(st_types[i] if i < len(st_types) else "", [])
+        if getattr(client, "_api_base", "") and "localhost" in str(getattr(client, "_api_base", "")):
+            _refs = []
         _meta = None
         if i < len(page_objs):
             _brief = (page_objs[i].get("data") or {}).get("director_brief") \

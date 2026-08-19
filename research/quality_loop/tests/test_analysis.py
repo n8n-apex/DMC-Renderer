@@ -33,7 +33,7 @@ RENDERER_ROOT = Path("/Users/utkarsh/Projects/richard/research/v7-renderer")
 OUTPUT_DIR = RENDERER_ROOT / "output"
 PACKAGE_PATH = RENDERER_ROOT / "fixtures" / "apex" / "resolved_package.json"
 PDF_PATH = OUTPUT_DIR / "report.pdf"
-CASE_STUDY_INDEX = 6  # ST-07A
+CASE_STUDY_INDEX = 9  # ST-07A — US-2026-08-19 layout
 
 
 def make_facts(**overrides) -> PageFacts:

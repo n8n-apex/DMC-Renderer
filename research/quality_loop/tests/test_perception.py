@@ -28,12 +28,13 @@ APEX_PKG_DIR = RENDERER_ROOT / "fixtures" / "apex"
 PACKAGE_PATH = APEX_PKG_DIR / "resolved_package.json"
 
 PDF_PATH = OUTPUT_DIR / "report.pdf"
-CASE_STUDY_INDEX = 6  # ST-07A (crisp numeral stat callouts)
+CASE_STUDY_INDEX = 9  # ST-07A (crisp numeral stat callouts) — US-2026-08-19 layout
 COVER_INDEX = 0  # ST-01
-PROSE_STAT_INDEX = 11  # ST-07A (prose-as-a-stat case study)
+PROSE_STAT_INDEX = 11  # ST-07A (prose-as-a-stat case study) — US-2026-08-19 layout
+SPARSE_INDEX = 5  # ST-09 context (light editorial page, the sparse-vs-dense anchor)
 AIRY_GOOD_INDEX = 3  # ST-09 (well-filled airy grid: high fraction, LOW gap)
 BOTTOM_GAP_INDEX = 1  # ST-02 (real bottom gap: high fraction AND high gap)
-THEORY_INDEX = 7  # ST-07B theory page; fill variant = hollow dark panel
+THEORY_INDEX = 10  # ST-07B theory page; fill variant = hollow dark panel — US-2026-08-19 layout
 
 
 def _png_for(page_index: int) -> Path:
@@ -136,14 +137,18 @@ def test_dead_space_fraction_in_range(pkg):
 def test_dead_space_discriminates_sparse_from_dense(pkg):
     """THE anti-rigging test.
 
-    The sparse case-study page must score strictly higher than the dense
-    full-bleed cover, by a meaningful margin. Measured real values:
-    cover ~= 0.00, case study ~= 0.39, so a 0.05 margin is genuinely satisfied
-    and proves the metric measures emptiness rather than returning a constant.
+    The sparse status-quo page must score strictly higher than the dense
+    full-bleed cover, by a meaningful margin. US-2026-08-19: the case-study
+    pages were DENSIFIED (the S1 dead-space fixes took the case-study
+    dead_space_fraction from ~0.39 to ~0.08), so the comparison now uses the
+    genuinely-sparse ST-09 context page (dead_frac ~0.60, a light editorial
+    page whose whitespace is deliberate) against the full-bleed cover (~0.03).
+    A 0.05 margin is genuinely satisfied and proves the metric measures
+    emptiness rather than returning a constant.
     """
-    case = _perceive_page(pkg, CASE_STUDY_INDEX)
+    sparse = _perceive_page(pkg, SPARSE_INDEX)
     cover = _perceive_page(pkg, COVER_INDEX)
-    assert case.dead_space_fraction >= cover.dead_space_fraction + 0.05
+    assert sparse.dead_space_fraction >= cover.dead_space_fraction + 0.05
 
 
 def test_dead_space_gap_in_range(pkg):
@@ -202,10 +207,13 @@ def test_non_numeral_stats_empty_for_crisp_numerals(pkg):
 
 
 def test_non_numeral_stats_flags_prose_case_study(pkg):
-    """pages[11] stat callouts are full prose sentences -> all 3 flagged."""
+    """pages[11] stat callouts: '6 von 6' (numeral-like), 'von Headcount auf
+    Marktnachfrage verschoben' (prose) and '0' (numeral) -> the ONE prose value
+    is flagged. US-2026-08-19: the fixture's case-study metrics changed; the
+    assertion tracks the current data (1 prose stat, not 3)."""
     facts = _perceive_page(pkg, PROSE_STAT_INDEX)
-    assert len(facts.non_numeral_stat_values) == 3
-    assert "tausende WhatsApp-Chats automatisiert" in facts.non_numeral_stat_values
+    assert len(facts.non_numeral_stat_values) == 1
+    assert "von Headcount auf Marktnachfrage verschoben" in facts.non_numeral_stat_values
 
 
 def test_non_numeral_stats_empty_when_no_metrics():

@@ -90,10 +90,17 @@ def test_call_openrouter_parses_fenced_reply(tmp_path, monkeypatch):
 # --------------------------------------------------------------------------- #
 # configurable vision endpoint (provider-agnostic: OpenRouter / local / self-host)
 # --------------------------------------------------------------------------- #
-def test_api_base_defaults_to_openrouter() -> None:
+def test_api_base_defaults_to_openrouter(monkeypatch) -> None:
     """With nothing configured, the client targets the OpenRouter endpoint."""
     from vis_client import VisionClient, _OPENROUTER_URL
 
+    # isolate from the .env (which now routes vision to the local LM Studio
+    # endpoint via VISION_API_BASE): the DEFAULT must remain OpenRouter.
+    monkeypatch.setattr(
+        "vis_client._read_env_file",
+        lambda name, path=None: None if name == "VISION_API_BASE"
+        else __import__("vis_client")._read_env_file(name, path),
+    )
     assert VisionClient(api_key="k", model="m")._api_base == _OPENROUTER_URL
 
 

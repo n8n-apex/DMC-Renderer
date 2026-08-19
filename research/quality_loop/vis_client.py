@@ -34,7 +34,11 @@ from typing import Optional, Protocol
 _OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 _TIMEOUT = 60.0
 _MAX_ATTEMPTS = 3
-_MAX_EDGE = 1568
+# US-2026-08-19: 1568px max edge consumed the LOCAL model's vision-token
+# budget (a 9B Q4 Qwen image tiles to thousands of tokens; the JSON reply then
+# truncated). 1024px is still ample for layout review and leaves the model
+# room to close the rating object.
+_MAX_EDGE = 1024
 _JPEG_QUALITY = 85
 
 # Bumping this invalidates every cached score (prompt semantics changed).
@@ -73,7 +77,24 @@ def _loads_lenient(raw: str) -> dict:
         # last resort: extract the outermost object span
         start, end = text.find("{"), text.rfind("}")
         if start != -1 and end != -1 and end > start:
-            return json.loads(text[start : end + 1])
+            try:
+                return json.loads(text[start : end + 1])
+            except json.JSONDecodeError:
+                pass
+        # US-2026-08-19: a small local model (LM Studio Q4) occasionally emits
+        # UNBALANCED JSON (one missing closing brace for the nested rating
+        # object). Repair by appending the missing closing braces — a trailing
+        # `}` with an unmatched open depth is a machine-truncation quirk, and
+        # the repaired object is still structurally valid for the coerced
+        # rating shape.
+        opens = text.count("{")
+        closes = text.count("}")
+        if closes < opens and text.rstrip().endswith("}"):
+            repaired = text + "}" * (opens - closes)
+            try:
+                return json.loads(repaired)
+            except json.JSONDecodeError:
+                pass
         raise
 
 
@@ -447,9 +468,14 @@ class VisionClient:
 
         last_exc: Optional[Exception] = None
         with httpx.Client(timeout=self._timeout) as client:
-            for _ in range(_MAX_ATTEMPTS):
+            for attempt in range(_MAX_ATTEMPTS):
+                # LM Studio rejects `response_format: json_object`; retry
+                # without it (lenient parsing handles the plain reply).
+                _payload = dict(payload)
+                if attempt >= 1:
+                    _payload.pop("response_format", None)
                 try:
-                    resp = client.post(self._api_base, json=payload, headers=headers)
+                    resp = client.post(self._api_base, json=_payload, headers=headers)
                     if resp.status_code != 200:
                         last_exc = RuntimeError(
                             f"vision endpoint HTTP {resp.status_code}"
@@ -495,6 +521,10 @@ class VisionClient:
                 {"role": "user", "content": content},
             ],
             "temperature": 0,
+            "max_tokens": 1500,   # local models (LM Studio) truncate at their
+                                  # default cap — a cut JSON then fails the
+                                  # lenient parser. A generous budget lets the
+                                  # rating object close.
             "response_format": {"type": "json_object"},
         }
         headers = {
@@ -508,10 +538,17 @@ class VisionClient:
 
         last_exc: Optional[Exception] = None
         with httpx.Client(timeout=self._timeout) as client:
-            for _ in range(_MAX_ATTEMPTS):
+            for attempt in range(_MAX_ATTEMPTS):
+                # LM Studio (the local vision endpoint via VISION_API_BASE)
+                # rejects `response_format: {"type":"json_object"}` (it wants
+                # json_schema or text). Retry without it — the lenient JSON
+                # parser already handles non-fenced replies.
+                _payload = dict(payload)
+                if attempt >= 1:
+                    _payload.pop("response_format", None)
                 try:
                     resp = client.post(
-                        self._api_base, json=payload, headers=headers
+                        self._api_base, json=_payload, headers=headers
                     )
                     if resp.status_code != 200:
                         last_exc = RuntimeError(
@@ -519,6 +556,9 @@ class VisionClient:
                         )
                         continue
                     data = resp.json()
+                    if "choices" not in data:
+                        last_exc = RuntimeError(f"no choices in response: {str(data)[:200]}")
+                        continue
                     raw = data["choices"][0]["message"]["content"]
                     parsed = _loads_lenient(raw)
                     return self._coerce(parsed, row_ids)
@@ -527,7 +567,7 @@ class VisionClient:
                     continue
 
         raise RuntimeError(
-            f"OpenRouter vision call failed after {_MAX_ATTEMPTS} attempts"
+            f"OpenRouter vision call failed after {_MAX_ATTEMPTS} attempts: {last_exc}"
         ) from last_exc
 
     @staticmethod
