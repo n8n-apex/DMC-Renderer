@@ -36,15 +36,12 @@
 {% endif %}
 
 {% if continuation_role == "proof" and not (body_html or portrait_uri or stats) %}
-{# US-2026-08-19 (p5 proof-gap fix): on the PROOF continuation the identity grid
-   carries no body/stats/portrait (they live on the identity page), so the empty
-   table rendered as a hollow void above the cards. The grid is skipped on the
-   proof role; the testimonials + credibility + proof gallery fill the sheet. #}
-<div class="ab-proof-cred">
-  <ul class="ab-cred ab-cred--proof">
-    {% for c in credibility %}<li class="ab-cred-item">{{ c }}</li>{% endfor %}
-  </ul>
-</div>
+{# US-2026-08-19 (p5): on the PROOF continuation the identity grid carries no
+   body/stats/portrait, so it is skipped. The credibility band renders BELOW
+   the testimonial cards (US-2026-08-19b: originally it sat ABOVE the cards,
+   leaving a hollow gap between the stats and the card row — the page now
+   flows header -> testimonial cards (the hero) -> credibility foot, filled
+   top to bottom). #}
 {% else %}
 <table class="ab-grid">
   <tbody>
@@ -91,6 +88,18 @@
     <span class="ab-testimonials__card" role="img" style="background-image:url('{{ src }}');"></span>
     {% endfor %}
   </div>
+</div>
+{% endif %}
+
+{# US-2026-08-19b (p5 bottom-hollow): the credibility band moved BELOW the
+   testimonial cards so the proof page flows header -> cards (hero) ->
+   credibility foot (filled top to bottom, no hollow between stats and
+   cards). Only on the proof continuation. #}
+{% if continuation_role == "proof" and credibility %}
+<div class="ab-proof-cred">
+  <ul class="ab-cred ab-cred--proof">
+    {% for c in credibility %}<li class="ab-cred-item">{{ c }}</li>{% endfor %}
+  </ul>
 </div>
 {% endif %}
 {% if proof_photos and not (continuation_role == "proof" and testimonials) %}

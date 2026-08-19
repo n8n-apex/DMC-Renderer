@@ -285,11 +285,19 @@
   margin-top: auto;
 }
 /* US-2026-08-19 (p5 proof-gap fix): the PROOF continuation's credibility list
-   (the 5 proof points) moves under the testimonial cards as a distributed
+   (the 5 proof points) moves UNDER the testimonial cards as a distributed
    band, so the proof page fills instead of two cards floating over void. */
 .st-05 .ab-proof-cred {
   flex: 0 1 auto;
   margin-top: var(--space-7);
+}
+/* US-2026-08-19b: anchors the credibility band to the sheet foot on the PROOF
+   continuation so the cards own the hero space above it (page flows
+   header -> cards -> credibility, filled top to bottom). */
+.st-05 .ab-cont-root[data-proof] .ab-proof-cred {
+  margin-top: auto;
+  padding-top: var(--space-6);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
 }
 .st-05 .ab-cred--proof {
   display: grid;
