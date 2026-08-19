@@ -1,12 +1,13 @@
-"""OFFLINE wiring test for build_package's --fal flag (Phase 3).
+"""Wiring test for build_package's fal flag (US-2026-08-19).
 
 NO network / fal / LLM calls and NO fixture regeneration: this only exercises
 the arg-parser + flag plumbing of the apex fixture builder. It imports the
 build_package module the same way build_package imports the preprocessor (by
 adding the v7-renderer apex fixtures dir to sys.path), then asserts:
 
-  * `_parse_args([])`        → fal is OFF by default (offline reproducible path)
-  * `_parse_args(["--fal"])` → fal is ON (real generate_assets path)
+  * `_parse_args([])`          → fal is ON by default (the generator creates the
+                                 mockups/elements/graphics for every build)
+  * `_parse_args(["--no-fal"])` → fal is OFF (offline reproducible path)
   * the module still exposes `_build_asset_plan` (the offline fallback is kept)
     and references `generate_assets` (the real fal path is wired in)
 """
@@ -44,16 +45,16 @@ def _load_build_package():
     return module
 
 
-def test_default_is_offline_no_fal():
+def test_default_is_fal_on():
     bp = _load_build_package()
     args = bp._parse_args([])
-    assert args.fal is False, "default build must stay offline (fal OFF)"
+    assert args.fal is True, "default build must run fal (generator ON by default)"
 
 
-def test_fal_flag_recognized():
+def test_no_fal_flag_recognized():
     bp = _load_build_package()
-    args = bp._parse_args(["--fal"])
-    assert args.fal is True, "--fal must switch on the real generate_assets path"
+    args = bp._parse_args(["--no-fal"])
+    assert args.fal is False, "--no-fal must switch to the offline reproducible path"
 
 
 def test_offline_fallback_helper_intact():
@@ -66,13 +67,13 @@ def test_offline_fallback_helper_intact():
 
 def test_no_fal_marker_written_by_import_or_parse():
     """Importing the module and parsing args must NEVER write the .fal_active
-    marker — only a completed --fal build does (and that is not run here)."""
+    marker — only a completed fal build does (and that is not run here)."""
     bp = _load_build_package()
-    bp._parse_args(["--fal"])
+    bp._parse_args(["--no-fal"])
     marker = (
         _PREPROCESSOR_ROOT.parent
         / "v7-renderer" / "fixtures" / "apex" / ".fal_active"
     )
     assert not marker.exists(), (
-        "parsing --fal must not create .fal_active; only a real build does"
+        "parsing flags must not create .fal_active; only a real build does"
     )

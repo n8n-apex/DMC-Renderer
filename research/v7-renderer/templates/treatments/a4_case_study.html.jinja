@@ -51,7 +51,12 @@
     {# HOST SLOT: the page's data-viz (the case's transformation as an A->B
        device) + generated component SVGs, anchored at the FOOT of the cream
        field. Fills the lower-left band that used to sit empty while the dark
-       rail was full, and gives the produced devices a render home. #}
+       rail was full, and gives the produced devices a render home.
+       US-2026-08-19: the fal `case_scene` band is NOT rendered here: apex's
+       fal "scenes" are the brand marble texture (the prompt-builder falls back
+       to it without a design_brief), so a scene band paints a blank cream
+       plate and reads as a missing photo. A case study's device is its
+       transformation viz + the dark rail; no blank plate. #}
     {% if td.viz or td.components or td.images %}
     <div class="cs4-devices">
       {# ONE hero device per band: the client's REAL product shot (pre-framed

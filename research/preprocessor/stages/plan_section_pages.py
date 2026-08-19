@@ -313,9 +313,13 @@ def split_section(page: PlannedPage) -> list[PlannedPage]:
     budget = ST_COPY_BUDGET_CHARS.get(page.st_type)
     if budget is None:
         return [page]
-    if page.st_type in _SPREAD_ST_TYPES and page.page_format == "a3":
-        # A3 spread = the section's multi-page allocation (Richard's
-        # Doppelseite). It is NOT split : see module note.
+    if page.st_type in _SPREAD_ST_TYPES:
+        # US-2026-08-19 (B3): a case study (ST-07A) is ONE page by design —
+        # whether it renders as an A3 Doppelseite or (now, after the mixed-size
+        # fix) an A4 single page. Splitting it would fabricate a second case
+        # page; the case study's own fill layout absorbs the copy. The old
+        # `and page.page_format == "a3"` guard let the A4 single-page case
+        # studies fall through to _split_st07a (5 -> 7 pages).
         return [page]
     total = _copy_len(page.data)
     if page.st_type == "ST-02":

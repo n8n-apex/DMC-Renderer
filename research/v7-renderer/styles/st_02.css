@@ -117,6 +117,67 @@
 }
 .st-02 .ol-zg .c-callout-panel { break-inside: avoid; }
 
+/* US-2026-08-19 (p3 65%-dead fix): the EVIDENCE continuation's target-audience
+   spread. A full-height composition: eyebrow + headline at the top, the
+   audience qualifiers as numbered items distributed down the sheet (the page
+   resolves top-to-bottom instead of a tiny panel at the bottom). */
+.st-02 .ol-ev {
+  flex: 1 1 auto;
+  margin-top: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.st-02 .ol-ev-head { flex: 0 0 auto; }
+.st-02 .ol-ev-kicker {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+.st-02 .ol-ev-headline {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  line-height: 1.12;
+  color: var(--color-ink);
+  margin: 0;
+}
+.st-02 .ol-ev-list {
+  flex: 1 1 auto;
+  list-style: none;
+  margin: var(--space-6) 0 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  max-width: 150mm;
+}
+.st-02 .ol-ev-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  border-top: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  padding-top: var(--space-4);
+}
+.st-02 .ol-ev-n {
+  flex: 0 0 auto;
+  min-width: 16mm;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-stat);
+  line-height: 0.9;
+  color: var(--color-accent);
+}
+.st-02 .ol-ev-t {
+  font-family: var(--font-body);
+  font-size: var(--type-h3);
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
 /* US-609: the ST-02 CONTEXT continuation page (title + body + quote, no
    audience panel) pins the pullquote to the sheet bottom so the page
    resolves instead of leaving a 60% mid-page void. */

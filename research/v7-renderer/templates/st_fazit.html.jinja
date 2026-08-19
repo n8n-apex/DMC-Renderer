@@ -29,7 +29,7 @@
    dark band can resolve bottom:0 against it (WeasyPrint won't stretch an abs
    box against a min-height container — only a definite height). #}
 <div class="fz-fill-root" data-fz-variant="fill">
-  <div class="fz-fill-flow{% if continuation_role == 'result' %} fz-fill-flow--result{% endif %}">
+  <div class="fz-fill-flow{% if continuation_role == 'result' %} fz-fill-flow--result{% elif continuation_role == 'close' %} fz-fill-flow--close{% endif %}">
     <div class="fz-header fz-header--fill">
       <div class="fz-eyebrow">{{ eyebrow }}</div>
       {% if title %}<h1 class="fz-title">{{ title }}</h1>{% endif %}

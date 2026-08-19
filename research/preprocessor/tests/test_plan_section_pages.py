@@ -116,9 +116,15 @@ def test_split_boundaries_semantic() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# 7. case study (ST-07A) semantic split: narrative blocks stay whole
+# 7. case study (ST-07A): NOT split — one page by design
 # --------------------------------------------------------------------------- #
-def test_case_study_split_keeps_blocks_whole() -> None:
+def test_case_study_never_splits() -> None:
+    """US-2026-08-19 (B3): a case study (ST-07A) is ONE page by design —
+    whether it renders as an A3 Doppelseite or (now, after the mixed-size
+    fix) an A4 single page. Splitting it would fabricate a second case page;
+    the case study's own fill layout absorbs the copy. Regression: the old
+    `page_format == "a3"` guard let the A4 single-page case studies fall
+    through to _split_st07a (5 -> 7 pages in the apex deck)."""
     data = {
         "fallstudie_number": 1,
         "kurzportraet": "Portrait text " * 40,
@@ -131,17 +137,7 @@ def test_case_study_split_keeps_blocks_whole() -> None:
         "viz": [],
     }
     pages = split_section(_page("ST-07A", data))
-    assert len(pages) >= 2
-    # each narrative block that EXISTS in the source appears on exactly one page
-    from stages.plan_section_pages import _COPY_FIELDS_BY_ST
-
-    for field in _COPY_FIELDS_BY_ST["ST-07A"]:
-        if not data.get(field):
-            continue  # absent from the source -> nothing to preserve
-        owners = [p for p in pages if p.data.get(field)]
-        assert len(owners) == 1, (
-            f"field {field} must appear on exactly one page; got {len(owners)}"
-        )
+    assert len(pages) == 1, f"a case study must stay ONE page; got {len(pages)}"
 
 
 # --------------------------------------------------------------------------- #

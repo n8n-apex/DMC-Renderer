@@ -172,7 +172,14 @@
 }
 .st-07b .th-fill-top {
   margin: 0;
-  flex: 0 0 auto;       /* upper block keeps its natural (short) height */
+  flex: 1 1 auto;   /* US-2026-08-19 (p11 65%-dead): the top block GROWS so the
+                       body distributes down the sheet; the dark panel becomes a
+                       designed closing band (its natural content height + a
+                       modest flex fill) instead of absorbing ALL the slack into
+                       a 300px dark void above and below the statement. */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /* the DARK authority panel: a flex child that GROWS (flex: 1) to fill ALL the
@@ -181,20 +188,23 @@
    meets the body, there is no white band above it (the fill that removes the
    dead bottom band AND closes the former mid-page gap). */
 .st-07b .th-insightfill {
-  flex: 1 1 auto;
+  flex: 0 1 auto;    /* US-2026-08-19: the panel is a designed closing band, not
+                        a flex:1 void-absorber (see .th-fill-top) */
   margin: 0;
   background-color: var(--color-ink);
   color: var(--color-on-dark);
-  padding: var(--space-5) var(--space-5);
+  padding: var(--space-6) var(--space-5);
   box-sizing: border-box;
   /* US-510 (vision-gate): the KERNAUSSAGE sits DIRECTLY beneath the ruled
      separator as a two-part composition (the vision read: "two floating
-     islands" — label at 38%, quote at 63%). Top-anchored unit: label then
-     quote immediately after the body; the dark space BELOW the quote is the
-     deliberate closing breathing. */
+     islands" — label at 38%, quote at 63%). US-2026-08-19 (p11 65%-dead):
+     the panel previously top-anchored its text, so a short body left the
+     panel's lower half as a HOLLOW DARK VOID (the audit's 65% dead). The
+     statement now CENTERS in the dark panel so the panel reads as a framed
+     closing statement, never a dark void with text at the top. */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   gap: var(--space-4);
 }
 .st-07b .th-insightfill-label { align-self: flex-start; margin-bottom: 0; }

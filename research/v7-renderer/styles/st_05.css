@@ -213,9 +213,22 @@
 .st-05 .ab-testimonials { margin: 0 0 var(--space-1) 0; }
 .st-05 .ab-testimonials__row {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-6);
   justify-content: center;
   align-items: flex-start;
+}
+/* US-2026-08-19 (p5 proof-gap fix): on the PROOF continuation page the cards
+   are the page's only content and sat at the top, leaving a huge gap under the
+   header. The cards now grow to fill the sheet (their natural 46mm height is
+   preserved; the ROW stretches to the bottom and centers the cards in the
+   available space so the proof page reads as a deliberate social-proof spread,
+   not a floating pair of cards over void). */
+.st-05 .ab-cont-root .ab-testimonials {
+  flex: 1 1 auto;
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .st-05 .ab-testimonials__card {
   display: block;
@@ -255,4 +268,26 @@
 .st-05 .ab-cont-root .ab-testimonials,
 .st-05 .ab-cont-root .ab-stats {
   margin-top: auto;
+}
+/* US-2026-08-19 (p5 proof-gap fix): the PROOF continuation's credibility list
+   (the 5 proof points) moves under the testimonial cards as a distributed
+   band, so the proof page fills instead of two cards floating over void. */
+.st-05 .ab-proof-cred {
+  flex: 0 1 auto;
+  margin-top: var(--space-7);
+}
+.st-05 .ab-cred--proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  max-width: 150mm;
+  margin: 0;
+}
+.st-05 .ab-cred--proof .ab-cred-item {
+  border-top: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  padding-top: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.4;
+  color: var(--color-ink);
 }

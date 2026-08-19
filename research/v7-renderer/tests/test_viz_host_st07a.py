@@ -35,12 +35,15 @@ def test_viz_renders_when_present():
     page["data"]["viz"] = [
         {"preset": "completion_ring", "percent": 100, "center": "6/6", "label": "Prozesse"}
     ]
+    # the LEGACY ST-07A's magazine variant hosts viz (cs-mag-viz); the fill
+    # variant (the A4 default) does not consume a viz module. The deck renders
+    # case studies through the a4_case_study TREATMENT; this test pins the
+    # legacy magazine host so the viz path stays covered.
+    page["layout_variant"] = "magazine"
     frag = st_07a.render(page, ctx)
-    # casestudy_hero renders the rate/ratio viz as the dark-panel ring DEVICE,
-    # carrying the verbatim figure + label (no cream c-viz macro on the navy panel).
-    assert "csh-dev-donut" in frag.html
+    assert "cs-mag-viz" in frag.html
     assert "6/6" in frag.html and "Prozesse" in frag.html
-    assert "c-viz-ring" not in frag.html
+    assert "csh-dev-donut" not in frag.html
 
 
 def test_no_viz_unchanged():

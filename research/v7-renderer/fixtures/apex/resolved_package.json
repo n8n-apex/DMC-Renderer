@@ -56,9 +56,18 @@
       "image_type": "texture",
       "path": "assets/report_background_texture.png",
       "status": "generated",
-      "message": "Generated via fal fal-ai/nano-banana-pro (3:4, 2K)",
-      "prompt": "Seamless tileable uncoated fine-art paper surface, warm cream #F6F3ED ground, portrait 3:4 format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation across the entire field, flat even diffuse matte lighting with no glow or directional source, near-flat whisper-amplitude texture under 4 percent local contrast, perfectly uniform calm negative space across the full field for full-bleed page background use, no depth plane, no navy band, seamless tiling edges, smooth class surface, decorative printed-material surface only",
-      "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, navy, dark areas, white, beige, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes, directional light"
+      "message": "reused apex fixture image (R1 generator)",
+      "prompt": null,
+      "negative_prompt": null
+    },
+    {
+      "slot_id": "panel_texture",
+      "image_type": "panel_texture",
+      "path": "assets/report_navy_stone.png",
+      "status": "generated",
+      "message": "reused apex fixture image (R1 generator)",
+      "prompt": null,
+      "negative_prompt": null
     }
   ],
   "pages": [
@@ -681,7 +690,17 @@
       "charts": [],
       "social_proof": null,
       "slots": [],
-      "assets": [],
+      "assets": [
+        {
+          "slot_id": "status_quo_scene",
+          "image_type": "scene",
+          "path": "assets/4_status_quo_scene.png",
+          "status": "generated",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
+        }
+      ],
       "components": [],
       "section_id": "section.4",
       "page_id": "section.4.page.1",
@@ -939,10 +958,13 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg",
-          "status": "resolved",
+          "slot_id": "breathing_bg_1",
+          "image_type": "scene",
           "path": "assets/ig_jousefmrd_DX2kDuvDL40_8.jpg",
-          "image_type": "scene"
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
@@ -1065,18 +1087,17 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene",
+          "slot_id": "case_scene_1",
           "image_type": "scene",
-          "path": "assets/7_case_scene.png",
+          "path": "assets/1_cs1_scene.png",
           "status": "generated",
-          "message": "Generated via fal fal-ai/nano-banana-pro (16:9, 2K)",
-          "prompt": "Seamless abstract uncoated fine-art paper surface, warm cream #F6F3ED ground, wide 16:9 landscape format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation, one soft diffuse off-center lighter area positioned upper-center, matte navy #2E3E50 depth plane as a calm rectilinear band along the bottom fifth, generous calm negative space across the upper four-fifths for overlaid type, near-flat whisper-amplitude texture under 4 percent local contrast, flat even diffuse matte lighting, no hard edges, seamless, decorative printed-material surface only",
-          "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, white, beige, black, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes"
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
-      "layout_variant": "casestudy_hero",
-      "page_format": "a3",
+      "layout_variant": "fill",
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -1276,18 +1297,17 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene",
+          "slot_id": "case_scene_2",
           "image_type": "scene",
-          "path": "assets/9_case_scene.png",
+          "path": "assets/2_cs2_scene.png",
           "status": "generated",
-          "message": "fal cache hit (15b03246660e)",
-          "prompt": "Seamless abstract uncoated fine-art paper surface, warm cream #F6F3ED ground, wide 16:9 landscape format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation, one soft diffuse off-center lighter area positioned upper-center, matte navy #2E3E50 depth plane as a calm rectilinear band along the bottom fifth, generous calm negative space across the upper four-fifths for overlaid type, near-flat whisper-amplitude texture under 4 percent local contrast, flat even diffuse matte lighting, no hard edges, seamless, decorative printed-material surface only",
-          "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, white, beige, black, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes"
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
-      "layout_variant": "casestudy_hero",
-      "page_format": "a3",
+      "layout_variant": "fill",
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -1438,10 +1458,13 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg",
-          "status": "resolved",
+          "slot_id": "breathing_bg_2",
+          "image_type": "scene",
           "path": "assets/ig_jousefmrd_DVOLEK-DKKz_1.jpg",
-          "image_type": "scene"
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
@@ -1567,18 +1590,17 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene",
+          "slot_id": "case_scene_3",
           "image_type": "scene",
-          "path": "assets/12_case_scene.png",
+          "path": "assets/3_cs3_scene.png",
           "status": "generated",
-          "message": "fal cache hit (15b03246660e)",
-          "prompt": "Seamless abstract uncoated fine-art paper surface, warm cream #F6F3ED ground, wide 16:9 landscape format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation, one soft diffuse off-center lighter area positioned upper-center, matte navy #2E3E50 depth plane as a calm rectilinear band along the bottom fifth, generous calm negative space across the upper four-fifths for overlaid type, near-flat whisper-amplitude texture under 4 percent local contrast, flat even diffuse matte lighting, no hard edges, seamless, decorative printed-material surface only",
-          "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, white, beige, black, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes"
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
-      "layout_variant": "casestudy_hero",
-      "page_format": "a3",
+      "layout_variant": "fill",
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -1790,18 +1812,17 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene",
+          "slot_id": "case_scene_4",
           "image_type": "scene",
-          "path": "assets/14_case_scene.png",
+          "path": "assets/4_cs4_scene.png",
           "status": "generated",
-          "message": "fal cache hit (15b03246660e)",
-          "prompt": "Seamless abstract uncoated fine-art paper surface, warm cream #F6F3ED ground, wide 16:9 landscape format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation, one soft diffuse off-center lighter area positioned upper-center, matte navy #2E3E50 depth plane as a calm rectilinear band along the bottom fifth, generous calm negative space across the upper four-fifths for overlaid type, near-flat whisper-amplitude texture under 4 percent local contrast, flat even diffuse matte lighting, no hard edges, seamless, decorative printed-material surface only",
-          "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, white, beige, black, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes"
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
-      "layout_variant": "casestudy_hero",
-      "page_format": "a3",
+      "layout_variant": "fill",
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -1948,18 +1969,17 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene",
+          "slot_id": "case_scene_5",
           "image_type": "scene",
-          "path": "assets/15_case_scene.png",
+          "path": "assets/5_cs5_scene.png",
           "status": "generated",
-          "message": "fal cache hit (15b03246660e)",
-          "prompt": "Seamless abstract uncoated fine-art paper surface, warm cream #F6F3ED ground, wide 16:9 landscape format, extremely subtle long-fiber paper tooth with barely-perceptible soft cloudy tonal undulation, one soft diffuse off-center lighter area positioned upper-center, matte navy #2E3E50 depth plane as a calm rectilinear band along the bottom fifth, generous calm negative space across the upper four-fifths for overlaid type, near-flat whisper-amplitude texture under 4 percent local contrast, flat even diffuse matte lighting, no hard edges, seamless, decorative printed-material surface only",
-          "negative_prompt": "text, letters, words, numbers, logos, watermarks, icons, charts, graphs, data, UI, faces, people, marble, veining, polish, reflections, gold, metallic, foil, gloss, bevel, lens flare, spotlight, rays, particles, banding, hard vignette ring, seams, teal, cyan, blue, purple, green, white, beige, black, bright colors, gradients into other colors, busy detail, patterning, repeating motifs, objects, illustration, scenes"
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
-      "layout_variant": "casestudy_hero",
-      "page_format": "a3",
+      "layout_variant": "fill",
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -2200,10 +2220,13 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg",
-          "status": "resolved",
+          "slot_id": "breathing_bg_3",
+          "image_type": "scene",
           "path": "assets/ig_jousefmrd_DYhZxkqjD6G_5.jpg",
-          "image_type": "scene"
+          "status": "resolved",
+          "message": "reused apex fixture image (R1 generator)",
+          "prompt": null,
+          "negative_prompt": null
         }
       ],
       "components": [],
@@ -3027,12 +3050,12 @@
     "total_warnings": 47
   },
   "asset_summary": {
-    "total_required": 9,
+    "total_required": 16,
     "total_downloaded": 0,
     "total_stubbed": 0,
     "total_client_upload_needed": 0,
     "total_failed": 0,
-    "total_generated": 9
+    "total_generated": 16
   },
   "asset_warnings": []
 }

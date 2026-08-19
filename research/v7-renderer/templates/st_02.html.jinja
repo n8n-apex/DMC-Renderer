@@ -49,9 +49,28 @@
   {% endif %}
 
   {% if zielgruppe %}
+  {% if continuation_role == "evidence" %}
+  {# US-2026-08-19 (p3 65%-dead fix): the EVIDENCE continuation carries ONLY the
+     target-audience list, which rendered as a tiny callout panel at the sheet
+     bottom (the rest was void). It is now a deliberate full-height spread: a
+     headline + the audience qualifiers as a numbered, space-distributed list so
+     the page resolves top-to-bottom. Real data; nothing invented. #}
+  <div class="ol-ev">
+    <div class="ol-ev-head">
+      <div class="ol-ev-kicker">{{ zielgruppe_label }}</div>
+      <h2 class="ol-ev-headline">Für wen dieser Report ist</h2>
+    </div>
+    <ol class="ol-ev-list">
+      {% for z in zielgruppe %}
+      <li class="ol-ev-item"><span class="ol-ev-n">{{ "%02d" % loop.index }}</span><span class="ol-ev-t">{{ z }}</span></li>
+      {% endfor %}
+    </ol>
+  </div>
+  {% else %}
   <div class="ol-zg">
     {{ callout_panel(check_list(zielgruppe), label=zielgruppe_label) }}
   </div>
+  {% endif %}
   {% endif %}
 
   {% if takeaways %}

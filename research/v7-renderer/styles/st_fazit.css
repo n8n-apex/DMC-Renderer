@@ -175,6 +175,16 @@
 .st-fazit .fz-fill-flow--result {
   justify-content: space-between;
 }
+/* US-2026-08-19 (p22 45%-dead fix): the CLOSE continuation's three blocks
+   (header 121px + thesis 101px + cost 166px = 388px) top-aligned in a 737px
+   flow, leaving ~350px of void below the cost block (the audit's 45% dead).
+   The blocks now distribute top-to-bottom so the cost block anchors just above
+   the CTA band and the close reads as a full closing page. The earlier
+   "space-between measured worse" applied to a DIFFERENT block set; with
+   exactly three blocks the distribution is clean (verified on pixels). */
+.st-fazit .fz-fill-flow--close {
+  justify-content: space-between;
+}
 
 /* the header band keeps the solid-primary anchor but no bottom margin (the flex
    gap is owned by space-between). */

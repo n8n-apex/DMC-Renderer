@@ -1076,12 +1076,13 @@ def test_st02_rebuild_composes_serif_headline_two_col_and_check_panel() -> None:
     assert "Dein Wachstum scheitert nicht am Markt" in frag.html            # title
     assert "Manuelle Prozesse fressen" in frag.html                         # body prose
 
-    # EVIDENCE continuation: the tint callout panel carrying the check-list.
+    # EVIDENCE continuation: the full-height audience spread (US-2026-08-19:
+    # the old tint callout panel at the sheet bottom left the page 65% dead;
+    # it is now an ol-ev numbered audience list distributed down the sheet).
     ev = _load_fixture_continuation("ST-02", "evidence")
     frag2 = st_02.render(ev, ctx)
-    assert "c-callout-panel" in frag2.html, "tint check-list panel missing"
-    assert "c-check-list" in frag2.html, "accent check-list missing"
-    assert "c-check-list__check" in frag2.html, "accent check glyph missing"
+    assert "ol-ev" in frag2.html, "ol-ev evidence spread missing"
+    assert "ol-ev-item" in frag2.html, "numbered audience items missing"
     assert "B2B-Unternehmen mit 10 bis 50 Mitarbeitern" in frag2.html        # zielgruppe 1
     assert "€500.000 bis €3 Millionen Jahresumsatz" in frag2.html            # zielgruppe 2
 

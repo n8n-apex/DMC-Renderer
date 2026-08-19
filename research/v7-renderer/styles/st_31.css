@@ -112,11 +112,19 @@
 /* On a REAL-PHOTO breather the statement is an EDITORIAL overlay (the apex/Richard
    "FAZIT ZU DEN 7 MYTHEN" treatment): anchored BOTTOM-LEFT over the deepened base
    gradient (where the photo is darkest → the white serif reads), with a short
-   accent rule above it. The abstract-ground breathers keep the centred statement. */
+   accent rule above it. The abstract-ground breathers keep the centred statement.
+   US-2026-08-19 (p9/p14/p21 overlap fix): the phrase previously sat directly on
+   the photo where faces/legs/logos were bright, reading as text-over-photo. A
+   local dark scrim behind the bottom-left statement zone guarantees legibility
+   regardless of the photo content. */
 .st-31 .br-bleed--photo .br-center {
   align-items: flex-end;
   justify-content: flex-start;
   padding: 0 24mm 30mm 24mm;
+  background-image: linear-gradient(to top,
+    color-mix(in srgb, var(--color-ink) 88%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 70%, transparent) 40%,
+    transparent 78%);
 }
 .st-31 .br-bleed--photo .br-phrase {
   text-align: left;

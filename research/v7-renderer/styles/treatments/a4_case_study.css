@@ -78,32 +78,66 @@
   max-width: 112mm;
 }
 
-/* the narrative sections: grow to fill the field, top-aligned, even gaps. */
+/* the narrative sections: grow to fill the field, top-aligned, even gaps.
+   US-2026-08-19 (S1 dead-space): `justify-content: space-between` distributes
+   the Ausgangssituation/Ziel/Lösung/Ergebnis sections down the FULL field, so
+   a short narrative never leaves a hollow gap above the devices band. */
 .page.treatment-a4_case_study .cs4-sections {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: var(--space-3);
   margin-top: var(--space-4);
   max-width: 118mm;
 }
 /* devices band: the case's data-viz (A->B transformation card) + generated
-   component SVGs, anchored at the FOOT of the cream field. Fills the lower-left
-   band that sat empty while the dark rail was full. Tokens only. */
+   component SVGs + the fal scene, anchored at the FOOT of the cream field.
+   US-2026-08-19 (overlap fix): the band was 515px tall on a 971px field and
+   SQUASHED the narrative sections to 179px (the vision audit's "teal overlay
+   covers LÖSUNG/ERGEBNIS"). The narrative is the priority; the devices band is
+   now a COMPACT strip capped at 40% of the field so the sections flex-fill
+   and the narrative never sits under a giant device. */
 .page.treatment-a4_case_study .cs4-devices {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   margin-top: auto;
   padding-top: var(--space-4);
   max-width: 118mm;
+  max-height: 40%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
   min-width: 0;
+  overflow: hidden;
 }
 .page.treatment-a4_case_study .cs4-devices .c-viz { max-width: 118mm; }
 .page.treatment-a4_case_study .cs4-comp svg { max-width: 100%; height: auto; }
+.page.treatment-a4_case_study .cs4-devices .c-viz .c-viz-donut { transform: scale(0.75); transform-origin: top left; }
+/* US-2026-08-19 (overlap fix): the giant stat-strip device (--type-stat-xl
+   values) overflowed the compact devices band and painted over the narrative
+   above it in the real print pass. Scope the strip's values/labels down so the
+   device fits the band. The macro emits `c-viz-strip`, not `c-stat-strip`. */
+.page.treatment-a4_case_study .cs4-devices .c-viz-strip__value {
+  font-size: var(--type-h2);
+  line-height: 1.05;
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz-strip__cell { min-width: 0; }
+/* US-2026-08-19 (disconnect fix): the fal case-scene photo band at the foot of
+   the cream field. A cinematic full-width plate that gives the case study a
+   real editorial photo moment (the fal art was produced by the pipeline but
+   never rendered). Graceful: absent -> nothing. */
+.page.treatment-a4_case_study .cs4-scene {
+  width: 100%;
+  height: 40mm;
+  flex: 0 1 auto;
+  border-radius: 2mm;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 1.5mm 4mm rgba(0, 0, 0, 0.12);
+  border: 0.3mm solid color-mix(in srgb, var(--color-neutral-dark) 12%, transparent);
+}
 
 .page.treatment-a4_case_study .cs4-section { min-width: 0; }
 .page.treatment-a4_case_study .cs4-section-label {
@@ -164,26 +198,40 @@
   background-size: cover, cover, cover;
 }
 
-/* the oversized GHOST numeral, top of the rail. */
+/* the oversized GHOST numeral, top of the rail. US-2026-08-19 (S2 overlap
+   fix): the numeral sat ABOVE the rail body in flow order, and its huge
+   glyphs painted OVER the person/stats content below (the vision audit found
+   "05" obscuring the ZIEL section on p18). It now sits BEHIND the rail body
+   (z-index) and the body reserves its band via padding-top, so the numeral is
+   a deliberate watermark, never over text. */
+.page.treatment-a4_case_study .cs4-rail {
+  position: absolute;
+}
 .page.treatment-a4_case_study .cs4-numeral {
-  flex: 0 0 auto;
+  position: absolute;
+  top: 8mm;
+  right: 14mm;
+  z-index: 0;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: calc(var(--type-display-xl) * 2.1);
   line-height: 0.8;
   text-align: right;
-  color: color-mix(in srgb, var(--color-on-dark) 12%, transparent);
-  margin: 0 0 var(--space-2) 0;
+  color: color-mix(in srgb, var(--color-on-dark) 10%, transparent);
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
 }
-
-/* the rail body distributes person / stats / quote down the remaining height. */
 .page.treatment-a4_case_study .cs4-rail-body {
+  position: relative;
+  z-index: 1;
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-5);
+  padding-top: 34mm;   /* reserve the numeral's band so content never sits under it */
 }
 
 /* person block: portrait (when one resolves) + name / role / url. */

@@ -96,7 +96,11 @@
   /* US-510 (vision-gate): the closing must RESOLVE — head group top, CTA
      mid-sheet, wordmark bottom, the voids distributed (space-between) so no
      single 40% dead zone remains ("floating islands"). */
-  justify-content: flex-start;
+  justify-content: space-between;  /* US-2026-08-19 (p25 45%-dead): head top,
+                                      CTA mid, wordmark bottom — the closing
+                                      blocks distribute so no single 36% void
+                                      below the wordmark (the earlier
+                                      flex-start left 400px of dark void) */
   padding: 34mm 24mm 20mm 24mm;
   box-sizing: border-box;
   color: var(--color-on-dark);

@@ -35,6 +35,17 @@
 <div class="ab-lead">{{ lead_html }}</div>
 {% endif %}
 
+{% if continuation_role == "proof" and not (body_html or portrait_uri or stats) %}
+{# US-2026-08-19 (p5 proof-gap fix): on the PROOF continuation the identity grid
+   carries no body/stats/portrait (they live on the identity page), so the empty
+   table rendered as a hollow void above the cards. The grid is skipped on the
+   proof role; the testimonials + credibility + proof gallery fill the sheet. #}
+<div class="ab-proof-cred">
+  <ul class="ab-cred ab-cred--proof">
+    {% for c in credibility %}<li class="ab-cred-item">{{ c }}</li>{% endfor %}
+  </ul>
+</div>
+{% else %}
 <table class="ab-grid">
   <tbody>
     <tr>
@@ -67,6 +78,7 @@
     </tr>
   </tbody>
 </table>
+{% endif %}
 
 {% if testimonials %}
 {# Designed client TESTIMONIAL cards (real quote + metric + name) — the §C4 social

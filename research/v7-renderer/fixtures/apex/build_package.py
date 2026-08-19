@@ -151,13 +151,13 @@ async def main(use_fal: bool = False) -> int:
     )
     # v2.0: typed per-page data + rhetorical charts + social-proof.
     structured = structure_content(pages)
-    # A3 case-study spreads: the case-study pages are ST-07A "casestudy_hero"
-    # Doppelseiten (Richard's spread model for apex case studies) — an explicit
-    # per-page hint so plan_layout resolves the variant AND the a3 sheet format
-    # (the hand-edited JSON re-bakes reproducibly now).
-    for page in pages:
-        if page.type == "ST-07A":
-            page.layout_variant = "casestudy_hero"
+    # US-2026-08-19 (B3 consistency): NO layout_variant hint is stamped for
+    # ST-07A. plan_layout's default for a fill-default type is "fill" (the A4
+    # single-page case-study layout) — the old explicit `casestudy_hero` hint
+    # stamped page_format="a3" (the Doppelseite), which the stylist now
+    # overrides to A4 anyway (a mid-deck A3 breaks Chromium's mixed-size
+    # print). Leaving the hint OFF keeps the builder and stylist on the same
+    # A4-fill contract. plan_layout resolves "fill" automatically.
     # v2.0: resolve human-photo slots from the apex Client Assets folder
     # (renamed photos live in research/preprocessor/client_assets/apex/).
     client_dir = client_assets_dir("apex", base=PREPROCESSOR / "client_assets")
@@ -247,19 +247,18 @@ async def main(use_fal: bool = False) -> int:
         asset_plan = _build_asset_plan(image_map)
 
     # COURSE-CORRECTION (2026-06-17): rip out fal AI SCENE/BACKGROUND/GRADIENT
-    # imagery. These rendered as slop — Nano Banana literally drew the raw German
-    # page text, because the Sonnet prompt-builder (stages/build_image_prompts.py)
-    # returns {} without a design_brief and apex has none, so generate_assets fell
-    # back to dumping the page text as the subject. They were also mostly unrendered.
-    # We keep REAL photos (slots) + the procedural marble ground (background_texture,
-    # image_type "texture"). fal stays WIRED (--fal) for when we add a design_brief
-    # and art-direct it; until then NO AI scene/background reaches the deck.
-    # Target the 4 AI generate-class slots by slot_id (surgical: does NOT touch the
-    # real Instagram breather "scene" photos, which are social-routed under other ids).
-    # fazit_background removed from this set AND from generate_assets (G7): ST-FAZIT
-    # grounds on the panel_texture report asset; the per-page background had no reader.
+    # imagery that rendered as slop (Nano Banana drew raw page text because the
+    # prompt-builder returns {} without a design_brief). We keep REAL photos
+    # (slots) + the procedural marble ground (background_texture). fal stays
+    # WIRED (--fal) for when we add a design_brief and art-direct it.
+    # US-2026-08-19 (B2 disconnect fix): `status_quo_scene` was wrongly in this
+    # suppression — the 4_status_quo_scene.png asset IS the real fal network
+    # abstract (3MB, generated 2026-06-06 and pixel-verified), and the ST-09
+    # context page renders an empty void without it. It is now KEPT and routed
+    # to the status-quo page; only the genuinely-blank generate-class slots
+    # (cover_hero, atmospheric_gradient, extra_*) stay suppressed.
     _SUPPRESS_SLOTS = {
-        "cover_hero", "status_quo_scene", "atmospheric_gradient",
+        "cover_hero", "atmospheric_gradient",
         "status_quo_scene_b", "extra_square", "extra_wide",
     }
     asset_plan.assets = [
@@ -308,6 +307,16 @@ async def main(use_fal: bool = False) -> int:
 
     from fixtures.apex.viz_curation import apply_apex_viz
     apply_apex_viz(pkg)
+
+    # ---- US-2026-08-19 (B2): the status-quo SCENE belongs on the CONTEXT page
+    # only (it illustrates the problem prose), not the evidence symptom list.
+    # The section split copies the source page's assets to both halves; strip it
+    # from the evidence continuation so it doesn't paint a redundant band. ----
+    for page in pkg["pages"]:
+        if page.get("st_type") == "ST-09" and page.get("continuation_role") == "evidence":
+            page["assets"] = [
+                a for a in page.get("assets", []) if a.get("slot_id") != "status_quo_scene"
+            ]
 
     # ---- US-606 Director page briefs (the contract object, persisted) ----
     # ONE brief per physical page: client/report identity + the selected
@@ -426,9 +435,11 @@ async def main(use_fal: bool = False) -> int:
     assert len(pkg["pages"]) >= 20, f"expected >=20 pages, got {len(pkg['pages'])}"
     assert st_types[0] == "ST-01" and st_types[-1] == "ST-03", st_types
     assert st_types.count("ST-07A") == 5, st_types
-    # Case-study pages are the A3 casestudy_hero spreads; the other fill-default
-    # ST types (ST-07B/22/FAZIT) must carry the "fill" hint; every OTHER ST
-    # type must NOT be forced one.
+    # Case-study pages carry the "fill" hint (the A4 single-page layout — the
+    # A3 casestudy_hero spread was retired 2026-08-19 because a mid-deck A3
+    # breaks Chromium's mixed-size print); the other fill-default ST types
+    # (ST-07B/22/FAZIT) must carry the "fill" hint; every OTHER ST type must
+    # NOT be forced one.
     _FILL_DEFAULT_TYPES = {"ST-07B", "ST-22", "ST-FAZIT"}
     fill_variants = [
         (p["slot"], p["st_type"], p.get("layout_variant")) for p in pkg["pages"]
@@ -439,7 +450,7 @@ async def main(use_fal: bool = False) -> int:
         (p["slot"], p.get("layout_variant"), p.get("page_format"))
         for p in pkg["pages"] if p["st_type"] == "ST-07A"
     ]
-    assert all(v == "casestudy_hero" and fmt == "a3" for _, v, fmt in case_variants), case_variants
+    assert all(v == "fill" and fmt is None for _, v, fmt in case_variants), case_variants
     assert not any(
         "layout_variant" in p for p in pkg["pages"]
         if p["st_type"] not in _FILL_DEFAULT_TYPES and p["st_type"] != "ST-07A"

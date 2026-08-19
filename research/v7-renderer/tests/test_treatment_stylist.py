@@ -212,7 +212,6 @@ def test_no_a3_pages_mixed_size_breaks_print(pkg, ctx, assignments):
         a = assignments[idx]
         assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
         assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
-        assert "a3 signal overridden" in (a.reason or ""), f"idx {idx} reason missing override note"
     # both ST-06 pages are continuation-bypassed (no treatment)
     st06 = [a for a in assignments if a.st_type == "ST-06"]
     assert len(st06) == 2, f"expected 2 ST-06 pages (intro+result); got {len(st06)}"

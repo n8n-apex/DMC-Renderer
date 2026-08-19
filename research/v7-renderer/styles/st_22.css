@@ -294,3 +294,32 @@
   line-height: 1.42;
   max-width: 168mm;
 }
+
+/* US-2026-08-19 (p24 stat-label fix): the timeline's duration stat_strip
+   (3 cells: "1 Tag / 3-5 Tage / 2-3 Tage", each "je Implementierungsschritt")
+   previously used the default full-width strip whose 34mm-min cells wrapped
+   and dropped the THIRD cell's label (the audit's "2-3 Tage lacks its label").
+   The strip is scoped to a compact equal-third row so all three figures AND
+   labels render. */
+.st-22 .co-viz {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-muted) 45%, transparent);
+}
+.st-22 .co-viz .c-viz-strip__row {
+  flex-wrap: nowrap;
+  gap: var(--space-4);
+}
+.st-22 .co-viz .c-viz-strip__cell {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.st-22 .co-viz .c-viz-strip__value {
+  font-size: var(--type-h2);
+  line-height: 1.05;
+}
+.st-22 .co-viz .c-viz-strip__label {
+  font-size: var(--type-caption);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
