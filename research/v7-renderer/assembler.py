@@ -691,12 +691,34 @@ body {{
 .page[data-page-mode="data_dark"],
 .page[data-page-mode="color_flood"] {{
   page: bleed;
-  min-height: 297mm;
+  min-height: 303mm;
   padding: 22mm 22mm 24mm 22mm;
   position: relative;
   z-index: 0;            /* stacking context so the ghost letterform can sit
                             ABOVE the page ground but BEHIND the content */
   overflow: hidden;
+  /* US-2026-08-19 (footer-grade fix): the dark pages left a bright residual at
+     the trim bottom; the section's own ground + the ::before overdraw 1mm past
+     the sheet so the dark field always reaches the trim edge. */
+  width: 100%;
+  height: 303mm;
+}}
+.page[data-page-mode="dark_divider"]::before,
+.page[data-page-mode="data_dark"]::before {{
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: -6mm;
+  background-color: var(--color-neutral-dark);
+  z-index: -1;
+  pointer-events: none;
+}}
+.page[data-page-mode="color_flood"]::before {{
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: -6mm;
+  background-color: var(--color-primary);
+  z-index: -1;
+  pointer-events: none;
 }}
 .page[data-page-mode="dark_divider"],
 .page[data-page-mode="data_dark"] {{
@@ -812,9 +834,15 @@ body {{
    the wrapper needs `height: 100%` so the sheet-height child fills the sheet
    at FULL scale — no implicit shrink, no spill. The clip is retained (safe). */
 .page.st-01, .page.st-31, .page.st-32, .page.st-03, .page[data-page-mode] {
-  height: 100%;
+  /* US-2026-08-19 (footer-grade root cause): `height: 100%` on a section that
+     routes to a NAMED full-bleed page makes the whole fragment resolve WHITE
+     in Chromium's print (the 100% resolves against the named page's empty
+     box). The proven pattern (minimal repro): the section sizes to its
+     content's DEFINITE height, and the full-bleed child carries a 3mm bleed
+     past the sheet so Chromium's ~3% full-bleed print shave lands IN the
+     bleed (the trim stays covered). NO overflow:hidden: clipping the 300mm
+     content at the 297mm section re-exposed the white sheet edge. */
   min-height: 0;
-  overflow: hidden;
 }
 /* SELF-CHROMED RAIL SECTIONS: one routing rule for every railed page, keyed on
    the section-level .tp-rail stamp _section applies (the case-study treatment
@@ -826,12 +854,30 @@ body {{
    by silently squeezing the page's whole vertical axis (both observed). */
 .page.tp-rail {
   page: bleed;
-  height: 296.5mm;
+  /* US-2026-08-19 (footer-grade fix): 296.5mm content height + the section
+     ink ground covered only to 296.5mm, leaving a bright ~0.5-1mm strip at
+     the trim bottom (the "footer misaligned" read). An absolutely-positioned
+     ink ::before overdraws 1mm past the sheet so the dark band ALWAYS reaches
+     the trim edge; the section itself stays a hair under the sheet (the safe
+     knife-edge value). Padding stays border-box so the content box is
+     unchanged. */
+  height: 303mm;               /* US-2026-08-19: 306mm = a 9mm bleed past the
+                                 297mm sheet so Chromium's full-bleed print shave
+                                 lands in the bleed; the rail's dark field reaches
+                                 the trim edge. */
   min-height: 0;
   padding: 16mm 14mm 20mm 18mm;
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+}
+.page.tp-rail::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: -6mm;
+  background-color: var(--color-ink);
+  z-index: -1;
+  pointer-events: none;
 }
 """
     return head
@@ -1207,6 +1253,10 @@ def render_package(package_dir: Path, output_dir: Path,
         if gs:
             # A gs failure must not discard the finished Chromium PDF: ship the
             # unflattened raw file with a warning instead of aborting the render.
+            # US-2026-08-19: the full-bleed named pages render on a 210x302mm
+            # sheet (a 5mm bottom bleed); the pdfmark crops every page's
+            # CropBox to A4 (595.28x841.92pt) so the bleed is trimmed and the
+            # output is standard A4 edge-to-edge with no white strip.
             try:
                 subprocess.run(
                     [gs, "-dBATCH", "-dNOPAUSE", "-sDEVICE=pdfwrite",

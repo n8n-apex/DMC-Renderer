@@ -55,10 +55,8 @@
 .st-03 .cta-bleed {
   position: relative;
   width: 100%;
-  /* EXPLICIT height, not min-height: in Chromium's fragmentation a min-height
-     block on the final sheet came up ~22mm short and a cream strip showed
-     under the "full-bleed" ground. */
-  height: 297mm;                            /* full A4 portrait (margin:0 page) */
+  /* US-2026-08-19 (footer-grade fix): definite sheet height. */
+  height: 303mm;                            /* US-2026-08-19: 3mm bleed past the sheet */
   box-sizing: border-box;
   background-color: var(--color-ink);       /* the solid dark authority ground */
   /* ATMOSPHERE ground (the reference closers): the brand's generated texture /
@@ -233,5 +231,16 @@
   color: var(--color-on-dark);
   opacity: 0.05;
   z-index: 0;
+  pointer-events: none;
+}
+
+/* US-2026-08-19 (footer-grade fix): overdraw the ink field 1mm past the sheet
+   so the dark closer reaches the trim edge (no bright residual at the bottom). */
+.st-03 .cta-bleed::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: -6mm;
+  background-color: var(--color-ink);
+  z-index: -1;
   pointer-events: none;
 }
