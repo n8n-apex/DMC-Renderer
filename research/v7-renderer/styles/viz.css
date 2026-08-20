@@ -351,7 +351,14 @@
 .c-viz-strip__cell { flex: 1 1 0; min-width: 34mm; }
 .c-viz-strip__value {
   display: block; font-family: var(--font-head); font-weight: 800;
-  font-size: var(--type-stat-xl); line-height: 1; color: var(--color-primary);
+  /* US-2026-08-19 (metric-fit + contrast judgment): --type-stat-xl (60pt)
+     made 3-cell strips fill their cells edge to edge (the user's "too big").
+     --type-stat (40pt) is still a strong figure with clean negative space.
+     COLOR: --color-primary was a teal-green that read as low-contrast on the
+     light strips (p24 "1 Tag / 3-5 Tage / 2-3 Tage"); the value is now
+     --color-ink (near-black) so every strip figure is legible on light
+     grounds; accent stays for labels/rules. */
+  font-size: var(--type-stat); line-height: 1; color: var(--color-ink);
 }
 .c-viz-strip__label {
   display: block; font-family: var(--font-head); font-size: var(--type-caption);

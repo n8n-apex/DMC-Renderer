@@ -1259,7 +1259,11 @@
   font-size: var(--type-stat);
   line-height: 0.98;
   letter-spacing: -0.01em;
-  color: var(--color-accent);
+  /* US-2026-08-19 (contrast judgment, p20): the figure was --color-accent —
+     for a brand whose accent is teal-green on a dark navy card, that read as
+     green-on-blue (low contrast, muddy). The figure on a DARK card must be a
+     LIGHT token; the accent lives in the glow/rule behind it. */
+  color: var(--color-on-dark);
   text-shadow: 0 0 5mm color-mix(in srgb, var(--color-neutral-dark) 55%, transparent);
 }
 .c-statcard__label {

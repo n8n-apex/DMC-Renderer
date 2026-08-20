@@ -511,6 +511,13 @@ def shared_head_css(
   top: 0; left: 18mm; right: 14mm; height: 16mm;
   display: block;
   z-index: 3;
+  /* US-2026-08-19 (banner chipped): WITHOUT position:relative the absolute
+     children (widget top, URL/footer bottom) resolved against the SHEET (the
+     margin:0 bleed page), so `left:50%`/`right:0` measured from the sheet edge
+     and the URL tail + folio ran to the trim (the last 'i' of apex-consulting.ai
+     was cut). Relative bars make the children resolve against the bar's own
+     18mm..196mm band. */
+  position: relative;
 }}
 .tp-chrome-top .tp-chrome-wm {{
   position: absolute; left: 0; bottom: 1.4mm;
@@ -528,6 +535,9 @@ def shared_head_css(
   bottom: 0; left: 18mm; right: 14mm; height: 20mm;
   display: block;
   z-index: 3;
+  /* US-2026-08-19 (banner chipped): see .tp-chrome-top; relative so the
+     wordmark/URL/folio resolve against the bar, not the sheet. */
+  position: relative;
 }}
 .tp-chrome-bottom span {{ position: absolute; top: 1.8mm; line-height: 9pt; }}
 .tp-chrome-bottom .tp-chrome-wm {{
