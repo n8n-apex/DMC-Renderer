@@ -204,11 +204,16 @@
      not individually colored (labels, captions, URLs) inherited the body's
      dark --color-ink and read dark-on-navy. */
   color: var(--color-on-dark);
-  /* ABSOLUTE width (see the editorial-fill rail note): the rail resolves
-     against the SECTION (210mm) while the cream field's 60% resolves against
-     the GRID (178mm). The designed rail = 40% of the content box + the 14mm
-     right margin = 0.40*178 + 14 = 85.2mm. */
-  width: 85.2mm;
+  /* US-2026-08-19 (seam fix, the human layout): the rail previously used a
+     FIXED 85.2mm width anchored right-to-sheet, while the cream main field
+     is 60% of the GRID : the two edges did NOT meet (measured: main right
+     763px, rail left 958px = a 195px strip of raw page ground between the
+     cream and the blue = the messy seam). The rail now spans from EXACTLY
+     where the main field ends (left:60% of the section = the same 60/40
+     split the design intends) to the sheet's right edge, with the rail's own
+     ink ground filling the whole zone. Zero gap, clean straight seam. */
+  left: 60%;
+  width: auto;
   box-sizing: border-box;
   padding: var(--space-6) calc(14mm + var(--space-5)) 26mm var(--space-6);
   display: flex;
