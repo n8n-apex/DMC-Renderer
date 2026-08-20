@@ -322,6 +322,10 @@
   column-gap: var(--space-7);
   row-gap: var(--space-4);
   align-content: start;
+  /* US-2026-08-19 (grid alignment): a fixed numeral column keeps every row's
+     number AND text on the same vertical axis (the audit read '02/04 shifted
+     right' when the flexible min-width let cells drift). */
+  align-items: stretch;
 }
 .page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-item {
   flex: 0 0 auto;
@@ -329,9 +333,15 @@
   align-items: flex-start;
   padding: var(--space-3) 0;
 }
+.page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-n {
+  min-width: 12mm;         /* FIXED numeral column (narrower in the 2-col grid) */
+  text-align: left;
+}
 .page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-t {
   font-size: var(--type-body);
   line-height: 1.45;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .page.treatment-a4_editorial_fill .ef-list-item:last-child {
   border-bottom: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);

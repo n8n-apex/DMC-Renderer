@@ -151,8 +151,12 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-5);
+  /* US-2026-08-19 (rhythm fix): space-between left a large gap after item 01
+     (the first item absorbed the slack), breaking the vertical rhythm. A
+     definite fill with equal gaps (space-around) keeps every gap uniform and
+     the page filled. */
+  justify-content: space-around;
+  gap: var(--space-2);
   max-width: 150mm;
 }
 .st-02 .ol-ev-item {

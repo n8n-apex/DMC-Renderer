@@ -268,13 +268,25 @@
   width: 31.3%;
   margin-right: 0;
 }
-/* the cards keep NATURAL height (a stretched card with a short body reads as
-   a hollow plate — the vision audit flagged the empty card interiors).
-   Stretch only the CELL; the card hugs its content. */
+/* US-2026-08-19 (step-card balance): the cards previously hugged their
+   content, so a short body left a hollow plate AND the first card ran taller
+   than its siblings (uneven rhythm — the user's 'large negative space within
+   the boxes'). The card is now a flex column that fills its cell; the body
+   grows (flex:1) so every card in a row shares one height with its interior
+   balanced (title top, body filling below). */
 .st-06 .mx-steps--cont .mx-step-cell .c-step-card {
   width: 100%;
-  height: auto;
-  align-self: flex-start;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.st-06 .mx-steps--cont .mx-step-cell .c-step-card__text {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.st-06 .mx-steps--cont .mx-step-cell .c-step-card__body {
+  flex: 1 1 auto;
 }
 .st-06 .mx-steps--cont .mx-step-cell:nth-child(3n) { margin-right: 0; }
 
