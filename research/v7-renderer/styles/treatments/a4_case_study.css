@@ -55,6 +55,10 @@
   padding: var(--space-1) var(--space-6) var(--space-4) 0;
   box-sizing: border-box;
   min-width: 0;
+  /* US-2026-08-19 (two-field anatomy): the left narrative field is EXPLICITLY
+     light (the cream surface ground) so its dark-ink text always reads: a
+     section-level bleed overdraw can never make it dark-on-dark again. */
+  background-color: var(--color-surface);
 }
 
 .page.treatment-a4_case_study .cs4-head { flex: 0 0 auto; min-width: 0; }
@@ -194,6 +198,12 @@
   right: 0;
   left: auto;
   height: auto;
+  /* US-2026-08-19 (Part B readability): the rail is a DARK panel, so its
+     DEFAULT text is on-dark (everything inherits WHITE unless a lighter
+     muted/accent tone is explicitly set on a leaf. Without this, any text
+     not individually colored (labels, captions, URLs) inherited the body's
+     dark --color-ink and read dark-on-navy. */
+  color: var(--color-on-dark);
   /* ABSOLUTE width (see the editorial-fill rail note): the rail resolves
      against the SECTION (210mm) while the cream field's 60% resolves against
      the GRID (178mm). The designed rail = 40% of the content box + the 14mm
@@ -280,7 +290,10 @@
   font-family: var(--font-head);
   font-size: var(--type-eyebrow);
   letter-spacing: 0.04em;
-  color: var(--color-accent);
+  /* US-2026-08-19 (Part B contrast): --color-accent alone (a teal for apex)
+     read muddy on the navy rail (ratio ~1.9). The URL is mixed toward
+     --color-on-dark so the accent carries the color while staying legible. */
+  color: color-mix(in srgb, var(--color-accent) 45%, var(--color-on-dark));
   margin-top: var(--space-2);
 }
 
@@ -296,7 +309,9 @@
   font-size: var(--type-eyebrow);
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark));
+  /* US-2026-08-19 (Part B): the cap is a DARK-panel label; 60% accent alone
+     read low-contrast on navy. Mix toward on-dark so it stays legible. */
+  color: color-mix(in srgb, var(--color-accent) 40%, var(--color-on-dark));
   border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
   padding-top: var(--space-3);
 }

@@ -128,3 +128,94 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# --------------------------------------------------------------------------- #
+# DET CONTRAST PROBE (US-2026-08-19, Part B): a deterministic readability guard
+# that walks the rendered HTML's text-bearing elements, compares each element's
+# computed foreground vs the nearest non-transparent background, and flags any
+# pair whose contrast ratio is below a readable floor (~3:1 for large text,
+# 4.5:1 for body). This catches the "dark text on dark panel / blue on blue"
+# class WITHOUT the vision model — a hard regression net on every render.
+# --------------------------------------------------------------------------- #
+
+def _rel_lum(hex_color: str) -> float:
+    """WCAG relative luminance of a #rrggbb / rgb() / color(srgb ...) color."""
+    import re
+    m = re.match(r"#([0-9a-fA-F]{6})", hex_color)
+    vals = None
+    if m:
+        vals = tuple(int(m.group(1)[i:i+2], 16) / 255.0 for i in (0, 2, 4))
+    else:
+        m = re.match(r"rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)", hex_color)
+        if m:
+            vals = tuple(int(x) / 255.0 for x in m.groups())
+    if not vals:
+        m = re.match(
+            r"color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)", hex_color
+        )
+        if m:
+            vals = tuple(min(1.0, float(x)) for x in m.groups())
+    if not vals:
+        return 0.0
+    def chan(c):
+        return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (chan(c) for c in vals)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def _contrast(fg: str, bg: str) -> float:
+    l1, l2 = _rel_lum(fg), _rel_lum(bg)
+    hi, lo = max(l1, l2), min(l1, l2)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def probe_contrast(html_path: Path, *, floor: float = 3.0) -> list[dict]:
+    """Walk text-bearing elements; return [element, fg, bg, ratio] below floor."""
+    from playwright.sync_api import sync_playwright
+    offenders: list[dict] = []
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        p = b.new_page()
+        p.goto(html_path.resolve().as_uri())
+        p.emulate_media(media="print")
+        rows = p.evaluate("""() => {
+          const out = [];
+          const els = [...document.querySelectorAll('p, h1, h2, h3, h4, li, span, blockquote, div')];
+          for (const el of els) {
+            const t = (el.textContent || '').trim();
+            if (t.length < 2) continue;
+            const cs = getComputedStyle(el);
+            const fg = cs.color;
+            if (fg === 'rgba(0, 0, 0, 0)' || fg === 'transparent') continue;
+            if (parseFloat(cs.fontSize) < 8) continue;
+            let bg = 'rgba(0, 0, 0, 0)';
+            let node = el;
+            while (node && bg === 'rgba(0, 0, 0, 0)') {
+              if (node.className && String(node.className).includes('tp-rail') &&
+                  node !== el && node.parentElement && node.parentElement.tagName === 'SECTION') break;
+              const cls = node.className || '';
+              // stop at a SELF-CHROMED rail bar or a pseudo-bleed holder: they
+              // are not text panels
+              if (String(cls).startsWith('tp-chrome')) break;
+              const b = getComputedStyle(node).backgroundColor;
+              if (b && b !== 'rgba(0, 0, 0, 0)' && b !== 'transparent') { bg = b; break; }
+              node = node.parentElement;
+            }
+            // fall back to the page/section ground when no panel found
+            if (bg === 'rgba(0, 0, 0, 0)') {
+              const sec = el.closest('section.page');
+              bg = sec ? getComputedStyle(sec).backgroundColor : 'rgba(0, 0, 0, 0)';
+            }
+            out.push({el: el.className.split(' ').slice(0,2).join('.'), text: t.slice(0,24),
+                      fg, bg, ratio: 0});
+          }
+          return out;
+        }""")
+        for row in rows:
+            if row["bg"] in ("rgba(0, 0, 0, 0)", "transparent"):
+                continue
+            ratio = _contrast(row["fg"], row["bg"])
+            if ratio < floor:
+                offenders.append({**row, "ratio": round(ratio, 2)})
+        b.close()
+    return offenders

@@ -290,6 +290,11 @@
   margin: var(--space-5) 0;
 }
 .st-07b .th-viz .c-viz { max-width: 168mm; }
+/* US-2026-08-19 (Part B readability): the theory pages are DARK (the dark-divider
+   panel wraps the viz); a bare accent mega (the "40 %" figure) read teal-on-navy.
+   The dark-page viz figures carry on-dark so the magnitude is legible. */
+.st-07b .th-viz .c-viz-mega__value { color: var(--color-on-dark); }
+.st-07b .th-viz .c-viz-mega__label { color: color-mix(in srgb, var(--color-on-dark) 82%, transparent); }
 
 /* US-510 (vision-gate): on the DARK-DIVIDER theory pages the assembler's ghost
    numeral anchors top-right, leaving the lower dark field reading as a void
@@ -301,4 +306,11 @@
   right: 10mm;
   bottom: -6mm;
   opacity: 0.05;
+}
+
+/* US-2026-08-19 (Part B readability): the KERNAUSSAGE label sits on the dark
+   insight panel — accent alone read muddy on navy. Mix toward on-dark so the
+   label stays legible while keeping the accent character. */
+.st-07b .th-insightfill-label {
+  color: color-mix(in srgb, var(--color-accent) 45%, var(--color-on-dark));
 }

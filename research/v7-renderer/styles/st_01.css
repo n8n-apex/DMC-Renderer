@@ -52,6 +52,10 @@
                                         (every deck rendered +1 page). */
   min-height: 303mm;
   background-color: var(--color-ink);
+  /* US-2026-08-19 (Part B readability): the cover is a DARK panel; its default
+     text is on-dark so every inherited text (wordmark, kickers, titles, stat
+     badges) reads WHITE on the navy hero, not invisible dark-on-dark. */
+  color: var(--color-on-dark);
   overflow: hidden;
 }
 
@@ -219,7 +223,10 @@
   font-size: var(--type-eyebrow);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* US-2026-08-19 (Part B): the cover is DARK; a bare accent (teal for apex)
+     read nearly-invisible. Mixed toward on-dark to keep the accent character
+     while staying legible on the navy hero. */
+  color: color-mix(in srgb, var(--color-accent) 55%, var(--color-on-dark));
   margin-right: var(--space-2);
   vertical-align: 0.4mm;
 }
@@ -266,7 +273,7 @@
   font-size: var(--type-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: color-mix(in srgb, var(--color-accent) 45%, var(--color-on-dark));
   margin: var(--space-3) 0 0 0;
 }
 
@@ -324,4 +331,17 @@
   font-weight: 700;
   margin-right: var(--space-1);
   text-indent: 0;
+}
+
+/* US-2026-08-19 (Part B readability): the cover rail's stat values sit on the
+   dark ink backing (the ::before frosted fill) — they must read ON-DARK, not
+   the global accent teal (which was near-invisible on navy). */
+.st-01 .cv-rail .c-stat-value { color: var(--color-on-dark); }
+.st-01 .cv-rail .c-stat-label { color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink)); }
+
+/* US-2026-08-19 (Part B): the cover's two-tone ACCENT word (the contrast run)
+   sits on the dark navy band — the global accent alone read invisible.
+   Mixed toward on-dark so the hero accent stays vivid but legible. */
+.st-01 .cv-title .c-two-tone__accent {
+  color: color-mix(in srgb, var(--color-accent) 60%, var(--color-on-dark));
 }

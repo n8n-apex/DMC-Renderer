@@ -854,17 +854,16 @@ body {{
    by silently squeezing the page's whole vertical axis (both observed). */
 .page.tp-rail {
   page: bleed;
-  /* US-2026-08-19 (footer-grade fix): 296.5mm content height + the section
-     ink ground covered only to 296.5mm, leaving a bright ~0.5-1mm strip at
-     the trim bottom (the "footer misaligned" read). An absolutely-positioned
-     ink ::before overdraws 1mm past the sheet so the dark band ALWAYS reaches
-     the trim edge; the section itself stays a hair under the sheet (the safe
-     knife-edge value). Padding stays border-box so the content box is
-     unchanged. */
-  height: 303mm;               /* US-2026-08-19: 306mm = a 9mm bleed past the
-                                 297mm sheet so Chromium's full-bleed print shave
-                                 lands in the bleed; the rail's dark field reaches
-                                 the trim edge. */
+  /* US-2026-08-19 (two-field anatomy restore): the case study is DESIGNED as
+     a light cream left field (60%) + a dark navy right rail (40%). The ink
+     overdraw MUST only cover the RIGHT RAIL band (and the 6mm bleed), never
+     the whole section — a full-width ink ::before painted the entire sheet
+     behind the transparent left field, making the narrative dark-on-dark
+     (the user's "blue on blue / nothing can be seen"). The left field carries
+     its own explicit light ground (a4_case_study.css .cs4-main). */
+  height: 303mm;               /* a 6mm bleed past the 297mm sheet so Chromium's
+                                  full-bleed print shave lands in the bleed; the
+                                  rail's dark field reaches the trim edge. */
   min-height: 0;
   padding: 16mm 14mm 20mm 18mm;
   box-sizing: border-box;
@@ -874,7 +873,14 @@ body {{
 .page.tp-rail::before {
   content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: -6mm;
+  top: 0;
+  /* RIGHT RAIL ONLY: the dark rail occupies the right ~40% (85mm of the
+     content cross) + the 14mm right margin + the 6mm bottom bleed. The
+     left field stays light. The rail's own .cs4-rail background already
+     reaches these edges; this overdraw backstops the trim bleed. */
+  right: 0;
+  left: 128mm;
+  bottom: -6mm;
   background-color: var(--color-ink);
   z-index: -1;
   pointer-events: none;

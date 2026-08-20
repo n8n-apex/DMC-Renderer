@@ -520,7 +520,10 @@
   font-weight: 800;
   font-size: var(--type-stat-xl);
   line-height: 1;
-  color: var(--color-accent);
+  /* US-2026-08-19 (Part B): the callout panel is a LIGHT accent tint; the
+     value was accent-on-accent-tint (ratio ~1). Sticky DARK value reads on
+     the light tint; the accent stays in the panel's own fill. */
+  color: var(--color-ink);
 }
 .c-stat-callout__label {
   font-family: var(--font-head);
@@ -546,7 +549,9 @@
   font-size: var(--type-eyebrow);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* US-2026-08-19 (Part B): the dark panel's heading was accent-on-dark; mixed
+     toward on-panel so it stays a readable light label with accent character. */
+  color: color-mix(in srgb, var(--color-accent) 45%, var(--color-on-panel));
   margin: 0 0 var(--space-2) 0;
 }
 .c-dark-recap__body {
