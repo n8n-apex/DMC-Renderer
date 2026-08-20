@@ -244,10 +244,15 @@ async def _orchestrate_and_deliver(
     render runs in a worker thread so the event loop is never blocked."""
     runner = _SHIP_RUNNER or orchestrator.SubprocessRenderRunner()
     ship_out = Path(tempfile.mkdtemp(prefix="dmc_ship_"))
+    # US-2026-08-19 (n8n outtake): upload the deliverable PDF + editable IDML
+    # ZIP to the shared file host and send the public URLs back to n8n.
+    _cfg = get_settings()
     await asyncio.to_thread(
         orchestrator.run_and_deliver,
         package_dir, ship_out, webhook, job_id,
         runner=runner, post_fn=_post_webhook_sync,
+        upload_url=_cfg.artifact_upload_url,
+        public_base=_cfg.artifact_public_base,
     )
 
 

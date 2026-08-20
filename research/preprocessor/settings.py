@@ -51,6 +51,19 @@ class Settings(BaseSettings):
     report_generator_webhook: Optional[str] = None
     onboard_output_dir: Optional[str] = None
 
+    # ── artifact delivery (US-2026-08-19: n8n outtake) ──
+    # The ship path uploads the finished PDF + the editable IDML ZIP to a
+    # shared file host and delivers the PUBLIC download URLs in the webhook
+    # payload (so n8n can fill an Airtable row or email Richard's people with
+    # the files). `artifact_upload_url` is the host's accept endpoint (a
+    # multipart PUT/POST that stores the file and returns its public URL);
+    # `artifact_public_base` is what public URLs are built from when the host
+    # returns a relative path. Uploading is best-effort: when either is unset
+    # or the host is unreachable, the payload falls back to the local
+    # artifact paths (never crashes the ship).
+    artifact_upload_url: Optional[str] = None
+    artifact_public_base: Optional[str] = None
+
     def openrouter_key_str(self) -> Optional[str]:
         return (
             self.openrouter_api_key.get_secret_value()

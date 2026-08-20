@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable, Optional, Protocol
 
@@ -94,6 +94,19 @@ class JobOutcome:
     pdf_path: Optional[Path]
     gate: GateDecision
     report: dict
+    # US-2026-08-19 (n8n outtake): the deliverable artifact set — the finished
+    # PDF + the editable IDML ZIP, with their PUBLIC upload URLs when a shared
+    # file host accepted them (so n8n can fill an Airtable row / email links).
+    idml_zip_path: Optional[Path] = None
+    artifact_urls: dict = field(default_factory=dict)
+
+    def outcome_dict(self) -> dict:
+        return {
+            "status": self.status,
+            "pdf_path": str(self.pdf_path) if self.pdf_path else None,
+            "idml_zip_path": str(self.idml_zip_path) if self.idml_zip_path else None,
+            "artifact_urls": self.artifact_urls,
+        }
 
 
 def run_report_job(
@@ -103,11 +116,20 @@ def run_report_job(
     runner: RenderRunner,
     min_clear_ratio: float = 1.0,
     callback: Optional[Callable[[JobOutcome], Any]] = None,
+    upload_url: Optional[str] = None,
+    public_base: Optional[str] = None,
+    renderer_dir: Optional[Path] = None,
 ) -> JobOutcome:
     """Render+grade the already-built package, gate it, and return the outcome.
 
-    ``callback`` (e.g. the n8n webhook poster) is invoked with the JobOutcome when
-    provided -- the single place the result leaves the system.
+    ``callback`` (e.g. the n8n webhook poster) is invoked with the JobOutcome
+    when provided -- the single place the result leaves the system.
+
+    US-2026-08-19 (n8n outtake): when ``upload_url`` + ``public_base`` are
+    set, the finished PDF + the editable IDML ZIP are uploaded to the shared
+    file host and their public URLs ride the outcome (best-effort; a missing
+    host/file never crashes the ship). ``renderer_dir`` is the v7-renderer
+    root (for the --export-idml build); defaults to the sibling repo path.
     """
     package_dir = Path(package_dir)
     out_dir = Path(out_dir)
@@ -121,6 +143,26 @@ def run_report_job(
         gate=decision,
         report=result.convergence_report,
     )
+
+    # US-2026-08-19 (n8n outtake): build + upload the editable IDML ZIP (and
+    # the PDF) to the shared host so n8n can deliver the files to the client.
+    if upload_url and public_base:
+        try:
+            from stages.artifact_delivery import build_idml_delivery
+            rdir = renderer_dir or Path(__file__).resolve().parents[1] / "v7-renderer"
+            deliv = build_idml_delivery(
+                package_dir=package_dir, renderer_dir=rdir, out_dir=out_dir,
+                upload_url=upload_url, public_base=public_base,
+            )
+            outcome.idml_zip_path = deliv.idml_zip_path
+            outcome.artifact_urls = {
+                "pdf": deliv.pdf_url,
+                "idml_zip": deliv.idml_zip_url,
+                "local_paths": deliv.local_paths,
+            }
+        except Exception as exc:  # noqa: BLE001 -- never crash the ship
+            outcome.artifact_urls = {"error": str(exc)}
+
     if callback is not None:
         callback(outcome)
     return outcome
@@ -130,12 +172,19 @@ def run_report_job(
 # Delivery (the webhook side -- kept here so it is testable with no FastAPI).
 # --------------------------------------------------------------------------- #
 def outcome_payload(outcome: JobOutcome, job_id: str) -> dict:
-    """The JSON payload delivered to the webhook (n8n) describing a finished job."""
+    """The JSON payload delivered to the webhook (n8n) describing a finished job.
+
+    US-2026-08-19: includes the deliverable artifact set — the PDF + editable
+    IDML ZIP public download URLs (when uploaded) so n8n can populate an
+    Airtable row or email the files to Richard's people.
+    """
     return {
         "job_id": job_id,
         "status": outcome.status,
         "clear_ratio": outcome.gate.clear_ratio,
         "pdf_path": str(outcome.pdf_path) if outcome.pdf_path else None,
+        "idml_zip_path": str(outcome.idml_zip_path) if outcome.idml_zip_path else None,
+        "artifact_urls": outcome.artifact_urls,
         "punch_list": outcome.gate.punch_list,
         "deck_reward": outcome.report.get("deck_reward"),
         "cleared_count": outcome.report.get("cleared_count"),
@@ -166,12 +215,16 @@ def run_and_deliver(
     runner: RenderRunner,
     post_fn: Callable[[str, dict], Any],
     min_clear_ratio: float = 1.0,
+    upload_url: Optional[str] = None,
+    public_base: Optional[str] = None,
 ) -> JobOutcome:
     """Run the job and deliver its outcome to the webhook -- the single call the
     background task makes. Returns the JobOutcome (also delivered)."""
     return run_report_job(
         package_dir, out_dir, runner=runner, min_clear_ratio=min_clear_ratio,
         callback=lambda o: deliver_outcome(o, webhook, job_id, post_fn=post_fn),
+        upload_url=upload_url, public_base=public_base,
+        renderer_dir=_RENDERER_DIR,
     )
 
 
