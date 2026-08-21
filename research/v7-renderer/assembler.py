@@ -532,7 +532,12 @@ def shared_head_css(
 }}
 .tp-chrome-bottom {{
   position: absolute;
-  bottom: 0; left: 18mm; right: 14mm; height: 20mm;
+  /* US-2026-08-19 (footer-invisible root cause): the tp-rail section is 303mm
+     tall (a 6mm bottom bleed). `bottom: 0` anchored the footer bar to the
+     SECTION's bottom = 6mm BELOW the visible 297mm sheet, so every rail
+     page's footer (wordmark/URL/folio) rendered off-sheet and invisible.
+     `bottom: 6mm` puts the bar back at the visible sheet foot. */
+  bottom: 6mm; left: 18mm; right: 14mm; height: 20mm;
   display: block;
   z-index: 3;
   /* US-2026-08-19 (banner chipped): see .tp-chrome-top; relative so the
@@ -547,14 +552,20 @@ def shared_head_css(
   color: var(--color-muted);
 }}
 .tp-chrome-bottom .tp-chrome-url {{
-  left: 50%; transform: translateX(-50%);
+  /* US-2026-08-19 (footer seam): `left:50%` centered the URL across the
+     cream/blue seam on case-study pages — it straddled the color boundary
+     and read half-dark/half-light. Positioned in the LEFT segment of the band
+     so it stays entirely over the light field (never over the dark rail). */
+  left: 38%; transform: translateX(-50%);
   font-family: var(--font-head); font-weight: 500; font-size: 6.5pt;
   letter-spacing: 0.08em;
   color: var(--color-muted);
 }}
 .tp-chrome-bottom .tp-chrome-folio {{
-  right: 0;
-  font-family: var(--font-head); font-weight: 700; font-size: 8pt;
+  right: 14mm;   /* US-2026-08-19: inset from the trim so the folio reads
+                    clearly over the dark rail (was hugging the extreme edge
+                    at right:0, 7pt white against the page corner - lost). */
+  font-family: var(--font-head); font-weight: 700; font-size: 9pt;
   color: var(--color-on-dark);
 }}
 * {{ box-sizing: border-box; }}

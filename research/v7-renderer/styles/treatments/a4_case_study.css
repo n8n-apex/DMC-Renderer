@@ -191,6 +191,11 @@
   /* the dark proof rail, anchored to the SECTION (the sheet) per THE RAIL
      ANCHOR note above: top at the content-box line so the running chrome band
      stays clean, bottom/right flush to the trim. */
+  /* US-2026-08-19 (seam finesse): a designed ACCENT keyline at the rail's
+     left edge turns the blunt cream/blue abut into an intentional boundary
+     (Richard's decks keyline the dark rail). This is the "polish": a hairline
+     of the accent tone that reads as a deliberate seam, not a bare color jump. */
+  border-left: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, var(--color-ink));
   position: absolute;
   z-index: 0;
   top: 16mm;
