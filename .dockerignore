@@ -1,0 +1,50 @@
+# Keep the build context small: the image needs only the three code roots
+# (dmc-renderer/, research/v7-renderer/, research/preprocessor/) minus their
+# heavy local artifacts.
+*
+!dmc-renderer/**
+!research/v7-renderer/**
+!research/preprocessor/**
+!research/quality_loop/**
+!research/composition_registry/**
+!research/reference-atlas/**
+!research/postprocessor/**
+!research/design_policy/**
+!research/artifacts/**
+# retained build artifacts must never ship inside the image
+research/artifacts/runs/
+!richard-grammar-v2.md
+!docs/
+docs/**
+!docs/writer-prompt-v5.md
+!docs/resolve-schema-node-v5.js
+!docs/n8n/
+docs/n8n/**
+!docs/n8n/writer_gate.js
+!docs/n8n/source-ledger-node-v3.js
+!docs/n8n/claim-gate-v3.js
+!docs/n8n/workflow-contract-v3.json
+# client imagery (founder portrait, product mockups): the product router +
+# founder slots resolve from this door in-image; without it the container
+# renders every deck with NO client imagery.
+!client_assets/**
+
+# venvs + caches (rebuilt in-image from requirements.txt)
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+
+# local render outputs / debug artifacts (not code)
+research/v7-renderer/output/
+research/v7-renderer/fixtures/apex/out*/
+research/preprocessor/output/
+research/quality_loop/output/
+dmc-renderer/_proof*.pdf
+# local render workspace (~85MB of PDFs/PNGs regenerated on every render) and
+# heavy local-only artifacts: none of these are read by the service at runtime,
+# and shipping them re-uploads the build context on every docker build.
+dmc-renderer/_local_out/
+research/v7-renderer/fixtures/apex/assets/
+research/preprocessor/var/
+.review_backups/
+_renders/

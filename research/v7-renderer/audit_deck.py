@@ -50,7 +50,7 @@ Rules:
 Return ONLY the JSON, no markdown fences."""
 
 
-def rasterize(page_no: int, dpi: int = 90) -> Path:
+def rasterize(page_no: int, dpi: int = 160) -> Path:
     TMP.mkdir(parents=True, exist_ok=True)
     out = TMP / f"p{page_no}.png"
     # STALE-CACHE GUARD (2026-08-19): the cache used to return an OLD raster

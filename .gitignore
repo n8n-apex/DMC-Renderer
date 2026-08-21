@@ -50,3 +50,22 @@ research/decoration-samples/
 
 # Node
 node_modules/
+
+# Non-code / local-work assets that must never be committed (verified 2026-08-22)
+files from richard/
+refs/
+.obsidian/
+.superpowers/
+asset_bank/
+incoming_assets/
+# unrelated product (Plaud recorder -> Close CRM), not part of dmc-renderer
+plaud-close-automation/
+
+# scratch transcripts / notes / chat exports (not code)
+antwort.json
+kurzboeck.txt
+renderer_json.md
+content for apex.md
+
+# christoph-winter is scratch/test client data; the prod door is client_assets/<slug> via research/preprocessor
+client_assets/christoph-winter/
