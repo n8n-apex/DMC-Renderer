@@ -56,7 +56,7 @@
   position: relative;
   width: 100%;
   /* US-2026-08-19 (footer-grade fix): definite sheet height. */
-  height: 303mm;                            /* US-2026-08-19: 3mm bleed past the sheet */
+  height: 297mm;
   box-sizing: border-box;
   background-color: var(--color-ink);       /* the solid dark authority ground */
   /* ATMOSPHERE ground (the reference closers): the brand's generated texture /

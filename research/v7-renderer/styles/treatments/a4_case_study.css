@@ -45,20 +45,17 @@
 
 /* ---- LEFT: cream narrative field, 60%, clipped, top/foot distributed stack. ---- */
 .page.treatment-a4_case_study .cs4-main {
-  position: relative;
+  position: absolute;
   z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
   width: 60%;
-  /* US-2026-08-19 (cream full-bleed): the left field was 257mm (the content
-     box) inside the 303mm rail section, so the cream stopped ~46mm above the
-     sheet bottom -> WHITE showed below the cream (the 'cream is a box' defect
-     the user saw on p12/15/17/18). The cream now fills the FULL section
-     height so it bleeds to the sheet bottom edge, covering all the negative
-     white on the left. */
-  height: 303mm;
+  height: auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: var(--space-1) var(--space-6) var(--space-4) 0;
+  padding: 16mm var(--space-6) 14mm 18mm;
   box-sizing: border-box;
   min-width: 0;
   /* US-2026-08-19 (two-field anatomy): the left narrative field is EXPLICITLY
@@ -204,7 +201,7 @@
   border-left: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, var(--color-ink));
   position: absolute;
   z-index: 0;
-  top: 16mm;
+  top: 0;
   bottom: 0;
   right: 0;
   left: auto;
@@ -226,7 +223,7 @@
   left: 60%;
   width: auto;
   box-sizing: border-box;
-  padding: var(--space-6) calc(14mm + var(--space-5)) 26mm var(--space-6);
+  padding: 18mm calc(14mm + var(--space-5)) 16mm var(--space-6);
   display: flex;
   flex-direction: column;
   overflow: hidden;

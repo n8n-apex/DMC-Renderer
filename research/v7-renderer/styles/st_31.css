@@ -38,9 +38,7 @@
 .st-31 .br-bleed {
   position: relative;
   width: 100%;
-  height: 303mm;               /* US-2026-08-19: 3mm bleed past the sheet (the
-                                  height:100% fragment under a named bleed page
-                                  resolved white in print). */
+  height: 297mm;
   box-sizing: border-box;
   background-color: var(--color-ink);  /* fallback ground if no asset */
   background-size: cover;
