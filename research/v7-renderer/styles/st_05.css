@@ -48,7 +48,7 @@
 .st-05 .ab-lead {
   background-color: var(--color-ink);
   color: var(--color-on-dark);
-  padding: var(--space-2) var(--space-4);
+  padding: 3.5mm var(--space-5);
   margin: 0 0 var(--space-1) 0;
   border-top: 0.8mm solid var(--color-accent);
   break-inside: avoid;
@@ -82,7 +82,8 @@
 .st-05 .ab-cont-root .ab-grid tbody,
 .st-05 .ab-cont-root .ab-grid tr,
 .st-05 .ab-cont-root .ab-grid .ab-main { height: 100%; }
-.st-05 .ab-cont-root .ab-body { display: flex; flex-direction: column; justify-content: flex-start; }
+.st-05 .ab-cont-root .ab-body { display: flex; flex-direction: column; justify-content: flex-start; min-height: 100%; }
+.st-05 .ab-fill:not([data-proof]) .ab-body { justify-content: flex-end; }
 .st-05 .ab-grid .ab-gutter { width: var(--space-5); }
 .st-05 .ab-grid .ab-side { width: 38%; }
 
@@ -90,7 +91,7 @@
 .st-05 .ab-body {
   font-family: var(--font-body);
   font-size: var(--type-body);
-  line-height: 1.32;
+  line-height: 1.55;
   color: var(--color-body);
 }
 .st-05 .ab-body p {
@@ -136,7 +137,7 @@
   box-shadow: none;
   border-radius: 0;
   color: var(--color-on-primary);
-  padding: var(--space-2) var(--space-4);
+  padding: 3.5mm var(--space-5);
   margin: 0 0 var(--space-2) 0;
   border-top: 0.8mm solid var(--color-accent);
   break-inside: avoid;
@@ -148,12 +149,11 @@
   gap: 0;
 }
 .st-05 .ab-stats .c-stat-cell {
-  padding: var(--space-1) 0;
+  padding: 2.5mm 0;
   border-top: 0.15mm solid var(--color-on-primary);
 }
 .st-05 .ab-stats .c-stat-cell:first-child {
   border-top: none;
-  padding-top: 0;
 }
 .st-05 .ab-stats .c-stat-value {
   font-size: var(--type-display);
@@ -279,6 +279,17 @@
 }
 .st-05 .ab-logos .c-logo-wall { break-inside: avoid; }
 
+.st-05 .ab-fill {
+  min-height: 261mm;
+  display: flex;
+  flex-direction: column;
+}
+.st-05 .ab-fill .ab-grid { flex: 1 1 auto; }
+.st-05 .ab-fill:not([data-proof]) .ab-grid,
+.st-05 .ab-fill:not([data-proof]) .ab-grid tbody,
+.st-05 .ab-fill:not([data-proof]) .ab-grid tr { height: 100%; }
+.st-05 .ab-fill:not([data-proof]) .ab-grid .ab-main { vertical-align: bottom; }
+.st-05 .ab-fill .ab-proof { margin-top: auto; }
 /* US-609: the About continuation pages (identity/proof) fill the sheet — the
    last band pins via margin-top:auto so the page resolves instead of leaving
    a bottom void. */

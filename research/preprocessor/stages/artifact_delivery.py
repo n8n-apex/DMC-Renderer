@@ -138,12 +138,14 @@ def build_idml_delivery(
     try:
         tmp = Path(tempfile.mkdtemp(prefix="dmc_idml_"))
         import sys
-        sys.path.insert(0, str(renderer_dir))
+        pp_root = Path(__file__).resolve().parents[1].parent / "postprocessor"
+        if str(pp_root) not in sys.path:
+            sys.path.insert(0, str(pp_root))
         from export_idml import export_idml, package_delivery  # type: ignore
 
         pkg_json = package_dir / "resolved_package.json"
         idml = export_idml(pkg_json, tmp / "report", assets_dir=package_dir / "assets")
-        zip_out = tmp / "ApexReport_InDesign.zip"
+        zip_out = tmp / "report_indesign.zip"
         extra = [
             out_dir / "report.pdf",
         ] if (out_dir / "report.pdf").exists() else []

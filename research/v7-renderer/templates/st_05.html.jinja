@@ -25,7 +25,7 @@
 {% from 'logo_wall.jinja' import logo_wall %}
 {% from 'proof_gallery.jinja' import proof_gallery %}
 
-{% if continuation_role %}<div class="ab-cont-root{% if continuation_role == 'proof' %} ab-cont-root--proof{% endif %}"{% if continuation_role == 'proof' %} data-proof{% endif %}>{% endif %}
+<div class="ab-fill{% if continuation_role %} ab-cont-root{% if continuation_role == 'proof' %} ab-cont-root--proof{% endif %}{% endif %}"{% if continuation_role == 'proof' %} data-proof{% endif %}>
 <div class="ab-header">
   {% if kicker %}{{ eyebrow(kicker) }}{% endif %}
   {% if title %}<h1 class="ab-headline">{{ title }}</h1>{% endif %}
@@ -122,4 +122,4 @@
   {{ logo_wall(logos, names=partner_names) }}
 </div>
 {% endif %}
-{% if continuation_role %}</div>{% endif %}
+</div>

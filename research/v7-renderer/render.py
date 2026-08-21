@@ -522,7 +522,7 @@ def _export_idml(package_dir: Path, out_dir: Path) -> None:
           f"(+ {idml.parent / 'Links'})")
 
     # the delivery ZIP: one attachment n8n can mail or upload to Drive.
-    zip_out = out_dir / "ApexReport_InDesign.zip"
+    zip_out = out_dir / "report_indesign.zip"
     extra = [out_dir / "report.pdf", *sorted(out_dir.glob("report-p*.png"))]
     z = package_delivery(idml, zip_out, extra_files=extra)
     print(f"[idml] MAIL-READY delivery -> {z} "

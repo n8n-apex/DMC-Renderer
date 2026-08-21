@@ -144,24 +144,26 @@ def run_report_job(
         report=result.convergence_report,
     )
 
-    # US-2026-08-19 (n8n outtake): build + upload the editable IDML ZIP (and
-    # the PDF) to the shared host so n8n can deliver the files to the client.
-    if upload_url and public_base:
-        try:
-            from stages.artifact_delivery import build_idml_delivery
-            rdir = renderer_dir or Path(__file__).resolve().parents[1] / "v7-renderer"
-            deliv = build_idml_delivery(
-                package_dir=package_dir, renderer_dir=rdir, out_dir=out_dir,
-                upload_url=upload_url, public_base=public_base,
-            )
-            outcome.idml_zip_path = deliv.idml_zip_path
-            outcome.artifact_urls = {
-                "pdf": deliv.pdf_url,
-                "idml_zip": deliv.idml_zip_url,
-                "local_paths": deliv.local_paths,
-            }
-        except Exception as exc:  # noqa: BLE001 -- never crash the ship
-            outcome.artifact_urls = {"error": str(exc)}
+    # Always build the editable IDML ZIP. Upload to a file host when configured;
+    # otherwise local paths ride the webhook so n8n still gets a complete payload.
+    try:
+        from stages.artifact_delivery import build_idml_delivery
+        rdir = renderer_dir or Path(__file__).resolve().parents[1] / "v7-renderer"
+        deliv = build_idml_delivery(
+            package_dir=package_dir, renderer_dir=rdir, out_dir=out_dir,
+            upload_url=upload_url, public_base=public_base,
+        )
+        outcome.idml_zip_path = deliv.idml_zip_path
+        if deliv.pdf_path:
+            outcome.pdf_path = deliv.pdf_path
+        outcome.artifact_urls = {
+            "pdf": deliv.pdf_url,
+            "idml_zip": deliv.idml_zip_url,
+            "local_paths": deliv.local_paths,
+            "errors": deliv.errors,
+        }
+    except Exception as exc:  # noqa: BLE001 -- never crash the ship
+        outcome.artifact_urls = {"error": str(exc)}
 
     if callback is not None:
         callback(outcome)

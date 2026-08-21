@@ -226,14 +226,46 @@ _SHIP_RUNNER = None
 def _post_webhook_sync(url: str, payload: dict) -> None:
     """Sync webhook POST with a few retries -- used inside the ship background task
     (which runs in a worker thread). Never raises; a final failure is swallowed so
-    the background task cannot crash the worker."""
+    the background task cannot crash the worker.
+
+    When local PDF/IDML paths are on the payload, they are attached as multipart
+    files so n8n can email them without a separate file host.
+    """
+    import json as _json
+
     for _attempt in range(3):
+        handles: list = []
         try:
-            resp = httpx.post(url, json=payload, timeout=30.0)
+            files = {}
+            pdf = payload.get("pdf_path")
+            idml = payload.get("idml_zip_path")
+            if pdf and Path(pdf).exists():
+                fh = open(pdf, "rb")  # noqa: SIM115
+                handles.append(fh)
+                files["pdf"] = (Path(pdf).name, fh, "application/pdf")
+            if idml and Path(idml).exists():
+                fh = open(idml, "rb")  # noqa: SIM115
+                handles.append(fh)
+                files["idml"] = (Path(idml).name, fh, "application/zip")
+            if files:
+                resp = httpx.post(
+                    url,
+                    data={"payload": _json.dumps(payload)},
+                    files=files,
+                    timeout=120.0,
+                )
+            else:
+                resp = httpx.post(url, json=payload, timeout=30.0)
             if resp.status_code < 400:
                 return
         except httpx.HTTPError:
             pass
+        finally:
+            for fh in handles:
+                try:
+                    fh.close()
+                except Exception:
+                    pass
 
 
 async def _orchestrate_and_deliver(

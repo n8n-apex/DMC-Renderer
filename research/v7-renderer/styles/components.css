@@ -42,13 +42,13 @@
      zero horizontal padding, so the text touched the box's left/right edges
      (no negative space — the cover's "PROZESSAUTOMATISIERUNG" pills ran to
      their borders). A bordered box needs horizontal breathing room. */
-  padding: 0 var(--space-3);
+  padding: 1.8mm var(--space-3);
 }
 .c-pill--solid {
   color: var(--color-on-accent);
   background: var(--color-accent);
   border: 0.35mm solid var(--color-accent);
-  padding: 0 var(--space-3);
+  padding: 1.8mm var(--space-3);
 }
 
 /* ---- eyebrow: small uppercase letter-spaced label ---- */
