@@ -74,6 +74,15 @@
 }
 .st-05 .ab-grid > tbody > tr > td { vertical-align: top; padding: 0; }
 .st-05 .ab-grid .ab-main { width: auto; }
+/* US-2026-08-19 (p4 vertical distribution): the About identity page's body
+   started mid-page and left a large empty bottom zone. The continuation root's
+   flex-fill should make the body grow down to balance the sheet. The grid's
+   main cell grows (flex) so the body flows through the page's vertical slack. */
+.st-05 .ab-cont-root .ab-grid { flex: 1 1 auto; }
+.st-05 .ab-cont-root .ab-grid tbody,
+.st-05 .ab-cont-root .ab-grid tr,
+.st-05 .ab-cont-root .ab-grid .ab-main { height: 100%; }
+.st-05 .ab-cont-root .ab-body { display: flex; flex-direction: column; justify-content: flex-start; }
 .st-05 .ab-grid .ab-gutter { width: var(--space-5); }
 .st-05 .ab-grid .ab-side { width: 38%; }
 
