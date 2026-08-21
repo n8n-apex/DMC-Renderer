@@ -55,7 +55,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 16mm var(--space-6) 18mm 18mm;
+  padding: 16mm var(--space-6) 22mm 18mm;
   box-sizing: border-box;
   min-width: 0;
   /* US-2026-08-19 (two-field anatomy): the left narrative field is EXPLICITLY
@@ -145,11 +145,21 @@
    values) overflowed the compact devices band and painted over the narrative
    above it in the real print pass. Scope the strip's values/labels down so the
    device fits the band. The macro emits `c-viz-strip`, not `c-stat-strip`. */
-.page.treatment-a4_case_study .cs4-devices .c-viz-strip__value {
-  font-size: var(--type-h2);
-  line-height: 1.05;
+.page.treatment-a4_case_study .cs4-devices .c-viz-strip__row {
+  gap: var(--space-2);
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }
-.page.treatment-a4_case_study .cs4-devices .c-viz-strip__cell { min-width: 0; }
+.page.treatment-a4_case_study .cs4-devices .c-viz-strip__value {
+  font-size: var(--type-h3);
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.page.treatment-a4_case_study .cs4-devices .c-viz-strip__cell {
+  min-width: 0;
+  flex: 1 1 0;
+}
 /* US-2026-08-19 (disconnect fix): the fal case-scene photo band at the foot of
    the cream field. A cinematic full-width plate that gives the case study a
    real editorial photo moment (the fal art was produced by the pipeline but

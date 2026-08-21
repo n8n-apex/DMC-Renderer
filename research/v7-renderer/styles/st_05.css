@@ -82,8 +82,7 @@
 .st-05 .ab-cont-root .ab-grid tbody,
 .st-05 .ab-cont-root .ab-grid tr,
 .st-05 .ab-cont-root .ab-grid .ab-main { height: 100%; }
-.st-05 .ab-cont-root .ab-body { display: flex; flex-direction: column; justify-content: flex-start; min-height: 100%; }
-.st-05 .ab-fill:not([data-proof]) .ab-body { justify-content: flex-end; }
+.st-05 .ab-cont-root .ab-body { display: flex; flex-direction: column; justify-content: flex-start; }
 .st-05 .ab-grid .ab-gutter { width: var(--space-5); }
 .st-05 .ab-grid .ab-side { width: 38%; }
 
@@ -91,7 +90,7 @@
 .st-05 .ab-body {
   font-family: var(--font-body);
   font-size: var(--type-body);
-  line-height: 1.55;
+  line-height: 1.4;
   color: var(--color-body);
 }
 .st-05 .ab-body p {
@@ -280,28 +279,22 @@
 .st-05 .ab-logos .c-logo-wall { break-inside: avoid; }
 
 .st-05 .ab-fill {
-  min-height: 261mm;
   display: flex;
   flex-direction: column;
+  gap: var(--space-3);
 }
-.st-05 .ab-fill .ab-grid { flex: 1 1 auto; }
-.st-05 .ab-fill:not([data-proof]) .ab-grid,
-.st-05 .ab-fill:not([data-proof]) .ab-grid tbody,
-.st-05 .ab-fill:not([data-proof]) .ab-grid tr { height: 100%; }
-.st-05 .ab-fill:not([data-proof]) .ab-grid .ab-main { vertical-align: bottom; }
-.st-05 .ab-fill .ab-proof { margin-top: auto; }
-/* US-609: the About continuation pages (identity/proof) fill the sheet — the
-   last band pins via margin-top:auto so the page resolves instead of leaving
-   a bottom void. */
+.st-05 .ab-fill .ab-grid { flex: 0 0 auto; }
+.st-05 .ab-fill:not([data-proof]) .ab-proof { margin-top: var(--space-4); }
+/* Proof continuation still fills the sheet: cards then credibility at the foot. */
 .st-05 .ab-cont-root {
   min-height: 240mm;
   display: flex;
   flex-direction: column;
 }
-.st-05 .ab-cont-root .ab-logos,
-.st-05 .ab-cont-root .ab-proof,
-.st-05 .ab-cont-root .ab-testimonials,
-.st-05 .ab-cont-root .ab-stats {
+.st-05 .ab-cont-root[data-proof] .ab-logos,
+.st-05 .ab-cont-root[data-proof] .ab-proof,
+.st-05 .ab-cont-root[data-proof] .ab-testimonials,
+.st-05 .ab-cont-root[data-proof] .ab-stats {
   margin-top: auto;
 }
 /* US-2026-08-19 (p5 proof-gap fix): the PROOF continuation's credibility list
