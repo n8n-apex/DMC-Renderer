@@ -46,7 +46,7 @@
 /* ---- LEFT: cream narrative field, 60%, clipped, top/foot distributed stack. ---- */
 .page.treatment-a4_case_study .cs4-main {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   top: 0;
   left: 0;
   bottom: 0;
@@ -55,7 +55,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 16mm var(--space-6) 14mm 18mm;
+  padding: 16mm var(--space-6) 18mm 18mm;
   box-sizing: border-box;
   min-width: 0;
   /* US-2026-08-19 (two-field anatomy): the left narrative field is EXPLICITLY
@@ -194,13 +194,8 @@
   /* the dark proof rail, anchored to the SECTION (the sheet) per THE RAIL
      ANCHOR note above: top at the content-box line so the running chrome band
      stays clean, bottom/right flush to the trim. */
-  /* US-2026-08-19 (seam finesse): a designed ACCENT keyline at the rail's
-     left edge turns the blunt cream/blue abut into an intentional boundary
-     (Richard's decks keyline the dark rail). This is the "polish": a hairline
-     of the accent tone that reads as a deliberate seam, not a bare color jump. */
-  border-left: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, var(--color-ink));
   position: absolute;
-  z-index: 0;
+  z-index: 2;
   top: 0;
   bottom: 0;
   right: 0;

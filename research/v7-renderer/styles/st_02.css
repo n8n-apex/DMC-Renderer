@@ -62,7 +62,7 @@
   font-size: var(--type-body);
   line-height: var(--density-lead, 1.42);
   color: var(--color-body);
-  margin: 0 0 var(--space-4) 0;
+  margin: 0 0 var(--space-2) 0;
 }
 .st-02 .ol-body p {
   margin: 0 0 var(--density-para, var(--space-2)) 0;
@@ -84,12 +84,8 @@
    dense (header + 2-col body + island + quote + bottom-pinned checklist), so the
    island must not push the checklist onto a 2nd sheet (spill guard). */
 .st-02 .ol-viz {
-  /* US-507 (whitespace): the audit called the lower half "severely crowded"
-     (island + quote + checklist stacked with no air). Give the island room —
-     the fill column distributes the slack, so the extra margin re-balances
-     rather than pushing a spill (verified: 20pp holds). */
   padding: var(--space-3) var(--space-5);
-  margin: var(--space-2) 0;
+  margin: var(--space-4) 0 var(--space-2) 0;
   flex: 0 0 auto;
   break-inside: avoid;
 }

@@ -115,12 +115,9 @@
       {% if td.quote.attribution %}<div class="ef-hero-quote-attr">{{ td.quote.attribution }}</div>{% endif %}
     {% endif %}
 
-    {# HOST SLOT: the page's fal-GENERATED scene/background art as a designed
-       full-width photo band (previously produced-but-invisible on treated
-       pages: only legacy patterns painted scenes). #}
-    {% if td.scene %}
-    <div class="ef-sceneband" style="--ef-scene:url('{{ td.scene }}');"></div>
-    {% endif %}
+    {# Unlabeled fal scene/background plates are omitted: they render as an
+       unexplained blue rectangle (the status-quo abstract). Same rule as
+       ST-07A US-505: a scene band only when it is a real captioned photo. #}
 
     {# HOST SLOT: the page's data-viz presets (transform arrows, donuts,
        stat strips...) render as a device band in the middle of the page. #}

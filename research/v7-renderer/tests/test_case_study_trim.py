@@ -127,6 +127,11 @@ def test_case_study_seam_is_one_line(tmp_path):
     assert abs(mid - foot) < 1.0, (
         f"seam drifts: y=80mm -> {mid:.1f}mm, y=280mm -> {foot:.1f}mm"
     )
+    y = min(h - 1, int(150 * mm))
+    mix = img.getpixel((int(126.0 * mm), y))
+    assert mix[0] < 90, (
+        f"muddy teal mix at the 60% seam {mix} — cream is painting over the rail"
+    )
 
 
 def test_footer_wordmark_not_clipped(tmp_path):
@@ -139,16 +144,22 @@ def test_footer_wordmark_not_clipped(tmp_path):
     w, h = img.size
     mm = h / 297.0
     ink_ys = []
-    for y in range(h - int(25 * mm), h):
+    ink_xs = []
+    for y in range(h - int(30 * mm), h - int(6 * mm)):
         for x in range(int(18 * mm), int(90 * mm)):
             r, g, b = img.getpixel((x, y))
             if r < 140 and g < 140 and b < 140:
                 ink_ys.append(y)
+                ink_xs.append(x)
                 break
     assert ink_ys, "no footer wordmark ink in the left footer band"
     span_mm = (max(ink_ys) - min(ink_ys)) / mm
     assert span_mm >= 2.0, f"wordmark cap-height only {span_mm:.2f}mm (clipped)"
     from_bottom = (h - 1 - max(ink_ys)) / mm
-    assert from_bottom >= 1.5, (
-        f"wordmark ink reaches {from_bottom:.2f}mm from trim (clipped)"
+    assert from_bottom >= 8.0, (
+        f"wordmark ink reaches {from_bottom:.2f}mm from trim (clipped at the foot)"
+    )
+    from_left = min(ink_xs) / mm
+    assert from_left >= 20.0, (
+        f"wordmark starts at {from_left:.1f}mm from left (flush-clipped)"
     )

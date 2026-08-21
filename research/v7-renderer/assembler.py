@@ -541,18 +541,18 @@ def shared_head_css(
       The footer sitting in that zone had its wordmark shaved. The section
       is now 297mm (matches the sheet); the bar sits at the sheet foot with
       the glyphs inset so they cannot meet the trim. */
-  bottom: 0; left: 18mm; right: 14mm; height: 12mm;
+  bottom: 8mm; left: 20mm; right: 14mm; height: 10mm;
   display: block;
   z-index: 3;
   /* US-2026-08-19 (banner chipped): see .tp-chrome-top; relative so the
      wordmark/URL/folio resolve against the bar, not the sheet. */
 }}
-.tp-chrome-bottom span {{ position: absolute; top: 3.5mm; line-height: 9pt; }}
+.tp-chrome-bottom span {{ position: absolute; top: 2.5mm; line-height: 9pt; }}
 .tp-chrome-bottom .tp-chrome-wm {{
-  left: 0;
-  font-family: var(--font-head); font-weight: 600; font-size: 6.5pt;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--color-muted);
+  left: 2mm;
+  font-family: var(--font-head); font-weight: 600; font-size: 7pt;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--color-ink);
 }}
 .tp-chrome-bottom .tp-chrome-url {{
   /* US-2026-08-19 (footer seam): `left:50%` centered the URL across the
