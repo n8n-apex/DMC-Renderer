@@ -48,7 +48,13 @@
   position: relative;
   z-index: 1;
   width: 60%;
-  height: 257mm;
+  /* US-2026-08-19 (cream full-bleed): the left field was 257mm (the content
+     box) inside the 303mm rail section, so the cream stopped ~46mm above the
+     sheet bottom -> WHITE showed below the cream (the 'cream is a box' defect
+     the user saw on p12/15/17/18). The cream now fills the FULL section
+     height so it bleeds to the sheet bottom edge, covering all the negative
+     white on the left. */
+  height: 303mm;
   overflow: hidden;
   display: flex;
   flex-direction: column;

@@ -517,7 +517,7 @@ def shared_head_css(
      and the URL tail + folio ran to the trim (the last 'i' of apex-consulting.ai
      was cut). Relative bars make the children resolve against the bar's own
      18mm..196mm band. */
-  position: relative;
+
 }}
 .tp-chrome-top .tp-chrome-wm {{
   position: absolute; left: 0; bottom: 1.4mm;
@@ -542,7 +542,6 @@ def shared_head_css(
   z-index: 3;
   /* US-2026-08-19 (banner chipped): see .tp-chrome-top; relative so the
      wordmark/URL/folio resolve against the bar, not the sheet. */
-  position: relative;
 }}
 .tp-chrome-bottom span {{ position: absolute; top: 1.8mm; line-height: 9pt; }}
 .tp-chrome-bottom .tp-chrome-wm {{
