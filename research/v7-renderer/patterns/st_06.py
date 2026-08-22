@@ -150,6 +150,23 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     # ad-hoc token bar; absent → fall back to the old metrics[]/bars[] bar. ----
     chart_svgs = ctx.chart_svgs(page)
 
+    # US-704 (2026-08-22): NON-chart generated component SVGs (e.g. the
+    # preprocessor's data-driven "PROZESS · MECHANIK" step-flow diagram on
+    # slot 16) are stored in page["components"] but were never hosted — the
+    # template had a host for dmc:chart-marked chart SVGs only, so this
+    # diagram sat produced-but-invisible in the fixture. chart_svgs already
+    # selects every component whose file carries the dmc:chart sentinel; we
+    # now ALSO resolve the remaining components (no sentinel = a data diagram,
+    # not a chart) and give them a host below. Dedup is by the SAME sentinel
+    # chart_svgs uses: a component that is already a chart is skipped.
+    _components: list[str] = []
+    for rel in (page.get("components") or []):
+        if not isinstance(rel, str) or not rel:
+            continue
+        svg = ctx.resolve_component(rel)
+        if svg and svg.strip() and "dmc:chart" not in svg:
+            _components.append(svg)
+
     # data-viz PRESET layer: data['viz'] is a list of {preset, …} specs the
     # curation step wrote (verbatim figures / step titles). Coerce to None unless
     # a non-empty list so the template renders exactly as before when absent
@@ -189,6 +206,7 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
         steps=steps,
         chart_label="Vorher / Nachher",
         chart_svgs=chart_svgs,
+        components=_components,
         bars=_bars(d),
         recap_label=_RECAP_LABEL if ergebnis else "",
         recap_html=preprocess_body(ergebnis),

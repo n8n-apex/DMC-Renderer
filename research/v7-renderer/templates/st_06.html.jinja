@@ -93,6 +93,17 @@
 <div class="mx-diagram">{{ render_diagram(diagram) }}</div>
 {% endif %}
 
+{% if components %}
+{# US-704 (2026-08-22): generated NON-chart component SVGs (preprocessor data
+   diagrams like the "PROZESS · MECHANIK" step-flow) get a host here — they
+   were produced into the fixture but painted nowhere. chart_svgs (dmc:chart
+   sentinel) is a separate host above; these are the remaining data diagrams.
+   Graceful: absent → no band. #}
+<div class="mx-compband">
+  {% for svg in components %}<div class="mx-comp">{{ svg | safe }}</div>{% endfor %}
+</div>
+{% endif %}
+
 {% if recap_html %}
 <div class="mx-recap">
   {{ dark_recap_panel(recap_label, recap_html) }}

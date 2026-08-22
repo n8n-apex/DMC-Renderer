@@ -330,6 +330,31 @@
   margin: var(--space-3) 0 0 0;
 }
 
+/* US-704 (2026-08-22): the generated NON-chart component SVGs band (the data
+   "PROZESS · MECHANIK" step-flow diagram) — a bounded full-width device strip
+   between the diagram proof and the recap. The SVG's native 340x240 is too
+   tall at full width (it pushed the result page's DAS ERGEBNIS recap off the
+   sheet, losing real content); cap the band at ~55mm so steps → stat →
+   diagram → recap all fit one page. Scoped, tokens only. */
+.st-06 .mx-compband {
+  flex: 0 0 auto;
+  margin: var(--space-3) 0 0 0;
+}
+.st-06 .mx-comp {
+  width: 100%;
+  height: 55mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.st-06 .mx-comp svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 172mm;
+}
+
 /* US-607: the continuation folio marker ('Seite 1 / 2') — a quiet caption
    above the cue/recap so the reader knows the section spans pages. */
 .st-06 .mx-cont-folio {
