@@ -1371,11 +1371,11 @@
       "page_numbers": "9",
       "cover_validation": null,
       "data": {
-        "kurzportraet": "Cordes Consulting ist eine B2B-Beratung, die mit wachsender Marktnachfrage konfrontiert war – aber nicht mit fehlendem Umsatz, sondern mit fehlender Kapazität. Das Unternehmen beschäftigt ein kleines, spezialisiertes Team und betreut anspruchsvolle Unternehmenskunden.",
-        "ausgangsproblem": "Sechs manuelle Kern-Fulfillment-Prozesse bestimmten den Betriebsrhythmus bei Cordes Consulting. Jeder davon war wissensabhängig: Fiel eine Person aus, stockte der gesamte Ablauf. Die Output-Qualität schwankte je nach Tagesform und Auslastung. Das Ergebnis: Die operative Kapazität war nicht durch Marktnachfrage begrenzt, sondern durch Headcount. Jeder neue Kunde bedeutete mehr manuelle Arbeit – nicht mehr Umsatz pro Stunde.",
+        "kurzportraet": "Cordes Consulting ist eine B2B-Beratung mit kleinem, spezialisiertem Team, die anspruchsvolle Unternehmenskunden betreut. Die Marktnachfrage wächst – die Grenze war nicht der Umsatz, sondern die Kapazität.",
+        "ausgangsproblem": "Sechs manuelle Kern-Fulfillment-Prozesse prägten den Betriebsrhythmus. Jeder war wissensabhängig: Fiel eine Person aus, stockte der gesamte Ablauf; die Output-Qualität schwankte mit Tagesform und Auslastung. Die operative Kapazität war nicht durch Marktnachfrage, sondern durch Headcount begrenzt. Jeder neue Kunde bedeutete mehr manuelle Arbeit – nicht mehr Umsatz pro Stunde.",
         "ziel": "",
-        "loesung": "APEX analysierte die sechs zeitintensivsten Fulfillment-Prozesse und implementierte gezielte AI-Automatisierungen direkt in die bestehende Tool-Umgebung – ohne Migration, ohne IT-Projekt, ohne Umschulung des Teams. Parallel wurden interne AI-Fähigkeiten aufgebaut, sodass Cordes Consulting nach dem Projekt eigenständig skalieren konnte. Der bestehende Tool-Stack blieb vollständig erhalten.",
-        "ergebnis_text": "Nach der Implementierung lief der Betrieb ohne die bisherigen manuellen Schleifen. Alle sechs Bottleneck-Prozesse wurden automatisiert. Die Kapazitätsgrenze verschob sich vom Headcount zur Marktnachfrage – das Unternehmen konnte neue Kunden annehmen, ohne zusätzliches Personal einzustellen. Wissensabhängigkeit und Output-Inkonsistenz wurden strukturell beseitigt.",
+        "loesung": "APEX analysierte die sechs zeitintensivsten Fulfillment-Prozesse und implementierte gezielte AI-Automatisierungen direkt in die bestehende Tool-Umgebung – ohne Migration, IT-Projekt oder Umschulung. Parallel wurden interne AI-Fähigkeiten aufgebaut, sodass Cordes Consulting danach eigenständig skalieren konnte. Der Tool-Stack blieb vollständig erhalten.",
+        "ergebnis_text": "Nach der Implementierung lief der Betrieb ohne manuelle Schleifen: Alle sechs Bottleneck-Prozesse wurden automatisiert. Die Kapazitätsgrenze verschob sich vom Headcount zur Marktnachfrage – neue Kunden ohne zusätzliches Personal. Wissensabhängigkeit und Output-Inkonsistenz wurden strukturell beseitigt.",
         "ergebnis_headline": "6 manuelle Prozesse automatisiert, Kapazität verdoppelt",
         "fallstudie_number": 2,
         "ergebnis_metrics": [
@@ -2296,7 +2296,7 @@
       "page_id": "section.16.page.1",
       "continuation_index": 1,
       "continuation_role": "intro",
-      "section_page_count": 2,
+      "section_page_count": 3,
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
@@ -2361,6 +2361,84 @@
       "page_numbers": null,
       "cover_validation": null,
       "data": {
+        "title": "Das Done-For-You AI Automation Framework"
+      },
+      "charts": [],
+      "social_proof": null,
+      "slots": [],
+      "assets": [],
+      "components": [
+        "components/16_component_0.svg"
+      ],
+      "section_id": "section.16",
+      "page_id": "section.16.page.2",
+      "continuation_index": 2,
+      "continuation_role": "mechanism",
+      "section_page_count": 3,
+      "director_brief": {
+        "client_slug": "apex",
+        "report_id": "APEX-R1",
+        "page_key": "section.16.page.2",
+        "section_id": "section.16",
+        "st_type": "ST-06",
+        "selected_reference": {
+          "face_id": "buchagentur-9",
+          "report": "buchagentur",
+          "page_no": 9,
+          "raster_uri": "references/pages/buchagentur/p9.png",
+          "sha256": null,
+          "anatomy": {
+            "regions": [],
+            "devices": [
+              ""
+            ],
+            "mechanism": null,
+            "density": "dense_editorial"
+          }
+        },
+        "rationale": "selected buchagentur p9 (face None) for ST-06: matches a4 format, dense_editorial density; visual job 'support'",
+        "visual_job": "support",
+        "must_show": [],
+        "must_not_imply": [
+          "new metric",
+          "fake interface",
+          "real customer photograph",
+          "price"
+        ],
+        "page_arc": [
+          {
+            "page": 1,
+            "role": "mechanism"
+          }
+        ],
+        "region_plan": [
+          {
+            "region": "mechanism",
+            "role": "mechanism",
+            "bounds": [
+              0.0,
+              0.24,
+              1.0,
+              0.55
+            ]
+          }
+        ],
+        "renderer_devices": [
+          "step_cascade",
+          "stat_strip",
+          "stat_callout",
+          "bar_chart"
+        ]
+      }
+    },
+    {
+      "slot": 16,
+      "st_type": "ST-06",
+      "css_template": "mechanism",
+      "has_cta": false,
+      "page_numbers": null,
+      "cover_validation": null,
+      "data": {
         "steps": [
           {
             "title": "Onboarding- und Fulfillment-Automatisierung",
@@ -2387,18 +2465,16 @@
       "social_proof": null,
       "slots": [],
       "assets": [],
-      "components": [
-        "components/16_component_0.svg"
-      ],
+      "components": [],
       "section_id": "section.16",
-      "page_id": "section.16.page.2",
-      "continuation_index": 2,
+      "page_id": "section.16.page.3",
+      "continuation_index": 3,
       "continuation_role": "result",
-      "section_page_count": 2,
+      "section_page_count": 3,
       "director_brief": {
         "client_slug": "apex",
         "report_id": "APEX-R1",
-        "page_key": "section.16.page.2",
+        "page_key": "section.16.page.3",
         "section_id": "section.16",
         "st_type": "ST-06",
         "selected_reference": {
@@ -3341,7 +3417,7 @@
       }
     ],
     "layout_warnings": [
-      "page count mismatch: 25 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
+      "page count mismatch: 26 physical pages planned, target is 20 (a section may have expanded — allowed by the multi-page directive)",
       "slot 14 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-07A')",
       "slot 15 (ST-07A) is not followed by an adjacent ST-07B (next slot is 'ST-06')"
     ],

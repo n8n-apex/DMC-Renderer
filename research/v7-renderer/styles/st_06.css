@@ -330,12 +330,40 @@
   margin: var(--space-3) 0 0 0;
 }
 
-/* US-704 (2026-08-22): the generated NON-chart component SVGs band (the data
-   "PROZESS · MECHANIK" step-flow diagram) — a bounded full-width device strip
-   between the diagram proof and the recap. The SVG's native 340x240 is too
-   tall at full width (it pushed the result page's DAS ERGEBNIS recap off the
-   sheet, losing real content); cap the band at ~55mm so steps → stat →
-   diagram → recap all fit one page. Scoped, tokens only. */
+/* US-2026-08-22 (the user's p20 report): the MECHANISM continuation page —
+   the generated 6-step "PROZESS · MECHANIK" diagram as the page's OWN
+   showcase. The user's rule: a device that cannot be shown properly on the
+   layout gets its own page. The SVG is now generated at a larger canvas
+   (width scales with node count, labels WRAP — no truncation), rendered at
+   full measure, vertically centered in the content box. */
+.st-06 .mx-mech {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+}
+.st-06 .mx-mech-label { flex: 0 0 auto; }
+.st-06 .mx-mech-svg {
+  width: 100%;
+  max-width: 176mm;
+  display: flex;
+  justify-content: center;
+}
+.st-06 .mx-mech-svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 200mm;
+}
+.st-06 .mx-mech-empty { display: none; }
+
+/* US-704 (2026-08-22): graceful fallback band for a generated NON-chart
+   component that lands on a non-mechanism ST-06 page (a routing bug — the
+   diagram's proper home is the mechanism continuation). Kept compact so it
+   never re-crowds this page. */
 .st-06 .mx-compband {
   flex: 0 0 auto;
   margin: var(--space-3) 0 0 0;

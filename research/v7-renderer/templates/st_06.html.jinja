@@ -10,7 +10,12 @@
    detail); an OPTIONAL token-drawn bar chart of a before/after metric; and a
    solid dark "Das Ergebnis" recap panel (dark_recap_panel). The core (flow +
    step cards + dark recap) is always present; the bar chart + stat callout are
-   added only when the data supplies them. #}
+   added only when the data supplies them.
+
+   US-2026-08-22 (the user's p20 report): the section may now span THREE
+   physical pages — intro / MECHANISM / result. The mechanism continuation is
+   the generated 6-step diagram's OWN showcase page (the user's rule: a device
+   that cannot be shown properly on the layout gets its own page). #}
 {% from 'eyebrow.jinja' import eyebrow %}
 {% from 'step_card.jinja' import step_card %}
 {% from 'horizontal_flow.jinja' import horizontal_flow %}
@@ -33,6 +38,20 @@
   </div>
   {% endif %}
 </div>
+
+{% if continuation_role == 'mechanism' %}
+{# US-2026-08-22 (the user's p20 report): the generated mechanism diagram
+   ("PROZESS · MECHANIK" step-flow SVG) was crammed into a 55mm band on the
+   result page — truncated ("Workflow-A…"), unreadable. The user's rule: a
+   device that cannot be shown properly on the layout gets its OWN page.
+   This continuation page IS the diagram: the section title eyebrow above,
+   the full-width SVG as the page's sole showcase. Real data, readable size. #}
+<div class="mx-mech">
+  {% if flow_label %}<div class="mx-mech-label">{{ eyebrow(flow_label) }}</div>{% endif %}
+  {% for svg in components %}<div class="mx-mech-svg">{{ svg | safe }}</div>{% endfor %}
+  {% if not components %}<div class="mx-mech-empty"></div>{% endif %}
+</div>
+{% else %}
 
 {% if flow_steps and steps|length < 5 %}
 <div class="mx-flow">
@@ -94,11 +113,10 @@
 {% endif %}
 
 {% if components %}
-{# US-704 (2026-08-22): generated NON-chart component SVGs (preprocessor data
-   diagrams like the "PROZESS · MECHANIK" step-flow) get a host here — they
-   were produced into the fixture but painted nowhere. chart_svgs (dmc:chart
-   sentinel) is a separate host above; these are the remaining data diagrams.
-   Graceful: absent → no band. #}
+{# graceful fallback: the mechanism diagram's SVG normally renders on the
+   mechanism continuation (its own showcase page); a component landing on a
+   non-mechanism ST-06 page is a routing bug and must still paint rather
+   than vanish. The band is compacted so it never re-crowds this page. #}
 <div class="mx-compband">
   {% for svg in components %}<div class="mx-comp">{{ svg | safe }}</div>{% endfor %}
 </div>
@@ -109,10 +127,11 @@
   {{ dark_recap_panel(recap_label, recap_html) }}
 </div>
 {% endif %}
+{% endif %}
 {% if continuation_role %}
 {# US-607: continuation furniture — the section's physical-page marker
-   ('Seite 1 / 2' or 'Seite 2 / 2') so the reader knows the section spans
-   multiple pages. Renders only on continuation pages. #}
+   ('Seite 1 / 3', 'Seite 2 / 3' or 'Seite 3 / 3') so the reader knows the
+   section spans multiple pages. Renders only on continuation pages. #}
 <div class="mx-cont-folio">
   <span class="mx-cont-folio-text">Seite {{ page_plan.continuation_index }} / {{ page_plan.section_page_count }}</span>
 </div>

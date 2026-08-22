@@ -275,6 +275,44 @@ def _copy_warning_to_dict(w: CopyWarning) -> dict:
     }
 
 
+def _page_components(
+    pp,
+    component_rel_paths: dict[int, list[str]],
+    *,
+    is_continuation: bool,
+    mechanism_sections: set[str],
+) -> list[str]:
+    """Decide which component SVG paths a page carries in the package.
+
+    US-2026-08-22 (the user's p20 report): the section planner
+    (plan_section_pages._split_st06) now decides WHERE a section's generated
+    devices live — ST-06's mechanism diagram rides its OWN MECHANISM
+    continuation page (the user's rule: a device that can't fit the layout
+    gets its own page); the intro/result pages carry none. The plan's
+    `pp.components` holds the INLINE SVG strings; assemble has already
+    written them to files, so a planned component-bearing continuation maps
+    to the slot's written paths. The LEGACY fallback (all continuation
+    devices on the RESULT page) applies only when the planned page carries
+    none — this keeps older single-destination continuations (ST-02/05/09/
+    FAZIT) byte-identical.
+    """
+    if not is_continuation:
+        # single-page section: the original slot assignment (back-compat)
+        return list(component_rel_paths.get(pp.slot, []))
+    if getattr(pp, "components", None):
+        # the planner routed devices to THIS continuation (e.g. mechanism);
+        # the slot's written paths ARE those components (same order).
+        return list(component_rel_paths.get(pp.slot, []))
+    if pp.continuation_role == "result":
+        # legacy: devices ride the result page — but ONLY when the section
+        # has NO mechanism sibling (the mechanism page owns them then, and
+        # the result must stay clean).
+        if (pp.section_id or "") not in mechanism_sections:
+            return list(component_rel_paths.get(pp.slot, []))
+        return []
+    return []
+
+
 def _build_manifest(
     *,
     record_id: str,
@@ -310,6 +348,11 @@ def _build_manifest(
     # Typed structured view keyed by slot (data / charts / social_proof).
     structured_by_slot = {
         sp.slot: sp for sp in getattr(structured, "pages", []) if sp.slot is not None
+    }
+
+    mechanism_section_ids = {
+        pp.section_id for pp in layout_plan.pages
+        if pp.continuation_role == "mechanism" and pp.section_id
     }
 
     for pp in layout_plan.pages:
@@ -348,14 +391,10 @@ def _build_manifest(
             "social_proof": social_block,
             "slots": slot_dicts,
             "assets": [_asset_manifest_entry(a, output_dir) for a in page_assets],
-            "components": (
-                # US-603: a section's chart/devices live on its RESULT page
-                # (the continuation carrying the outcome data); the intro page
-                # carries none (its data slice has no chart).
-                (component_rel_paths.get(pp.slot, [])
-                 if is_continuation and pp.continuation_role == "result"
-                 else ([] if is_continuation
-                       else component_rel_paths.get(pp.slot, [])))
+            "components": _page_components(
+                pp, component_rel_paths,
+                is_continuation=is_continuation,
+                mechanism_sections=mechanism_section_ids,
             ),
             "cover_validation": (
                 _cover_validation_to_dict(cover_validation)

@@ -79,47 +79,65 @@ def _split_steps_evenly(steps: list[dict], ratio: float = _ST06_PAGE1_STEPS_RATI
 
 
 def _split_st06(page: PlannedPage, budget: int) -> list[PlannedPage]:
-    """ST-06: page 1 = intro + early steps; page 2 = late steps + result."""
+    """ST-06: THREE physical pages — intro / mechanism / result.
+
+    US-2026-08-22 (the user's p20 report): the section previously split at
+    intro/result ONLY, and the generated mechanism diagram (the 6-step
+    process SVG) rode page 2's `components` as a 55mm band — truncated and
+    unreadable. The user's rule: a device that can't be shown properly on
+    the layout gets its OWN page. The `mechanism` continuation role has
+    ALWAYS been in the vocabulary (_SEMANTIC_ROLES + Director's ST-06 list)
+    but was never emitted. Now: page 1 = intro + early steps, page 2 =
+    MECHANISM (the generated diagram as the page's full showcase, with the
+    section title as its headline — real data, no fabrication), page 3 =
+    late steps + result. The diagram's SVG rides page 2's components ONLY.
+    """
     data = page.data
     steps = list(data.get("steps") or [])
     first, second = _split_steps_evenly(steps)
 
-    page1_data: dict = {
-        "title": data.get("title"),
-        "body": data.get("body"),
-        "steps": first,
-    }
-    page2_data: dict = {
-        "steps": second,
-        "ergebnis": data.get("ergebnis"),
-    }
-
     sid = _section_id(page.slot)
-    p1 = PlannedPage(
-        slot=page.slot, st_type=page.st_type, css_template=page.css_template,
-        components=list(page.components), has_cta=page.has_cta,
-        data={k: v for k, v in page1_data.items() if v not in (None, [], "")},
-        page_numbers=page.page_numbers,
-        layout_variant=page.layout_variant,
-        page_format=page.page_format,
-        section_id=sid, page_id=_page_id(sid, 1),
-        continuation_index=1, continuation_role="intro",
-        section_page_count=2,
-    )
-    p2 = PlannedPage(
-        slot=page.slot, st_type=page.st_type, css_template=page.css_template,
-        components=[], has_cta=False,
-        data={k: v for k, v in page2_data.items() if v not in (None, [], "")},
-        page_numbers=None,
-        layout_variant=page.layout_variant,
-        page_format=page.page_format,
-        section_id=sid, page_id=_page_id(sid, 2),
-        continuation_index=2, continuation_role="result",
-        section_page_count=2,
-    )
+
+    def _mk(index: int, role: str, d: dict, *, components: list[str],
+            has_cta: bool = False) -> PlannedPage:
+        return PlannedPage(
+            slot=page.slot, st_type=page.st_type, css_template=page.css_template,
+            components=list(components), has_cta=has_cta,
+            data={k: v for k, v in d.items() if v not in (None, "", [])},
+            page_numbers=page.page_numbers if index == 1 else None,
+            layout_variant=page.layout_variant,
+            page_format=page.page_format,
+            section_id=_section_id(page.slot), page_id=_page_id(_section_id(page.slot), index),
+            continuation_index=index, continuation_role=role,
+            section_page_count=3,
+        )
+
+    p1 = _mk(1, "intro",
+             {"title": data.get("title"), "body": data.get("body"), "steps": first},
+             components=[])
+    p2 = _mk(2, "mechanism",
+             {"title": data.get("title")},
+             components=list(page.components))
+    p3 = _mk(3, "result",
+             {"steps": second, "ergebnis": data.get("ergebnis")},
+             components=[])
     out = [p1]
-    if second:
+    # a mechanism page with no diagram + no content is a waste of a page —
+    # only emit it when the section really carries a generated component
+    # (inline SVG string from Stage 6 — the assembled package stores the
+    # rendered SVG, not a path). The diagram gets its OWN page as the
+    # showcase per the user's rule.
+    if any("<svg" in str(c) for c in (page.components or [])):
         out.append(p2)
+    if second:
+        out.append(p3)
+    assert out[-1].continuation_role in ("result", "mechanism", "intro")
+    # renumber (a skipped mechanism page shifts the indices) and re-count
+    out_len = len(out)
+    for i, p in enumerate(out, start=1):
+        p.continuation_index = i
+        p.section_page_count = out_len
+        p.page_id = _page_id(_section_id(page.slot), i)
     return out
 
 

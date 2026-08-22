@@ -25,10 +25,10 @@ from stages.plan_layout import PlannedPage  # noqa: E402
 from stages.plan_section_pages import split_section  # noqa: E402
 
 
-def _page(st_type: str, data: dict) -> PlannedPage:
+def _page(st_type: str, data: dict, *, components: list[str] | None = None) -> PlannedPage:
     return PlannedPage(
         slot=16, st_type=st_type, css_template="mechanism",
-        components=[], has_cta=False, data=data,
+        components=list(components or []), has_cta=False, data=data,
     )
 
 
@@ -187,3 +187,33 @@ def test_plan_layout_expands_heavy_section() -> None:
     assert ids == {"section.16"}
     assert [p.continuation_index for p in plan.pages] == [1, 2]
     assert [p.continuation_role for p in plan.pages] == ["intro", "result"]
+
+
+def test_st06_with_mechanism_component_gets_three_pages() -> None:
+    """US-2026-08-22 (the user's p20 report): when the ST-06 section carries a
+    generated mechanism diagram (an SVG component), the planner must emit a
+    dedicated MECHANISM continuation page — the diagram gets its OWN page as
+    the showcase, per the user's rule ("a device that can't be shown properly
+    on the layout gets its own page"). Intro + mechanism + result = 3 pages,
+    the SVG rides ONLY the mechanism page."""
+    pages = split_section(_page(
+        "ST-06", _st06_data(_n_steps(6)),
+        components=['<svg viewBox="0 0 960 240" xmlns="http://www.w3.org/2000/svg"></svg>'],
+    ))
+    assert len(pages) == 3, f"expected intro/mechanism/result; got {len(pages)}"
+    assert [p.continuation_role for p in pages] == ["intro", "mechanism", "result"]
+    assert [p.continuation_index for p in pages] == [1, 2, 3]
+    mech = pages[1]
+    assert mech.components and "<svg" in mech.components[0], \
+        "the mechanism diagram must ride its own page"
+    assert all(not p.components for p in (pages[0], pages[2])), \
+        "no other ST-06 page may carry the diagram (it would re-crowd that page)"
+
+
+def test_st06_without_component_splits_two_pages() -> None:
+    """An ST-06 heavy section with NO generated SVG stays at intro + result
+    (no mechanism page — it would be an empty waste page)."""
+    pages = split_section(_page("ST-06", _st06_data(_n_steps(6))))
+    assert len(pages) == 2, f"expected intro/result; got {len(pages)}"
+    assert [p.continuation_role for p in pages] == ["intro", "result"]
+    assert [p.continuation_index for p in pages] == [1, 2]

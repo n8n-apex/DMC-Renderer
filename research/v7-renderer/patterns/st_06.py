@@ -176,14 +176,15 @@ def render(page: dict, ctx: RenderContext) -> PageFragment:
     viz = d.get("viz")
     viz = viz if isinstance(viz, list) and viz else None
 
-    # US-604: continuation-role awareness. The ST-06 section may span two
-    # physical pages (US-603 planner): page 1 = intro + early steps, page 2 =
-    # late steps + result. Each page renders as a FULL composition (the intro
-    # page carries an explicit continuation cue; the result page carries the
-    # recap). A single-page ST-06 has no role -> legacy markup unchanged.
+    # US-604 + US-2026-08-22: continuation-role awareness. The ST-06 section
+    # may span THREE physical pages (intro / mechanism / result): the INTRO
+    # carries body + early steps + a Fortsetzung cue; the MECHANISM page (new,
+    # the user's p20 report — "showcase the infographic properly, on its own
+    # page") carries the section title + the generated 6-step diagram as the
+    # page's full showcase; the RESULT page carries late steps + the recap.
     continuation_role = str(page.get("continuation_role") or "").strip()
     continuation_role = (
-        continuation_role if continuation_role in ("intro", "result") else ""
+        continuation_role if continuation_role in ("intro", "mechanism", "result") else ""
     )
 
     # US-608: on the INTRO continuation the slice carries the mechanism body

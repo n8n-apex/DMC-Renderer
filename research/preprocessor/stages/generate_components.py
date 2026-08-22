@@ -231,7 +231,7 @@ def process_flow(
     *,
     primary: str,
     accent: str,
-    w: int = 340, h: int = 240,
+    w: Optional[int] = None, h: Optional[int] = None,
     kicker: str = "PROZESS · MECHANIK",
     title: str = "Vorgehen",
     dark_gray: str = DEFAULT_DARK_GRAY,
@@ -240,8 +240,19 @@ def process_flow(
     """Linear sequence with solid direction arrows. All circles on one
     horizontal line. Final node accent-coloured; the rest are outlined
     in `primary`.
+
+    US-2026-08-22 (the user's p20 report): the old fixed 340px canvas
+    TRUNCATED every step label to "Workflow-A…" (data loss at generation)
+    and the render side then shrank that into a 55mm band (unreadable).
+    The canvas width now scales with the node count (each step gets a
+    fixed share), and labels WRAP to at most 2 full lines instead of being
+    cut with an ellipsis — the SVG is a real diagram with real labels.
     """
     n = len(steps)
+    # one row per label (WRAP, never truncate). Each step gets >= 130px so
+    # labels like "Kontinuierliche Optimierung" fit 2 lines at 10px.
+    w = w or max(340, n * 150 + 60)
+    h = h or 240
     pad_x = 30
     avail = w - 2 * pad_x
     step_gap = avail / (n - 1) if n > 1 else avail
@@ -282,14 +293,27 @@ def process_flow(
         max_w = end_max_w if is_end else inner_max_w
         size = _autofit_size(label, max_w, "Inter-700",
                              min_size=9, max_size=11)
-        if _text_width_estimate(label, "Inter-700", size) > max_w:
-            label = _truncate_to_width(label, max_w, "Inter-700", size)
-        labels_svg.append(
-            f'<text x="{cx_list[i]:.1f}" y="{cy_const + 32}" text-anchor="middle" '
-            f'font-family="Inter, sans-serif" font-weight="700" '
-            f'font-size="{size}" fill="{primary}" '
-            f'letter-spacing="-0.01em">{label}</text>'
-        )
+        # WRAP (2 lines) — hard truncation with "…" is data loss; a 2-line
+        # full label on the mechanism page is real copy shown properly.
+        lines = _wrap_lines(label, max_w, "Inter-700", size, max_lines=2)
+        if len(lines) == 1:
+            lines_svg = (f'<text x="{cx_list[i]:.1f}" y="{cy_const + 32}" '
+                         f'text-anchor="middle" font-family="Inter, sans-serif" '
+                         f'font-weight="700" font-size="{size}" fill="{primary}" '
+                         f'letter-spacing="-0.01em">{lines[0]}</text>')
+        else:
+            line_h = size * 1.1 + 2
+            start_y = cy_const + 32 - (len(lines) - 1) * line_h / 2 - 0
+            parts = []
+            for li, ln in enumerate(lines):
+                parts.append(
+                    f'<text x="{cx_list[i]:.1f}" y="{start_y + li * line_h:.1f}" '
+                    f'text-anchor="middle" font-family="Inter, sans-serif" '
+                    f'font-weight="700" font-size="{size}" fill="{primary}" '
+                    f'letter-spacing="-0.01em">{ln}</text>'
+                )
+            lines_svg = "".join(parts)
+        labels_svg.append(lines_svg)
 
     return (
         f'<svg viewBox="0 0 {w} {h}" width="{w}" height="{h}" '
