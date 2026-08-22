@@ -109,11 +109,11 @@
 .page.treatment-a4_case_study .cs4-devices {
   flex: 0 1 auto;
   margin-top: auto;
-  /* US-2026-08-22 (p18 — the user's report): the 3-cell result strip on the
+  /* US-2026-08-22 (p18 -- the user's report): the 3-cell result strip on the
      longest case study (Hanisch) sat against the narrative's last line
      (overlap ≈0.3mm) and read as "100 % on Koordination" + a cut word.
      Trim the band's lead-in to 2.5mm so narrative and strip separate by
-     ~2mm on every case-study page — no text change, no clip. */
+     ~2mm on every case-study page -- no text change, no clip. */
   padding-top: 2.5mm;
   max-width: 118mm;
   max-height: 40%;
@@ -150,9 +150,9 @@
    values) overflowed the compact devices band and painted over the narrative
    above it in the real print pass. Scope the strip's values/labels down so the
    device fits the band. The macro emits `c-viz-strip`, not `c-stat-strip`.
-   US-2026-08-22 (p18 — the user's report: "skalierbar statt" cut + "100 % on
-   Koordination"): the 3-cell strip, even compacted, still measured ~17mm —
-   value row + 3-line labels — and Hanisch's long narrative leaves only ~6.5%
+   US-2026-08-22 (p18 -- the user's report: "skalierbar statt" cut + "100 % on
+   Koordination"): the 3-cell strip, even compacted, still measured ~17mm --
+   value row + 3-line labels -- and Hanisch's long narrative leaves only ~6.5%
    (19mm) at the foot, so the strip's top label row painted OVER the
    narrative's last line and its bottom row hit the footer. Tighten the
    rhythm (value line-height 1.0, label caption 1.15, row/band gaps space-1)
