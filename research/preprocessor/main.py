@@ -116,6 +116,14 @@ app = FastAPI(
 )
 
 
+@app.get("/health")
+async def health() -> dict:
+    """Liveness probe for the platform (Railway / Docker healthcheck). The
+    renderer is a subprocess on the same container, so a reachable app == a
+    healthy ship path. Never touches secrets; no side effects."""
+    return {"status": "ok", "app": "dmc-preprocessor", "version": "0.5.0-onboard"}
+
+
 @app.middleware("http")
 async def _bind_job_id(request: Request, call_next):
     # Correlation id for this request: bound to the structlog contextvar

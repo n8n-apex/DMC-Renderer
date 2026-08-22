@@ -232,8 +232,14 @@ def run_and_deliver(
 
 # Renderer environment: the v7-renderer subprocess (its own venv + Chromium +
 # Ghostscript + the quality loop). Resolved relative to this file.
-_RENDERER_DIR = Path(__file__).resolve().parents[1] / "v7-renderer"
-_RENDERER_PY = _RENDERER_DIR / ".venv" / "bin" / "python"
+_RENDERER_DIR = Path(os.environ.get(
+    "DMC_RENDERER_DIR",
+    str(Path(__file__).resolve().parents[1] / "v7-renderer"),
+))
+_RENDERER_PY = Path(os.environ.get(
+    "DMC_RENDERER_PY",
+    str(_RENDERER_DIR / ".venv" / "bin" / "python"),
+))
 
 
 @dataclass

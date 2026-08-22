@@ -60,13 +60,22 @@ COPY richard-grammar-v2.md /app/richard-grammar-v2.md
 COPY client_assets/ /app/client_assets/
 
 # Point the service at the in-image roots (same code, env-switched paths).
+# DMC_RENDERER_PY defaults to the LOCAL venv python; the image has no venv
+# (dockerignored), so it must use the SYSTEM python that `pip install -r
+# requirements.txt` populated (dmc-renderer/requirements.txt pins the exact
+# renderer dependency superset).
 ENV DMC_RENDERER_ROOT=/app/research/v7-renderer \
     DMC_PREPROC_ROOT=/app/research/preprocessor \
+    DMC_RENDERER_DIR=/app/research/v7-renderer \
+    DMC_RENDERER_PY=/usr/local/bin/python \
+    REPORT_GENERATOR_WEBHOOK=${REPORT_GENERATOR_WEBHOOK:-} \
     PYTHONUNBUFFERED=1
 
 EXPOSE 8099
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s \
-  CMD curl -fsS http://127.0.0.1:8099/health || exit 1
+  CMD curl -fsS "http://127.0.0.1:${PORT:-8099}/health" || exit 1
 
-CMD ["python", "-m", "uvicorn", "service:app", "--app-dir", "/app/dmc-renderer", \
-     "--host", "0.0.0.0", "--port", "8099"]
+# Layer-1 intake + ship (option B — the app that carries the /render intake,
+# the offtake webhook delivery, and the ship subprocess). Railway sets $PORT.
+CMD ["sh", "-c", "python -m uvicorn main:app --app-dir /app/research/preprocessor \
+     --host 0.0.0.0 --port \"${PORT:-8099}\""]
