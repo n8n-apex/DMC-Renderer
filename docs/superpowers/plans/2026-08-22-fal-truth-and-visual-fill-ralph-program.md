@@ -1,20 +1,24 @@
 # FAL Truth + Visual Fill — Ralph Program (2026-08-22)
 
-> **STATUS (2026-08-22, after Ralph Iteration 2):** US-701 ✅, US-703 ✅,
-> US-702 ✅ (worst offenders), US-704 ✅ (ST-06 mechanism diagram hosted).
-> US-705/706 largely pre-resolved by the 08-16 grammar pass + US-601/US-504
-> (checked: the `30-50%` clip is dead — cover x1=492<595, about/p16 whole),
-> so do NOT churn working CSS. Remaining: US-707 final QA + the honest
-> content-volume ceiling. Commits `c9ae6ae`, `fabd1af`, `85d7478`.
+> **STATUS (2026-08-22, after Ralph Iteration 2 + user-verified p18 follow-up):**
+> US-701 ✅, US-703 ✅, US-702 ✅ (worst offenders), US-704 ✅, and the user's
+> p18 report FIXED ✅ (commit `ed2d1b1` — the case-study result strip no longer
+> overlaps the narrative or cuts words; verified on geometry + LM Studio at
+> 240dpi, all 5 case-study pages zero word-box intersections). Commits
+> `c9ae6ae`, `fabd1af`, `85d7478`, `c6cc94e`, `ed2d1b1`.
 >
 > **For agentic workers:** execute ONE story per Ralph iteration. NEVER mark a
 > story complete from markup/tests alone. The acceptance artifact is the
 > rendered PNG of the affected page plus the physical==logical page-count check.
-> Evidence file: `/tmp/deck_audit_full.json` (regenerate with
+> Evidence file: `/tmp/deck_audit_final.json` (regenerate with
 > `research/v7-renderer/audit_deck.py --model qwen3.5-9b-vlm`). Vision ground
 > truth = LM Studio `qwen3.5-9b-vlm` at `http://localhost:1234/v1` on the
 > actual rendered pages — proxy metrics (ink coverage, DOM geometry, gate
 > scores) are NOT evidence.
+>
+> **USER CONFIRMED (2026-08-22):** "This is the best output the system has
+> ever produced." Remaining sanctioned lever: the preprocessor copy-fit (real
+> content room) AFTER the current fixes — next ralph round.
 
 **Goal:** close the two systemic defects that make the deck feel "stale / empty
 / low-quality paper" (the user's words) WITH the fal-asset truth as the
