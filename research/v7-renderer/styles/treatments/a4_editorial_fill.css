@@ -42,6 +42,13 @@
   justify-content: space-between;
   box-sizing: border-box;
   overflow: hidden;
+  /* US-2026-08-22 (the user: p7 bottom-left CTA "pgR" cut): the foot's last
+     line (the CTA URL "apex-consulting.ai") ran ~1.8mm PAST the .ef-main clip
+     edge (URL bottom 274.8mm > clip 273.0mm) -- overflow:hidden shaved the
+     descenders of 'p'/'g'. Inset the content box at the bottom so the foot
+     clears the clip edge and descenders stay whole, on every editorial-fill
+     page. */
+  padding-bottom: 6mm;
 }
 /* PORTRAIT-RAIL variant (About): left field keeps 58% measure and clips; the
    dark rail owns the right 42% and bleeds to the sheet edges like the

@@ -1,19 +1,19 @@
-{# ST-06 — mechanism / how-it-works page (Plan B rebuild, grammar P-8). DATA
+{# ST-06 -- mechanism / how-it-works page (Plan B rebuild, grammar P-8). DATA
    comes pre-shaped from patterns/st_06.py; this template only COMPOSES the macro
-   library on the token-themed .st-06 layout (styles/st_06.css). Fragment only —
+   library on the token-themed .st-06 layout (styles/st_06.css). Fragment only --
    no <html>/<head>/<style>/@page/@font-face/:root (those live in the head).
 
    Structure: a serif display heading + intro lede (with an OPTIONAL floated
    stat-callout card pulled from the result metric); a horizontal flow diagram of
-   the stages (horizontal_flow — Schritt 1 → N, the at-a-glance overview); a
-   two-column grid of numbered step cards (step_card — the mechanism stages in
+   the stages (horizontal_flow -- Schritt 1 → N, the at-a-glance overview); a
+   two-column grid of numbered step cards (step_card -- the mechanism stages in
    detail); an OPTIONAL token-drawn bar chart of a before/after metric; and a
    solid dark "Das Ergebnis" recap panel (dark_recap_panel). The core (flow +
    step cards + dark recap) is always present; the bar chart + stat callout are
    added only when the data supplies them.
 
    US-2026-08-22 (the user's p20 report): the section may now span THREE
-   physical pages — intro / MECHANISM / result. The mechanism continuation is
+   physical pages -- intro / MECHANISM / result. The mechanism continuation is
    the generated 6-step diagram's OWN showcase page (the user's rule: a device
    that cannot be shown properly on the layout gets its own page). #}
 {% from 'eyebrow.jinja' import eyebrow %}
@@ -42,14 +42,18 @@
 {% if continuation_role == 'mechanism' %}
 {# US-2026-08-22 (the user's p20 report): the generated mechanism diagram
    ("PROZESS · MECHANIK" step-flow SVG) was crammed into a 55mm band on the
-   result page — truncated ("Workflow-A…"), unreadable. The user's rule: a
+   result page -- truncated ("Workflow-A…"), unreadable. The user's rule: a
    device that cannot be shown properly on the layout gets its OWN page.
    This continuation page IS the diagram: the section title eyebrow above,
-   the full-width SVG as the page's sole showcase. Real data, readable size. #}
+   the full-width SVG inside a designed PLATE, a caption line (real label
+   data only). Real data, readable size, a proper treatment. #}
 <div class="mx-mech">
   {% if flow_label %}<div class="mx-mech-label">{{ eyebrow(flow_label) }}</div>{% endif %}
-  {% for svg in components %}<div class="mx-mech-svg">{{ svg | safe }}</div>{% endfor %}
-  {% if not components %}<div class="mx-mech-empty"></div>{% endif %}
+  <div class="mx-mech-plate">
+    {% for svg in components %}<div class="mx-mech-svg">{{ svg | safe }}</div>{% endfor %}
+    {% if not components %}<div class="mx-mech-empty"></div>{% endif %}
+  </div>
+  {% if steps %}<div class="mx-mech-caption">{{ flow_label }} -- {{ steps | length }} Schritte im Überblick</div>{% endif %}
 </div>
 {% else %}
 
@@ -59,7 +63,7 @@
   {{ horizontal_flow(flow_steps) }}
 </div>
 {% elif viz %}
-{# data-viz PRESET band (verbatim grounded step titles from the curation step) —
+{# data-viz PRESET band (verbatim grounded step titles from the curation step) --
    a PROCESS preset (step_cascade) gives the at-a-glance overview of the stages
    when there are too many (>=5) for the compact horizontal flow strip. The same
    mechanism stages, visualized as an ordered spine. Absent → nothing. #}
@@ -91,7 +95,7 @@
 {% if chart_svgs %}
 {# Data-driven brand-styled chart SVG(s) from the pre-processor (page["charts"]
    specs → appended chart components). When a real chart is present it REPLACES
-   the ad-hoc token bar below — same chart region, richer device. #}
+   the ad-hoc token bar below -- same chart region, richer device. #}
 <div class="mx-chart mx-chart--svg">
   {% if chart_label %}{{ eyebrow(chart_label) }}{% endif %}
   {% for svg in chart_svgs %}
@@ -106,7 +110,7 @@
 {% endif %}
 
 {% if diagram %}
-{# US-604: the page's diagram proof (real data — the stat_callout figure)
+{# US-604: the page's diagram proof (real data -- the stat_callout figure)
    renders between the steps and the recap on the RESULT continuation, so the
    page carries its full data payload instead of a dead band. #}
 <div class="mx-diagram">{{ render_diagram(diagram) }}</div>
@@ -129,7 +133,7 @@
 {% endif %}
 {% endif %}
 {% if continuation_role %}
-{# US-607: continuation furniture — the section's physical-page marker
+{# US-607: continuation furniture -- the section's physical-page marker
    ('Seite 1 / 3', 'Seite 2 / 3' or 'Seite 3 / 3') so the reader knows the
    section spans multiple pages. Renders only on continuation pages. #}
 <div class="mx-cont-folio">

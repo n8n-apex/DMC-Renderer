@@ -1,4 +1,4 @@
-"""Assembler — package -> one HTML document -> PDF + PNGs + validators.
+"""Assembler -- package -> one HTML document -> PDF + PNGs + validators.
 
 Flow:
   load_package() -> for each page dispatch to its pattern -> PageFragment
@@ -19,7 +19,7 @@ R1 boundaries (documented, not bugs):
   - report_assets are loaded into LoadedPackage and carried in the
     package, but axis-driven page backgrounds need the §4.0 axes which
     live on the pre-processor BrandProfile, NOT the 10-field BrandConfig
-    the renderer consumes — so auto-applying them is R2 (would require
+    the renderer consumes -- so auto-applying them is R2 (would require
     threading axes into BrandConfig). Per-page background ASSETS (e.g.
     the cover hero) ARE rendered, via _generic.
 """
@@ -57,7 +57,7 @@ VIZ_CSS = (HERE / "styles" / "viz.css").resolve()
 VIZ_COMPARE_CSS = (HERE / "styles" / "viz_compare.css").resolve()
 DENSITY_CSS = (HERE / "styles" / "density.css").resolve()
 
-# Deterministic neutral grain tile (seed=7, alpha≤14/255 ≈ 5.5% max opacity —
+# Deterministic neutral grain tile (seed=7, alpha≤14/255 ≈ 5.5% max opacity --
 # a "whisper" texture). The data URI is a raster PNG tile, NOT an SVG
 # feTurbulence filter: WeasyPrint 68.1 collapses SVG filter primitives to a
 # flat off-color solid. Regenerate via scripts/gen_grain_tile.py.
@@ -85,9 +85,9 @@ def _esc(s: str) -> str:
     )
 
 
-# The booking tagline carried by the persistent running header (DNA §C6/§C7 —
+# The booking tagline carried by the persistent running header (DNA §C6/§C7 --
 # the DMC report's "persistent furniture"). This is a CONTENT LABEL for the
-# report TYPE — the standard German DMC booking-CTA convention — NOT a client
+# report TYPE -- the standard German DMC booking-CTA convention -- NOT a client
 # value (cf. the section-label constants `_EYEBROW` in st_03 and `_SECTION_SPEC`
 # in st_07a). It is brand-agnostic: no client name, hex, or font. The URL that
 # follows it is brand DATA (brand.company_url_display), supplied at render time.
@@ -101,10 +101,10 @@ def _page_header(brand, eyebrow: str = "") -> str:
     pageheader) }` (in shared_head_css) lifts it into every INTERIOR page's
     @top-center margin box (the full-bleed cover/back-cover/breathing pages
     suppress the whole margin box via `@page cover` / `@page bleed`, so the band
-    — tagline + URL included — never paints there). Layout: the wordmark sits
-    top-left (brand DATA, company_name_short); the booking CTA — a small
+    -- tagline + URL included -- never paints there). Layout: the wordmark sits
+    top-left (brand DATA, company_name_short); the booking CTA -- a small
     secondary tagline (the brand-agnostic `_HEADER_BOOKING_TAGLINE` content
-    label) followed by the brand URL (DATA, company_url_display) — is pushed
+    label) followed by the brand URL (DATA, company_url_display) -- is pushed
     hard-right. Together they form the DMC "persistent furniture" (DNA §C6):
     logo + booking tagline + URL above the band's own full-width hairline. The
     optional per-pattern eyebrow, when set, follows the URL. Styling (the
@@ -116,7 +116,7 @@ def _page_header(brand, eyebrow: str = "") -> str:
     # tagline is a content label; the URL is DATA. Rendered only when a URL is
     # present (graceful: no dangling "… unter:" with nothing after it).
     # US-501 (Richard grammar): the booking CTA is REMOVED from the running
-    # header — editorial chrome = wordmark only (plus the optional per-pattern
+    # header -- editorial chrome = wordmark only (plus the optional per-pattern
     # eyebrow). The direct-response ask lives only on the CTA pages.
     eyebrow_html = f'<span class="ph-eyebrow">{_esc(eyebrow)}</span>' if eyebrow else ""
     return (
@@ -188,7 +188,7 @@ def shared_head_css(
     than hand-written; it emits the same --brand-* aliases (same values) the
     patterns consume.
 
-    Persistent chrome (Plan B, Task 3 — the report's signature framing):
+    Persistent chrome (Plan B, Task 3 -- the report's signature framing):
       - Header band: a single full-width running element (.page-header,
         injected once into the body by render_package and pulled into the
         @top-center margin box via `content: element(pageheader)`). It is a
@@ -198,7 +198,7 @@ def shared_head_css(
         empty. Replaces the prior fragile three-margin-box approach (wordmark
         wrapped to 2 lines, the rule cut through the text, a lone `|` dangled).
       - Folio wash: a pale gradient anchored to the page bottom via the
-        @page `background-image` (verified to paint in WeasyPrint 68.1 — the
+        @page `background-image` (verified to paint in WeasyPrint 68.1 -- the
         running-string folio sits readable over it).
       - Axis page-ground: attribute hooks on <html data-ground-mode> flip the
         per-page content ground toward --color-ink (on-dark text) for
@@ -211,7 +211,7 @@ def shared_head_css(
 
     # Generated report ground (atmospheric / frosted-texture). When the package
     # carries one, it is layered as the full content-box ground on EVERY light
-    # page (renderer-owned placement, fed by the preprocessor asset) — replacing
+    # page (renderer-owned placement, fed by the preprocessor asset) -- replacing
     # the dull flat --color-ground. The whisper-grain stays layered on top. The
     # generated grounds are LIGHT (legible behind dark copy); a dark page keeps
     # its --color-ink ground. Graceful: no asset → grain-only (today's look).
@@ -228,7 +228,7 @@ def shared_head_css(
 
     # DIGITAL FULL-BLEED ground: when a brand has a generated ground AND a light
     # ground mode, paint it on the @page background so it covers the WHOLE sheet
-    # (margins included) — edge-to-edge — WITHOUT margin:0 (the running header/folio
+    # (margins included) -- edge-to-edge -- WITHOUT margin:0 (the running header/folio
     # margin boxes survive) and WITHOUT changing the content box (pagination is
     # unchanged). The content box (.page) then goes transparent so the full-sheet
     # ground shows through seamlessly. Dark/tonal brands (or no ground) keep the
@@ -296,8 +296,8 @@ def shared_head_css(
         )
     # ---- engine-specific page chrome (header band + folio) ----
     # WeasyPrint: the rich flex running element (.page-header) pulled into
-    # @top-center via element(), folio via string-set — its native strengths.
-    # Chromium print: element()/string-set are INERT (verified) — the chrome
+    # @top-center via element(), folio via string-set -- its native strengths.
+    # Chromium print: element()/string-set are INERT (verified) -- the chrome
     # becomes @page margin-box STRINGS (wordmark top-left, booking CTA top-right,
     # counter(page) folio) + the header hairline painted by the page's own top
     # border (appended below as engine extra CSS). Same margins/geometry either
@@ -311,7 +311,7 @@ def shared_head_css(
   }}
   /* US-2026-08-19 (header-clip root cause): the running-header wordmark was
      in @top-left, bounded by the 18mm left margin (~51px), but "APEX
-     CONSULTING" renders 104px — Chromium clipped the leading P. Moved to the
+     CONSULTING" renders 104px -- Chromium clipped the leading P. Moved to the
      wide @top-center (spans the content width) so the wordmark is never cut.
      Aligned left within the box for a clean editorial running head. */
   @top-center {{
@@ -341,7 +341,7 @@ def shared_head_css(
      on one level; the folio alone carries the accent.
      US-2026-08-19 (footer-clip root cause): the wordmark ("APEX CONSULTING",
      104px at 6.5pt) was in the @bottom-left box, which is bounded by the
-     18mm LEFT MARGIN (~51px) — Chromium CLIPPED the P and G at the box edge
+     18mm LEFT MARGIN (~51px) -- Chromium CLIPPED the P and G at the box edge
      (measured: wordmark 104px > box 51px). Same for the URL. The margin-box
      structure cannot hold wide text in the side margins. The wordmark + URL
      now live in the WIDE @bottom-center box (spans the 178mm content width,
@@ -350,7 +350,7 @@ def shared_head_css(
     content: none;
   }}
   @bottom-center {{
-    content: '{_wm} · {_bk_url}';
+    content: '{_wm}';
     font-family: var(--font-head); font-weight: 500; font-size: 6.5pt;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -367,7 +367,7 @@ def shared_head_css(
   }}"""
     else:
         _page_chrome = """
-  /* Header band — a full-width running element (see .page-header below) is
+  /* Header band -- a full-width running element (see .page-header below) is
      pulled into the top-center margin box. Repeats on every page. */
   @top-center {
     content: element(pageheader);
@@ -385,7 +385,7 @@ def shared_head_css(
    `font-weight:<min> <max>` as "invalid value" (harmlessly), but more important
    these variable faces select the requested weight (incl. bold 700/900) from the
    single declaration. CRITICAL: only faces whose cmap carries a format-12 subtable
-   load here — fontconfig computes an EMPTY charset for format-4-only fonts (which
+   load here -- fontconfig computes an EMPTY charset for format-4-only fonts (which
    silently dropped Montserrat/Playfair/Fraunces to system PT-Serif/Hiragino in
    every prior phase). Source Serif 4 + Source Sans 3 (Adobe, format-12) load.
    See plan 2026-06-03-renderer-phase-A. */
@@ -393,7 +393,7 @@ def shared_head_css(
 @font-face {{ font-family:'Source Sans 3'; src:url('{font_uri}/SourceSans3-Italic%5Bwght%5D.ttf') format('truetype'); font-style:italic; }}
 @font-face {{ font-family:'Source Serif 4'; src:url('{font_uri}/SourceSerif4%5Bopsz,wght%5D.ttf') format('truetype'); font-style:normal; }}
 @font-face {{ font-family:'Source Serif 4'; src:url('{font_uri}/SourceSerif4-Italic%5Bopsz,wght%5D.ttf') format('truetype'); font-style:italic; }}
-/* Inter (OFL variable, format-12 cmap verified) — a common brand heading face
+/* Inter (OFL variable, format-12 cmap verified) -- a common brand heading face
    (P2: kill the Inter -> Source Sans fallback). */
 @font-face {{ font-family:'Inter'; src:url('{font_uri}/Inter%5Bopsz,wght%5D.ttf') format('truetype'); font-style:normal; }}
 @font-face {{ font-family:'Inter'; src:url('{font_uri}/Inter-Italic%5Bopsz,wght%5D.ttf') format('truetype'); font-style:italic; }}
@@ -432,7 +432,7 @@ def shared_head_css(
 }}
 /* Named page for the full-bleed COVER (ST-01). margin:0 so the hero bleeds to
    the physical sheet edges, and the persistent header band + folio are
-   SUPPRESSED (content:none) — the cover is a showcase, not a chromed page. A
+   SUPPRESSED (content:none) -- the cover is a showcase, not a chromed page. A
    page assigns itself this via `page: cover` in its scoped layout sheet. Note:
    in WeasyPrint 68.1, `page:` applied to the per-page <section> reliably routes
    that section's box to the named page. Token-only => brand-agnostic. */
@@ -451,7 +451,7 @@ def shared_head_css(
    SAME full-bleed technique as the cover: margin:0 so the atmospheric ground (the
    brand texture/gradient asset, or a token gradient fallback) bleeds to the
    physical sheet edges, and the persistent header band + folio are SUPPRESSED
-   (content:none) — a breathing page is a deliberate pause, not a chromed content
+   (content:none) -- a breathing page is a deliberate pause, not a chromed content
    page. A page assigns itself this via `page: bleed` in its scoped layout sheet.
    Token-only => brand-agnostic. */
 @page bleed {{
@@ -556,7 +556,7 @@ def shared_head_css(
 }}
 .tp-chrome-bottom .tp-chrome-url {{
   /* US-2026-08-19 (footer seam): `left:50%` centered the URL across the
-     cream/blue seam on case-study pages — it straddled the color boundary
+     cream/blue seam on case-study pages -- it straddled the color boundary
      and read half-dark/half-light. Positioned in the LEFT segment of the band
      so it stays entirely over the light field (never over the dark rail). */
   left: 38%; transform: translateX(-50%);
@@ -585,17 +585,17 @@ body {{
      but it no longer controls the body element's own leading. */
   line-height: 14pt;
 }}
-/* ---- Persistent header band (running element) — DNA §C6/§C7 furniture ----
+/* ---- Persistent header band (running element) -- DNA §C6/§C7 furniture ----
    Injected once into the body by the assembler; `position: running(pageheader)`
    lifts it out of the flow into the @top-center margin box on EVERY interior
    page (the full-bleed cover/back-cover/breathing pages suppress that margin box
    entirely via `@page cover`/`@page bleed`, so the band never paints there).
    The band is the DMC "persistent furniture": the wordmark (brand DATA) sits
-   top-left; the booking CTA — a small secondary TAGLINE (a brand-agnostic
-   content label) + the brand URL (DATA) — is pushed hard-right; an optional
+   top-left; the booking CTA -- a small secondary TAGLINE (a brand-agnostic
+   content label) + the brand URL (DATA) -- is pushed hard-right; an optional
    per-pattern eyebrow follows. A flex row (justify-content:space-between) splits
    left vs right; everything stays on ONE line (nowrap) so the band height never
-   grows — the full-width hairline is the band's OWN border-bottom, so the rule
+   grows -- the full-width hairline is the band's OWN border-bottom, so the rule
    sits cleanly UNDER the text. When no URL is present the booking block simply
    collapses (no dangling tagline). Token-colored => brand-agnostic. */
 .page-header {{
@@ -618,10 +618,10 @@ body {{
 }}
 /* The booking CTA on the right: the tagline + URL on one baseline-aligned line,
    kept SMALL + SECONDARY (a header band, not a hero). The tagline is muted
-   sentence-case (it reads as a quiet instruction, not a shout — so NOT
+   sentence-case (it reads as a quiet instruction, not a shout -- so NOT
    uppercase/letterspaced like the wordmark); the URL carries a touch of weight +
    primary ink so the actionable part stands out without spending accent. */
-/* US-501: .ph-booking removed — the header CTA is gone (Richard grammar). */
+/* US-501: .ph-booking removed -- the header CTA is gone (Richard grammar). */
 .page-header .ph-eyebrow {{
   white-space: nowrap;
   font-weight: 600;
@@ -630,9 +630,9 @@ body {{
   color: var(--color-muted);
   margin-left: var(--space-3);
 }}
-/* Accent tick — a small static horizontal bar in accent color at the leading
+/* Accent tick -- a small static horizontal bar in accent color at the leading
    edge of the header band. Keeps the accent budget small (6mm × 0.6mm ≈ a
-   hairline stripe). Never used in the footer/folio — folio stays muted. */
+   hairline stripe). Never used in the footer/folio -- folio stays muted. */
 .page-header .ph-tick {{
   display: inline-block; width: 6mm; height: 0.6mm;
   background: var(--color-accent); margin-right: 2mm; vertical-align: middle;
@@ -640,7 +640,7 @@ body {{
 /* .page is the per-page CONTENT ground. Filling the content box height lets
    the axis-driven ground read as a page ground (not a content-hugging box).
    WeasyPrint caution: a background only paints on a block with real content
-   AND height — .page always carries fragment markup, and min-height fills the
+   AND height -- .page always carries fragment markup, and min-height fills the
    A4 content box (297 - 16top - 20bottom = 261mm). */
 .page {{ position: relative; break-after: page; min-height: 261mm; max-height: 261mm; overflow: hidden; box-sizing: border-box; }}
 .page:last-child {{ break-after: auto; }}
@@ -663,14 +663,14 @@ body {{
 
 /* ---- Axis page-ground hooks (value-driven, not client-driven) ----
    PERCEPTIBLE by default: a neutral --color-ground sits behind light content
-   pages (a readable, clearly-visible neutral — not the near-invisible 5%-accent
+   pages (a readable, clearly-visible neutral -- not the near-invisible 5%-accent
    wash that was here before Task 6). The @page folio-band gradient retains
-   --color-ground-wash (its own subtle bottom strip — untouched).
+   --color-ground-wash (its own subtle bottom strip -- untouched).
    Task 7: a whisper-grain background-image (raster PNG tile, seed=7,
    alpha≤14/255 ≈ 5.5% max) is layered ON TOP of the background-color.
    The grain is always-on for light grounds (decoupled from the texture axis)
    so the default look is "rich". The tile is a base64 data-URI so it embeds
-   directly in the CSS — no external file reference needed. */
+   directly in the CSS -- no external file reference needed. */
 [data-ground-mode="light"] .page,
 [data-ground-mode="cool_light"] .page {{
   {_light_page_bg}
@@ -683,7 +683,7 @@ body {{
   background-blend-mode: multiply;
 }}
 /* ground_mode dark/tonal: flip the content ground toward ink with on-dark
-   text. Scoped to .page (the content box) — NOT a full-bleed atmospheric
+   text. Scoped to .page (the content box) -- NOT a full-bleed atmospheric
    sheet (those are specific patterns handled elsewhere). */
 [data-ground-mode="dark"] .page,
 [data-ground-mode="tonal"] .page {{
@@ -692,7 +692,7 @@ body {{
 }}
 /* ---- per-page MODE register (the rank-1 unlock) ----
    An OPTIONAL page['page_mode'] flips ONE section to a dark/flooded full-bleed
-   BEAT without touching the whole-deck ground-mode — the missing 'this spread is
+   BEAT without touching the whole-deck ground-mode -- the missing 'this spread is
    a dark essay divider' register. It routes to the full-bleed `bleed` named page
    (margin:0, running header + folio SUPPRESSED) so the beat bleeds to the sheet
    edges like a section curtain, with internal padding standing in for the lost
@@ -734,11 +734,11 @@ body {{
 .page[data-page-mode="dark_divider"],
 .page[data-page-mode="data_dark"] {{
   /* bg uses --color-neutral-dark (the near-black #brand_neutral_dark) which is
-     NOT reassigned below — so it stays dark; --color-ink is repurposed as the
+     NOT reassigned below -- so it stays dark; --color-ink is repurposed as the
      LIGHT text token for descendants. (Using --color-ink for the bg here would
-     resolve to its OWN reassigned light value — the bug that left the page light.)
+     resolve to its OWN reassigned light value -- the bug that left the page light.)
      The MATERIAL (vs flat ink): a diagonal brand-primary cast deepening toward
-     the base + a faint accent aurora top-right — chroma at mid value (the audit's
+     the base + a faint accent aurora top-right -- chroma at mid value (the audit's
      fix for "saturation parked in near-black"), all token-derived via color-mix. */
   background-color: var(--color-neutral-dark);
   background-image:
@@ -751,7 +751,7 @@ body {{
   --color-body: var(--color-on-dark);
   --color-muted: var(--color-on-dark);
 }}
-/* ghost SECTION NUMBER on the dark beats — Richard's signature device
+/* ghost SECTION NUMBER on the dark beats -- Richard's signature device
    (niklas "01"/"02"/"03" overlapping the dark panel). US-505/506: the prior
    brand-letter watermark read as generic filler; the giant zero-padded page
    number is Richard's actual move. Sized to the panel (~40% height), low
@@ -791,7 +791,7 @@ body {{
         head += "\n" + COMPONENTS_CSS.read_text(encoding="utf-8")
     except OSError:
         pass
-    # Data-viz PRESET library sheet (viz_* macros) — inlined right after the
+    # Data-viz PRESET library sheet (viz_* macros) -- inlined right after the
     # component sheet so the .c-viz* premium classes are available to every page.
     # Token-only / brand-agnostic; Chromium honours its gradients/glow.
     try:
@@ -806,7 +806,7 @@ body {{
         head += "\n" + VIZ_COMPARE_CSS.read_text(encoding="utf-8")
     except OSError:
         pass
-    # Density axis sheet — defines --density-* custom props per [data-density].
+    # Density axis sheet -- defines --density-* custom props per [data-density].
     # Only custom properties (no element rules), so bundle order is conflict-free;
     # the base body/column rules below consume these vars.
     try:
@@ -843,7 +843,7 @@ body {{
    (observed: cover/breathers/back rendered with a 25-40% white bottom band,
    every full-bleed page, deterministic). The verified fix (minimal repro):
    the wrapper needs `height: 100%` so the sheet-height child fills the sheet
-   at FULL scale — no implicit shrink, no spill. The clip is retained (safe). */
+   at FULL scale -- no implicit shrink, no spill. The clip is retained (safe). */
 .page.st-01, .page.st-31, .page.st-32, .page.st-03, .page[data-page-mode] {
   min-height: 0;
   max-height: 297mm;
@@ -861,7 +861,7 @@ body {{
   /* US-2026-08-19 (two-field anatomy restore): the case study is DESIGNED as
      a light cream left field (60%) + a dark navy right rail (40%). The ink
      overdraw MUST only cover the RIGHT RAIL band (and the 6mm bleed), never
-     the whole section — a full-width ink ::before painted the entire sheet
+     the whole section -- a full-width ink ::before painted the entire sheet
      behind the transparent left field, making the narrative dark-on-dark
      (the user's "blue on blue / nothing can be seen"). The left field carries
      its own explicit light ground (a4_case_study.css .cs4-main). */
@@ -931,7 +931,7 @@ def _section(page: dict, frag: PageFragment, index: int,
     # tail-guards the remaining A3 promotions (flow/spread pages only qualify
     # near the deck tail, the empirically safe zone).
     # Ghost brand letterform (Richard's 5-10% watermark) on the dark beats: the
-    # brand's INITIAL (DATA — company_name_short[0], brand-agnostic) painted huge
+    # brand's INITIAL (DATA -- company_name_short[0], brand-agnostic) painted huge
     # at whisper opacity behind the content (z-index -1 inside the section's
     # stacking context). Light pages stay clean.
     ghost_html = ""
@@ -965,8 +965,12 @@ def _section(page: dict, frag: PageFragment, index: int,
             f'<span class="tp-chrome-wm">{_esc(_wm)}</span>'
             f'<span class="tp-chrome-booking">{_esc(_bk_line)}</span></div>'
             '<div class="tp-chrome-bottom" aria-hidden="true">'
+            # US-2026-08-22 (the user: "footers have the brand twice -- should be
+            # ONE 'APEX Consulting'"): the bottom self-chrome carried the
+            # wordmark AND the URL, duplicating the brand at the foot. The
+            # footer is the wordmark only; the URL has its own conversion
+            # homes (the case rails' ident + the CTA bands). Folio stays.
             f'<span class="tp-chrome-wm">{_esc(_wm)}</span>'
-            f'<span class="tp-chrome-url">{_esc(_burl)}</span>'
             f'<span class="tp-chrome-folio">{index + 1}</span></div>'
         )
     return (
@@ -1049,7 +1053,7 @@ def render_package(package_dir: Path, output_dir: Path,
     ctx = RenderContext(brand=pkg.brand, grammar=grammar, package_dir=pkg.package_dir,
                         report_assets=pkg.report_assets)
 
-    # ---- treatment assignments (ON BY DEFAULT — the core layout engine) ----
+    # ---- treatment assignments (ON BY DEFAULT -- the core layout engine) ----
     # Every report the system ingests renders through the deterministic stylist
     # (per-page treatment + format). treatments=False is the legacy rollback
     # (exact pre-treatment behavior). assignments aligns 1:1 with pkg.pages.
@@ -1154,7 +1158,7 @@ def render_package(package_dir: Path, output_dir: Path,
     # ---- shared head + deduped fragment CSS ----
     # Resolve the generated report ground (frosted TEXTURE preferred, then the
     # atmospheric gradient) ONCE and hand it to the head so it grounds EVERY light
-    # page — replacing the dull flat --color-ground the user flagged. Renderer-owned
+    # page -- replacing the dull flat --color-ground the user flagged. Renderer-owned
     # placement, fed by the preprocessor report asset; graceful to grain-only when
     # the package carries no such asset.
     report_ground_uri = ctx.resolve_report_asset(
@@ -1170,12 +1174,12 @@ def render_package(package_dir: Path, output_dir: Path,
             seen.add(frag.css)
             css_blocks.append(frag.css)
 
-    # Persistent header band (running element) — prepended ONCE under weasyprint;
+    # Persistent header band (running element) -- prepended ONCE under weasyprint;
     # it floats into every page's @top-center margin box. Chromium has no
     # position:running (the div would render in-flow as junk before page 1), so
     # its chrome comes from the @page margin-box strings in shared_head_css.
     # US-505/506 (Richard grammar): the dark beats' watermark was the brand's
-    # first letter ("A") — the audit called it "cheap generic decorative art".
+    # first letter ("A") -- the audit called it "cheap generic decorative art".
     # Richard's actual signature device is the GIANT low-contrast SECTION
     # NUMBER (niklas "01"/"02"/"03" overlapping the dark panel). The watermark
     # is now the page's logical index, zero-padded. The value is passed per
@@ -1214,7 +1218,7 @@ def render_package(package_dir: Path, output_dir: Path,
         # WeasyPrint silently drops. Then the Layer-3 Ghostscript FLATTEN pass
         # (PDF 1.3 @300dpi) composites Chromium's transparency groups so the PDF
         # renders identically in EVERY viewer (Quartz/Preview chokes on the raw
-        # soft-mask groups — verified). Fonts/assets are absolute file:// URIs,
+        # soft-mask groups -- verified). Fonts/assets are absolute file:// URIs,
         # so the written HTML resolves from anywhere.
         import shutil
         import subprocess
@@ -1360,7 +1364,7 @@ def render_package(package_dir: Path, output_dir: Path,
             try:
                 if check_overflow(one_doc, base_url=str(HERE)):
                     overflow.append(f"slot {page.get('slot')} ({page.get('st_type')}) overflow")
-            except Exception as exc:  # noqa: BLE001 — advisory only
+            except Exception as exc:  # noqa: BLE001 -- advisory only
                 warnings.append(f"overflow check failed for slot {page.get('slot')}: {exc!r}")
 
     # ---- accent-budget validator (stub today; seam is real) ----

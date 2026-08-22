@@ -251,8 +251,8 @@ def process_flow(
     n = len(steps)
     # one row per label (WRAP, never truncate). Each step gets >= 130px so
     # labels like "Kontinuierliche Optimierung" fit 2 lines at 10px.
-    w = w or max(340, n * 150 + 60)
-    h = h or 240
+    w = w or max(340, n * 180 + 60)
+    h = h or 260
     pad_x = 30
     avail = w - 2 * pad_x
     step_gap = avail / (n - 1) if n > 1 else avail
@@ -276,7 +276,7 @@ def process_flow(
             f'stroke="{stroke}" stroke-width="1.8"/>'
             f'<text x="{cx:.1f}" y="{cy + 4}" text-anchor="middle" '
             f'font-family="Inter, sans-serif" font-weight="800" '
-            f'font-size="11" fill="{text_color}">{s["n"]}</text>'
+            f'font-size="13" fill="{text_color}">{s["n"]}</text>'
         )
 
     conns_svg = []
@@ -292,18 +292,18 @@ def process_flow(
         is_end = (i == 0 or i == n - 1)
         max_w = end_max_w if is_end else inner_max_w
         size = _autofit_size(label, max_w, "Inter-700",
-                             min_size=9, max_size=11)
+                             min_size=12, max_size=14)
         # WRAP (2 lines) — hard truncation with "…" is data loss; a 2-line
         # full label on the mechanism page is real copy shown properly.
         lines = _wrap_lines(label, max_w, "Inter-700", size, max_lines=2)
         if len(lines) == 1:
-            lines_svg = (f'<text x="{cx_list[i]:.1f}" y="{cy_const + 32}" '
+            lines_svg = (f'<text x="{cx_list[i]:.1f}" y="{cy_const + 37}" '
                          f'text-anchor="middle" font-family="Inter, sans-serif" '
                          f'font-weight="700" font-size="{size}" fill="{primary}" '
                          f'letter-spacing="-0.01em">{lines[0]}</text>')
         else:
-            line_h = size * 1.1 + 2
-            start_y = cy_const + 32 - (len(lines) - 1) * line_h / 2 - 0
+            line_h = size * 1.15 + 2
+            start_y = cy_const + 37 - (len(lines) - 1) * line_h / 2 - 0
             parts = []
             for li, ln in enumerate(lines):
                 parts.append(

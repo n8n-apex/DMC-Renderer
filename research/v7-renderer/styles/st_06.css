@@ -1,6 +1,6 @@
-/* ST-06 — mechanism / how-it-works page LAYOUT (Plan B rebuild, P-8).
+/* ST-06 -- mechanism / how-it-works page LAYOUT (Plan B rebuild, P-8).
  *
- * Semantic design tokens ONLY (var(--…)) — NO raw hex, NO font-family literal,
+ * Semantic design tokens ONLY (var(--…)) -- NO raw hex, NO font-family literal,
  * NO client string. Colors + fonts arrive at render time via the token layer
  * (compile_tokens); the heading sizes off var(--font-display), which resolves to
  * the SERIF face when the brand's axis is headline_type=serif (the apex deck IS
@@ -19,7 +19,7 @@
  *
  * Accent discipline (§3.7): accent fires only via the components (the step
  * numerals, the flow numbers + arrows, the bar fills, the stat figure, the recap
- * heading) — never on body text.
+ * heading) -- never on body text.
  */
 
 /* ---- header: eyebrow → serif display heading → intro row (lede + floated stat) */
@@ -40,17 +40,17 @@
   overflow-wrap: break-word;
 }
 /* the intro row floats the result stat card to the right of the lede prose so
-   the lede wraps around it (the page-local float — the card is a discrete plate
+   the lede wraps around it (the page-local float -- the card is a discrete plate
    the body text hugs). The card width is fixed; the prose fills the remainder. */
 .st-06 .mx-intro-row { }
 .st-06 .mx-intro-stat {
   float: right;
   /* US-601: the stat value ("30-50%") at the token size needs ~176px of text
-     + padding; 42mm clipped it (scrollWidth 176 vs clientWidth 113 — the
+     + padding; 42mm clipped it (scrollWidth 176 vs clientWidth 113 -- the
      recurring p16 fault, now a HARD regression in test_st06_stat_fit.py).
      The card is WIDENED to fit the real figure at the token size. If the
      widened card + the rest of the section exceed one sheet, ST-06 expands
-     to a second physical page — that is the honest multi-page contract
+     to a second physical page -- that is the honest multi-page contract
      (user directive), never a reason to squeeze the figure. */
   width: 70mm;
   margin: 0 0 var(--space-2) var(--space-4);
@@ -107,9 +107,9 @@
    inline-block keeps them content-height, which is fine here (the copy lengths
    are close). Make the card fill its cell width. Tighten the card padding +
    body leading in this dense 6-card grid (page-local override of the shared
-   component — keeps the component contract global) so the page fits one sheet. */
+   component -- keeps the component contract global) so the page fits one sheet. */
 /* Step cards in the apex-reference treatment (Richard's "Wie läuft die
-   Zusammenarbeit mit APEX" page): NOT a hard-outlined box — a clean accent-tinted
+   Zusammenarbeit mit APEX" page): NOT a hard-outlined box -- a clean accent-tinted
    card with a thick accent left-rule, the number shown as a CYAN "SCHRITT N" PILL
    stacked above a bold title + body. Scoped to .st-06 so the shared component
    contract stays global. */
@@ -127,7 +127,7 @@
   box-shadow: 0 1.5mm 5mm color-mix(in srgb, var(--color-neutral-dark) 10%, transparent);
 }
 /* the number → a cyan "Schritt N" pill (the "Schritt" label is added here as a
-   report-type content word; brand-agnostic — no client/hex/font literal). */
+   report-type content word; brand-agnostic -- no client/hex/font literal). */
 .st-06 .mx-step-cell .c-step-card__num {
   align-self: flex-start;
   min-width: 0;
@@ -139,7 +139,7 @@
   line-height: 1.1;
   color: var(--color-on-accent);
   background-color: var(--color-accent);
-  /* US-503: flat sharp step number — no pill. The audit called the rounded
+  /* US-503: flat sharp step number -- no pill. The audit called the rounded
      SCHRITT pills "cheap SaaS template". The accent fill stays (a flat block),
      radius and margin rhythm align to the grid. */
   border-radius: 0;
@@ -148,7 +148,7 @@
 }
 .st-06 .mx-step-cell .c-step-card__num::before { content: "Schritt "; }
 .st-06 .mx-step-cell .c-step-card__body { line-height: 1.25; }
-/* US-604: on continuation pages the 3 step cards are the page's MAIN content —
+/* US-604: on continuation pages the 3 step cards are the page's MAIN content --
    step the body to lede size + generous padding so the page carries real
    editorial weight (the vision audit flagged the 40% blank band; bigger
    honest typography fills it without stretching card interiors). */
@@ -190,14 +190,14 @@
 .st-06 .mx-recap .c-dark-recap { break-inside: avoid; padding: var(--space-3) var(--space-5); }
 
 /* ST-06's stat callout sits in a NARROW right column; the global stat value
-   (--type-stat-xl 60pt) is scoped DOWN on one line HERE ONLY — the global
+   (--type-stat-xl 60pt) is scoped DOWN on one line HERE ONLY -- the global
    shout tier (components.css) is unchanged.
    US-504: at the token 40pt the value "30-50%" overflows its 42mm card
-   (measured: needs ~62mm). The deck sits AT the 261mm sheet edge — ANY
+   (measured: needs ~62mm). The deck sits AT the 261mm sheet edge -- ANY
    change to the card width OR the font-size reflow tips Chromium's mixed-size
    pagination into a 23-page deck (verified 2026-08-16, twice). The
    pagination-safe fit: keep the box geometry, shrink the VALUE visually via
-   a narrower letter-spacing ONLY (no reflow — letter-spacing does not change
+   a narrower letter-spacing ONLY (no reflow -- letter-spacing does not change
    the line box in the print pass). */
 .st-06 .c-stat-callout__value {
   font-size: var(--type-stat);
@@ -205,7 +205,7 @@
 }
 
 /* ======================================================================== *
- * US-604 — CONTINUATION-page composition (ST-06 spans two physical pages).
+ * US-604 -- CONTINUATION-page composition (ST-06 spans two physical pages).
  *
  * The section split (US-603) gives page 1 = intro + 3 steps, page 2 = 3 steps
  * + diagram + recap. A 3-step grid in the legacy 2-up layout leaves a half-
@@ -222,10 +222,10 @@
 .st-06 .mx-cont-root {
   /* US-604: a DEFINITE height on the continuation root spilled to 2 sheets in
      Chromium's print pass (the page chrome margins push a 255mm root past the
-     sheet — verified both pages). min-height instead: content flows at its
+     sheet -- verified both pages). min-height instead: content flows at its
      natural height (the pages genuinely fit: intro 744px / result ~680px),
      and the cue/recap's margin-top:auto still resolves the sheet when there
-     is slack. A continuation can NEVER overflow — it is the section's own
+     is slack. A continuation can NEVER overflow -- it is the section's own
      second page, and over-budget copy would need a third page plan. */
   /* US-604: a definite-height column that FILLS the sheet, with the slack
      DISTRIBUTED: header top, steps mid, cue/recap bottom (space-between).
@@ -242,7 +242,7 @@
 .st-06 .mx-cont-root .mx-header { flex: 0 0 auto; }
 .st-06 .mx-cont-root .mx-flow { flex: 0 0 auto; }
 /* US-604: the intro continuation page's 3-step flow strip must run FULL
-   WIDTH (the legacy 23.5mm step boxes only filled the left ~40% — the vision
+   WIDTH (the legacy 23.5mm step boxes only filled the left ~40% -- the vision
    audit flagged the empty upper-right quadrant). */
 .st-06 .mx-cont-root .mx-flow .c-hflow__step {
   width: 32.5%;
@@ -270,7 +270,7 @@
 }
 /* US-2026-08-19 (step-card balance): the cards previously hugged their
    content, so a short body left a hollow plate AND the first card ran taller
-   than its siblings (uneven rhythm — the user's 'large negative space within
+   than its siblings (uneven rhythm -- the user's 'large negative space within
    the boxes'). The card is now a flex column that fills its cell; the body
    grows (flex:1) so every card in a row shares one height with its interior
    balanced (title top, body filling below). */
@@ -292,7 +292,7 @@
 
 /* the continuation CUE: a quiet ruled device that closes the intro page and
    tells the reader the section continues (designed, not fabricated copy).
-   margin-top:auto pins it to the sheet bottom — the page resolves. */
+   margin-top:auto pins it to the sheet bottom -- the page resolves. */
 .st-06 .mx-cont-cue {
   display: flex;
   align-items: center;
@@ -322,7 +322,7 @@
   color: var(--color-accent);
 }
 
-/* US-604: the result continuation's diagram proof band — the stat_callout
+/* US-604: the result continuation's diagram proof band -- the stat_callout
    figure between the steps and the recap. flex:0 so it sits naturally; the
    recap's margin-top:auto still pins the closing. */
 .st-06 .mx-diagram {
@@ -330,25 +330,47 @@
   margin: var(--space-3) 0 0 0;
 }
 
-/* US-2026-08-22 (the user's p20 report): the MECHANISM continuation page —
+/* US-2026-08-22 (the user's p20 report): the MECHANISM continuation page --
    the generated 6-step "PROZESS · MECHANIK" diagram as the page's OWN
    showcase. The user's rule: a device that cannot be shown properly on the
    layout gets its own page. The SVG is now generated at a larger canvas
-   (width scales with node count, labels WRAP — no truncation), rendered at
-   full measure, vertically centered in the content box. */
+   (width scales with node count, labels WRAP -- no truncation). The diagram
+   sits in a DESIGNED PLATE -- flat surface, hairline keyline, accent rule
+   (the deck's device grammar; sharp corners, no shadow) -- so the page reads
+   as a treated composition, not a raw SVG on white. */
 .st-06 .mx-mech {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
+  /* distribute the mechanism page like the other treated pages: header
+     (mx-header) top, the diagram plate + caption centered in the MIDDLE of
+     the sheet, folio at the foot. The plate is ~62mm; space-evenly + auto
+     margins give the page a designed mid-plate presence instead of a
+     top-heavy strip with a dead lower half (the p20 audit). */
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-4);
 }
-.st-06 .mx-mech-label { flex: 0 0 auto; }
+.st-06 .mx-mech-label {
+  flex: 0 0 auto;
+  text-align: center;
+  color: var(--color-accent);
+}
+.st-06 .mx-mech-plate {
+  flex: 0 1 auto;
+  background-color: var(--color-surface);
+  border: 0.3mm solid color-mix(in srgb, var(--color-neutral-dark) 14%, transparent);
+  /* the accent top rule marks the plate as a device (Richard's rule device):
+     a foot of accent under the kicker, read as a designed frame, sharp. */
+  border-top: 1mm solid var(--color-accent);
+  padding: var(--space-6) var(--space-5) var(--space-6) var(--space-5);
+  display: flex;
+  justify-content: center;
+}
 .st-06 .mx-mech-svg {
   width: 100%;
-  max-width: 176mm;
+  max-width: 172mm;
   display: flex;
   justify-content: center;
 }
@@ -356,12 +378,18 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 200mm;
+}
+.st-06 .mx-mech-caption {
+  flex: 0 0 auto;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  color: var(--color-muted);
 }
 .st-06 .mx-mech-empty { display: none; }
 
 /* US-704 (2026-08-22): graceful fallback band for a generated NON-chart
-   component that lands on a non-mechanism ST-06 page (a routing bug — the
+   component that lands on a non-mechanism ST-06 page (a routing bug -- the
    diagram's proper home is the mechanism continuation). Kept compact so it
    never re-crowds this page. */
 .st-06 .mx-compband {
@@ -383,7 +411,7 @@
   max-width: 172mm;
 }
 
-/* US-607: the continuation folio marker ('Seite 1 / 2') — a quiet caption
+/* US-607: the continuation folio marker ('Seite 1 / 2') -- a quiet caption
    above the cue/recap so the reader knows the section spans pages. */
 .st-06 .mx-cont-folio {
   flex: 0 0 auto;
