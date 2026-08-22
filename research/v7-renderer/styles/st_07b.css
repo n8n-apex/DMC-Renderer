@@ -296,17 +296,16 @@
 .st-07b .th-viz .c-viz-mega__value { color: var(--color-on-dark); }
 .st-07b .th-viz .c-viz-mega__label { color: color-mix(in srgb, var(--color-on-dark) 82%, transparent); }
 
-/* US-510 (vision-gate): on the DARK-DIVIDER theory pages the assembler's ghost
-   numeral anchors top-right, leaving the lower dark field reading as a void
-   ("quote abandoned mid-page"). Move the ghost to the LOWER field so the dark
-   zone is anchored by the deck's device — the closing reads as designed, not
-   empty. (The page is position:relative via the dark-mode routing.) */
-.st-07b[data-page-mode] .pm-ghost {
-  top: auto;
-  right: 10mm;
-  bottom: -6mm;
-  opacity: 0.05;
-}
+/* US-703 (2026-08-22): the ghost SECTION numeral is REMOVED from the dark
+   theory pages. Three audits in a row (88mm bottom-right, 88mm top-right,
+   40mm top-right) read "ghost numeral overlaps body text / reduces
+   readability" — the ST-07B page is TEXT-DENSE (two-column argument + the
+   KERNAUSSAGE dark panel), so no corner watermark ever clears the copy.
+   Richard's signature numeral lives on EMPTY dark panels; a theory page's
+   device is the argument prose + the dark insight panel, not a numeral
+   fighting them. The page is position:relative via dark-mode routing; the
+   section carries no watermark. */
+.st-07b[data-page-mode] .pm-ghost { display: none; }
 
 /* US-2026-08-19 (Part B readability): the KERNAUSSAGE label sits on the dark
    insight panel — accent alone read muddy on navy. Mix toward on-dark so the

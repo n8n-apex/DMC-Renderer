@@ -91,15 +91,16 @@
   height: 100%;      /* fill the explicit-height bleed block */
   display: flex;
   flex-direction: column;
-  /* US-510 (vision-gate): the closing must RESOLVE — head group top, CTA
-     mid-sheet, wordmark bottom, the voids distributed (space-between) so no
-     single 40% dead zone remains ("floating islands"). */
-  justify-content: space-between;  /* US-2026-08-19 (p25 45%-dead): head top,
-                                      CTA mid, wordmark bottom — the closing
-                                      blocks distribute so no single 36% void
-                                      below the wordmark (the earlier
-                                      flex-start left 400px of dark void) */
-  padding: 34mm 24mm 20mm 24mm;
+  /* US-702 (2026-08-22): `space-between` spread head-top / action-mid /
+     wordmark-bottom, which read as a mid void plus an empty bottom quarter
+     (the p25 45%-dead audit) — the conversion furniture was split by breathing
+     instead of clustered. Richard's closers CLUSTER the conversion in the
+     LOWER portion over a deliberately quiet dark upper zone. So: flow starts
+     at the top, the head group's top margin absorbs the slack (auto) and
+     pushes the WHOLE cluster to the lower portion, and the wordmark sits a
+     fixed step below the CTA — one deliberate composition, no split voids. */
+  justify-content: flex-start;
+  padding: 24mm 24mm 20mm 24mm;
   box-sizing: border-box;
   color: var(--color-on-dark);
 }
@@ -111,8 +112,12 @@
   /* US-510 (vision-gate): margin-top:auto pinned the whole CTA cluster to the
      bottom, leaving the top 55% a dead void ("oppressive emptiness"). Start
      the cluster ~a third from the top — the ghost numeral + the headline
-     anchor the upper region, and the lower half stays the quiet closing. */
-  margin-top: var(--space-5);
+     anchor the upper region, and the lower half stays the quiet closing.
+     US-702 (2026-08-22): the auto-top slack absorption now lives on the
+     cluster so head + CTA + wordmark travel DOWN together as one group
+     (Richard's lower-clustered close); the head itself keeps a fixed wait
+     before the CTA rule below. */
+  margin-top: auto;
   margin-bottom: var(--space-7);
 }
 .st-03 .cta-eyebrow {
@@ -154,6 +159,8 @@
    ground. */
 .st-03 .cta-action {
   flex: 0 0 auto;
+  /* US-702: the wordmark steps directly off the CTA (fixed gap) — part of the
+     lower cluster, not an orphaned bottom island. */
   margin-bottom: var(--space-7);
 }
 .st-03 .cta-rule {
@@ -217,21 +224,13 @@
    dark zone with the deck's recurring oversized-page-number device — a designed
    watermark, never a dead void. Anchored top-right behind the content. */
 .st-03 .cta-ghost {
-  position: absolute;
-  /* US-510 (vision-gate): the ghost anchors the BOTTOM field — the closing
-     page's lower zone is the deck's device space, never a dead void (the
-     top carries the headline hierarchy; a numeral there competed with it). */
-  bottom: 6mm;
-  right: 14mm;
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: 88mm;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--color-on-dark);
-  opacity: 0.05;
-  z-index: 0;
-  pointer-events: none;
+  /* US-703 (2026-08-22): the ghost SECTION numeral is REMOVED from the CTA
+     closer. Four audits (88mm bottom, 88mm middle, 40mm top-right) read it as
+     "huge numeral overlapping body copy / competing with the brand". The
+     closing's device is the CTA furniture (rule → label → URL → QR → wordmark);
+     a giant watermark behind it detracts. Richard's watermark numerals live on
+     EMPTY mid-deck panels; this page is full of conversion furniture. */
+  display: none;
 }
 
 /* US-2026-08-19 (footer-grade fix): overdraw the ink field 1mm past the sheet

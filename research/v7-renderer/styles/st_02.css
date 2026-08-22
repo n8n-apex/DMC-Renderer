@@ -30,7 +30,15 @@
 .st-02 .ol-root {
   display: flex;
   flex-direction: column;
-  min-height: 261mm;       /* the A4 content box (297 - 16 top - 20 bottom) */
+  /* US-702 (2026-08-22): the p3 evidence continuation (75% dead) proved the
+     min-height-vs-definite-height hole again: flex children with `flex:1`
+     GROW only against a DEFINITE extent, and min-height is not one — so the
+     .ol-ev evidence list stacked at natural height under the header and the
+     sheet below stayed void. Was `min-height: 261mm` (the old compromise for
+     rare long intros). Definite height is how the working fills (ef-main,
+     cs4-main) distribute; a genuine overflow is caught by the overflow
+     validator, not silently clipped. */
+  height: 261mm;            /* the A4 content box (297 - 16 top - 20 bottom) */
   box-sizing: border-box;
 }
 

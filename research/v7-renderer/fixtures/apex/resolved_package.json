@@ -1070,13 +1070,10 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg_1",
-          "image_type": "scene",
-          "path": "assets/ig_jousefmrd_DX2kDuvDL40_8.jpg",
+          "slot_id": "breathing_bg",
           "status": "resolved",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": "assets/ig_jousefmrd_DX2kDuvDL40_8.jpg",
+          "image_type": "scene"
         }
       ],
       "components": [],
@@ -1626,13 +1623,10 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg_2",
-          "image_type": "scene",
-          "path": "assets/ig_jousefmrd_DVOLEK-DKKz_1.jpg",
+          "slot_id": "breathing_bg",
           "status": "resolved",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": "assets/ig_jousefmrd_DVOLEK-DKKz_1.jpg",
+          "image_type": "scene"
         }
       ],
       "components": [],
@@ -2472,13 +2466,10 @@
       "slots": [],
       "assets": [
         {
-          "slot_id": "breathing_bg_3",
-          "image_type": "scene",
-          "path": "assets/ig_jousefmrd_DYhZxkqjD6G_5.jpg",
+          "slot_id": "breathing_bg",
           "status": "resolved",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": "assets/ig_jousefmrd_DYhZxkqjD6G_5.jpg",
+          "image_type": "scene"
         }
       ],
       "components": [],
@@ -3358,12 +3349,12 @@
     "total_warnings": 47
   },
   "asset_summary": {
-    "total_required": 16,
+    "total_required": 8,
     "total_downloaded": 0,
     "total_stubbed": 0,
     "total_client_upload_needed": 0,
     "total_failed": 0,
-    "total_generated": 16
+    "total_generated": 8
   },
   "asset_warnings": []
 }

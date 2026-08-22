@@ -1,34 +1,10 @@
 {
   "page_assets": [
     {
-      "slot": 1,
-      "slot_id": "cover_hero",
-      "image_type": "background",
-      "file": "1_cover_hero.png"
-    },
-    {
       "slot": 4,
       "slot_id": "status_quo_scene",
       "image_type": "scene",
       "file": "4_status_quo_scene.png"
-    },
-    {
-      "slot": 6,
-      "slot_id": "breathing_bg_1",
-      "image_type": "gradient",
-      "file": "report_atmospheric_gradient.png"
-    },
-    {
-      "slot": 11,
-      "slot_id": "breathing_bg_2",
-      "image_type": "texture",
-      "file": "report_background_texture.png"
-    },
-    {
-      "slot": 17,
-      "slot_id": "breathing_bg_3",
-      "image_type": "background",
-      "file": "report_extra_wide.png"
     },
     {
       "slot": 7,
@@ -63,29 +39,9 @@
   ],
   "report_assets": [
     {
-      "slot_id": "status_quo_scene_b",
-      "image_type": "scene",
-      "file": "5_status_quo_scene.png"
-    },
-    {
       "slot_id": "background_texture",
       "image_type": "texture",
       "file": "report_background_texture.png"
-    },
-    {
-      "slot_id": "atmospheric_gradient",
-      "image_type": "gradient",
-      "file": "report_atmospheric_gradient.png"
-    },
-    {
-      "slot_id": "extra_square",
-      "image_type": "background",
-      "file": "report_extra_square.png"
-    },
-    {
-      "slot_id": "extra_wide",
-      "image_type": "background",
-      "file": "report_extra_wide.png"
     },
     {
       "slot_id": "panel_texture",

@@ -321,11 +321,17 @@
   grid-template-columns: 1fr 1fr;
   column-gap: var(--space-7);
   row-gap: var(--space-4);
-  align-content: start;
   /* US-2026-08-19 (grid alignment): a fixed numeral column keeps every row's
      number AND text on the same vertical axis (the audit read '02/04 shifted
-     right' when the flexible min-width let cells drift). */
+     right' when the flexible min-width let cells drift). US-702 (2026-08-22):
+     the grid was a CHILD of the growing .ef-mid column but packed its rows to
+     the top (align-content:start), so a 5-symptom ST-09 page left the bottom
+     quarter void (the p6/p7 dead-space audit). Let the grid stretch to the
+     mid's full height and distribute its rows evenly across the slack. */
   align-items: stretch;
+  align-content: space-evenly;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-item {
   flex: 0 0 auto;
@@ -334,14 +340,21 @@
   padding: var(--space-3) 0;
 }
 .page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-n {
-  min-width: 12mm;         /* FIXED numeral column (narrower in the 2-col grid) */
+  /* US-702 (2026-08-22): the 40pt numeral overflows a 12mm column and paints
+     over the first line of the item text (the p7 reference-audit read '01
+     overlaps Montagmorgen'). A fixed 16mm column fits the 2-digit glyph at
+     --type-stat so the numeral and text never share pixels. */
+  min-width: 16mm;
   text-align: left;
+  align-self: flex-start;
+  line-height: 1;
 }
 .page.treatment-a4_editorial_fill .ef-list.is-grid .ef-list-t {
   font-size: var(--type-body);
   line-height: 1.45;
   flex: 1 1 auto;
   min-width: 0;
+  align-self: flex-start;
 }
 .page.treatment-a4_editorial_fill .ef-list-item:last-child {
   border-bottom: 0.4mm solid color-mix(in srgb, var(--color-accent) 55%, transparent);
