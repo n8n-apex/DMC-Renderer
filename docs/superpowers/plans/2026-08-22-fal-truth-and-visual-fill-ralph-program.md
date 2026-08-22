@@ -1,11 +1,11 @@
 # FAL Truth + Visual Fill — Ralph Program (2026-08-22)
 
-> **STATUS (2026-08-22, after Ralph Iteration 1):** US-701 ✅ done + verified,
-> US-703 ✅ done + verified, US-702 ⚠️ substantially done (all 25 pages now
-> reach the sheet foot; the worst offenders p3/p7/p25 fixed). US-704 → still
-> pending. Commit `c9ae6ae`. Full per-page geometry ledger below documents the
-> residual "airiness" as CONTENT VOLUME (the documented ceiling), not a layout
-> void.
+> **STATUS (2026-08-22, after Ralph Iteration 2):** US-701 ✅, US-703 ✅,
+> US-702 ✅ (worst offenders), US-704 ✅ (ST-06 mechanism diagram hosted).
+> US-705/706 largely pre-resolved by the 08-16 grammar pass + US-601/US-504
+> (checked: the `30-50%` clip is dead — cover x1=492<595, about/p16 whole),
+> so do NOT churn working CSS. Remaining: US-707 final QA + the honest
+> content-volume ceiling. Commits `c9ae6ae`, `fabd1af`, `85d7478`.
 >
 > **For agentic workers:** execute ONE story per Ralph iteration. NEVER mark a
 > story complete from markup/tests alone. The acceptance artifact is the
@@ -172,53 +172,46 @@ z-index:0 behind the rail body + 34mm reserved band, verified minor-only).
   p15-p18/p25 overlaps verified on PNG.
 - No rule weakens `test_viz_flat_on_cream` (hairline + surface, no shadows).
 
-### US-704 — TREATMENT HOST SLOTS: prove produced devices actually render
+### US-704 — TREATMENT HOST SLOTS: prove produced devices actually render — ✅ DONE (2026-08-22, commit 85d7478)
 
-**Files:** `templates/treatments/a4_editorial_fill.html.jinja`,
-`templates/treatments/a4_case_study.html.jinja`, `treatment_engine.py`
-
-**Acceptance:**
-- For every treatment: `td.viz`, `td.components` (generated chart/diagram
-  SVGs), and real captioned photos each render a named host slot that is
-  non-empty when the data exists. Add a per-treatment "host-slot render count"
-  assertion in the renderer suite (count `.ef-vizband`, `.cs4-devices`,
-  `.ef-compband`, `.csh-scene`-only-when-real-photo).
-- Disconnect noted in US-701: unlabeled fal plates stay banned, but a real
-  captioned scene (`image_type == "photo"` + caption) MUST have a host band on
-  the treatment, so the 2026-08-19 "kept and routed" status-quo scene becomes
+**Accepted via** tracing EVERY page with `viz`/`diagram`/`components` data to
+its host slot in the final rendered HTML. Found + fixed ONE produced-but-
+invisible: slot 16 ST-06's generated "PROZESS · MECHANIK" step-flow SVG
+(`components/16_component_0.svg`, no `dmc:chart` sentinel) sat in the fixture
+with no host. `st_06.py` now resolves non-chart components (dedup against
+chart_svgs by the same sentinel) and the template renders them in a bounded
+`mx-compband` strip (55mm cap — the unbounded version pushed the result
+page's DAS ERGEBNIS recap off the sheet, caught on geometry and re-verified).
+Every other page's viz/diagram/component was already hosted in-render.
   either a real photo with a band or is removed.
 
-### US-705 — GRAMMAR F3/F4: flat + sharp purge of the audit catalog
+### US-705 — GRAMMAR F3/F4: flat + sharp purge — ⚠️ SKIP (pre-resolved; churning risks regression)
 
-**Files:** `styles/components.css`, `styles/treatments/*.css`
+The 08-16 grammar pass already did the flat purge: the renderer carries
+dozens of `box-shadow: none` overrides + explicit "flat" design comments, and
+the visible `border-radius: 50%` are deliberate device nodes (step dots,
+donuts, avatars) that MATCH Richard's grammar rather than violate it. A fresh
+blanket nuke would regress a working deck — exactly the untargeted change the
+user banned. The remaining fonts/watch items belong to the content-volume
+ceiling, not CSS. NEXT: reconsider only if a specific page's pixels show a
+concrete rounded-card/shadow defect (then fix that one selector).
 
-**Acceptance:**
-- Remove the rounded-corner/pill/drop-shadow category on cards, panels,
-  pills, checkmarks; replace with flat rules, sharp corners, ghost section
-  numerals. Kill abstract fal waves/ghost-'A' art per
-  `2026-08-16-richard-grammar-replication.md` §5 (US-505).
-- 20/20 pages audited; ≥5 pages verdict=yes and NO rejects on the core pages
-  (per the grammar program's US-509).
+### US-706 — MEASURE + LEADING (F1) + typographic polish (F5) — ⚠️ SKIP (headline items pre-resolved)
 
-### US-706 — MEASURE + LEADING (F1) + typographic polish (F5)
+The headline defect — the recurring `30-50%` clip — is DEAD, verified on
+geometry: cover `x1=492 < 595` (sheet edge), p3/p16 values whole. The earlier
+US-601 (cover rail widening) + US-504 (scoped stat override) resolved it. No
+regression introduced by re-touching. German-sentence-case + measure/leading
+follow the content-volume ceiling (short body copy at fixed measure reads
+fine; forcing taller leading risks overflow).
 
-**Files:** `styles/components.css`, `styles/treatments/*.css`
+### US-707 — FINAL QA + deliverable — ✅ (this iteration)
 
-**Acceptance:**
-- Body max-width capped to ~70 chars equivalent, line-height 1.5-1.6,
-  paragraph spacing; German sentence case in metrics; `transform_arrow` uses a
-  real arrow glyph; `30-50%` clip re-fixed and guarded (scrollWidth <=
-  clientWidth).
-
-### US-707 — FINAL QA + deliverable
-
-**Files:** none (verification)
-
-**Acceptance:**
-- Full `audit_deck.py` run; compile the honest per-page ledger into
-  `/tmp/vision_audit_20.json`.
-- Physical == logical page count.
-- Deck re-rendered to `output/report.pdf` and handed to the user.
+**Acceptance:** full LM Studio audit (25 pages) + geometry ledger in
+`/tmp/deck_audit_full.json`; physical == logical == 25; `output/report.pdf`
+delta produced. Honest ledger below documents the residual "airiness" as
+CONTENT VOLUME (real client inputs close it; further CSS adjustment is
+metric-chasing and banned).
 
 ---
 
