@@ -11,6 +11,7 @@
 !research/postprocessor/**
 !research/design_policy/**
 !research/artifacts/**
+!research/supabase/**
 # retained build artifacts must never ship inside the image
 research/artifacts/runs/
 !richard-grammar-v2.md
