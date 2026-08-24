@@ -30,6 +30,10 @@ from uuid import uuid4
 # (mirrors the chassis pattern in research/v7-renderer/render.py).
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+# research/-level shared packages (supabase, composition_registry, ...) live one
+# level up from the preprocessor; without this the Supabase catalog sync (and
+# any research/ sibling import) dies at boot with "No module named 'supabase'".
+sys.path.insert(0, str(HERE.parent))
 
 import httpx  # noqa: E402
 from contextlib import asynccontextmanager  # noqa: E402

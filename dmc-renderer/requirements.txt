@@ -12,6 +12,10 @@ pillow==12.2.0
 qrcode==8.2
 httpx==0.28.1
 pydantic==2.13.4
+pydantic-settings==2.14.1
+asyncpg==0.31.0
+structlog==25.5.0
+stamina==26.1.0
 numpy==2.4.6
 opencv-python-headless==4.13.0.92
 fonttools==4.63.0
