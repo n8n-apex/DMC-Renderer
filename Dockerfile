@@ -30,6 +30,11 @@ RUN pip install --no-cache-dir -r /app/requirements.txt \
 COPY dmc-renderer/ /app/dmc-renderer/
 COPY research/v7-renderer/ /app/research/v7-renderer/
 COPY research/preprocessor/ /app/research/preprocessor/
+# supabase reference catalog (the weekly-synced QA/Director corpus). This is a
+# top-level package under research/ imported at boot by the sync loop; without
+# this COPY the image raises "No module named 'supabase'" and the continuous
+# catalog sync never starts.
+COPY research/supabase/ /app/research/supabase/
 # Stage-9 reference QC: the perception/rubric loop + the classified 84-page
 # Richard reference corpus it grades against. The service runs it on EVERY deck.
 COPY research/quality_loop/ /app/research/quality_loop/
