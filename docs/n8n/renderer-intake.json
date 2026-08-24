@@ -1,0 +1,292 @@
+{
+  "name": "DMC Renderer Intake (POST /render)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report-generator",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1240, 880],
+      "id": "k0000000-0001-4000-8000-000000000001",
+      "name": "Webhook",
+      "webhookId": "dmc-report-generator",
+      "notes": "Airtable automation calls this when 'start renderer?' = true. Body: {recordId} or query ?recordId=recXXX."
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "id": "route-render",
+                    "leftValue": "={{ (($json.body && $json.body.render) || ($json.query && $json.query.render) || true).toString() }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "typeValidation": "loose"
+                  }
+                ],
+                "combinator": "and",
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "render"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "id": "route-export",
+                    "leftValue": "={{ $json.body.render || $json.query.render || '' }}",
+                    "rightValue": false,
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "false"
+                    },
+                    "typeValidation": "loose"
+                  }
+                ],
+                "combinator": "and",
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 3
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "export"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [-1000, 880],
+      "id": "k0000000-0002-4000-8000-000000000002",
+      "name": "Route (render / export)"
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.query.recordId || $json.body.recordId || $json.query.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [-760, 880],
+      "id": "k0000000-0003-4000-8000-000000000003",
+      "name": "Get Content Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════════════\n// BUILD RENDER REQUEST — the RenderRequest the service expects\n// (research/preprocessor/models.py). ship=true → POST returns JSON now;\n// PDF+IDML arrive later at ship_webhook.\n// ═══════════════════════════════════════════════════════════\n\nconst record = $input.first().json;\nconst fields = record.fields || record;\n\nlet reportPayload;\ntry {\n  const raw = fields['report_json'] || fields.report_json;\n  reportPayload = typeof raw === 'string' ? JSON.parse(raw) : raw;\n} catch (e) {\n  throw new Error(`Failed to parse report_json: ${e.message}`);\n}\n\nlet imageManifest = { images: [] };\ntry {\n  const raw = fields['Image Manifest'] || fields.image_manifest;\n  const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;\n  if (parsed && Array.isArray(parsed.images)) imageManifest = parsed;\n} catch (e) {}\n\nconst client = fields['Client'] || fields.client || 'APEX Consulting';\nconst clientSlug = (fields['Client Slug'] || fields.client_slug ||\n  client.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));\nconst recordId = record.id || '';\n\nreportPayload.meta = reportPayload.meta || {};\nreportPayload.meta.client_slug = clientSlug;\nreportPayload.meta.report_id = reportPayload.meta.report_id || recordId;\nif (!reportPayload.meta.page_count_target) reportPayload.meta.page_count_target = 20;\n\nconst hex = (v, fb) => (v && String(v).trim()) ? String(v).trim() : fb;\n\nconst request = {\n  record_id: recordId,\n  client: {\n    name: client,\n    company: fields['Company'] || fields.company || client,\n    website_url: fields['Website URL'] || fields.website_url || '',\n    brand_hex_dark: hex(fields['Brand Hex Dark'] || fields.brand_hex_dark, '#2E3E50'),\n    brand_hex_light: hex(fields['Brand Hex Light'] || fields.brand_hex_light, '#F6F3ED'),\n    brand_hex_accent: hex(fields['Brand Hex Accent'] || fields.brand_hex_accent, '#4A7C7E'),\n    founder_youtube_url: fields['Founder YouTube URL'] || fields.founder_youtube_url || null,\n    founder_instagram_url: fields['Founder Instagram URL'] || fields.founder_instagram_url || null\n  },\n  report_json: reportPayload,\n  image_manifest: imageManifest,\n  ship: true,\n  ship_webhook: 'https://n8n.zimmermannsysteme.de/webhook/renderer-output'\n    + '?record_id=' + encodeURIComponent(recordId)\n    + '&client_slug=' + encodeURIComponent(clientSlug)\n};\n\nreturn [{ json: {\n  render_request: request,\n  record_id: recordId,\n  client_slug: clientSlug,\n  page_count: reportPayload.meta.page_count_target,\n  image_count: (imageManifest.images || []).length,\n  cover_title: fields['Cover Title'] || ''\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-760, 880],
+      "id": "k0000000-0004-4000-8000-000000000004",
+      "name": "Build Render Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.RENDERER_URL || 'https://dmc-renderer-production.up.railway.app' }}/render",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-DMC-Correlation-ID",
+              "value": "={{ $json.record_id }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.render_request) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-520, 880],
+      "id": "k0000000-0005-4000-8000-000000000005",
+      "name": "POST /render (ship)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "notes": "URL now resolves to the REAL Railway domain (dmc-renderer-production.up.railway.app). This is an ASYNC call: returns JSON quickly; PDF+IDML arrive via the renderer-output webhook."
+    },
+    {
+      "parameters": {
+        "jsCode": "// extract status + pass-through for the response branch\nconst r = $input.first().json;\nreturn [{\n  json: {\n    status_code: r.statusCode || r.status || '',\n    render_status: (r.json && (r.json.status || 'queued')) || 'queued',\n    body: (r.json || r)\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-280, 880],
+      "id": "k0000000-0006-4000-8000-000000000006",
+      "name": "Parse Render Ack"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "queued",
+            "start renderer?": false
+          },
+          "matchingColumns": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -40,
+        880
+      ],
+      "id": "k0000000-0007-4000-8000-000000000007",
+      "name": "Airtable: Mark Queued",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Route (render / export)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route (render / export)": {
+      "main": [
+        [
+          {
+            "node": "Get Content Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Content Record": {
+      "main": [
+        [
+          {
+            "node": "Build Render Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Render Request": {
+      "main": [
+        [
+          {
+            "node": "POST /render (ship)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /render (ship)": {
+      "main": [
+        [
+          {
+            "node": "Parse Render Ack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Render Ack": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Queued",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a890937d4fb492826fca2e81aa2aa594886fd545124b703108ef2f064a2a9da2"
+  }
+}

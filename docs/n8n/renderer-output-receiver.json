@@ -1,0 +1,292 @@
+{
+  "name": "DMC Renderer Output (email delivery)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "renderer-output",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1160,
+        180
+      ],
+      "id": "o0000000-0001-4000-8000-000000000001",
+      "name": "Renderer Output",
+      "webhookId": "dmc-renderer-output",
+      "notes": "Path MUST stay 'renderer-output' — it equals REPORT_GENERATOR_WEBHOOK. Receives multipart: binary pdf + idml, form field 'payload' = outcome JSON.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// PARSE SHIP OUTCOME (multipart from renderer ship path)\nconst incoming = $input.first();\nconst body = incoming.json.body || {};\nlet outcome = {};\ntry {\n  outcome = typeof body.payload === 'string' ? JSON.parse(body.payload) : (body.payload || {});\n} catch (e) {\n  outcome = { parse_error: e.message };\n}\n\nreturn [{\n  json: {\n    record_id: (incoming.json.query && incoming.json.query.record_id) || '',\n    client_slug: (incoming.json.query && incoming.json.query.client_slug) || '',\n    status: outcome.status || 'unknown',\n    clear_ratio: outcome.clear_ratio ?? null,\n    pdf_name: (incoming.binary && incoming.binary.pdf && incoming.binary.pdf.fileName) || 'report.pdf',\n    idml_name: (incoming.binary && incoming.binary.idml && incoming.binary.idml.fileName) || 'report_indesign.zip',\n    punch_list: outcome.punch_list || []\n  },\n  binary: incoming.binary || {}\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -900,
+        180
+      ],
+      "id": "o0000000-0002-4000-8000-000000000002",
+      "name": "Parse Ship Outcome",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Ship Outcome').item.json.pdf_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -620,
+        100
+      ],
+      "id": "o0000000-0003-4000-8000-000000000003",
+      "name": "Drive: Upload PDF",
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "D0hFU77FQYFqTjzO",
+          "name": "Google Drive account"
+        }
+      },
+      "notesInFlow": true,
+      "note": "Also add a FAILURE edge to 'Email: Delivery Failed'."
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Ship Outcome').item.json.idml_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -620,
+        260
+      ],
+      "id": "o0000000-0004-4000-8000-000000000004",
+      "name": "Drive: Upload IDML",
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "D0hFUN7FQYFqTjzO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "append",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -320,
+        180
+      ],
+      "id": "o0000000-0005-4000-8000-000000000005",
+      "name": "Merge (PDF + IDML links)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const linkPdf = $('Drive: Upload PDF').item.json;\nconst linkIdml = $('Drive: Upload IDML').item.json;\nreturn [{\n  json: {\n    record_id: $('Parse Ship Outcome').item.json.record_id,\n    client_slug: $('Parse Ship Outcome').item.json.client_slug,\n    status: $('Parse Ship Outcome').item.json.status,\n    clear_ratio: $('Parse Ship Outcome').item.json.clear_ratio,\n    pdf_name: $('Parse Ship Outcome').item.json.pdf_name,\n    idml_name: $('Parse Ship Outcome').item.json.idml_name,\n    pdf_link: linkPdf.webViewLink || linkPdf.alternateLink || '',\n    idml_link: linkIdml.webViewLink || linkIdml.alternateLink || ''\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        180
+      ],
+      "id": "o0000000-0006-4000-8000-000000000006",
+      "name": "Combine Links"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "rendered",
+            "pdf_drive_link": "={{ $json.pdf_link }}",
+            "idml_drive_link": "={{ $json.idml_link }}"
+          },
+          "matchingColumns": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        180
+      ],
+      "id": "o0000000-0007-4000-8000-000000000007",
+      "name": "Airtable: Mark Rendered",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "report@apex-consulting.ai",
+        "toEmail": "{{ $('Parse Ship Outcome')?.item.json.client_slug === 'apex-consulting' ? 'test@example.com' : 'client@example.com' }}",
+        "subject": "PDF fertig: {{ $('Parse Ship Outcome').item.json.client_slug }}",
+        "emailFormat": "text",
+        "text": "Dein DMC Report ist fertig.\\n\\nPDF: {{ $json.pdf_link }}\\nIDML (InDesign): {{ $json.idml_link }}\\n\\nStatus: {{ $json.status }} · Gate clear: {{ $json.clear_ratio }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        380,
+        180
+      ],
+      "id": "o0000000-0008-7777-adf1-3837b3c816af",
+      "name": "Email: PDF Ready",
+      "notes": "Re-assign SMTP credentials on import. Set real from/to addresses.",
+      "credentials": {
+        "smtp": {
+          "id": "smtp-xxxx",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Renderer Output": {
+      "main": [
+        [
+          {
+            "node": "Parse Ship Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Ship Outcome": {
+      "main": [
+        [
+          {
+            "node": "Drive: Upload PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Drive: Upload IDML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drive: Upload PDF": {
+      "main": [
+        [
+          {
+            "node": "Merge (PDF + IDML links)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drive: Upload IDML": {
+      "main": [
+        [
+          {
+            "node": "Merge (PDF + IDML links)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge ( Uploads)": {
+      "main": [
+        [
+          {
+            "node": "Combine Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Links": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Rendered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable: Mark Rendered": {
+      "main": [
+        [
+          {
+            "node": "Email: PDF Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a890937d4fb492826fca2e81aa2aa594886fd545124b703108ef2f064a2a9da2"
+  }
+}
