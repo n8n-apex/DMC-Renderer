@@ -330,18 +330,34 @@ async def main(use_fal: bool = False) -> int:
     try:
         from settings import Settings as _S
         _cfg = _S()
-        _dsn = _cfg.supabase_pooler_url or None
+        _dsn = _cfg.supabase_pooler_url_str() or None
     except Exception:
         _dsn = None
+    if _dsn is None:
+        print("[director] WARNING: no SUPABASE_POOLER_URL - reference "
+              "selection falls back to the LEGACY 84-page index (no "
+              "format/density weighting, no client-deck exclusion). "
+              "Configure Supabase to restore the full catalog.")
     for page in pkg["pages"]:
         _st = str(page.get("st_type") or "")
         _data = page.get("data") or {}
         _ref = None
         try:
-            from stages.director import _legacy_select
-            _cands = _legacy_select(_st, 1)
-            _ref = _cands[0] if _cands else None
-        except Exception:
+            from stages.director import select_references, _legacy_select
+            if _dsn:
+                # Supabase-backed: full catalog, format/density weighting,
+                # and the client's OWN deck excluded from the reference bar.
+                _cands = await select_references(
+                    _dsn, _st, k=1,
+                    client_slug="apex", report_id="APEX-R1",
+                    format_=None, density=None,
+                )
+                _ref = _cands[0] if _cands else None
+            else:
+                _cands = _legacy_select(_st, 1)
+                _ref = _cands[0] if _cands else None
+        except Exception as _exc:
+            print(f"[director] reference select failed for {_st}: {_exc}")
             _ref = None
         _brief = compose_page_brief(
             st_type=_st, data=_data,

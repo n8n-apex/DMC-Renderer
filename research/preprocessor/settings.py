@@ -64,6 +64,28 @@ class Settings(BaseSettings):
     artifact_upload_url: Optional[str] = None
     artifact_public_base: Optional[str] = None
 
+    # ── Supabase reference catalog (weekly-synced; the QA/Director corpus) ──
+    supabase_pooler_url: Optional[SecretStr] = None
+    supabase_url: Optional[str] = None
+    supabase_service_role_key: Optional[SecretStr] = None
+    # internal maintenance cadence (seconds): the app-triggered weekly sync.
+    supabase_sync_interval_seconds: int = 7 * 24 * 3600   # 7 days
+    supabase_sync_check_seconds: int = 6 * 3600           # loop wake-up
+
+    def supabase_pooler_url_str(self) -> Optional[str]:
+        return (
+            self.supabase_pooler_url.get_secret_value()
+            if self.supabase_pooler_url
+            else None
+        )
+
+    def supabase_service_role_key_str(self) -> Optional[str]:
+        return (
+            self.supabase_service_role_key.get_secret_value()
+            if self.supabase_service_role_key
+            else None
+        )
+
     def openrouter_key_str(self) -> Optional[str]:
         return (
             self.openrouter_api_key.get_secret_value()

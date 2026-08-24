@@ -90,9 +90,35 @@ async def lifespan(app: FastAPI):
         timeout=_settings.http_timeout_s,
         limits=httpx.Limits(max_connections=_settings.http_max_connections),
     )
+    # US-2026-08-24: the WEEKLY Supabase catalog sync — internally triggered,
+    # not a human job. The background loop owns the cadence (default 7 days;
+    # SUPABASE_SYNC_INTERVAL_SECONDS overrides). It starts immediately (boot
+    # catch-up), wakes every CHECK_INTERVAL, and re-ingests the reference
+    # corpus + anatomy + storage record when due. A paused/missing Supabase
+    # warns loudly and schedules the next attempt — never fails the app.
+    _sync_task = None
+    try:
+        from stages.supabase_sync import run_sync_loop, dsn_from_env
+
+        def _sync_dsn() -> Optional[str]:
+            return (_settings.supabase_pooler_url_str()
+                    or dsn_from_env())
+
+        _sync_task = asyncio.create_task(
+            run_sync_loop(
+                _sync_dsn,
+                interval=max(60, _settings.supabase_sync_check_seconds),
+                project_url=_settings.supabase_url or "",
+                storage_key=_settings.supabase_service_role_key_str() or "",
+            )
+        )
+    except Exception as _sync_exc:  # noqa: BLE001 -- never break boot
+        print(f"[supabase-sync] loop not started: {_sync_exc}")
     try:
         yield
     finally:
+        if _sync_task is not None:
+            _sync_task.cancel()
         await app.state.http_client.aclose()
 
 
@@ -122,6 +148,31 @@ async def health() -> dict:
     renderer is a subprocess on the same container, so a reachable app == a
     healthy ship path. Never touches secrets; no side effects."""
     return {"status": "ok", "app": "dmc-preprocessor", "version": "0.5.0-onboard"}
+
+
+@app.post("/sync-catalog")
+async def sync_catalog(force: bool = False) -> dict:
+    """Manually trigger the reference-catalog sync (boot/CI/SRE).
+
+    The weekly loop runs it automatically; this route exists for an
+    immediate refresh. `force=true` bypasses the due-check. When Supabase
+    is absent/paused the response is a LOUD {"state": "no_dsn" |
+    "unavailable"} — the app keeps running on the legacy index; it never
+    fabricates references."""
+    from stages.supabase_sync import run_catalog_sync, maybe_sync_catalog
+
+    _dsn = _settings.supabase_pooler_url_str()
+    if force:
+        return await run_catalog_sync(
+            _dsn,
+            project_url=_settings.supabase_url or "",
+            storage_key=_settings.supabase_service_role_key_str() or "",
+        )
+    return await maybe_sync_catalog(
+        _dsn,
+        project_url=_settings.supabase_url or "",
+        storage_key=_settings.supabase_service_role_key_str() or "",
+    )
 
 
 @app.middleware("http")
