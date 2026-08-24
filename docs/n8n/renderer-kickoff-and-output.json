@@ -1,0 +1,716 @@
+{
+  "name": "DMC Renderer - Kickoff + Output Receiver",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "renderer-kickoff",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        1120
+      ],
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Renderer Kickoff",
+      "webhookId": "dmc-kickoff-0001",
+      "notes": "Airtable automation calls this when 'start renderer?' is checked: POST https://<n8n>/webhook/renderer-kickoff?recordId=recXXX"
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.query.recordId || $json.body.recordId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        1120
+      ],
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Get Content Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════════════════\n// BUILD RENDER REQUEST — the RenderRequest contract the service\n// actually expects (research/preprocessor/models.py::RenderRequest):\n//   { record_id, client{...brand hexes...}, report_json,\n//     image_manifest, ship: true, ship_webhook }\n// ship=true → POST /render returns the package JSON immediately;\n// the PDF+IDML arrive later as a multipart POST to ship_webhook.\n// ═══════════════════════════════════════════════════════════════\n\nconst record = $input.first().json;\nconst fields = record.fields || record;\n\n// ─── 1. report_json ───\nlet reportPayload;\ntry {\n  const raw = fields['report_json'] || fields.report_json;\n  reportPayload = typeof raw === 'string' ? JSON.parse(raw) : raw;\n} catch (e) {\n  throw new Error(`Failed to parse report_json: ${e.message}`);\n}\n\n// ─── 2. Image Manifest → { images: [...] } ───\nlet imageManifest = { images: [] };\ntry {\n  const raw = fields['Image Manifest'] || fields.image_manifest;\n  const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;\n  if (parsed && Array.isArray(parsed.images)) imageManifest = parsed;\n} catch (e) {}\n\n// ─── 3. identity ───\nconst client = fields['Client'] || fields.client || 'APEX Consulting';\nconst clientSlug = (fields['Client Slug'] || fields.client_slug ||\n  client.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''));\nconst recordId = record.id;\n\n// meta guarantees (Stage 1 validates page_count_target in {16,20,24,28})\nreportPayload.meta = reportPayload.meta || {};\nreportPayload.meta.client_slug = clientSlug;\nreportPayload.meta.report_id = reportPayload.meta.report_id || recordId;\nif (!reportPayload.meta.page_count_target) reportPayload.meta.page_count_target = 20;\n\n// ─── 4. brand hexes (REQUIRED — 422 if missing). Apex defaults; override\n//        per-client via Airtable fields when onboarded. ───\nconst hex = (v, fb) => (v && String(v).trim()) ? String(v).trim() : fb;\nconst brandHexDark   = hex(fields['Brand Hex Dark']   || fields.brand_hex_dark,   '#2E3E50');\nconst brandHexLight  = hex(fields['Brand Hex Light']  || fields.brand_hex_light,  '#F6F3ED');\nconst brandHexAccent = hex(fields['Brand Hex Accent'] || fields.brand_hex_accent, '#4A7C7E');\n\n// ─── 5. assemble RenderRequest ───\nconst request = {\n  record_id: recordId,\n  client: {\n    name: client,\n    company: fields['Company'] || fields.company || client,\n    website_url: fields['Website URL'] || fields.website_url || '',\n    brand_hex_dark: brandHexDark,\n    brand_hex_light: brandHexLight,\n    brand_hex_accent: brandHexAccent,\n    founder_youtube_url: fields['Founder YouTube URL'] || fields.founder_youtube_url || null,\n    founder_instagram_url: fields['Founder Instagram URL'] || fields.founder_instagram_url || null\n  },\n  report_json: reportPayload,\n  image_manifest: imageManifest,\n  ship: true,\n  // The renderer POSTs the finished PDF+IDML here when done. The query\n  // params ride along so the receiver webhook knows which record this is.\n  ship_webhook: 'https://n8n.zimmermannsysteme.de/webhook/renderer-output'\n    + '?record_id=' + encodeURIComponent(recordId)\n    + '&client_slug=' + encodeURIComponent(clientSlug)\n};\n\nreturn [{\n  json: {\n    render_request: request,\n    record_id: recordId,\n    client: client,\n    client_slug: clientSlug,\n    cover_title: fields['Cover Title'] || fields.cover_title || '',\n    page_count: reportPayload.meta.page_count_target,\n    image_count: (imageManifest.images || []).length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -736,
+        1120
+      ],
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Build Render Request"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.RENDERER_URL || 'https://dmc-renderer.up.railway.app' }}/render",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.render_request) }}",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -512,
+        1120
+      ],
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "POST /render (ship)",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput",
+      "notes": "ASYNC contract: returns the package JSON immediately (ship=true). The PDF+IDML arrive later on the 'Renderer Output' webhook."
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $('Build Render Request').item.json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "queued",
+            "start renderer?": false
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        1120
+      ],
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Airtable: Mark Queued",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B32K9N8KS",
+          "mode": "list",
+          "cachedResultName": "dmc-automation-scraping"
+        },
+        "text": "=⏳ Render QUEUED for {{ $('Build Render Request').item.json.client }} ({{ $('Build Render Request').item.json.client_slug }})\n📄 {{ $('Build Render Request').item.json.page_count }} pages, {{ $('Build Render Request').item.json.image_count }} images\n📝 {{ $('Build Render Request').item.json.cover_title }}\n\nPDF+IDML will land in Drive when the renderer ships.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1120
+      ],
+      "webhookId": "c0af56b2-2079-4f46-9874-7b50a9b048f7",
+      "id": "a1b2c3d4-0006-4000-8000-000000000006",
+      "name": "Slack: Render Queued",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "sK3uS4EoZoLFO70H",
+          "name": "Slack APEX Automation"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// KICKOFF ERROR HANDLER — /render rejected or timed out\nconst err = $input.first().json;\nreturn [{\n  json: {\n    record_id: $('Build Render Request').item.json.record_id,\n    client: $('Build Render Request').item.json.client,\n    render_status: 'render-failed',\n    error_message: (err.message || err.error || JSON.stringify(err)).substring(0, 500),\n    failed_at: new Date().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        1312
+      ],
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Handle Kickoff Error"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "={{ $json.render_status }}",
+            "start renderer?": false
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1312
+      ],
+      "id": "a1b2c3d4-0008-4000-8000-000000000008",
+      "name": "Airtable: Mark Kickoff Failed",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B32K9N8KS",
+          "mode": "list",
+          "cachedResultName": "dmc-automation-scraping"
+        },
+        "text": "=❌ RENDER KICKOFF FAILED for {{ $('Handle Kickoff Error').item.json.client }}\n⚠️ {{ $('Handle Kickoff Error').item.json.error_message }}\n⏰ {{ $('Handle Kickoff Error').item.json.failed_at }}\n\nRetry: re-check \"start renderer?\" in Airtable.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        1312
+      ],
+      "webhookId": "9c90b118-ea6e-4a0a-a199-00112bcd6455",
+      "id": "a1b2c3d4-0009-4000-8000-000000000009",
+      "name": "Slack: Kickoff Failed",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "sK3uS4EoZoLFO70H",
+          "name": "Slack APEX Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "renderer-output",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        1568
+      ],
+      "id": "a1b2c3d4-0010-4000-8000-000000000010",
+      "name": "Renderer Output",
+      "webhookId": "dmc-output-0010",
+      "notes": "This path MUST stay 'renderer-output' — it is the REPORT_GENERATOR_WEBHOOK the renderer ships to. Receives multipart: binary pdf + idml, form field 'payload' (outcome JSON). Query params carry record_id/client_slug from the kickoff."
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════════════════\n// PARSE SHIP OUTCOME — multipart from the renderer's ship path:\n//   binary: pdf (application/pdf), idml (application/zip)\n//   form field 'payload': JSON string of the ship outcome\n// ═══════════════════════════════════════════════════════════════\n\nconst incoming = $input.first();\nconst body = incoming.json.body || {};\nlet outcome = {};\ntry {\n  outcome = typeof body.payload === 'string' ? JSON.parse(body.payload) : (body.payload || {});\n} catch (e) {\n  outcome = { parse_error: e.message };\n}\n\nreturn [{\n  json: {\n    record_id: (incoming.json.query && incoming.json.query.record_id) || '',\n    client_slug: (incoming.json.query && incoming.json.query.client_slug) || '',\n    status: outcome.status || 'unknown',\n    clear_ratio: outcome.clear_ratio ?? null,\n    pdf_name: (incoming.binary && incoming.binary.pdf && incoming.binary.pdf.fileName) || 'report.pdf',\n    idml_name: (incoming.binary && incoming.binary.idml && incoming.binary.idml.fileName) || 'report_indesign.zip',\n    artifact_urls: outcome.artifact_urls || {},\n    punch_list: outcome.punch_list || []\n  },\n  binary: incoming.binary || {}\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        1568
+      ],
+      "id": "a1b2c3d4-0011-4000-8000-000000000011",
+      "name": "Parse Ship Outcome",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Ship Outcome').item.json.pdf_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -736,
+        1568
+      ],
+      "id": "a1b2c3d4-0012-4000-8000-000000000012",
+      "name": "Drive: Upload PDF",
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "D0hFU77FQYFqTjzO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Parse Ship Outcome').item.json.idml_name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -512,
+        1568
+      ],
+      "id": "a1b2c3d4-0013-4000-8000-000000000013",
+      "name": "Drive: Upload IDML",
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "D0hFU77FQYFqTjzO",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $('Parse Ship Outcome').item.json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "rendered",
+            "start renderer?": false,
+            "pdf_drive_link": "={{ $('Drive: Upload PDF').item.json.webViewLink || '' }}",
+            "idml_drive_link": "={{ $('Drive: Upload IDML').item.json.webViewLink || '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        1568
+      ],
+      "id": "a1b2c3d4-0014-4000-8000-000000000014",
+      "name": "Airtable: Mark Rendered",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "notes": "pdf_drive_link / idml_drive_link columns must exist in the Content table (create them once)."
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B32K9N8KS",
+          "mode": "list",
+          "cachedResultName": "dmc-automation-scraping"
+        },
+        "text": "=✅ PDF SHIPPED for {{ $('Parse Ship Outcome').item.json.client_slug }}\n📄 {{ $('Parse Ship Outcome').item.json.pdf_name }} + IDML → Drive\n🎯 gate clear_ratio: {{ $('Parse Ship Outcome').item.json.clear_ratio }}\nStatus: {{ $('Parse Ship Outcome').item.json.status }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1568
+      ],
+      "webhookId": "c0af56b2-2079-4f46-9874-7b50a9b048f7",
+      "id": "a1b2c3d4-0015-4000-8000-000000000015",
+      "name": "Slack: PDF Ready",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "sK3uS4EoZoLFO70H",
+          "name": "Slack APEX Automation"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// OUTPUT ERROR HANDLER — delivery arrived but Drive/Airtable failed\nconst err = $input.first().json;\nreturn [{\n  json: {\n    record_id: ($('Renderer Output').first().json.query || {}).record_id || '',\n    render_status: 'delivery-failed',\n    error_message: (err.message || err.error || JSON.stringify(err)).substring(0, 500),\n    failed_at: new Date().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        1760
+      ],
+      "id": "a1b2c3d4-0016-4000-8000-000000000016",
+      "name": "Handle Output Error"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appUnNEiDTtnjKOju",
+          "mode": "list",
+          "cachedResultName": "Reporting Automation",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2W3jD4hvfj6Rrb",
+          "mode": "list",
+          "cachedResultName": "Content",
+          "cachedResultUrl": "https://airtable.com/appUnNEiDTtnjKOju/tbl2W3jD4hvfj6Rrb"
+        },
+        "id": "={{ $json.record_id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "render_status": "={{ $json.render_status }}",
+            "start renderer?": false
+          },
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -64,
+        1760
+      ],
+      "id": "a1b2c3d4-0017-4000-8000-000000000017",
+      "name": "Airtable: Mark Delivery Failed",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "lIRKhUqiQjs6zZsA",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0B32K9N8KS",
+          "mode": "list",
+          "cachedResultName": "dmc-automation-scraping"
+        },
+        "text": "=❌ DELIVERY FAILED for {{ $('Handle Output Error').item.json.record_id }}\n⚠️ {{ $('Handle Output Error').item.json.error_message }}\nThe renderer shipped but Drive/Airtable updates failed. PDF is on the renderer host.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        1760
+      ],
+      "webhookId": "9c90b118-ea6e-4a0a-a199-00112bcd6455",
+      "id": "a1b2c3d4-0018-4000-8000-000000000018",
+      "name": "Slack: Delivery Failed",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "sK3uS4EoZoLFO70H",
+          "name": "Slack APEX Automation"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Renderer Kickoff": {
+      "main": [
+        [
+          {
+            "node": "Get Content Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Content Record": {
+      "main": [
+        [
+          {
+            "node": "Build Render Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Render Request": {
+      "main": [
+        [
+          {
+            "node": "POST /render (ship)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "POST /render (ship)": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Queued",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Kickoff Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable: Mark Queued": {
+      "main": [
+        [
+          {
+            "node": "Slack: Render Queued",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Handle Kickoff Error": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Kickoff Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable: Mark Kickoff Failed": {
+      "main": [
+        [
+          {
+            "node": "Slack: Kickoff Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Renderer Output": {
+      "main": [
+        [
+          {
+            "node": "Parse Ship Outcome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Ship Outcome": {
+      "main": [
+        [
+          {
+            "node": "Drive: Upload PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Output Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drive: Upload PDF": {
+      "main": [
+        [
+          {
+            "node": "Drive: Upload IDML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Drive: Upload IDML": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Rendered",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Output Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable: Mark Rendered": {
+      "main": [
+        [
+          {
+            "node": "Slack: PDF Ready",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Handle Output Error": {
+      "main": [
+        [
+          {
+            "node": "Airtable: Mark Delivery Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable: Mark Delivery Failed": {
+      "main": [
+        [
+          {
+            "node": "Slack: Delivery Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a890937d4fb492826fca2e81aa2aa594886fd545124b703108ef2f064a2a9da2"
+  },
+  "tags": [
+    "dmc-renderer"
+  ]
+}
