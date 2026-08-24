@@ -94,7 +94,13 @@ _CANDIDATES: dict[str, list[str]] = {
     # and a text-only page (no viz/steps) falls through to the fill. It is the
     # graceful FALLBACK, not an override.
     "ST-02": ["a4_bi_dashboard", "a4_editorial_fill", "a4_two_stack", "a4_quote_portrait"],
-    "ST-09": ["a4_editorial_fill", "a4_two_stack", "a4_dark_divider"],
+    # ST-09: the DATA status-quo page. The CONTEXT continuation carries
+    # data.viz (a dashboard-eligible rail) and is ST-09-continuation-EXEMPT, so
+    # a4_bi_dashboard leads and wins when viz is present; the EVIDENCE page
+    # (symptoms, no viz) fails the ("viz",) contract and falls through to the
+    # fill. Dashboard sits BEFORE the always-fitting editorial_fill so it is not
+    # shadowed by the repeatable-fill shortcut.
+    "ST-09": ["a4_bi_dashboard", "a4_editorial_fill", "a4_two_stack", "a4_dark_divider"],
     # ST-05: the A3 editorial hero when a founder portrait resolves, else the fill
     # layout (not a bare legacy page). editorial-only left every portrait-less
     # About untreated (the 2026-07-11 portrait-less About regression).

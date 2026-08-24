@@ -1,0 +1,88 @@
+{# a4_bi_dashboard - the "Power-BI" data spread (audit-corrected anatomy).
+
+   DATA comes pre-shaped via TreatmentData (td) from treatment_engine.adapt.
+   Fragment only: no<html/head/style/@page/:root.
+
+   REFERENCE ANATOMY (apex p3 / niklas p2, verified 2026-08-25 by reading the
+   raster):
+     - optional HERO strip (a real photo when the page resolves one),
+     - HEAD row: eyebrow + two-tone display headline + lede,
+     - the body GRID: LEFT editorial narrative (body/sections) + RIGHT INTERIOR
+       dark rail (approx 25-30% width, inset, middle-to-bottom; NOT full-bleed)
+       carrying the page's data-viz devices (stat_strip / radial_cluster /
+       mega_numeral / ranked_bars, whatever data.viz supplies) plus the page
+       stats ("In Zahlen") when no device covers them,
+     - optional FOOT: a cta-url band (from brand data; never fabricated) or the
+       credentials line.
+
+   Token-only, brand-agnostic: every colour via var(--token); no hex, no
+   font-family literal, no client string, no em dash. Every block graceful-omits
+   when its data is absent. #}
+{% from 'eyebrow.jinja' import eyebrow %}
+{% from 'two_tone_headline.jinja' import two_tone_headline %}
+{% from 'viz.jinja' import viz as render_viz %}
+
+<div class="db-root">
+  <div class="db-fill">
+
+  {% if td.image %}
+  <div class="db-hero" style="background-image:url('{{ td.image }}');"></div>
+  {% endif %}
+
+  <div class="db-head">
+    {% if td.eyebrow %}{{ eyebrow(td.eyebrow) }}{% endif %}
+    {% if td.headline %}{{ two_tone_headline(td.headline, td.headline_accent or '', tag='h1') }}{% endif %}
+    {% if td.subhead %}<p class="db-lede">{{ td.subhead }}</p>{% endif %}
+  </div>
+
+  <div class="db-grid">
+    <div class="db-narrative">
+      {% if td.body %}
+        {% for p in td.body %}<p class="db-par">{{ p }}</p>{% endfor %}
+      {% endif %}
+      {% if td.sections %}
+        {% for s in td.sections %}
+        <div class="db-section">
+          {% if s.label %}<div class="db-section-label">{{ s.label }}</div>{% endif %}
+          {% if s.text %}<p class="db-section-text">{{ s.text }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <aside class="db-rail">
+      {% if td.viz %}
+      <div class="db-devices">{{ render_viz(td.viz) }}</div>
+      {% endif %}
+      {% if td.stats %}
+      <div class="db-stats">
+        <div class="db-stats-cap">In Zahlen</div>
+        {% for s in td.stats %}
+        <div class="db-stat">
+          {% if s.value %}<div class="db-stat-value">{{ s.value }}</div>{% endif %}
+          {% if s.label %}<div class="db-stat-label">{{ s.label }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  {% if td.cta and td.cta.url %}
+  <div class="db-foot db-foot-cta">
+    <span class="db-foot-label">{{ td.cta.text or 'Jetzt Termin vereinbaren' }}</span>
+    <span class="db-foot-url">{{ td.cta.url }}</span>
+  </div>
+  {% elif td.credentials %}
+  <div class="db-foot db-foot-cred">
+    {% for c in td.credentials %}<span class="db-foot-cred-item">{{ c }}</span>{% endfor %}
+  </div>
+  {% elif ctx and ctx.brand and ctx.brand.company_url_display %}
+  <div class="db-foot db-foot-cta">
+    <span class="db-foot-label">Jetzt Termin vereinbaren</span>
+    <span class="db-foot-url">{{ ctx.brand.company_url_display }}</span>
+  </div>
+  {% endif %}
+
+  </div>{# /db-fill #}
+</div>

@@ -1,0 +1,222 @@
+/* a4_bi_dashboard treatment (A4 portrait, the "Power-BI" data spread). Scoped
+ * under .page.treatment-a4_bi_dashboard so it cannot leak. Semantic design
+ * tokens ONLY (var(--...)): NO raw hex, NO font-family literal, NO client
+ * string, no em dash.
+ *
+ * Reference anatomy (apex p3 / niklas p2, verified 2026-08-25):
+ *   optional hero strip, then HEAD row (eyebrow + two-tone headline + lede),
+ *   then a body GRID: LEFT editorial narrative (approx 65-70%) + RIGHT an
+ *   INTERIOR dark rail (approx 25-30% width, INSET from the sheet edges,
+ *   middle-to-bottom) carrying the page's data-viz devices and stats. Optional
+ *   FOOT: a cta-url band from brand data (never fabricated).
+ *
+ * The rail is deliberately NOT full-bleed: it sits inside the content box with
+ * a small white margin (Richard's own data page does this - the audit read the
+ * raster), so this treatment needs NO assembler edge/tp-rail carve-outs. The
+ * dark ground is var(--color-ink) (NOT --color-primary: apex primary equals
+ * accent, which would make the on-dark stats invisible). */
+.page.treatment-a4_bi_dashboard {
+  /* .db-root is the anonymous media-layer wrapper (the .page child). The real
+     fill column is .db-fill below (the ef-grid/ef-main pattern that WORKS in
+     Chromium print): a definite-height flex column whose children grow. */
+  position: relative;
+}
+.page.treatment-a4_bi_dashboard .db-fill {
+  height: 261mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* optional hero image strip (a real photo; absent -> no strip) */
+.page.treatment-a4_bi_dashboard .db-hero {
+  flex: 0 0 auto;
+  height: 42mm;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 0.6mm solid var(--color-accent);
+}
+
+/* head row */
+.page.treatment-a4_bi_dashboard .db-head {
+  flex: 0 0 auto;
+  margin: 0 0 var(--space-4) 0;
+}
+.page.treatment-a4_bi_dashboard .db-head .c-eyebrow {
+  color: var(--color-accent);
+  letter-spacing: 0.28em;
+  margin-bottom: var(--space-3);
+}
+.page.treatment-a4_bi_dashboard .db-head .c-two-tone {
+  font-size: var(--type-display);
+  line-height: 1.05;
+  letter-spacing: -0.014em;
+}
+.page.treatment-a4_bi_dashboard .db-lede {
+  font-family: var(--font-body);
+  font-size: var(--type-lede);
+  line-height: 1.5;
+  color: var(--color-body);
+  margin: var(--space-3) 0 0 0;
+}
+
+/* ---- the body GRID: narrative left, interior dark rail right ---- */
+.page.treatment-a4_bi_dashboard .db-grid {
+  flex: 1 1 0;         /* grow from ZERO to fill the definite-height root: with
+                           flex:1 1 auto Chromium left the grid at content height
+                           and the dark rail stopped at 50% (the p6 void). The
+                           1 1 0 basis guarantees it stretches rail + narrative
+                           to the sheet foot. */
+  min-height: 0;
+  display: flex;
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+/* LEFT editorial narrative */
+.page.treatment-a4_bi_dashboard .db-narrative {
+  flex: 1 1 68%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  /* distribute the paragraphs down the full column: a sparse status-quo page
+     (short intro) fills the sheet instead of clumping over a dead lower half
+     (the p6 audit - bands 50-90% were 0.000 ink). Same fill pattern as the
+     case-study sections. */
+  justify-content: space-between;
+}
+.page.treatment-a4_bi_dashboard .db-par {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.45;
+  color: var(--color-body);
+  margin: 0 0 var(--space-3) 0;
+}
+.page.treatment-a4_bi_dashboard .db-par:last-child { margin-bottom: 0; }
+.page.treatment-a4_bi_dashboard .db-section {
+  margin: 0 0 var(--space-4) 0;
+}
+.page.treatment-a4_bi_dashboard .db-section-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  border-left: 0.8mm solid var(--color-accent);
+  padding-left: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.page.treatment-a4_bi_dashboard .db-section-text {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: 1.45;
+  color: var(--color-body);
+  margin: 0;
+}
+
+/* RIGHT windowed dark rail: interior, ~30% of the measure, inset (NOT full
+   bleed). Ground is var(--color-ink); this is the deck's authority-panel
+   language. The data-viz devices render here (stat_strip / radial_cluster /
+   mega_numeral / ranked_bars, whatever data.viz carries). */
+.page.treatment-a4_bi_dashboard .db-rail {
+  flex: 0 0 30%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  padding: var(--space-5) var(--space-4);
+  margin: 0 var(--space-1) 0 0;   /* interior: a thin white gutter on the right */
+}
+
+/* the data-viz devices inside the dark rail: the base viz.css uses
+   --color-ink numerals on light grounds; the rail forces on-dark so figures
+   stay legible on the authority ground. */
+.page.treatment-a4_bi_dashboard .db-devices {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz {}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__value,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__value,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-ring__center,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-donut__center,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__center {
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__label,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__label,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__label {
+  color: color-mix(in srgb, var(--color-on-dark) 78%, var(--color-ink));
+}
+
+/* page stats ("In Zahlen") in the rail when no device covers them */
+.page.treatment-a4_bi_dashboard .db-stats {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-top: 0.3mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
+  padding-top: var(--space-3);
+}
+.page.treatment-a4_bi_dashboard .db-stats-cap {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-accent) 45%, var(--color-on-dark));
+}
+.page.treatment-a4_bi_dashboard .db-stat-value {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: var(--type-stat);
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_bi_dashboard .db-stat-label {
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  color: color-mix(in srgb, var(--color-on-dark) 72%, var(--color-ink));
+  margin-top: 0.4mm;
+}
+
+/* ---- optional FOOT (cta-url band / credentials) ---- */
+.page.treatment-a4_bi_dashboard .db-foot {
+  flex: 0 0 auto;
+  margin-top: var(--space-5);
+  border-top: 0.4mm solid var(--color-accent);
+  padding-top: var(--space-3);
+  display: flex;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+.page.treatment-a4_bi_dashboard .db-foot-label {
+  font-family: var(--font-head);
+  font-size: var(--type-eyebrow);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.page.treatment-a4_bi_dashboard .db-foot-url {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--type-h2);
+  color: var(--color-accent);
+}
+.page.treatment-a4_bi_dashboard .db-foot-cred {
+  flex-wrap: wrap;
+}
+.page.treatment-a4_bi_dashboard .db-foot-cred-item {
+  font-family: var(--font-head);
+  font-size: var(--type-caption);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}

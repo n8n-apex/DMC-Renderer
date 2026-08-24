@@ -183,14 +183,23 @@ def _st02_specs() -> list:
 
 
 def _st09_specs() -> list:
-    """ST-09 STATUS QUO — a single MAGNITUDE hero. '50 %' is a verbatim substring
-    of the body ("Burnout betrifft heute rund 50 % aller Wissensarbeiter").
-    (A second stat_strip device overflowed the sheet — the page carries the
-    hero + 6 symptom blocks + a scene; verified 21-page spill. The hero alone
-    is the honest bound device here.)
+    """ST-09 STATUS QUO — two bound devices for the dashboard rail.
+
+    - a MAGNITUDE hero: '50 %' is a verbatim substring of the body ("Burnout
+      betrifft heute rund 50 % aller Wissensarbeiter").
+    - a stat_strip with '25\u201330 %': the EXACT verbatim token in the body
+      ("25\u201330 % der gesamten Betriebskosten"), shown with its label.
+
+    Two grounded figures therefore fill the interior rail (the a4_bi_dashboard
+    treatment hosts them vertically; a single device left the rail ~75% empty).
+    Both figures come verbatim from the body copy; nothing fabricated.
     """
-    return [{"preset": "mega_numeral", "value": "50 %",
-             "label": "der Wissensarbeiter sind heute von Burnout betroffen"}]
+    return [
+        {"preset": "mega_numeral", "value": "50 %",
+         "label": "der Wissensarbeiter sind heute von Burnout betroffen"},
+        {"preset": "stat_strip", "items": [
+            {"value": "25\u201330 %", "label": "der Betriebskosten gehen für manuelle Prozesse drauf"}]},
+    ]
 
 
 def _st06_specs(steps: list) -> list:

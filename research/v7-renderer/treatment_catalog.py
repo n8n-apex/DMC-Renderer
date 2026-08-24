@@ -93,7 +93,12 @@ _CATALOG: tuple[Treatment, ...] = (
     # numbered bands flex to the page instead.
     _treatment("a4_vertical_timeline", "timeline", frozenset({"a4"}), ("steps",),
                min_counts=(("steps", 4),)),
-    _treatment("a4_bi_dashboard", "dashboard", frozenset({"a3", "a4"}), ("viz",)),
+    # a4_bi_dashboard: the "Power-BI" data spread (audit 2026-08-25). A4 portrait
+    # ONLY: the reference's data page is an interior dark stat panel + narrative
+    # (inset, not full-bleed). Authoring an a3 anatomy is NOT in scope, so the
+    # format is pinned to a4 to keep the descriptor honest (an {a3,a4} claim for
+    # an a4-geometry layout is a latent mixed-size-print trap).
+    _treatment("a4_bi_dashboard", "dashboard", frozenset({"a4"}), ("viz",)),
     _treatment("a4_metric_column", "metric", frozenset({"a4"}), ("stats",)),
     _treatment("a4_two_stack", "two_stack", frozenset({"a4"}), ("headline",)),
     # a4_editorial_fill: a REAL fixed-height fill layout for the text page types

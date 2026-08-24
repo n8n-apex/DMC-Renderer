@@ -754,6 +754,15 @@
             "preset": "mega_numeral",
             "value": "50 %",
             "label": "der Wissensarbeiter sind heute von Burnout betroffen"
+          },
+          {
+            "preset": "stat_strip",
+            "items": [
+              {
+                "value": "25–30 %",
+                "label": "der Betriebskosten gehen für manuelle Prozesse drauf"
+              }
+            ]
           }
         ]
       },

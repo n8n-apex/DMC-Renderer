@@ -188,12 +188,16 @@ def test_expected_page_sizes_in_order(rendered):
 
 
 def test_report_html_stamps_treatment_and_format_classes(rendered):
-    # US-604: the ST-09 page renders A4 via a4_editorial_fill; the ST-06
-    # continuation pages are NOT treated (they belong to the section — the
-    # section's own pattern renders them). No A3 page remains.
+    # US-2026-08-25: the ST-09 CONTEXT page (the first ST-09 page, which is in
+    # this SLICE) now renders via a4_bi_dashboard: its data.viz makes the
+    # ("viz",) contract fit. The ST-09 EVIDENCE page is NOT in this slice, but
+    # its no-viz -> a4_editorial_fill fallback is pinned separately in
+    # tests/test_treatment_dashboard.py::test_evidence_without_viz_does_not_fit.
+    # The ST-06 continuation pages are NOT treated (they belong to the section).
+    # No A3 page remains.
     html = (rendered["out"] / "report.html").read_text(encoding="utf-8")
-    assert "treatment-a4_editorial_fill" in html, (
-        "a4_editorial_fill treatment class not stamped on the ST-09 page"
+    assert "treatment-a4_bi_dashboard" in html, (
+        "a4_bi_dashboard treatment class not stamped on the ST-09 context page"
     )
     assert "format-a4" in html, "A4 format class not stamped on the treated page"
     assert "treatment-horizontal_process" not in html, (
