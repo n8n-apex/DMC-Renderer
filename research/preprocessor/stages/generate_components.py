@@ -325,6 +325,91 @@ def process_flow(
     )
 
 
+def process_flow_grid(
+    steps: list[dict],
+    *,
+    primary: str,
+    accent: str,
+    cols: int = 2,
+    w: Optional[int] = None, h: Optional[int] = None,
+    kicker: str = "PROZESS · MECHANIK",
+    title: str = "Vorgehen",
+    dark_gray: str = DEFAULT_DARK_GRAY,
+    deep: str = DEFAULT_DEEP,
+) -> str:
+    """A WIDE process flow laid out as a 2-column x N-row grid (tall canvas).
+
+    A single horizontal row of 6 process steps (``process_flow``) forces each
+    label into ~190 units at ~12px -> long mechanism titles wrap to 2 micro
+    lines and look chopped/amateur on the A4 showcase (the p20 report). The
+    grid gives each step a full half-column: a large numbered node with the
+    label wrapped at a readable size centred BELOW it, so 5-6 steps fit a tall
+    A4 plate legibly. Connectors snake row-to-row (rightward arrow across a
+    row, vertical arrow down to the next row). Same visual language as
+    process_flow (outline circles in primary, the final node accent-filled).
+
+    Chosen when the step count >= GRID_MIN (5): a small flow stays in one row.
+    """
+    n = len(steps)
+    grids = max(1, (n + cols - 1) // cols)
+    cw = max(360, w or 920)
+    ch = h or (150 + grids * 200)
+    pad_x = 30
+    # column centres (a step label ~360 units wide seated under its node)
+    col_cx = [cw * (c + 0.5) / cols for c in range(cols)]
+    cy = 160
+    row_h = (ch - 140) / (grids - 1) if grids > 1 else 200
+
+    parts = [_svg_header(w=cw, kicker=kicker, title=title, pad_x=pad_x,
+                         primary=primary, deep=deep, dark_gray=dark_gray)]
+    nodes: list[str] = []
+    conns: list[str] = []
+    labels: list[str] = []
+    for i, s in enumerate(steps):
+        r, c = divmod(i, cols)
+        cx = col_cx[c]
+        cy = 160 + r * row_h
+        is_last = (i == n - 1)
+        fill = accent if is_last else "white"
+        stroke = accent if is_last else primary
+        tcolor = "white" if is_last else primary
+        nodes.append(
+            f'<circle cx="{cx:.1f}" cy="{cy}" r="26" fill="{fill}" '
+            f'stroke="{stroke}" stroke-width="2.2"/>'
+            f'<text x="{cx:.1f}" y="{cy + 8}" text-anchor="middle" '
+            f'font-family="Inter, sans-serif" font-weight="800" '
+            f'font-size="18" fill="{tcolor}">{s["n"]}</text>'
+        )
+        label = s.get("short") or s.get("title") or ""
+        size = 17
+        lines = _wrap_lines(label, 360, "Inter-700", size, max_lines=3)
+        line_h = size * 1.15 + 2
+        ly = cy + 46
+        for li, ln in enumerate(lines):
+            labels.append(
+                f'<text x="{cx:.1f}" y="{ly + li * line_h:.1f}" '
+                f'text-anchor="middle" font-family="Inter, sans-serif" '
+                f'font-weight="700" font-size="{size}" fill="{primary}" '
+                f'letter-spacing="-0.01em">{ln}</text>'
+            )
+        if i < n - 1:
+            if c == 0:
+                conns.append(_arrow_path(cx + 28, cy, col_cx[1] - 28, cy,
+                                         color=dark_gray, w=1.6, head=9,
+                                         opacity=0.65))
+            else:
+                conns.append(_arrow_path(cx, cy + 28, cx, cy + row_h - 28,
+                                         color=dark_gray, w=1.6, head=9,
+                                         opacity=0.65))
+
+    return (
+        f'<svg viewBox="0 0 {cw} {ch}" width="{cw}" height="{ch}" '
+        f'xmlns="http://www.w3.org/2000/svg">'
+        + "".join(parts) + "".join(conns) + "".join(nodes) + "".join(labels)
+        + '</svg>'
+    )
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. matrix_2x2 — ST-09 status-quo matrix
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1483,6 +1568,11 @@ def _build_for_st06(
                 "n": s.get("n", i + 1),
                 "short": s.get("short", s.get("title", "")),
             })
+    # US-2026-08-25 (the p20 report): a single row of 6 mechanism steps chops
+    # every long title. 5+ steps go to the 2-column grid (tall, readable); a
+    # small flow (<=4) still fits one horizontal row.
+    if len(norm) >= 5:
+        return process_flow_grid(norm, primary=primary, accent=accent)
     return process_flow(norm, primary=primary, accent=accent)
 
 

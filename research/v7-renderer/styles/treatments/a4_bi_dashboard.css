@@ -146,8 +146,13 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: var(--space-5);
+  /* distribute the page's devices down the FULL rail height (not center): a
+     centered 2-device stack leaves the lower half of a 73%-tall rail EMPTY
+     (the p6 "empty rail below 66%" complaint). space-evenly gives each device
+     an equal pocket so the rail reads as a designed authority spine from the
+     first device down to the last, and the foot closes the sheet. */
+  justify-content: space-evenly;
+  gap: var(--space-4);
 }
 .page.treatment-a4_bi_dashboard .db-devices .c-viz {}
 .page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__value {
