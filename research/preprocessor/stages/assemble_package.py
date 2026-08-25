@@ -371,7 +371,7 @@ def _build_manifest(
             # US-2026-08-25 (the p20/ST-06 mechanism showcase): the mechanism
             # continuation is the diagram's OWN showcase page, but its SLICE
             # carries only the section title (the 6 steps live on the section's
-            # intro/result halves). Re-attach the FULL section steps to the
+            # intro/result halves). Re-attach the FULL section content to the
             # mechanism page from the original slot data (the SAME data the
             # diagram was generated from), so the mechanism page can render the
             # process as a real treatment (e.g. the A3 horizontal_process flow)
@@ -379,10 +379,11 @@ def _build_manifest(
             # nothing re-keyed or invented.
             if pp.continuation_role == "mechanism" and pp.slot is not None:
                 full = original_data_by_slot.get(int(pp.slot), {})
-                full_steps = full.get("steps") or full.get("framework_steps") or []
-                if full_steps and not data_block.get("steps"):
-                    data_block = dict(data_block)
-                    data_block["steps"] = full_steps
+                for _key in ("steps", "framework_steps", "body", "ergebnis", "lede"):
+                    _val = full.get(_key)
+                    if _val and not data_block.get(_key):
+                        data_block = dict(data_block)
+                        data_block[_key] = _val
             charts_block = []
             social_block = None
         elif sp is not None:

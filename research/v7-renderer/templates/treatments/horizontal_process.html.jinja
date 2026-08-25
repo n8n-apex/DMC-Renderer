@@ -40,8 +40,13 @@
     </div>
     {# generated SVG components (the ST-06 process-flow device) render as a band
        under the lede, sized to the left column width. Graceful: only when
-       td.components is non-empty. #}
-    {% if td.components %}
+       td.components is non-empty. US-2026-08-25 (the p20 crew): on the ST-06
+       MECHANISM showcase the middle navy numbered-steps panel IS the process
+       device; re-rendering the orphan flow SVG as a second band under the lede
+       duplicates the 6-step visual (the "no thought" double-viz the reviewer
+       hammered). Suppress the component band for the mechanism role — one
+       device, not two. #}
+    {% if td.components and td.page_role != 'mechanism' %}
     <div class="hp-comps">
       {% for c in td.components %}<div class="hp-comp">{{ c | safe }}</div>{% endfor %}
     </div>
@@ -54,7 +59,7 @@
 
   {# ---- MIDDLE: the navy numbered-steps panel ---- #}
   {% if td.steps %}
-  <div class="hp-steps-panel">
+  <div class="hp-steps-panel{% if td.page_role == 'mechanism' %} is-mechanism{% endif %}">
     {% for s in td.steps %}
     <div class="hp-step">
       <span class="hp-step-n">{{ '%02d' | format(loop.index) }}</span>

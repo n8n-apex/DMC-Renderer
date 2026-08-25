@@ -96,7 +96,7 @@
   padding: var(--space-6) var(--space-5);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--space-4);
   overflow: hidden;
 }
@@ -135,6 +135,40 @@
 .page.treatment-horizontal_process .hp-step-title + .hp-step-body::before {
   content: " ";
 }
+/* US-2026-08-25 (the A3 mechanism spread — reviewer 4/10->6/10): the
+   mechanism SHOWCASE is a scannable framework MAP, not a text dump. Hide the
+   step BODIES on the mechanism spread (the titles + numbers carry the map; the
+   full bodies live on the A4 intro/result continuation pages below). The steps
+   TIGHTEN to the top of the panel (justify-content:flex-start) so the six rows
+   read as one connected device with real breathing room, not sprung 15% apart
+   down an empty sheet (the mechanical look). Graceful: non-mechanism pages
+   keep bodies + the former space-between distribution. */
+.page.treatment-horizontal_process .hp-steps-panel.is-mechanism .hp-step-body {
+  display: none;
+}
+.page.treatment-horizontal_process .hp-steps-panel.is-mechanism .hp-step {
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+.page.treatment-horizontal_process .hp-steps-panel.is-mechanism .hp-step + .hp-step {
+  border-top: 0.25mm solid color-mix(in srgb, var(--color-on-dark) 22%, transparent);
+  padding-top: var(--space-3);
+}
+.page.treatment-horizontal_process .hp-steps-panel.is-mechanism .hp-step-n {
+  font-size: var(--type-display);
+}
+.page.treatment-horizontal_process .hp-steps-panel.is-mechanism .hp-step-title {
+  font-size: var(--type-lede);
+  line-height: 1.25;
+}
+/* left intro on the mechanism spread: keep it a tight, readable 3-line max so
+   it never becomes the reviewer's "wall of text / river" on the wide sheet. */
+.page.treatment-horizontal_process .hp-lede {
+  max-width: 88mm;
+  margin-left: 0;
+  text-align: left;
+}
 
 /* ---- RIGHT zone: navy payoff + CTA rail, full height ---- */
 .page.treatment-horizontal_process .hp-rail {
@@ -167,12 +201,15 @@
   text-transform: uppercase;
   color: var(--color-accent);
 }
+/* US-2026-08-25 (mechanism spread): anchor the payoff directly under the
+   ERGEBNIS cap (no mid-rail void) and let the CTA close at the foot. */
 .page.treatment-horizontal_process .hp-rail-payoff {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: var(--space-6);
 }
 .page.treatment-horizontal_process .hp-rail-statement {
   font-family: var(--font-display);
@@ -200,10 +237,11 @@
 }
 .page.treatment-horizontal_process .hp-rail-cta-label {
   font-family: var(--font-head);
-  font-size: var(--type-eyebrow);
-  letter-spacing: 0.18em;
+  font-size: var(--type-h3);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-on-dark) 70%, var(--color-ink));
+  font-weight: 700;
+  color: var(--color-on-dark);
 }
 .page.treatment-horizontal_process .hp-rail-cta-url {
   font-family: var(--font-display);

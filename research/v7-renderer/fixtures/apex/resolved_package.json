@@ -2387,7 +2387,9 @@
             "title": "Kontinuierliche Optimierung und Reporting",
             "body": "Nach der Implementierung laufen die Agenten nicht einfach weiter – sie werden anhand realer Output-Daten kontinuierlich verfeinert. Du siehst jederzeit, was automatisiert wurde und was es gespart hat."
           }
-        ]
+        ],
+        "body": "Die meisten Unternehmen automatisieren falsch: Sie greifen ein Tool, verbinden es mit einem anderen, und wundern sich, warum nichts besser wird. Das Done-For-You AI Automation Framework funktioniert anders. Es beginnt nicht mit Technologie, sondern mit Diagnose. APEX identifiziert zuerst, welche Prozesse tatsächlich Zeit und Geld vernichten, bereinigt dann die Datenbasis, und implementiert erst danach spezialisierte AI-Agenten direkt in deine bestehende Tool-Umgebung. Kein neues System. Keine IT-Migration. Keine Lernkurve für dein Team. Executives berichten, dass gezielt eingesetzte Automatisierung 30-50% operativer Effizienzgewinne liefert (PwC, 2026). Der Unterschied liegt nicht im Tool, sondern in der Reihenfolge.",
+        "ergebnis": "Executives berichten, dass gezielt eingesetzte Automatisierung 30-50% operativer Effizienzgewinne liefert (PwC, 2026)."
       },
       "charts": [],
       "social_proof": null,

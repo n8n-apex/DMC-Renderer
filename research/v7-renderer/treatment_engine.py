@@ -646,7 +646,12 @@ def _adapt_steps(td: TreatmentData, page: dict, data: dict, ctx: RenderContext) 
     td.result stays None there (graceful). The steps are ALSO mirrored into
     list_items ("title: body" strings, verbatim) so a fill-layout fallback (a
     thin step set fails the timeline's min-count contract) renders them as its
-    numbered bands instead of dropping the process entirely."""
+    numbered bands instead of dropping the process entirely.
+
+    US-2026-08-25 (p20): the ST-06 MECHANISM continuation is the process'
+    OWN showcase page; stamp that role on the TreatmentData so a treatment (the
+    A3 horizontal_process spread) knows to render the ONE process device (its
+    numbered steps panel) and NOT also the orphan flow SVG as a second band."""
     td.steps = _step_list(data.get("steps"))
     td.list_items = [
         (f"{s['title']}: {s['body']}" if (s.get("title") and s.get("body"))
@@ -655,6 +660,8 @@ def _adapt_steps(td: TreatmentData, page: dict, data: dict, ctx: RenderContext) 
     ]
     td.list_items = [i for i in td.list_items if i]
     td.result = _result_from(data.get("ergebnis"))
+    if str(page.get("continuation_role") or "").strip() == "mechanism":
+        td.page_role = "mechanism"
     return td
 
 
