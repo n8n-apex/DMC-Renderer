@@ -1038,7 +1038,8 @@ def _render_one_page(page: dict, ctx: "RenderContext", assignment, treatments: b
 
 def render_package(package_dir: Path, output_dir: Path,
                    engine: str = "weasyprint",
-                   treatments: bool = True) -> RenderResult:
+                   treatments: bool = True,
+                   plan: Optional[list] = None) -> RenderResult:
     package_dir = Path(package_dir).resolve()
     output_dir = Path(output_dir).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1060,9 +1061,19 @@ def render_package(package_dir: Path, output_dir: Path,
     assignments = None
     if treatments:
         import treatment_catalog  # noqa: F401 (importing registers the descriptors)
-        from treatment_stylist import assign, founder_identity
+        from treatment_stylist import founder_identity  # noqa: F401 (used below)
         import treatment_engine  # noqa: F401 (render dispatch used in _render_one_page)
-        assignments = assign(pkg.pages, ctx)
+        if plan is not None:
+            # an explicit deck plan (from the preprocessor's bank planner) is
+            # authoritative: use it verbatim (still must register the catalog).
+            assignments = plan
+        else:
+            # the BANK PLANNER is the live planner: it wraps the same
+            # deterministic assignment with the per-page ROLE + candidate
+            # DEVICES from the bank catalog, so a treated page has a first-class
+            # plan (template + role + devices), not just a bare treatment name.
+            from bank_plan import plan_pages
+            assignments = plan_pages(pkg.pages, ctx)
 
         # ---- founder-identity fallback (brand-agnostic) ----
         # An image-led treatment (needs_image) assigned to a page that has NO
