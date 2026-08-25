@@ -63,10 +63,15 @@ _ALIASES = {
     "headline": "title",
     "titel": "title",
     "einleitung": "body",
-    "intro": "body",
     "beschreibung": "body",
     "schritte": "steps",
 }
+
+# ``intro`` is NOT an alias of ``body``: a live page carries BOTH a short lead
+# (intro) and its long body (Body - About lleva "intro" + "body" distinct).
+# The renderer reads the lead as its own field; aliasing them would collide
+# two real, different values into one key and fail the adapter.
+_CANONICAL_LEAD_ALIASES = ("lead", "teaser")
 
 _ESTABLISHED_LEGACY_TYPES = {
     "ST-01",
@@ -107,6 +112,23 @@ def _canonicalize(
     canonical: dict[str, Any] = {}
     for key, child in value.items():
         if key in _ALIASES:
+            continue
+        if key in _CANONICAL_LEAD_ALIASES:
+            target = "intro"
+            if target in canonical and canonical[target] != child:
+                failures.append(
+                    AdapterFailure(
+                        code="conflicting_alias_values",
+                        content_path=f"{content_path}.{key}",
+                        detail=f"{key} conflicts with canonical field {target}",
+                    )
+                )
+                continue
+            canonical[target] = _canonicalize(
+                child,
+                content_path=f"{content_path}.{key}",
+                failures=failures,
+            )
             continue
         canonical[key] = _canonicalize(
             child,

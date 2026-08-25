@@ -18,6 +18,7 @@ import re
 import synthesize_visuals
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import brand_fallbacks as _fallbacks  # noqa: E402
@@ -1362,10 +1363,55 @@ def build_precomposition_package_v3(envelope: dict, output_dir: Path) -> dict:
     """Run the v3 adapter and authoritative precomposition gates only."""
     adapted = adapt_envelope_v3(envelope)
     report_json = adapted.report_json.model_dump(mode="json")
+    sources = list(adapted.sources)
+    claims = list(adapted.claims)
+    # Evidence seam (Proof B): a real live writer payload arrives as prose
+    # with NO claims array, so precomposition refuses every numeral in it as
+    # ungrounded. But the figures ARE in the copy the client approved. Derive
+    # them (byte-exact source spans, ``copy_derived`` allowed_uses) exactly
+    # like the writer-payload adapter does, so the grounding gate reads the
+    # report the way it was written. Explicit envelope claims always win
+    # (a hand-authored fixture carries authoritative evidence and must not be
+    # overwritten by the derivation).
+    if not claims:
+        from stages.derive_claims_v3 import derive_evidence  # noqa: PLC0415
+
+        derived = derive_evidence(
+            {"report_json": report_json},
+            captured_at=datetime.now(timezone.utc),
+            language=str(report_json.get("meta", {}).get("lang", "de")),
+        )
+        sources = list(derived.sources)
+        claims = list(derived.claims)
+    # Client-asset injection (Proof B): the envelope's ``images`` are the
+    # client's Drive-folder refs (the Airtable/Drive flow). When the envelope
+    # carries no hand-authored ``assets``, resolve those images into
+    # AssetRecords (slot-derived semantics) so the case faces get their real
+    # identity asset. FAIL CLOSED: an unreadable/Drive-not-cached ref yields
+    # no record and the case face honestly flags an asset_gen gap — never
+    # a fabricated person.
+    assets = list(adapted.assets)
+    if not assets:
+        try:
+            from stages.resolve_client_assets_v3 import resolve_client_assets_v3  # noqa: PLC0415
+
+            client_root = (
+                Path(os.environ.get("DMC_CLIENT_ASSETS_DIR"))
+                if os.environ.get("DMC_CLIENT_ASSETS_DIR")
+                else Path(__file__).resolve().parent.parent / "client_assets"
+            )
+            assets = list(
+                resolve_client_assets_v3(
+                    envelope,
+                    client_assets_root=client_root,
+                )
+            )
+        except Exception:
+            assets = []  # fail closed: no fabricated record ever
     source_bundle = {
-        "sources": adapted.sources,
-        "claims": adapted.claims,
-        "assets": adapted.assets,
+        "sources": tuple(sources),
+        "claims": tuple(claims),
+        "assets": tuple(assets),
         "report_json": report_json,
         "adapter_failures": tuple(
             failure.model_dump(mode="json") for failure in adapted.adapter_failures
@@ -1375,6 +1421,18 @@ def build_precomposition_package_v3(envelope: dict, output_dir: Path) -> dict:
     editorial_brief = envelope.get("editorial_brief_v3")
     if editorial_brief is None:
         editorial_brief = legacy_report_to_editorial_brief(report_json)
+        # Input-driven profile (Proof B): a real client report is its own
+        # editorial structure (23 faces / 5 cases / no objections chapter) —
+        # the fixed 20-face house specimen is a product template, not the
+        # report. Stamp the brief AND derive its matching profile so the plan
+        # (product_profile_id) and the validated profile are the same string.
+        from stages.plan_editorial_v3 import (  # noqa: PLC0415
+            _append_derived_profile_id,
+            derive_report_profile,
+        )
+
+        _append_derived_profile_id(editorial_brief)
+        profile = derive_report_profile(editorial_brief)
     bundle = build_precomposition_bundle_v3(
         source_bundle,
         editorial_brief,

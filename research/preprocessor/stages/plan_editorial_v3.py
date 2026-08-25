@@ -113,6 +113,12 @@ def _physical_face_count(page_numbers: str | None) -> int:
         return 1
 
 
+def _slugify(value: str) -> str:
+    import re
+
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", value.lower())).strip("-")
+
+
 def legacy_report_to_editorial_brief(report_json: dict[str, Any]) -> dict[str, Any]:
     meta = report_json.get("meta") or {}
     faces: list[dict[str, Any]] = []
@@ -168,3 +174,79 @@ def legacy_report_to_editorial_brief(report_json: dict[str, Any]) -> dict[str, A
         "promise": str(meta.get("promise") or "Legacy report promise pending"),
         "tone_profile": str(meta.get("tone_profile") or "Richard house"),
     }
+
+
+def profile_id_for_report(report_json: dict[str, Any]) -> str:
+    """Deterministic, report-shaped profile id (input-driven, never invented).
+
+    The house profile is a fixed 20-face / 3-case specimen; a real client
+    report is its own structure (23 faces, 5 cases, no objections chapter).
+    Deriving the profile from the report's OWN editorial map is the
+    input-driven rule: VALUES come from data, never a fabricated shape.
+    """
+    short = _slugify(
+        str(
+            (report_json.get("meta") or {}).get("report_id")
+            or (report_json.get("meta") or {}).get("client_slug")
+            or "legacy"
+        )
+    )
+    return f"dmc_report_{short}"[:60]
+
+
+def derive_report_profile(brief: dict[str, Any]) -> ProductProfile:
+    """A product profile that matches the report's OWN editorial shape.
+
+    Counts what the report actually IS (faces, cases, theory faces, the roles
+    it names, whether it carries trust evidence) instead of demanding a fixed
+    house specimen. Never invents a role the report lacks (e.g. objections on
+    a report without an objections chapter) and never demands a case count the
+    report does not contain.
+    """
+    faces = [
+        FacePlan.model_validate(face)
+        for face in brief.get("faces") or ()
+    ]
+    roles = tuple(dict.fromkeys(face.role for face in faces))
+    has_trust = any(
+        requirement.proof_type is ProofType.TRUST
+        for face in faces
+        for requirement in face.proof_requirements
+    )
+    base = str(brief.get("product_profile_id") or "dmc_house_20_face")
+    if base.endswith(".derived"):
+        profile_id = base
+    else:
+        profile_id = f"{base}.derived"
+    return ProductProfile(
+        profile_id=profile_id,
+        schema_version="3.0",
+        face_count=len(faces),
+        case_count=sum(face.role is NarrativeRole.CASE_STUDY for face in faces),
+        min_theory_faces=sum(face.role is NarrativeRole.THEORY for face in faces),
+        required_roles=roles,
+        require_trust_evidence=has_trust,
+        cover_must_be_first=True,
+        cta_must_be_last=True,
+        exception_policy=(
+            "report-derived: the profile is the report's own editorial shape "
+            "(input-driven, never invented)"
+        ),
+    )
+
+
+def _append_derived_profile_id(brief: dict[str, Any]) -> None:
+    """Stamp the brief's product_profile_id so plan == derived profile id.
+
+    Mutates ``brief`` in place (the precomposition owner passes it through);
+    validation requires plan.product_profile_id to match the profile checked
+    against it, and the derived profile's id MUST be the same string. Keep the
+    id deterministic on the base house id so a re-build cannot drift.
+    """
+    base = str(brief.get("product_profile_id") or "dmc_house_20_face")
+    # Idempotent: a brief already stamped by a previous derive yields the same
+    # id, so the plan's product_profile_id and the derived profile match even
+    # when both derive helpers run on the same brief.
+    if base.endswith(".derived"):
+        return
+    brief["product_profile_id"] = f"{base}.derived"

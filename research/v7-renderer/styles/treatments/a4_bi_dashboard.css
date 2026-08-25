@@ -25,7 +25,9 @@
   height: 261mm;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;   /* natural top flow; the foot uses margin-top:auto
+                                    to anchor the bottom (the a4_editorial_fill
+                                    pattern), and the RAIL stretches (not the prose) */
   box-sizing: border-box;
 }
 
@@ -81,20 +83,22 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  /* distribute the paragraphs down the full column: a sparse status-quo page
-     (short intro) fills the sheet instead of clumping over a dead lower half
-     (the p6 audit - bands 50-90% were 0.000 ink). Same fill pattern as the
-     case-study sections. */
-  justify-content: space-between;
+  /* natural, even paragraph rhythm. justify-content:space-between over an
+     UNEQUAL-length column produced the p6 gaps: the middle (longest) para
+     absorbed most slack, leaving a 22% void above and below it. Space-around
+     would still push the voids between unequal paras. Use natural top flow
+     with a fixed gap: paragraphs read as a continuous column, and the RAIL
+     (align-self:stretch) is the thing that fills the sheet, not the prose. */
+  justify-content: flex-start;
+  gap: var(--space-3);
 }
 .page.treatment-a4_bi_dashboard .db-par {
   font-family: var(--font-body);
   font-size: var(--type-body);
   line-height: 1.45;
   color: var(--color-body);
-  margin: 0 0 var(--space-3) 0;
+  margin: 0;
 }
-.page.treatment-a4_bi_dashboard .db-par:last-child { margin-bottom: 0; }
 .page.treatment-a4_bi_dashboard .db-section {
   margin: 0 0 var(--space-4) 0;
 }
@@ -134,27 +138,52 @@
 }
 
 /* the data-viz devices inside the dark rail: the base viz.css uses
-   --color-ink numerals on light grounds; the rail forces on-dark so figures
-   stay legible on the authority ground. */
+   --color-ink numerals on light grounds with WEB widths; the rail is a NARROW
+   dark panel (~59mm), so sizes are re-scoped here and colors flip to on-dark.
+   A rail-facing device must FIT the measure: mega at h2, strip cell unbounded. */
 .page.treatment-a4_bi_dashboard .db-devices {
   flex: 1 1 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 .page.treatment-a4_bi_dashboard .db-devices .c-viz {}
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__value,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__value,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-ring__center,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-donut__center,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__center {
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__value {
+  font-size: var(--type-stat);        /* 40pt, fits the ~59mm rail without wrap */
+  line-height: 1.05;
   color: var(--color-on-dark);
 }
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__label,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__label,
-.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__label {
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-mega__label {
+  font-size: var(--type-lede);
+  line-height: 1.3;
+  max-width: 52mm;                    /* narrower for the rail measure */
+  color: color-mix(in srgb, var(--color-on-dark) 78%, var(--color-ink));
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__value {
+  font-size: var(--type-h2);          /* ~20pt for the rail figure */
+  line-height: 1.1;
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__cell {
+  min-width: 0;                       /* no 34mm floor in the narrow rail */
+  text-align: left;
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-strip__label {
+  font-size: var(--type-caption);
+  line-height: 1.3;
+  max-width: 52mm;
+  color: color-mix(in srgb, var(--color-on-dark) 78%, var(--color-ink));
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__center,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-donut__center,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-ring__center {
+  color: var(--color-on-dark);
+}
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-cluster__label,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-donut__label,
+.page.treatment-a4_bi_dashboard .db-devices .c-viz-ring__label {
   color: color-mix(in srgb, var(--color-on-dark) 78%, var(--color-ink));
 }
 
@@ -190,9 +219,14 @@
 /* ---- optional FOOT (cta-url band / credentials) ---- */
 .page.treatment-a4_bi_dashboard .db-foot {
   flex: 0 0 auto;
-  margin-top: var(--space-5);
+  /* margin-top:auto anchors the foot to the sheet bottom (the a4_editorial_fill
+     _has_foot pattern): the grid above fills the middle, the rail stretches,
+     the foot closes. Reserved bottom padding clears the running-folio band so
+     the footer never sits against the page number (the p6 footer complaint). */
+  margin-top: auto;
   border-top: 0.4mm solid var(--color-accent);
   padding-top: var(--space-3);
+  padding-bottom: 4mm;
   display: flex;
   gap: var(--space-4);
   align-items: baseline;

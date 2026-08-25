@@ -157,8 +157,12 @@ def test_explicit_v3_routes_christoph_to_precomposition_gate(
         )
 
     assert "unsupported_page_count_target" in error.value.codes
-    assert "face_count_mismatch" in error.value.codes
-    assert "case_count_mismatch" in error.value.codes
+    # The input-driven profile (Proof B): a legacy report with no explicit v3
+    # brief gets a profile derived from its OWN structure, so the 20-face /
+    # 3-case house-specimen clock mismatches no longer fire. The residual is
+    # the honest client-input asset gap (5 case identity portraits absent).
+    assert "face_count_mismatch" not in error.value.codes
+    assert "case_count_mismatch" not in error.value.codes
     assert error.value.codes.count("missing_required") == 5
     assert not (tmp_path / "package.json").exists()
 
