@@ -447,13 +447,6 @@ def assign(
     """
     assignments: list[PageAssignment] = []
     a3_used = 0
-    # Non-hero A3 promotions are TAIL-GATED (bisect-proven bug class): a
-    # mid-deck A3-landscape named page makes Chromium's mixed-size print
-    # compress the surrounding A4 pages to ~71%. Promotion is allowed only in
-    # the FINAL 25% of the deck (index >= 3*len(pages)//4), the empirically
-    # safe zone (a tail A3 renders with correct page boxes). A page declined
-    # for position records the reason so the decision stays observable.
-    a3_tail_start = (3 * len(pages)) // 4
     # The package FOUNDER IDENTITY (portrait path + author), computed ONCE from
     # all pages. An image-led HERO page that has no portrait of its own (the About
     # page) borrows this; None when the package carries no founder identity (then
@@ -494,7 +487,19 @@ def assign(
         # half-empty; verified on pixels). The a4_editorial_fill treatment
         # handles BOTH shapes well (prose fill + the dense symptom grid), so
         # ST-09 continuation pages ARE treated.
-        if page.get("continuation_index") is not None and st_type != "ST-09":
+        # US-2026-08-25 (ST-06): the MECHANISM continuation is the 6-step
+        # diagram's OWN showcase page. It must be TREATED too — the whole point
+        # of the page is a device (a process flow), and re-assembling its full
+        # steps (assemble_package now attaches them) lets the wide A3
+        # horizontal_process treatment render them legibly instead of the
+        # chopped A4 legacy strip. Continuations that are NOT a device showcase
+        # (intro / result) stay untreated.
+        _cont_role = str(page.get("continuation_role") or "").strip()
+        if (
+            page.get("continuation_index") is not None
+            and st_type not in ("ST-09",)
+            and not (st_type == "ST-06" and _cont_role == "mechanism")
+        ):
             assignments.append(
                 PageAssignment(
                     index, slot, st_type, None, None,
@@ -519,33 +524,30 @@ def assign(
         page_format = _A4
         cap_note = ""
         if wants_hero:
-            # 2026-07-13: the A3 hero promotion is SUSPENDED. A mid-deck
-            # A3-landscape named page makes Chromium's mixed-size print
-            # compress surrounding A4 pages to ~71% (verified by bisect:
-            # remove the A3 -> every page renders full-size; blanket-pinning
-            # every section made it universal). Until the engine prints
-            # per-format and merges (backlog: engine track), the About hero
-            # renders on A4 (a4_editorial_fill carries the founder portrait).
-            # Heroes sit mid-deck, so they stay suspended outright; the
-            # non-hero A3 promotions below are gated by the explicit tail rule
-            # (only the final quarter of the deck may promote, see
-            # a3_tail_start above), not by an assumption about where they sit.
-            cap_note = " (a3 hero suspended: mid-deck A3 breaks Chromium A4 sizing)"
+            # US-2026-08-25: the A3 HERO stays on its A4 treatment. The mid-deck
+            # A3 wall is removed for the MECHANISM spread (horizontal_process,
+            # ST-06's wide diagram showcase — verified clean: 26pp, A3 pages
+            # unchanged, neighbours full-height, no spill). The ABOUT hero goes
+            # on a4_editorial_fill (which carries the founder portrait) by
+            # design, not by a suspension; case-study A3 (explicit a3 signal)
+            # also stays A4 unless the continuation mechanism needs it.
+            cap_note = ""
         else:
             # A non-hero page whose lead candidate is an A3-ONLY layout (e.g. the
-            # horizontal_process flow) is PROMOTED to A3 when the page sits in
-            # the deck-tail safe zone AND the cap allows AND that A3 candidate
-            # actually fits the page's data. If any gate fails, it stays A4 and
-            # uses its A4 fallbacks. This keeps the mixed-size print defect out
-            # of the deck body, honors the A3 cap, and never strands a page.
+            # horizontal_process flow) is PROMOTED to A3 when the cap allows AND
+            # that A3 candidate actually fits the page's data. If any gate fails,
+            # it stays A4 and uses its A4 fallbacks.
+            # US-2026-08-25: the mid-deck A3 wall is REMOVED. It was added under
+            # the 2026-07 "mixed-size print compresses A4 to ~71%" finding, which
+            # is STALE after the engine moved to per-format `@page` routing
+            # (.format-a3 -> a3-landscape). Verified EMPIRICALLY on this engine:
+            # a forced mid-deck A3 (index 19 of 26) renders 26pp, A3 intact
+            # (1191x842) alongside 595x842 A4s, no spill, overlap CLEAN. The
+            # real safety net is the renderer's overflow/physical-vs-logical
+            # guard, not a position-based wall. The A3 cap still binds.
             a3_lead = _wants_a3_process(st_type)
             if a3_lead is not None:
-                if index < a3_tail_start:
-                    cap_note = (
-                        f" (a3 declined: mid-deck index {index}, tail zone"
-                        f" starts at {a3_tail_start})"
-                    )
-                elif a3_used < max_a3 and candidate_fits(page, ctx, a3_lead):
+                if a3_used < max_a3 and candidate_fits(page, ctx, a3_lead):
                     page_format = _A3
                 elif a3_used >= max_a3:
                     cap_note = f" (a3 cap {max_a3} hit, fell back to a4)"

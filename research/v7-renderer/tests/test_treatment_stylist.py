@@ -173,16 +173,11 @@ def test_all_eligible_pages_get_a_treatment(pkg, ctx, assignments):
 
 
 def test_hero_is_a3_editorial(pkg, ctx):
-    """2026-07-13: the A3 HERO PROMOTION IS SUSPENDED. A mid-deck A3-landscape
-    named page makes Chromium's mixed-size print compress the surrounding A4
-    pages to ~71% (verified by bisect on the christoph deck; blanket-pinning
-    every section made it universal). Until the engine prints per-format and
-    merges, the About page renders on A4 via the fill treatment (which carries
-    the injected founder portrait). US-604: the apex ST-05 section now spans
-    TWO continuation pages (identity + proof), which the stylist bypasses — so
-    this pins the suspension on a SYNTHETIC non-continuation ST-05 page carrying
-    the same data + the package's founder identity (the exact view the
-    assembler renders for a single-page About)."""
+    """US-2026-08-25: the A3 HERO stays on a4_editorial_fill (which carries the
+    injected founder portrait). A hero's A3 promotion is NOT an independent
+    design goal; the About page renders A4 by design. (The old 2026-07
+    "suspended" reason tied it to the now-fixed mid-deck A3 wall; only the
+    mechanism showcase uses A3.)"""
     import copy
     hero_page = copy.deepcopy(_page_of(pkg, "ST-05", role="identity"))
     for k in ("page_id", "section_id", "continuation_index",
@@ -194,30 +189,36 @@ def test_hero_is_a3_editorial(pkg, ctx):
     assert hero.st_type == "ST-05", f"hero st_type {hero.st_type}"
     assert hero.page_format == "a4"
     assert hero.treatment == "a4_editorial_fill", f"about -> {hero.treatment}"
-    assert "suspended" in (hero.reason or ""), hero.reason
 
 
 def test_no_a3_pages_mixed_size_breaks_print(pkg, ctx, assignments):
-    """US-2026-08-18: NO page is A3. A mid-deck A3 named page makes Chromium's
-    mixed-size print compress EVERY A4 page to ~92% (proven: the cover,
-    breathers and back cover rendered with 25-40% white bottom bands — the
-    exact measured defect). All 5 case studies (ST-07A) render A4
-    (a4_case_study); the explicit upstream a3 signal is overridden and
-    recorded in the reason."""
+    """US-2026-08-25 REPLACES the old 2026-08-18 "no A3" assertion: the mid-deck
+    A3 wall was removed after EMPIRICAL verification on the current engine that
+    a single device-showcase A3 (the ST-06 mechanism spread) renders cleanly
+    beside full-height A4s (26pp, no compression, no spill, overlap CLEAN).
+    The ST-06 MECHANISM continuation IS that A3 showcase (horizontal_process).
+    Everything else stays A4: the 5 case studies use a4_case_study, and the
+    ST-06 intro/result continuations stay untreated."""
     a3_indices = [a.index for a in assignments if a.page_format == "a3"]
-    assert a3_indices == [], f"A3 pages must not exist (mixed-size print defect); got {a3_indices}"
+    # exactly ONE A3: the mechanism showcase page
+    assert a3_indices, "expected the ST-06 mechanism showcase to be A3"
+    assert len(a3_indices) == 1, f"expected exactly one A3 page; got {a3_indices}"
+    for idx in a3_indices:
+        a = assignments[idx]
+        assert a.st_type == "ST-06", f"A3 must be the ST-06 mechanism page; got {a.st_type}"
+        assert a.treatment == "horizontal_process", f"A3 -> {a.treatment}"
+    # the 5 case studies stay A4 (a4_case_study) — case A3 stays A4 by design.
     case_indices = [a.index for a in assignments if a.st_type == "ST-07A"]
     assert len(case_indices) == 5, f"expected 5 case studies; got {case_indices}"
     for idx in case_indices:
         a = assignments[idx]
         assert a.page_format == "a4", f"idx {idx} format {a.page_format}"
         assert a.treatment == "a4_case_study", f"idx {idx} -> {a.treatment}"
-    # both ST-06 pages are continuation-bypassed (no treatment)
+    # ST-06: mechanism treated; intro + result continuation-bypassed.
     st06 = [a for a in assignments if a.st_type == "ST-06"]
-    assert len(st06) == 2, f"expected 2 ST-06 pages (intro+result); got {len(st06)}"
-    for a in st06:
-        assert a.treatment is None, f"ST-06 continuation treated: {a.treatment}"
-        assert a.page_format is None
+    assert len(st06) == 3, f"expected 3 ST-06 pages; got {len(st06)}"
+    treated = [a for a in st06 if a.treatment is not None]
+    assert len(treated) == 1 and treated[0].treatment == "horizontal_process"
 
 
 def test_st07a_no_longer_editorial(pkg, ctx, assignments):
@@ -244,17 +245,27 @@ def test_best_fit_singletons(pkg, ctx, assignments):
       ST-02 / ST-05  -> continuation-bypassed (the section's own patterns
              render the pages; a4_bi_dashboard / a4_editorial_fill for the
              pre-continuation single pages are no longer assigned)
-      ST-06          -> continuation-bypassed (intro + result)
+      ST-06          -> INTRO + RESULT continuation-bypassed; the MECHANISM
+             continuation is the 6-step diagram's OWN showcase and IS treated
+             (horizontal_process A3) since US-2026-08-25.
       ST-22          -> a4_vertical_timeline (ST-22 stays A4; its own #1)
     """
     # ST-02 and ST-05 pages are all continuation-bypassed.
-    for st in ("ST-02", "ST-05", "ST-06"):
+    for st in ("ST-02", "ST-05"):
         pages = [a for a in assignments if a.st_type == st]
         assert pages, f"{st} pages missing from assignments"
         assert all(a.treatment is None for a in pages), (
             f"{st} continuation pages must be bypassed"
         )
         assert all(a.page_format is None for a in pages)
+    # ST-06: intro + result bypassed; the mechanism showcase is TREATED.
+    st06 = [a for a in assignments if a.st_type == "ST-06"]
+    assert st06, "ST-06 pages missing from assignments"
+    mechanism = [a for a in st06 if (a.reason or "") and "mechanism" in a.reason.lower() or (a.treatment == "horizontal_process")]
+    bypassed = [a for a in st06 if a not in mechanism]
+    assert all(a.treatment is None and a.page_format is None for a in bypassed)
+    assert any(a.treatment == "horizontal_process" and a.page_format == "a3"
+               for a in st06), "the mechanism showcase must be the A3 horizontal_process"
     # ST-22 keeps the A4 vertical timeline (it is NOT promoted to A3).
     st22 = [a for a in assignments if a.st_type == "ST-22"]
     assert st22 and st22[0].treatment == "a4_vertical_timeline"
@@ -380,13 +391,13 @@ def test_a3_cap():
 
 
 def test_audit_lines(pkg, ctx, assignments):
-    """audit_lines returns one readable line per page (24 for apex), each naming
+    """audit_lines returns one readable line per page (26 for apex), each naming
     the page index and its decision."""
     lines = audit_lines(assignments)
-    # US-604/605: the apex package now has 24 pages (ST-02/ST-05/ST-06/FAZIT
-    # continuations). US-2026-08-18: the ST-09 split (context/evidence) adds a
-    # 25th page.
-    assert len(lines) == len(pkg.pages) == 25
+    # US-604/605: the apex package has 26 pages (ST-02/ST-05/ST-06/FAZIT
+    # continuations + the ST-09 split). US-2026-08-25: the ST-06 mechanism A3
+    # stays within the 26 (a treated page, not a new sheet).
+    assert len(lines) == len(pkg.pages) == 26
     for idx, line in enumerate(lines):
         # each line names its page (folio-ish index) and st_type
         assert assignments[idx].st_type in line

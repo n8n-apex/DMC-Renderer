@@ -54,20 +54,11 @@
     {
       "slot_id": "background_texture",
       "image_type": "texture",
-      "path": "assets/report_background_texture.png",
-      "status": "generated",
-      "message": "reused apex fixture image (R1 generator)",
-      "prompt": null,
-      "negative_prompt": null
-    },
-    {
-      "slot_id": "panel_texture",
-      "image_type": "panel_texture",
-      "path": "assets/report_navy_stone.png",
-      "status": "generated",
-      "message": "reused apex fixture image (R1 generator)",
-      "prompt": null,
-      "negative_prompt": null
+      "path": null,
+      "status": "stub_not_generated",
+      "message": "Generation stubbed (no fal key). Slot=background_texture, aspect=3:4. Prompt recorded for QA/replay.",
+      "prompt": "Seamless abstract premium printed-material surface, brand-locked to warm cream #F6F3ED ground and matte navy #2E3E50 depth, near-flat whisper-amplitude texture, flat even diffuse matte lighting or at most one soft off-center lighter-navy glow, generous calm negative space, low contrast for overlaid type, no text or logos or data or faces, decorative material only Subject: a seamless full-bleed abstract background surface/texture. Aspect ratio 3:4.",
+      "negative_prompt": "no text, no letters, no words, no numbers, no logos, no watermarks, no icons, no charts, no graphs, no data, no UI, no faces, no people, no marble-slab stock-luxury veining, no gold, no metallic, no foil, no gloss, no bevel, no lens flare, no spotlight, no rays, no particles, no banding, no hard vignette ring, no seams, no teal, no #4A7C7E, no cyan, no bright blue, no purple, no green, not white, not beige, not black"
     }
   ],
   "pages": [
@@ -202,7 +193,7 @@
       "cover_validation": null,
       "data": {
         "title": "Dein Wachstum scheitert nicht am Markt",
-        "body": "Dein Unternehmen läuft, du gewinnst Kunden, der Umsatz steigt – doch jeder neue Auftrag bringt mehr manuelle Arbeit, nicht mehr Gewinn. Manuelle Prozesse fressen in B2B-Unternehmen bis zu 30 % der gesamten Betriebskosten; allein in der deutschen Beratungsbranche sind das €700 bis €800 Millionen jährlich (BCG, 2025). Das ist kein Randproblem, sondern struktureller Gewinnverlust, versteckt in Excel-Listen, manuellem Onboarding und Statusrunden. Nicht zu wenig Umsatz ist das Problem, sondern ein Betrieb, in dem mehr Umsatz automatisch mehr Overhead bedeutet: Jeder neue Kunde erhöht die Last, jede Anfrage wird zur manuellen Aufgabe – du wächst, die Marge schrumpft. Dieser Report zeigt, warum 60 % der Unternehmen trotz erheblicher Investitionen keinen messbaren Wert aus AI-Initiativen ziehen (BCG, 2026) und was die 40 % anders machen: B2B-Unternehmen mit 10 bis 50 Mitarbeitern automatisieren ihre operativen Kernprozesse durch spezialisierte AI-Agenten vollständig und eliminieren 30 bis 50 % ihrer Betriebskosten – ohne ihre bestehende Tool-Umgebung aufzugeben oder ein einziges IT-Projekt zu stemmen. Du wirst keine generischen KI-Ratschläge finden, sondern sehen, wo der Flaschenhals entsteht, was er pro Monat kostet und welcher Mechanismus ihn dauerhaft beseitigt.",
+        "body": "Dein Unternehmen läuft. Du gewinnst Kunden, dein Team liefert, der Umsatz steigt. Und trotzdem weißt du, dass du jeden Monat Geld auf dem Tisch lässt – weil jeder neue Auftrag mehr manuelle Arbeit bedeutet, nicht mehr Gewinn.\n\nManuelle Prozesse fressen in B2B-Unternehmen bis zu 30 % der gesamten Betriebskosten – das entspricht allein in der deutschen Beratungsbranche €700 bis €800 Millionen jährlich (BCG, 2025). Das ist kein Randproblem. Das ist struktureller Gewinnverlust, der sich in jeder Excel-Liste, jedem manuellen Onboarding und jeder Statusrunde versteckt.\n\nDas eigentliche Problem ist nicht, dass du zu wenig Umsatz machst. Das Problem ist, dass dein Betrieb so gebaut ist, dass mehr Umsatz automatisch mehr Overhead bedeutet. Jeder neue Kunde erhöht die Last auf deinem Team. Jede neue Anfrage landet als manuelle Aufgabe auf einem Schreibtisch. Du wächst – aber deine Marge schrumpft.\n\nDieser Report zeigt, warum 60 % der Unternehmen trotz erheblicher Investitionen keinen messbaren Wert aus AI-Initiativen ziehen (BCG, 2026) – und was die 40 % anders machen. Konkret: Wie B2B-Unternehmen mit 10 bis 50 Mitarbeitern ihre operativen Kernprozesse durch spezialisierte AI-Agenten vollständig automatisieren und dabei 30 bis 50 % ihrer Betriebskosten eliminieren, ohne ihre bestehende Tool-Umgebung aufzugeben oder ein einziges IT-Projekt zu stemmen.\n\nDu wirst keine generischen KI-Ratschläge finden. Du wirst sehen, wo genau der Flaschenhals entsteht, was er dich pro Monat kostet – und welcher Mechanismus ihn dauerhaft beseitigt.",
         "pullquote": "Nicht zu wenig Umsatz ist das Problem – sondern ein Betrieb, in dem jeder neue Kunde mehr Overhead bringt als Marge.",
         "viz": [
           {
@@ -773,11 +764,11 @@
         {
           "slot_id": "status_quo_scene",
           "image_type": "scene",
-          "path": "assets/4_status_quo_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=status_quo_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Seamless abstract premium printed-material surface, brand-locked to warm cream #F6F3ED ground and matte navy #2E3E50 depth, near-flat whisper-amplitude texture, flat even diffuse matte lighting or at most one soft off-center lighter-navy glow, generous calm negative space, low contrast for overlaid type, no text or logos or data or faces, decorative material only Subject: Dein Unternehmen wächst. Deine Prozesse nicht. Du hast Kunden. Du hast ein Team. Du hast Umsatz. Und trotzdem läuft jeden Montag dasselbe Programm: manuelle Listen, offene Tickets, Anfragen, die niema. Aspect ratio 16:9.",
+          "negative_prompt": "no text, no letters, no words, no numbers, no logos, no watermarks, no icons, no charts, no graphs, no data, no UI, no faces, no people, no marble-slab stock-luxury veining, no gold, no metallic, no foil, no gloss, no bevel, no lens flare, no spotlight, no rays, no particles, no banding, no hard vignette ring, no seams, no teal, no #4A7C7E, no cyan, no bright blue, no purple, no green, not white, not beige, not black"
         }
       ],
       "components": [],
@@ -1135,11 +1126,11 @@
       "page_numbers": "7",
       "cover_validation": null,
       "data": {
-        "kurzportraet": "Martina Ammon führt parallel eine Anwaltskanzlei und ein Coaching-Business: zwei Unternehmen, eine Gründerin, ein Team – und ein Kundenstamm, der schneller wuchs als die Betreuungskapazität.",
-        "ausgangsproblem": "Rapides Wachstum bedeutete für Martina Ammon täglich neue Anfragen, die manuell beantwortet werden mussten. Jede Kundenaufnahme lief über handgeschriebene Formulare und Copy-Paste-Prozesse. Sie verbrachte mehr Zeit mit operativen Bränden als mit strategischer Arbeit.",
-        "ziel": "Der Wendepunkt: Martina Ammon erkannte, dass kein weiterer Mitarbeiter das Grundproblem lösen würde – ohne automatisierte Betriebsebene würde jede neue Kapazität sofort von manuellen Prozessen aufgefressen.",
+        "kurzportraet": "Martina Ammon führt parallel eine Anwaltskanzlei und ein Coaching-Business. Zwei Unternehmen, eine Gründerin, ein Team – und ein Kundenstamm, der schneller wuchs als die Kapazität, ihn zu betreuen.",
+        "ausgangsproblem": "Rapides Wachstum klingt nach Erfolg. Für Martina Ammon bedeutete es: täglich neue Anfragen, die manuell beantwortet werden mussten. Jede Kundenaufnahme lief über handgeschriebene Formulare und Copy-Paste-Prozesse. Die Gründerin verbrachte mehr Zeit damit, operative Brände zu löschen, als strategisch zu arbeiten.",
+        "ziel": "Der Wendepunkt kam, als Martina Ammon erkannte, dass kein weiterer Mitarbeiter das Grundproblem lösen würde: Ohne automatisierte Betriebsebene würde jede neue Kapazität sofort von manuellen Prozessen aufgefressen.",
         "loesung": "APEX Consulting implementierte Custom AI-Agenten direkt in Martina Ammons bestehende Tool-Umgebung – ohne Migration, ohne monatelanges IT-Projekt. Ein automatisierter Kundenaufnahme-Prozess ersetzte die manuellen Formulare. Ein Dokumentenverarbeitungs-Agent übernahm repetitive Dateioperationen. Ein 24/7-Support-Tool beantwortete Standardanfragen ohne menschliches Eingreifen.",
-        "ergebnis_text": "Die operative Belastung, die Martina Ammon täglich gebunden hatte, wurde systematisch eliminiert. Kundenanfragen wurden in Minuten statt Stunden beantwortet. Erstmals konnte die Gründerin wachsendes Volumen bewältigen, ohne proportional mehr Zeit zu investieren.",
+        "ergebnis_text": "Die operative Belastung, die Martina Ammon täglich gebunden hatte, wurde systematisch eliminiert. Kundenanfragen wurden in Minuten statt Stunden beantwortet. Zum ersten Mal konnte die Gründerin wachsendes Volumen bewältigen, ohne proportional mehr Zeit zu investieren.",
         "ergebnis_headline": "Von operativem Chaos zu skalierbarer KI-Infrastruktur",
         "fallstudie_number": 1,
         "ergebnis_metrics": [
@@ -1205,13 +1196,13 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene_1",
+          "slot_id": "case_scene",
           "image_type": "scene",
-          "path": "assets/1_cs1_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band for Martina Ammon: preserve the reference spread's proof-panel grammar and stat rhythm; place a calm abstract visualization of the workflow transformation: distinct lanes on one side converging into one organized operating system on the other. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure"
         }
       ],
       "components": [],
@@ -1380,11 +1371,11 @@
       "page_numbers": "9",
       "cover_validation": null,
       "data": {
-        "kurzportraet": "Cordes Consulting ist eine B2B-Beratung mit kleinem, spezialisiertem Team, die anspruchsvolle Unternehmenskunden betreut. Die Marktnachfrage wächst – die Grenze war nicht der Umsatz, sondern die Kapazität.",
-        "ausgangsproblem": "Sechs manuelle Kern-Fulfillment-Prozesse prägten den Betriebsrhythmus. Jeder war wissensabhängig: Fiel eine Person aus, stockte der gesamte Ablauf; die Output-Qualität schwankte mit Tagesform und Auslastung. Die operative Kapazität war nicht durch Marktnachfrage, sondern durch Headcount begrenzt. Jeder neue Kunde bedeutete mehr manuelle Arbeit – nicht mehr Umsatz pro Stunde.",
+        "kurzportraet": "Cordes Consulting ist eine B2B-Beratung, die mit wachsender Marktnachfrage konfrontiert war – aber nicht mit fehlendem Umsatz, sondern mit fehlender Kapazität. Das Unternehmen beschäftigt ein kleines, spezialisiertes Team und betreut anspruchsvolle Unternehmenskunden.",
+        "ausgangsproblem": "Sechs manuelle Kern-Fulfillment-Prozesse bestimmten den Betriebsrhythmus bei Cordes Consulting. Jeder davon war wissensabhängig: Fiel eine Person aus, stockte der gesamte Ablauf. Die Output-Qualität schwankte je nach Tagesform und Auslastung. Das Ergebnis: Die operative Kapazität war nicht durch Marktnachfrage begrenzt, sondern durch Headcount. Jeder neue Kunde bedeutete mehr manuelle Arbeit – nicht mehr Umsatz pro Stunde.",
         "ziel": "",
-        "loesung": "APEX analysierte die sechs zeitintensivsten Fulfillment-Prozesse und implementierte gezielte AI-Automatisierungen direkt in die bestehende Tool-Umgebung – ohne Migration, IT-Projekt oder Umschulung. Parallel wurden interne AI-Fähigkeiten aufgebaut, sodass Cordes Consulting danach eigenständig skalieren konnte. Der Tool-Stack blieb vollständig erhalten.",
-        "ergebnis_text": "Nach der Implementierung lief der Betrieb ohne manuelle Schleifen: Alle sechs Bottleneck-Prozesse wurden automatisiert. Die Kapazitätsgrenze verschob sich vom Headcount zur Marktnachfrage – neue Kunden ohne zusätzliches Personal. Wissensabhängigkeit und Output-Inkonsistenz wurden strukturell beseitigt.",
+        "loesung": "APEX analysierte die sechs zeitintensivsten Fulfillment-Prozesse und implementierte gezielte AI-Automatisierungen direkt in die bestehende Tool-Umgebung – ohne Migration, ohne IT-Projekt, ohne Umschulung des Teams. Parallel wurden interne AI-Fähigkeiten aufgebaut, sodass Cordes Consulting nach dem Projekt eigenständig skalieren konnte. Der bestehende Tool-Stack blieb vollständig erhalten.",
+        "ergebnis_text": "Nach der Implementierung lief der Betrieb ohne die bisherigen manuellen Schleifen. Alle sechs Bottleneck-Prozesse wurden automatisiert. Die Kapazitätsgrenze verschob sich vom Headcount zur Marktnachfrage – das Unternehmen konnte neue Kunden annehmen, ohne zusätzliches Personal einzustellen. Wissensabhängigkeit und Output-Inkonsistenz wurden strukturell beseitigt.",
         "ergebnis_headline": "6 manuelle Prozesse automatisiert, Kapazität verdoppelt",
         "fallstudie_number": 2,
         "ergebnis_metrics": [
@@ -1443,13 +1434,13 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene_2",
+          "slot_id": "case_scene",
           "image_type": "scene",
-          "path": "assets/2_cs2_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band for Cordes Consulting: preserve the reference's proof grammar; place distinct working parts converging into one unified complete system. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure"
         }
       ],
       "components": [],
@@ -1688,11 +1679,11 @@
       "page_numbers": "12",
       "cover_validation": null,
       "data": {
-        "kurzportraet": "Frese Recruiting, ein spezialisiertes Recruiting-Unternehmen, sah sich wachsendem Anfragevolumen und steigender Kommunikationskomplexität gegenüber. Es betreut Kandidaten und Auftraggeber über mehrere Kanäle gleichzeitig.",
-        "ausgangsproblem": "Anfragen stapelten sich über WhatsApp, E-Mail und Support-Tickets. Manuelle Sichtung, Priorisierung und Beantwortung überforderten das Team systematisch. Die Antwortzeit lag bei 12 bis 24 Stunden; Kandidaten ohne Rückmeldung sprangen ab. Der Verlust entstand nicht durch fehlendes Angebot, sondern durch operative Trägheit. Skalierung war strukturell ausgeschlossen: Mehr Anfragen bedeuteten proportional mehr manuelle Arbeit, nicht mehr Umsatz.",
+        "kurzportraet": "Frese Recruiting ist ein spezialisiertes Recruiting-Unternehmen, das mit wachsendem Anfragevolumen und steigender Kommunikationskomplexität konfrontiert war. Das Unternehmen betreut Kandidaten und Auftraggeber über mehrere Kanäle gleichzeitig.",
+        "ausgangsproblem": "Anfragen stapelten sich über WhatsApp, E-Mail und Support-Tickets. Jede Nachricht wurde manuell gesichtet, priorisiert und beantwortet – ein Prozess, der das Team systematisch überforderte. Die Antwortzeit lag bei 12 bis 24 Stunden. Kandidaten, die in diesem Zeitfenster keine Rückmeldung erhielten, sprangen ab. Das Unternehmen verlor nicht wegen fehlendem Angebot – sondern wegen operativer Trägheit. Skalierung war strukturell ausgeschlossen: Mehr Anfragen bedeuteten proportional mehr manuelle Arbeit, nicht mehr Umsatz.",
         "ziel": "",
         "loesung": "APEX implementierte ein intelligentes Ticketing-System und KI-gesteuerte Automationen, die tausende WhatsApp-Konversationen parallel verarbeiten. Eingehende Nachrichten werden automatisch kategorisiert, priorisiert und beantwortet – ohne manuellen Eingriff für Standardfälle. Das bestehende Tool-Setup blieb unverändert. Kein IT-Projekt, keine Migration, keine Schulungswochen. Das Team wurde von repetitiver Kommunikationsarbeit entlastet und konnte Kapazität auf wertschöpfende Recruiting-Arbeit verlagern.",
-        "ergebnis_text": "Die Reaktionszeit sank von bis zu 24 Stunden auf wenige Minuten. Das Kommunikationsvolumen – tausende WhatsApp-Konversationen – wird ohne zusätzliche Headcount bewältigt. Frese Recruiting kann mehr Anfragen aufnehmen, ohne den operativen Overhead proportional zu erhöhen.",
+        "ergebnis_text": "Nach der Implementierung sank die Reaktionszeit von bis zu 24 Stunden auf wenige Minuten. Das Kommunikationsvolumen – tausende WhatsApp-Konversationen – wird seitdem ohne zusätzliche Headcount bewältigt. Frese Recruiting kann heute mehr Anfragen aufnehmen, ohne den operativen Overhead proportional zu erhöhen.",
         "ergebnis_headline": "Von 24-Stunden-Reaktionszeit zu Minuten",
         "fallstudie_number": 3,
         "ergebnis_metrics": [
@@ -1761,13 +1752,13 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene_3",
+          "slot_id": "case_scene",
           "image_type": "scene",
-          "path": "assets/3_cs3_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band for Frese Recruiting: preserve the reference spread's proof-panel grammar and stat rhythm; place a calm abstract visualization of the workflow transformation: distinct lanes on one side converging into one organized operating system on the other. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure"
         }
       ],
       "components": [],
@@ -2011,13 +2002,13 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene_4",
+          "slot_id": "case_scene",
           "image_type": "scene",
-          "path": "assets/4_cs4_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band for Conesso GmbH: preserve the reference spread's proof-panel grammar and stat rhythm; place a calm abstract visualization of the workflow transformation: distinct lanes on one side converging into one organized operating system on the other. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure"
         }
       ],
       "components": [],
@@ -2108,7 +2099,7 @@
       "page_numbers": "15",
       "cover_validation": null,
       "data": {
-        "kurzportraet": "Hanisch & Klein ist eine B2B-Beratung, die trotz wachsender Nachfrage an operativen Engpässen litt: Nicht verbundene Tools und manuelle Prozesse fraßen Kapazität, statt sie freizusetzen.",
+        "kurzportraet": "Hanisch & Klein ist eine B2B-Beratung, die mit wachsender Kundennachfrage kämpfte – nicht wegen fehlendem Markt, sondern wegen operativer Engpässe. Mehrere nicht verbundene Tools und manuelle Prozesse fraßen Kapazität, statt sie freizusetzen.",
         "ausgangsproblem": "Hanisch & Klein hatte ein klassisches Skalierungsproblem: Jedes neue Mandat bedeutete mehr manuelle Koordination zwischen Tools, die nicht miteinander sprachen. Leads wurden manuell priorisiert, operative Entscheidungen landeten beim Gründer. Das Team arbeitete an der Kapazitätsgrenze – nicht weil Kunden fehlten, sondern weil jeder neue Kunde das System weiter belastete.",
         "ziel": "Der Wendepunkt: Mehr Mitarbeiter hätten das Problem nicht gelöst – sie hätten dieselben fragmentierten Prozesse nur repliziert. Die Engpässe lagen im System, nicht im Team.",
         "loesung": "APEX analysierte die kritischsten Bottlenecks und implementierte gezielte AI-Automationen direkt in die bestehende Tool-Umgebung – ohne Migration, ohne IT-Projekt. Automatisierte Lead-Priorisierung ersetzte manuelle Sortierung; Workflows wurden vereinheitlicht, sodass Informationen ohne manuelles Eingreifen zwischen Tools flossen. Das Ergebnis: ein stabiler End-to-End-Prozess.",
@@ -2182,13 +2173,13 @@
       ],
       "assets": [
         {
-          "slot_id": "case_scene_5",
+          "slot_id": "case_scene",
           "image_type": "scene",
-          "path": "assets/5_cs5_scene.png",
-          "status": "generated",
-          "message": "reused apex fixture image (R1 generator)",
-          "prompt": null,
-          "negative_prompt": null
+          "path": null,
+          "status": "stub_not_generated",
+          "message": "Generation stubbed (no fal key). Slot=case_scene, aspect=16:9. Prompt recorded for QA/replay.",
+          "prompt": "Using the input reference image ONLY for its dark-navy tone, amber accent light, and editorial refinement, create ONE purely ABSTRACT flowing contextual band for Hanisch & Klein: preserve the reference spread's proof-panel grammar and stat rhythm; place a calm abstract visualization of the workflow transformation: distinct lanes on one side converging into one organized operating system on the other. Do NOT copy the reference's panel grid or columns. STRICTLY ABSTRACT: no text, no words, no numbers, no labels, no icons, no charts, no bars, no axes, no graphs, no UI, no panels, no faces.. Style: premium editorial print quality, refined geometry, soft depth Aspect ratio 16:9.",
+          "negative_prompt": "photorealistic people, faces, hands, text, words, letters, numbers, charts, graphs, screenshots, logos, watermark, mockup, UI, bright colours, clutter, gradients without structure"
         }
       ],
       "components": [],
@@ -2370,7 +2361,33 @@
       "page_numbers": null,
       "cover_validation": null,
       "data": {
-        "title": "Das Done-For-You AI Automation Framework"
+        "title": "Das Done-For-You AI Automation Framework",
+        "steps": [
+          {
+            "title": "Workflow-Audit und Engpass-Diagnose",
+            "body": "Bevor eine einzige Zeile Code geschrieben wird, analysiert APEX deine tatsächlichen Workflows, nicht die, die du glaubst zu haben. Zeitaufwand pro Prozess wird gemessen, Bottlenecks werden priorisiert nach Kosten und Häufigkeit. Das Ergebnis: eine klare Rangliste, welche drei bis fünf Prozesse den größten Return liefern, wenn sie automatisiert werden. Ohne diese Grundlage automatisiert man Chaos, nicht Effizienz."
+          },
+          {
+            "title": "CRM-Bereinigung und Datenstruktur",
+            "body": "Ein AI-Agent ist nur so gut wie die Daten, auf denen er operiert. Doppelte Kontakte, inkonsistente Felder, veraltete Notizen – all das wird systematisch bereinigt, bevor Automatisierung ansetzt."
+          },
+          {
+            "title": "AI-Agenten-Implementierung",
+            "body": "Spezialisierte AI-Agenten werden direkt in deine bestehende Tool-Landschaft integriert. Kein Stack-Wechsel, keine monatelangen IT-Projekte. 61% der B2B-Firmen setzen bereits auf Agentic AI (KPMG, 2026)."
+          },
+          {
+            "title": "Onboarding- und Fulfillment-Automatisierung",
+            "body": "Die zeitintensivsten Fulfillment-Prozesse – Kunden-Onboarding, Dokumentenverarbeitung, interne Abstimmungsschleifen – werden vollständig übernommen. Was 30 Minuten dauerte, dauert zwei."
+          },
+          {
+            "title": "Kommunikations- und Support-Automatisierung",
+            "body": "Eingehende Anfragen über E-Mail, WhatsApp und Ticket-Systeme werden priorisiert, kategorisiert und beantwortet – ohne dass dein Team eingreift. Antwortzeiten fallen von Stunden auf Minuten."
+          },
+          {
+            "title": "Kontinuierliche Optimierung und Reporting",
+            "body": "Nach der Implementierung laufen die Agenten nicht einfach weiter – sie werden anhand realer Output-Daten kontinuierlich verfeinert. Du siehst jederzeit, was automatisiert wurde und was es gespart hat."
+          }
+        ]
       },
       "charts": [],
       "social_proof": null,
@@ -3434,12 +3451,12 @@
     "total_warnings": 47
   },
   "asset_summary": {
-    "total_required": 8,
+    "total_required": 9,
     "total_downloaded": 0,
-    "total_stubbed": 0,
+    "total_stubbed": 9,
     "total_client_upload_needed": 0,
     "total_failed": 0,
-    "total_generated": 8
+    "total_generated": 0
   },
   "asset_warnings": []
 }

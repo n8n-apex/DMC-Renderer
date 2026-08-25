@@ -193,8 +193,10 @@ def test_report_html_stamps_treatment_and_format_classes(rendered):
     # ("viz",) contract fit. The ST-09 EVIDENCE page is NOT in this slice, but
     # its no-viz -> a4_editorial_fill fallback is pinned separately in
     # tests/test_treatment_dashboard.py::test_evidence_without_viz_does_not_fit.
-    # The ST-06 continuation pages are NOT treated (they belong to the section).
-    # No A3 page remains.
+    # US-2026-08-25: this SLICE is ST-09 context + early pages (no ST-06
+    # mechanism continuation), so horizontal_process is not stamped HERE. The
+    # full-deck A3 test pins the ST-06 mechanism showcase's A3 (test
+    # test_full_deck_a3_pages).
     html = (rendered["out"] / "report.html").read_text(encoding="utf-8")
     assert "treatment-a4_bi_dashboard" in html, (
         "a4_bi_dashboard treatment class not stamped on the ST-09 context page"
@@ -216,9 +218,10 @@ def test_full_deck_no_spill(full_deck):
     physical sheet per logical page and no overflow spill. Every page (incl.
     the continuation sections) fits its sheet in the real product."""
     res = full_deck["res"]
-    # US-604/605: apex is now 24 pages (ST-02/ST-05/ST-06/FAZIT continuations).
-    # US-2026-08-18: the ST-09 split (context/evidence) adds a 25th page.
-    assert res.page_count == 25, f"apex deck is 25 pages; got {res.page_count}"
+    # US-604/605: apex is 26 pages (ST-02/ST-05/ST-06/FAZIT continuations +
+    # the ST-09 split). US-2026-08-25: the ST-06 mechanism A3 stays WITHIN
+    # those 26 (a treated page, not a spill): one physical sheet per logical.
+    assert res.page_count == 26, f"apex deck is 26 pages; got {res.page_count}"
     assert len(res.png_paths) == res.page_count, (
         f"physical pages {len(res.png_paths)} != logical {res.page_count} "
         f"-- a section overflowed its sheet in the full deck"
@@ -229,11 +232,11 @@ def test_full_deck_no_spill(full_deck):
 
 
 def test_full_deck_a3_pages(full_deck):
-    """US-2026-08-18: NO page is A3. A mid-deck A3 named page makes Chromium's
-    mixed-size print compress EVERY A4 page to ~92% (proven: the cover,
-    breathers and back cover rendered with 25-40% white bottom bands — the
-    exact measured defect). All case studies render A4; the explicit upstream
-    a3 signal is overridden by the stylist (recorded in the reason)."""
+    """US-2026-08-25 REPLACES the old 2026-08-18 "NO A3" rule: the mid-deck A3
+    wall was removed after EMPIRICAL verification on the current engine that a
+    single device-showcase A3 (the ST-06 mechanism spread) renders cleanly
+    beside full-height A4s (26pp, no compression, no spill). Exactly ONE A3
+    should exist: the ST-06 mechanism showcase. Everything else stays A4."""
     import fitz
 
     pdf = full_deck["out"] / "report.pdf"
@@ -241,4 +244,4 @@ def test_full_deck_a3_pages(full_deck):
     a3 = [i for i in range(doc.page_count)
           if _approx(doc[i].rect.width, A3_LAND_W) and _approx(doc[i].rect.height, A3_LAND_H)]
     doc.close()
-    assert len(a3) == 0, f"expected NO A3 pages (mixed-size print defect); got {a3}"
+    assert len(a3) == 1, f"expected exactly ONE A3 (the ST-06 mechanism showcase); got {a3}"

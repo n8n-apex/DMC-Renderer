@@ -245,13 +245,19 @@ def _gate_rows_for_stype(st_type: str) -> list[str]:
         # figures (a figure-free essay must never fabricate one).
         return ["P13", "P11*?figures"]
     if st == "ST-CONT":
-        # US-608: CONTINUATION pages (a section's 2nd+ sheet) carry the
-        # section's SLICE (e.g. 3 step cards or the closing blocks). Their
-        # composition quality is owned by the DET gates (overlap CLEAN,
-        # boundary tests) — the vision bar is ONLY the honest figure check:
-        # the slice must display its bound figure where the data carries one.
-        # P12/P13/P14 all misread a deliberately clean second sheet.
-        return ["P11*?figures"]
+        # US-608: continuation pages carry the section's slice (e.g. 3 step
+        # cards or the closing blocks). Their composition quality is owned by
+        # the DET gates (overlap CLEAN, boundary tests) — the vision bar is
+        # ONLY the honest figure check: the slice must display its bound
+        # figure where the data carries one.
+        # US-2026-08-25 (the p20 fault): a continuation whose JOB is to SHOWCASE
+        # a data diagram (the ST-06 mechanism page) must be held to the device
+        # bar, not exempted. The 6-step flow looked chopped and REACHED a
+        # passing gate because P11*?figures was skipped on the empty-figure
+        # slice. Return P11* unconditionally: a device/diagram continuation is
+        # visually graded; a device-free continuation (no figure) passes
+        # honestly (0 figures).
+        return ["P11*"]
     return ["P12", "P11*"]           # other editorial: density + bound figure
 
 
